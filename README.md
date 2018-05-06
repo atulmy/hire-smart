@@ -1,4 +1,4 @@
-# Hire Smart
+# 💡 Hire Smart
 An application for human resource team to manage and schedule interviews efficiently.
 
 ## Proposed Features
@@ -29,6 +29,7 @@ An application for human resource team to manage and schedule interviews efficie
         - Telephonic
         - Online (Skype, Hangouts, etc.)
       - Feedback by panel
+   - Email notifications
 
 ## Technology Stack
   - API
