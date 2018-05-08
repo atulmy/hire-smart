@@ -1,0 +1,51 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "export NODE_ENV=development && npm run build:client && npm run start:server",
+    "build:client": "webpack -d",
+    "start:server": "nodemon --exec babel-node -- src/index.js",
+    "start:prod": "export NODE_ENV=production && npm run build:client:prod && npm run build:server:prod && npm run start:server:prod",
+    "build:client:prod": "webpack -p",
+    "build:server:prod": "babel src -s -D -d build",
+    "start:server:prod": " node build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material-ui/icons": "1.0.0-beta.43",
+    "axios": "0.18.0",
+    "body-parser": "1.18.2",
+    "cookie-parser": "1.4.3",
+    "dotenv": "5.0.1",
+    "express": "^5.0.0-alpha.6",
+    "js-cookie": "2.2.0",
+    "material-ui": "1.0.0-beta.45",
+    "prop-types": "15.6.1",
+    "react": "16.3.2",
+    "react-dom": "16.3.2",
+    "react-helmet": "5.2.0",
+    "react-jss": "8.4.0",
+    "react-redux": "5.0.7",
+    "react-router-dom": "4.2.2",
+    "redux": "4.0.0",
+    "redux-thunk": "2.2.0",
+    "validator": "10.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.4",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
+    "dotenv-webpack": "1.5.5",
+    "nodemon": "1.17.4",
+    "webpack": "4.8.1",
+    "webpack-cli": "2.1.3"
+  }
+}
