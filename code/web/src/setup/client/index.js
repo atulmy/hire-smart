@@ -27,7 +27,7 @@ const Client = () => (
   <Provider store={store} key="provider">
     <Router>
       <ScrollToTop>
-        <App/>
+        <App />
       </ScrollToTop>
     </Router>
   </Provider>

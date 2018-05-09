@@ -13,10 +13,9 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 
 // UI Imports
-import { SheetsRegistry } from 'react-jss/lib/jss';
-import JssProvider from 'react-jss/lib/JssProvider';
-import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from 'material-ui/styles';
-import { green, red } from 'material-ui/colors';
+import { MuiThemeProvider, createGenerateClassName } from 'material-ui/styles'
+import { SheetsRegistry } from 'react-jss/lib/jss'
+import JssProvider from 'react-jss/lib/JssProvider'
 
 // App Imports
 import { APP_URL, NODE_ENV, PORT } from './setup/config/env'
@@ -96,36 +95,26 @@ app.get('*', (request, response) => {
       if (context.url) {
         response.redirect(context.url)
       } else {
-        // Create a sheetsRegistry instance.
-        const sheetsRegistry = new SheetsRegistry();
-        // Create a theme instance.
-        const theme = createMuiTheme({
-          palette: {
-            primary: green,
-            accent: red,
-            type: 'light',
-          },
-        });
-        const generateClassName = createGenerateClassName();
+        const sheetsRegistry = new SheetsRegistry()
+        const generateClassName = createGenerateClassName()
+
         const appHtml = renderToString(
           <Provider store={store} key="provider">
             <StaticRouter context={context} location={request.url}>
               <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-                <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
-                  <App />
-                </MuiThemeProvider>
+                <App />
               </JssProvider>
             </StaticRouter>
           </Provider>
         )
-        const css = sheetsRegistry.toString()
+
+        // Get styles
+        const appCss = sheetsRegistry.toString()
 
         // Get Meta header tags
         const helmet = Helmet.renderStatic()
 
-        const styles = ''
-
-        let html = view(APP_URL, NODE_ENV, helmet, appHtml, css, initialState)
+        const html = view(APP_URL, NODE_ENV, helmet, appHtml, appCss, initialState)
 
         // Reset the state on server
         store.dispatch({

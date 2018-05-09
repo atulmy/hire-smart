@@ -1,4 +1,4 @@
-const index = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', css = '', initialState = {}) => (
+const index = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initialState = {}) => (
 `<!doctype html>
 <html lang="en">
 <head>
@@ -21,7 +21,7 @@ const index = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', css = '', initialSt
     
     <!-- CSS - Generated -->
     <style type="text/css">
-      ${ css }
+      ${ appCss }
     </style>
 </head>
 <body>

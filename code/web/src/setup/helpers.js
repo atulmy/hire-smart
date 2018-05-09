@@ -32,13 +32,13 @@ export function plural(value) {
 
 // Check if object is empty
 export function isEmpty(obj) {
-  let name;
+  let name
   for (name in obj) {
     if (obj.hasOwnProperty(name)) {
-      return false;
+      return false
     }
   }
-  return true;
+  return true
 }
 
 // Slug
