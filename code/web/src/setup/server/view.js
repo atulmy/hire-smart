@@ -1,4 +1,4 @@
-const index = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initialState = {}) => (
+const view = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initialState = {}) => (
 `<!doctype html>
 <html lang="en">
 <head>
@@ -39,4 +39,4 @@ const index = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initia
 </html>`
 )
 
-export default index
+export default view

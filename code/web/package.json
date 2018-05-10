@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup": "npm install",
     "start": "export NODE_ENV=development && npm run build:client && npm run start:server",
     "build:client": "webpack -d",
     "start:server": "nodemon --exec babel-node -- src/index.js",
