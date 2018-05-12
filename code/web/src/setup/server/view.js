@@ -19,6 +19,22 @@ const view = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initial
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,600" rel="stylesheet" />
     
+    <!-- CSS - Reset -->
+    <style type="text/css">
+      html {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      *, *::before, *::after {
+        box-sizing: inherit;
+      }
+      body {
+        margin: 0;
+        background-color: #fff;
+      }
+    </style>
+    
     <!-- CSS - Generated -->
     <style type="text/css">
       ${ appCss }

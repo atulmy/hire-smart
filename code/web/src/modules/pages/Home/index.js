@@ -46,15 +46,75 @@ const Home = (props) => (
     </div>
 
     <div className={props.classes.features}>
-      <div style={{ flex: 1, flexDirection: 'row' }}>
-        <div style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <h1>Hello</h1>
+      <div className={props.classes.featureItem}>
+        <div className={props.classes.featureItemLeft}>
+          <Typography
+            variant="display1"
+            title={'Hire Smart'}
+            gutterBottom
+            className={props.classes.featureItemTitle}
+          >
+            Journey of candidate
+          </Typography>
 
-          <p>Hello world</p>
+          <Typography
+            variant="subheading"
+            className={props.classes.featureItemSubTitle}
+          >
+            A candidate is a potential future employee. The journey matters as soon as you consider the profile and we enable you to have a holistic view at every step.
+          </Typography>
         </div>
 
-        <div style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <img src={`/images/features/features-journey.png`} style={{ boxShadow: '0px 5px 8px rgba(0, 0, 0, 0.5)' }} />
+        <div className={props.classes.featureItemRight}>
+          <img src={`/images/features/features-journey.png`} className={props.classes.featureItemImage} />
+        </div>
+      </div>
+
+      <div className={props.classes.featureItem}>
+        <div className={props.classes.featureItemLeft}>
+          <img src={`/images/features/features-current-status.png`} className={props.classes.featureItemImage} />
+        </div>
+
+        <div className={props.classes.featureItemRight}>
+          <Typography
+            variant="display1"
+            title={'Hire Smart'}
+            gutterBottom
+            className={props.classes.featureItemTitle}
+          >
+            Current status of the candidate
+          </Typography>
+
+          <Typography
+            variant="subheading"
+            className={props.classes.featureItemSubTitle}
+          >
+            We enable you to easily track the current status of the candidate so you have better control and make proper decisions.
+          </Typography>
+        </div>
+      </div>
+
+      <div className={props.classes.featureItem}>
+        <div className={props.classes.featureItemLeft}>
+          <Typography
+            variant="display1"
+            title={'Hire Smart'}
+            gutterBottom
+            className={props.classes.featureItemTitle}
+          >
+            Get feedback from panel
+          </Typography>
+
+          <Typography
+            variant="subheading"
+            className={props.classes.featureItemSubTitle}
+          >
+            Interviewer can provide a subjective and objective feedback for the candidate with a great ease in turn helping you to make the right decision for hiring.
+          </Typography>
+        </div>
+
+        <div className={props.classes.featureItemRight}>
+          <img src={`/images/features/features-feedback.png`} className={props.classes.featureItemImage} />
         </div>
       </div>
     </div>

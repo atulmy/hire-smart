@@ -43,10 +43,33 @@ const styles = theme => ({
   },
 
   features: {
-
+    marginBottom: '2rem'
   },
-
-
+  featureItem: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: '2rem'
+  },
+  featureItemLeft: {
+    flex: 1,
+    textAlign: 'center'
+  },
+  featureItemRight: {
+    flex: 1,
+    textAlign: 'center'
+  },
+  featureItemTitle: {
+    fontFamily: `"Raleway", "Helvetica", "Arial", sans-serif`,
+    color: 'black'
+  },
+  featureItemSubTitle: {
+    padding: '0 5rem'
+  },
+  featureItemImage: {
+    boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'
+  }
 })
 
 export default styles

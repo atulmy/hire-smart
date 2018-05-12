@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // UI Imports
-import CssBaseline from 'material-ui/CssBaseline'
 import { withStyles } from 'material-ui/styles'
 import styles from './styles'
 
@@ -18,8 +17,6 @@ class Layout extends PureComponent {
 
     return (
       <div className={classes.root}>
-        <CssBaseline />
-
         <Header />
 
         { children }
