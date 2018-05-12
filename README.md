@@ -1,5 +1,9 @@
-# 💡 Hire Smart
-An application for human resource team to manage and schedule interviews efficiently.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/atulmy/atulmy.github.io/master/images/hire-smart/hero-shadow.png" alt="Hire Smart" />
+</p>
+
+<h1 align="center">HIRE SMART</h1>
+<p align="center">An application for human resource team to schedule and manage interviews efficiently.</p>
 
 ## Proposed Features
   - Candidates management
