@@ -22,13 +22,15 @@ import App from '../client/App'
 import view from './view'
 
 export default function (app) {
-// Store (new store for each request)
+  console.info('SETUP - Load routes..')
+
+  // Store (new store for each request)
   const store = createStore(
     rootReducer,
     applyMiddleware(thunk)
   )
 
-// Match any Route
+  // Match any Route
   app.get('*', (request, response) => {
 
     // Check for auth

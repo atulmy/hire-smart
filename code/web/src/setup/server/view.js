@@ -16,8 +16,8 @@ const view = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initial
     <link rel="icon" type="image/png" sizes="96x96" href="${ APP_URL }/images/favicon/favicon-96x96.png" />
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,600" rel="stylesheet" />
     
     <!-- CSS - Generated -->
     <style type="text/css">

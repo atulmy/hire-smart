@@ -1,4 +1,5 @@
 {
+  "delay": "2500",
   "events": {
     "restart": "npm run build:client"
   },

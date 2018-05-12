@@ -5,6 +5,8 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 
 export default function (app) {
+  console.info('SETUP - Load modules..')
+
   // Request body parser
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({extended: false}))
@@ -13,5 +15,5 @@ export default function (app) {
   app.use(cookieParser())
 
   // Public (static) files folder
-  app.use(Express.static(path.join(__dirname, '..', 'public')))
+  app.use(Express.static(path.join(__dirname, '..', '..', '..', 'public')))
 }

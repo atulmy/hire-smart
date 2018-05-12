@@ -13,7 +13,7 @@ const Schema = new mongoose.Schema({
     votes: Number,
     favs:  Number
   }
-});
+})
 
 // Model
 export default mongoose.model('User', Schema)

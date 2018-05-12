@@ -1,13 +1,15 @@
 // Imports
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+
+// UI Imports
 
 // App Imports
 // import { someAction } from './api/actions'
 
 // Component
-class DummyComponentRedux extends Component {
+class DummyComponentRedux extends PureComponent {
 
   constructor(props) {
     super(props)

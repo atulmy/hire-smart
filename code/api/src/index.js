@@ -1,27 +1,27 @@
 // Imports
-import mongoose from 'mongoose'
+import express from 'express'
 
 // App Imports
-import db from './setup/db'
+import database from './setup/server/database'
+import loadModules from './setup/server/load-modules'
+import graphQL from './setup/server/graphql'
+import upload from './setup/server/upload'
+import startServer from './setup/server/start-server'
 
-console.log('hi')
+// Create express server
+const server = express()
 
-/*
-var kittySchema = mongoose.Schema({
-  name: String
-});
+// Connect
+database()
 
-var Kitten = mongoose.model('Kitten', kittySchema);
+// Setup load modules
+loadModules(server)
 
-var fluffy = new Kitten({ name: 'fluffy' });
+// Setup uploads
+upload(server)
 
-fluffy.save(function (err, fluffy) {
-  if (err) return console.error(err);
-});
+// Setup GraphQL
+graphQL(server)
 
-
-Kitten.find(function (err, kittens) {
-  if (err) return console.error(err);
-  console.log(kittens);
-})
-*/
+// Start server
+startServer(server)
