@@ -1,7 +1,10 @@
 // Imports
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 
 // UI Imports
+import { withStyles } from 'material-ui/styles'
+import styles from './styles'
 
 // App Imports
 
@@ -23,4 +26,10 @@ class DummyComponent extends PureComponent {
   }
 }
 
-export default DummyComponent
+
+// Component Properties
+DummyComponent.propTypes = {
+  classes: PropTypes.object.isRequired
+}
+
+export default withStyles(styles)(DummyComponent)

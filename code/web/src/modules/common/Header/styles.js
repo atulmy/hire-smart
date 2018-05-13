@@ -10,6 +10,6 @@ const styles = {
   account: {
     marginRight: '-0.6rem'
   },
-};
+}
 
 export default styles

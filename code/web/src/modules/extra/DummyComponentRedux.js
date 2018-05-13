@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // UI Imports
+import { withStyles } from 'material-ui/styles'
+import styles from './styles'
 
 // App Imports
 // import { someAction } from './api/actions'
@@ -32,6 +34,7 @@ class DummyComponentRedux extends PureComponent {
 
 // Component Properties
 DummyComponentRedux.propTypes = {
+  classes: PropTypes.object.isRequired,
   dummyId: PropTypes.number.isRequired,
   // someAction: PropTypes.func.isRequired,
 }
@@ -41,4 +44,4 @@ function dummyComponentReduxState(state) {
   return state
 }
 
-export default connect(dummyComponentReduxState, { /* someAction */ })(DummyComponentRedux)
+export default connect(dummyComponentReduxState, { /* someAction */ })(withStyles(styles)(DummyComponentRedux))

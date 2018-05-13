@@ -43,7 +43,8 @@ const styles = theme => ({
   },
 
   features: {
-    marginBottom: '2rem'
+    marginTop: '4rem',
+    marginBottom: '4rem'
   },
   featureItem: {
     display: 'flex',

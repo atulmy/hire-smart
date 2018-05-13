@@ -9,6 +9,7 @@ import styles from './styles'
 
 // App Imports
 import Header from '../Header'
+import Footer from '../Footer'
 
 // Component
 class Layout extends PureComponent {
@@ -20,6 +21,8 @@ class Layout extends PureComponent {
         <Header />
 
         { children }
+
+        <Footer />
       </div>
     )
   }
