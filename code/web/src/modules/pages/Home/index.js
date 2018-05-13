@@ -4,6 +4,7 @@ import React from 'react'
 // UI Imports
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button'
+import Divider from 'material-ui/Divider'
 import { withStyles } from 'material-ui/styles'
 import styles from './styles'
 
@@ -12,6 +13,7 @@ import styles from './styles'
 // Component
 const Home = (props) => (
   <div>
+    {/* Hero */}
     <div className={props.classes.hero}>
       <Typography
         variant="display4"
@@ -45,6 +47,7 @@ const Home = (props) => (
       </Typography>
     </div>
 
+    {/* Features */}
     <div className={props.classes.features}>
       <div className={props.classes.featureItem}>
         <div className={props.classes.featureItemLeft}>
@@ -70,6 +73,8 @@ const Home = (props) => (
         </div>
       </div>
 
+      <Divider light className={props.classes.divider} />
+
       <div className={props.classes.featureItem}>
         <div className={props.classes.featureItemLeft}>
           <img src={`/images/features/features-current-status.png`} className={props.classes.featureItemImage} />
@@ -94,6 +99,8 @@ const Home = (props) => (
         </div>
       </div>
 
+      <Divider light className={props.classes.divider} />
+
       <div className={props.classes.featureItem}>
         <div className={props.classes.featureItemLeft}>
           <Typography
@@ -117,6 +124,26 @@ const Home = (props) => (
           <img src={`/images/features/features-feedback.png`} className={props.classes.featureItemImage} />
         </div>
       </div>
+
+      <Divider light className={props.classes.divider} />
+    </div>
+
+    {/* Bottom CTA */}
+    <div className={props.classes.bottomCta}>
+      <Button
+        variant="raised"
+        className={props.classes.bottomCtaButton}
+      >
+        Start Now
+      </Button>
+
+      <Typography
+        variant="caption"
+        gutterBottom
+        className={props.classes.bottomCtaButtonCaption}
+      >
+        login not required
+      </Typography>
     </div>
   </div>
 )

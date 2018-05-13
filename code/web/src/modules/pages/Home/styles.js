@@ -1,5 +1,6 @@
 // UI Imports
 import yellow from 'material-ui/colors/yellow'
+import grey from 'material-ui/colors/grey'
 
 // Component Styles
 const styles = theme => ({
@@ -32,6 +33,11 @@ const styles = theme => ({
     color: 'white'
   },
 
+  divider: {
+    marginTop: '2rem',
+    marginBottom: '2rem'
+  },
+
   button: {
     margin: theme.spacing.unit,
     color: 'black',
@@ -43,15 +49,13 @@ const styles = theme => ({
   },
 
   features: {
-    marginTop: '4rem',
-    marginBottom: '4rem'
+    marginTop: '4rem'
   },
   featureItem: {
     display: 'flex',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: '2rem'
+    alignItems: 'center'
   },
   featureItemLeft: {
     flex: 1,
@@ -70,6 +74,23 @@ const styles = theme => ({
   },
   featureItemImage: {
     boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)'
+  },
+
+  bottomCta: {
+    padding: '3rem 5rem 5rem 5rem',
+    textAlign: 'center'
+  },
+  bottomCtaButton: {
+    margin: theme.spacing.unit,
+    color: theme.palette.getContrastText(theme.palette.primary[500]),
+    backgroundColor: theme.palette.primary[500],
+    '&:hover': {
+      backgroundColor: theme.palette.primary[700],
+    }
+  },
+  bottomCtaButtonCaption: {
+    color: grey[400],
+    opacity: '0.6'
   }
 })
 

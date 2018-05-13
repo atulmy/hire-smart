@@ -11,7 +11,7 @@
     - Total experience
     - Resume file attachment
     - Contact info
-    - CTC current and expected (visibility on basis of role)
+    - Current and expected compensation (visibility on basis of role)
   - Kanban board
     - Manage status
     - Drag and drop
