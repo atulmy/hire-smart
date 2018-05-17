@@ -23,7 +23,7 @@ const Dashboard = (props) => {
 
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="display1">
+          <Typography variant={'display1'}>
             Dashboard
           </Typography>
         </Grid>

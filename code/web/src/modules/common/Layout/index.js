@@ -15,6 +15,15 @@ import Footer from '../Footer'
 
 // Component
 class Layout extends PureComponent {
+  // Remove the server-side injected CSS.
+  componentDidMount() {
+    const serverSideStyles = document.getElementById('server-side-css')
+
+    if (serverSideStyles && serverSideStyles.parentNode) {
+      serverSideStyles.parentNode.removeChild(serverSideStyles)
+    }
+  }
+
   render() {
     const { children, classes } = this.props
 

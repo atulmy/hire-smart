@@ -7,19 +7,19 @@ import params from '../../setup/config/params'
 import User from './model'
 
 // Seeds
-export default function () {
-  console.info('User - Seeding..')
+export default async function () {
+  console.log('SEED - User..')
 
-  const passwordHashed = bcrypt.hashSync('123', serverConfig.saltRounds)
+  const passwordHashed = await bcrypt.hash('123', serverConfig.saltRounds)
 
-  User.create({
+  await User.create({
     name: 'Admin',
     email: 'admin@hiresmart.in',
     password: passwordHashed,
     role: params.user.roles.admin.key
   })
 
-  User.create({
+  await User.create({
     name: 'User',
     email: 'user@hiresmart.in',
     password: passwordHashed,

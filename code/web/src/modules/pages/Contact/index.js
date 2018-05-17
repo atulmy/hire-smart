@@ -23,7 +23,7 @@ const Contact = (props) => {
 
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="display1">
+          <Typography variant={'display1'}>
             Contact
           </Typography>
         </Grid>

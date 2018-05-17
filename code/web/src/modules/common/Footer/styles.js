@@ -6,7 +6,7 @@ const styles = {
   root: {
     backgroundColor: grey[50],
     padding: '1.5rem 2rem',
-    color: grey[600]
+    color: grey[500],
   },
   left: {
     textAlign: 'left'
@@ -15,8 +15,12 @@ const styles = {
     textAlign: 'right'
   },
   link: {
+    color: 'inherit',
     display: 'inline',
     marginLeft: '1rem'
+  },
+  copyright: {
+    color: grey[500]
   }
 }
 

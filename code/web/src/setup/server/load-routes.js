@@ -3,7 +3,7 @@ import { Server } from 'http'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter, matchPath } from 'react-router-dom'
-import { Helmet } from "react-helmet"
+import { Helmet } from 'react-helmet'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
@@ -84,7 +84,7 @@ export default function (app) {
           const generateClassName = createGenerateClassName()
 
           const appHtml = renderToString(
-            <Provider store={store} key="provider">
+            <Provider store={store} key={'provider'}>
               <StaticRouter context={context} location={request.url}>
                 <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
                   <App/>

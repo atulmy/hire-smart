@@ -24,7 +24,7 @@ if (token && token !== 'undefined' && token !== '') {
 
 // Client App
 const Client = () => (
-  <Provider store={store} key="provider">
+  <Provider store={store} key={'provider'}>
     <Router>
       <ScrollToTop>
         <App />

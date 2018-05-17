@@ -9,5 +9,4 @@ export default function () {
   console.info('SETUP - Connecting database..')
 
   mongoose.connect(MONGO_URL)
-
 }

@@ -23,7 +23,7 @@ const Account = (props) => {
 
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="display1">
+          <Typography variant={'display1'}>
             Account
           </Typography>
         </Grid>

@@ -31,7 +31,7 @@ class Header extends PureComponent {
     const { classes } = this.props
 
     return (
-      <AppBar elevation={this.isNotHomePage() ? 1 : 0}>
+      <AppBar elevation={0}>
         <Toolbar>
           {/* Menu */}
           <Tooltip title={'Menu'} placement={'bottom'}>

@@ -22,7 +22,7 @@ const Home = (props) => {
       {/* Hero */}
       <div className={classes.hero}>
         <Typography
-          variant="display4"
+          variant={'display4'}
           title={'Hire Smart'}
           className={classes.title}
         >
@@ -30,7 +30,7 @@ const Home = (props) => {
         </Typography>
 
         <Typography
-          variant="headline"
+          variant={'headline'}
           gutterBottom
           className={classes.subTitle}
         >
@@ -40,7 +40,7 @@ const Home = (props) => {
 
         <Link to={routes.dashboard.path}>
           <Button
-            variant="raised"
+            variant={'raised'}
             className={classes.button}
           >
             Start Now
@@ -48,7 +48,7 @@ const Home = (props) => {
         </Link>
 
         <Typography
-          variant="caption"
+          variant={'caption'}
           gutterBottom
           className={classes.buttonCaption}
         >
@@ -61,8 +61,7 @@ const Home = (props) => {
         <div className={classes.featureItem}>
           <div className={classes.featureItemLeft}>
             <Typography
-              variant="display1"
-              title={'Hire Smart'}
+              variant={'display1'}
               gutterBottom
               className={classes.featureItemTitle}
             >
@@ -70,7 +69,7 @@ const Home = (props) => {
             </Typography>
 
             <Typography
-              variant="subheading"
+              variant={'subheading'}
               className={classes.featureItemSubTitle}
             >
               A candidate is a potential future employee. The journey matters as soon as you consider the profile and we enable you to have a holistic view at every step.
@@ -91,8 +90,7 @@ const Home = (props) => {
 
           <div className={classes.featureItemRight}>
             <Typography
-              variant="display1"
-              title={'Hire Smart'}
+              variant={'display1'}
               gutterBottom
               className={classes.featureItemTitle}
             >
@@ -100,7 +98,7 @@ const Home = (props) => {
             </Typography>
 
             <Typography
-              variant="subheading"
+              variant={'subheading'}
               className={classes.featureItemSubTitle}
             >
               We enable you to easily track the current status of the candidate so you have better control and make proper decisions.
@@ -113,8 +111,7 @@ const Home = (props) => {
         <div className={classes.featureItem}>
           <div className={classes.featureItemLeft}>
             <Typography
-              variant="display1"
-              title={'Hire Smart'}
+              variant={'display1'}
               gutterBottom
               className={classes.featureItemTitle}
             >
@@ -122,7 +119,7 @@ const Home = (props) => {
             </Typography>
 
             <Typography
-              variant="subheading"
+              variant={'subheading'}
               className={classes.featureItemSubTitle}
             >
               Interviewer can provide a subjective and objective feedback for the candidate with a great ease in turn helping you to make the right decision for hiring.
@@ -141,7 +138,7 @@ const Home = (props) => {
       <div className={classes.bottomCta}>
         <Link to={routes.dashboard.path}>
           <Button
-            variant="raised"
+            variant={'raised'}
             className={classes.bottomCtaButton}
           >
             Start Now
@@ -149,7 +146,7 @@ const Home = (props) => {
         </Link>
 
         <Typography
-          variant="caption"
+          variant={'caption'}
           gutterBottom
           className={classes.bottomCtaButtonCaption}
         >
