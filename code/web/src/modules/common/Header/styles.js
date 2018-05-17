@@ -1,7 +1,11 @@
+// UI Imports
+import yellow from 'material-ui/colors/yellow'
+
 // Component Styles
 const styles = {
-  flex: {
+  title: {
     flex: 1,
+    textTransform: 'uppercase'
   },
   menu: {
     marginLeft: '-0.6rem',
@@ -9,6 +13,9 @@ const styles = {
   },
   account: {
     marginRight: '-0.6rem'
+  },
+  titleHighlight: {
+    color: yellow[600]
   },
 }
 

@@ -1,16 +1,13 @@
 // Imports
 import mongoose from 'mongoose'
 
+// App Imports
+import { MONGO_URL } from '../config/env'
+
 // Connect database
 export default function () {
   console.info('SETUP - Connecting database..')
 
-  mongoose.connect('mongodb://localhost/hiresmart')
+  mongoose.connect(MONGO_URL)
 
-  const db = mongoose.connection
-
-  db.on('error', console.error.bind(console, 'connection error:'))
-  db.once('open', function() {
-    console.info('INFO - Database connected..')
-  })
 }

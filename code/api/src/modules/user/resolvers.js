@@ -3,18 +3,18 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 // App Imports
-import User from './model'
-import config from '../../setup/config/server'
+import serverConfig from '../../setup/config/server'
 import params from '../../setup/config/params'
+import User from './model'
 
-// Create
+// Create (Register)
 export async function create(parentValue, { name, email, password }) {
   // Users exists with same email check
-  const user = await User.findOne({ where: { email } })
+  const user = await User.findOne({ email })
 
   if (!user) {
     // User does not exists
-    const passwordHashed = await bcrypt.hash(password, config.saltRounds)
+    const passwordHashed = await bcrypt.hash(password, serverConfig.saltRounds)
 
     return await User.create({
       name,
@@ -27,20 +27,15 @@ export async function create(parentValue, { name, email, password }) {
   }
 }
 
+// Login
 export async function login(parentValue, { email, password }) {
-  const user = await User.findOne({ where: { email } })
+  const user = await User.findOne({ email })
 
   if (!user) {
     // User does not exists
     throw new Error(`We do not have any user registered with ${ email } email address. Please signup.`)
   } else {
     const userDetails = user.get()
-    const userDetailsToken = {
-      id: userDetails.id,
-      name: userDetails.name,
-      email: userDetails.email,
-      role: userDetails.role
-    }
 
     // User exists
     const passwordMatch = await bcrypt.compare(password, userDetails.password)
@@ -49,9 +44,16 @@ export async function login(parentValue, { email, password }) {
       // Incorrect password
       throw new Error(`Sorry, the password you entered is incorrect. Please try again.`)
     } else {
+      const userDetailsToken = {
+        id: userDetails.id,
+        name: userDetails.name,
+        email: userDetails.email,
+        role: userDetails.role
+      }
+
       return {
         user: userDetails,
-        token: jwt.sign(userDetailsToken, config.secret)
+        token: jwt.sign(userDetailsToken, serverConfig.secret)
       }
     }
   }
@@ -59,17 +61,17 @@ export async function login(parentValue, { email, password }) {
 
 // Get by ID
 export async function getById(parentValue, { id }) {
-  return await User.findOne({ where: { id } })
+  return await User.findOne({ _id: id })
 }
 
 // Get all
 export async function getAll() {
-  return await User.findAll()
+  return await User.find()
 }
 
 // Delete
 export async function remove(parentValue, { id }) {
-  return await User.destroy({ where: { id } })
+  return await User.remove({ _id: id })
 }
 
 // User genders

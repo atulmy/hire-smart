@@ -6,7 +6,7 @@ dotenv.config()
 
 // URL
 export const APP_URL = process.env.APP_URL
-export const APP_URL_API = process.env.APP_URL_API
+export const API_URL = process.env.API_URL
 
 // Environment
 export const NODE_ENV = process.env.NODE_ENV

@@ -1,7 +1,7 @@
 {
-  "delay": "2500",
+  "delay": 2500,
   "events": {
-    "restart": "npm run build:client"
+    "restart": "npm run notify:pre && npm run build:client && npm run notify:post"
   },
   "ignore": [
     "build/*",

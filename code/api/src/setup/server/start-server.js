@@ -12,4 +12,10 @@ export default function (server) {
       console.info(`INFO - Server started on http://localhost:${ PORT } [${ NODE_ENV }]`)
     }
   })
+
+  process.on('SIGTERM', function () {
+    server.close(function () {
+      console.log('Finished all requests. Server stopped.')
+    })
+  })
 }

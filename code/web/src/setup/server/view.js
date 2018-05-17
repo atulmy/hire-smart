@@ -33,6 +33,10 @@ const view = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initial
         margin: 0;
         background-color: #fff;
       }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
     </style>
     
     <!-- CSS - Generated -->

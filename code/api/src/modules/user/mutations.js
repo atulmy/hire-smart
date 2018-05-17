@@ -1,5 +1,5 @@
 // Imports
-import { GraphQLString, GraphQLInt } from 'graphql'
+import { GraphQLString } from 'graphql'
 
 // App Imports
 import { UserType } from './types'
@@ -33,7 +33,7 @@ export const userRemove = {
   args: {
     id: {
       name: 'id',
-      type: GraphQLInt
+      type: GraphQLString
     }
   },
   resolve: remove

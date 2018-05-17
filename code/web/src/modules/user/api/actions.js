@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 // App Imports
-import { routeApi } from '../../../setup/routes'
+import { API_URL } from '../../../setup/config/env'
 import { queryBuilder } from '../../../setup/helpers'
 import cookie from 'js-cookie'
 
@@ -33,7 +33,7 @@ export function login(userCredentials, isLoading = true) {
       isLoading
     })
 
-    return axios.post(routeApi, queryBuilder({
+    return axios.post(API_URL, queryBuilder({
       type: 'query',
       operation: 'userLogin',
       data: userCredentials,
@@ -80,7 +80,7 @@ export function loginSetUserLocalStorageAndCookie(token, user) {
 // Register a user
 export function register(userDetails) {
   return dispatch => {
-    return axios.post(routeApi, queryBuilder({
+    return axios.post(API_URL, queryBuilder({
       type: 'mutation',
       operation: 'userSignup',
       data: userDetails,
@@ -113,7 +113,7 @@ export function logoutUnsetUserLocalStorageAndCookie() {
 // Get user gender
 export function getGenders() {
   return dispatch => {
-    return axios.post(routeApi, queryBuilder({
+    return axios.post(API_URL, queryBuilder({
       type: 'query',
       operation: 'userGenders',
       fields: ['id', 'name']

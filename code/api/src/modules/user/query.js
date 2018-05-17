@@ -1,5 +1,5 @@
 // Imports
-import { GraphQLInt, GraphQLString, GraphQLList } from 'graphql'
+import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
 import { UserType, UserLoginType, UserGenderType } from './types'
@@ -15,7 +15,7 @@ export const users = {
 export const user = {
   type: UserType,
   args: {
-    id: { type: GraphQLInt }
+    id: { type: GraphQLString }
   },
   resolve: getById
 }

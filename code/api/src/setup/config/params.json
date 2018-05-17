@@ -1,1 +1,14 @@
-{}
+{
+  "user": {
+    "roles": {
+      "admin": {
+        "key": "admin",
+        "title": "Admin"
+      },
+      "user": {
+        "key": "user",
+        "title": "User"
+      }
+    }
+  }
+}

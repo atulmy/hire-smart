@@ -1,6 +1,7 @@
 // Imports
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import { Link, withRouter } from 'react-router-dom'
 
 // UI Imports
 import AppBar from 'material-ui/AppBar'
@@ -15,32 +16,54 @@ import { withStyles } from 'material-ui/styles'
 import styles from './styles'
 
 // App Imports
+import { routes } from '../../../setup/routes'
 
 // Component
 class Header extends PureComponent {
+  isNotHomePage = () => {
+    const { location } = this.props
+
+    return location.pathname !== routes.home.path
+  }
+
   render() {
     const { classes } = this.props
 
     return (
-      <AppBar elevation={0}>
+      <AppBar elevation={this.isNotHomePage() ? 1 : 0}>
         <Toolbar>
+          {/* Menu */}
           <IconButton className={classes.menu} color={'inherit'} aria-label={'Menu'}>
             <MenuIcon />
           </IconButton>
 
-          <Typography variant={'title'} color={'inherit'} className={classes.flex} />
+          {/* Logo */}
+          <Typography variant={'title'} color={'inherit'} className={classes.title}>
+            <Link to={routes.home.path}>
+              { this.isNotHomePage() && <span>Hire<span className={classes.titleHighlight}>Smart</span></span> }
+            </Link>
+          </Typography>
 
-          <IconButton color={'inherit'}>
-            <IconCall />
-          </IconButton>
+          {/* Call */}
+          <Link to={routes.contact.path}>
+            <IconButton color={'inherit'}>
+              <IconCall />
+            </IconButton>
+          </Link>
 
-          <IconButton color={'inherit'}>
-            <IconInfo />
-          </IconButton>
+          {/* Features */}
+          <Link to={routes.features.path}>
+            <IconButton color={'inherit'}>
+              <IconInfo />
+            </IconButton>
+          </Link>
 
-          <IconButton color={'inherit'} className={classes.account}>
-            <IconAccountCircle />
-          </IconButton>
+          {/* Account */}
+          <Link to={routes.home.path}>
+            <IconButton color={'inherit'} className={classes.account}>
+              <IconAccountCircle />
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
     )
@@ -52,4 +75,4 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(Header)
+export default withRouter(withStyles(styles)(Header))

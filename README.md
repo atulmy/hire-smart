@@ -40,7 +40,7 @@
     - Node
     - Express
     - GraphQL
-    - MySQL (with Sequelize)
+    - MongoDB
   - Web App
     - React
     - Redux

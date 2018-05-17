@@ -2,3 +2,4 @@ node_modules/
 build/
 public/uploads/*
 !public/uploads/.gitkeep
+.env

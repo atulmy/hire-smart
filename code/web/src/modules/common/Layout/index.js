@@ -2,12 +2,14 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { Helmet } from 'react-helmet'
 
 // UI Imports
 import { withStyles } from 'material-ui/styles'
 import styles from './styles'
 
 // App Imports
+import params from '../../../setup/config/params'
 import Header from '../Header'
 import Footer from '../Footer'
 
@@ -18,10 +20,21 @@ class Layout extends PureComponent {
 
     return (
       <div className={classes.root}>
+        {/* Meta tags */}
+        <Helmet>
+          <title>{ params.meta.title }</title>
+          <meta name={'description'} content={params.meta.description} />
+        </Helmet>
+
+        {/* Header */}
         <Header />
 
-        { children }
+        {/* Main content */}
+        <main className={classes.main}>
+          { children }
+        </main>
 
+        {/* Footer */}
         <Footer />
       </div>
     )

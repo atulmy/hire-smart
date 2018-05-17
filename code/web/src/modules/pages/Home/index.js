@@ -9,143 +9,149 @@ import { withStyles } from 'material-ui/styles'
 import styles from './styles'
 
 // App Imports
+import { APP_URL } from '../../../setup/config/env'
 
 // Component
-const Home = (props) => (
-  <div>
-    {/* Hero */}
-    <div className={props.classes.hero}>
-      <Typography
-        variant="display4"
-        title={'Hire Smart'}
-        className={props.classes.title}
-      >
-        Hire<spam className={props.classes.titleHighlight}>Smart</spam>
-      </Typography>
+const Home = (props) => {
+  const { classes } = props
+  
+  return(
+    <div>
+      {/* Hero */}
+      <div className={classes.hero}>
+        <Typography
+          variant="display4"
+          title={'Hire Smart'}
+          className={classes.title}
+        >
+          Hire<span className={classes.titleHighlight}>Smart</span>
+        </Typography>
 
-      <Typography
-        variant="headline"
-        gutterBottom
-        className={props.classes.subTitle}
-      >
-        Schedule and manage interviews efficiently.
-      </Typography>
+        <Typography
+          variant="headline"
+          gutterBottom
+          className={classes.subTitle}
+        >
+          Streamline your hiring process, scheduling interviews and tracking candidates.
+          {/* Schedule and manage interviews efficiently. */}
+        </Typography>
 
-      <Button
-        variant="raised"
-        className={props.classes.button}
-      >
-        Start Now
-      </Button>
+        <Button
+          variant="raised"
+          className={classes.button}
+        >
+          Start Now
+        </Button>
 
-      <Typography
-        variant="caption"
-        gutterBottom
-        className={props.classes.buttonCaption}
-      >
-        login not required
-      </Typography>
-    </div>
-
-    {/* Features */}
-    <div className={props.classes.features}>
-      <div className={props.classes.featureItem}>
-        <div className={props.classes.featureItemLeft}>
-          <Typography
-            variant="display1"
-            title={'Hire Smart'}
-            gutterBottom
-            className={props.classes.featureItemTitle}
-          >
-            Journey of candidate
-          </Typography>
-
-          <Typography
-            variant="subheading"
-            className={props.classes.featureItemSubTitle}
-          >
-            A candidate is a potential future employee. The journey matters as soon as you consider the profile and we enable you to have a holistic view at every step.
-          </Typography>
-        </div>
-
-        <div className={props.classes.featureItemRight}>
-          <img src={`/images/features/features-journey.png`} className={props.classes.featureItemImage} />
-        </div>
+        <Typography
+          variant="caption"
+          gutterBottom
+          className={classes.buttonCaption}
+        >
+          login not required
+        </Typography>
       </div>
 
-      <Divider light className={props.classes.divider} />
+      {/* Features */}
+      <div className={classes.features}>
+        <div className={classes.featureItem}>
+          <div className={classes.featureItemLeft}>
+            <Typography
+              variant="display1"
+              title={'Hire Smart'}
+              gutterBottom
+              className={classes.featureItemTitle}
+            >
+              Journey of candidate
+            </Typography>
 
-      <div className={props.classes.featureItem}>
-        <div className={props.classes.featureItemLeft}>
-          <img src={`/images/features/features-current-status.png`} className={props.classes.featureItemImage} />
+            <Typography
+              variant="subheading"
+              className={classes.featureItemSubTitle}
+            >
+              A candidate is a potential future employee. The journey matters as soon as you consider the profile and we enable you to have a holistic view at every step.
+            </Typography>
+          </div>
+
+          <div className={classes.featureItemRight}>
+            <img src={`${ APP_URL }/images/features/features-journey.png`} className={classes.featureItemImage} />
+          </div>
         </div>
 
-        <div className={props.classes.featureItemRight}>
-          <Typography
-            variant="display1"
-            title={'Hire Smart'}
-            gutterBottom
-            className={props.classes.featureItemTitle}
-          >
-            Current status of the candidate
-          </Typography>
+        <Divider light className={classes.divider} />
 
-          <Typography
-            variant="subheading"
-            className={props.classes.featureItemSubTitle}
-          >
-            We enable you to easily track the current status of the candidate so you have better control and make proper decisions.
-          </Typography>
+        <div className={classes.featureItem}>
+          <div className={classes.featureItemLeft}>
+            <img src={`${ APP_URL }/images/features/features-current-status.png`} className={classes.featureItemImage} />
+          </div>
+
+          <div className={classes.featureItemRight}>
+            <Typography
+              variant="display1"
+              title={'Hire Smart'}
+              gutterBottom
+              className={classes.featureItemTitle}
+            >
+              Current status of the candidate
+            </Typography>
+
+            <Typography
+              variant="subheading"
+              className={classes.featureItemSubTitle}
+            >
+              We enable you to easily track the current status of the candidate so you have better control and make proper decisions.
+            </Typography>
+          </div>
         </div>
+
+        <Divider light className={classes.divider} />
+
+        <div className={classes.featureItem}>
+          <div className={classes.featureItemLeft}>
+            <Typography
+              variant="display1"
+              title={'Hire Smart'}
+              gutterBottom
+              className={classes.featureItemTitle}
+            >
+              Get feedback from panel
+            </Typography>
+
+            <Typography
+              variant="subheading"
+              className={classes.featureItemSubTitle}
+            >
+              Interviewer can provide a subjective and objective feedback for the candidate with a great ease in turn helping you to make the right decision for hiring.
+            </Typography>
+          </div>
+
+          <div className={classes.featureItemRight}>
+            <img src={`${ APP_URL }/images/features/features-feedback.png`} className={classes.featureItemImage} />
+          </div>
+        </div>
+
+        <Divider light className={classes.divider} />
       </div>
 
-      <Divider light className={props.classes.divider} />
+      {/* Bottom CTA */}
+      <div className={classes.bottomCta}>
+        <Button
+          variant="raised"
+          className={classes.bottomCtaButton}
+        >
+          Start Now
+        </Button>
 
-      <div className={props.classes.featureItem}>
-        <div className={props.classes.featureItemLeft}>
-          <Typography
-            variant="display1"
-            title={'Hire Smart'}
-            gutterBottom
-            className={props.classes.featureItemTitle}
-          >
-            Get feedback from panel
-          </Typography>
-
-          <Typography
-            variant="subheading"
-            className={props.classes.featureItemSubTitle}
-          >
-            Interviewer can provide a subjective and objective feedback for the candidate with a great ease in turn helping you to make the right decision for hiring.
-          </Typography>
-        </div>
-
-        <div className={props.classes.featureItemRight}>
-          <img src={`/images/features/features-feedback.png`} className={props.classes.featureItemImage} />
-        </div>
+        <Typography
+          variant="caption"
+          gutterBottom
+          className={classes.bottomCtaButtonCaption}
+        >
+          login not required
+        </Typography>
       </div>
-
-      <Divider light className={props.classes.divider} />
     </div>
-
-    {/* Bottom CTA */}
-    <div className={props.classes.bottomCta}>
-      <Button
-        variant="raised"
-        className={props.classes.bottomCtaButton}
-      >
-        Start Now
-      </Button>
-
-      <Typography
-        variant="caption"
-        gutterBottom
-        className={props.classes.bottomCtaButtonCaption}
-      >
-        login not required
-      </Typography>
-    </div>
-  </div>
-)
+  )
+}
 
 export default withStyles(styles)(Home)

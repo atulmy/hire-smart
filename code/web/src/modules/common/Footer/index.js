@@ -9,6 +9,7 @@ import { withStyles } from 'material-ui/styles'
 import styles from './styles'
 
 // App Imports
+import params from '../../../setup/config/params'
 
 // Component
 class Footer extends PureComponent {
@@ -20,7 +21,7 @@ class Footer extends PureComponent {
         <Grid container>
           <Grid item sm={6} className={classes.left}>
             <Typography variant="button">
-              &copy; 2018 HireSmart
+              &copy; { params.meta.copyright_year } { params.meta.site_name }
             </Typography>
           </Grid>
 
