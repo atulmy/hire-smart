@@ -1,5 +1,6 @@
 // Imports
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 // UI Imports
 import Typography from 'material-ui/Typography';
@@ -10,6 +11,7 @@ import styles from './styles'
 
 // App Imports
 import { APP_URL } from '../../../setup/config/env'
+import { routes } from '../../../setup/routes'
 
 // Component
 const Home = (props) => {
@@ -36,12 +38,14 @@ const Home = (props) => {
           {/* Schedule and manage interviews efficiently. */}
         </Typography>
 
-        <Button
-          variant="raised"
-          className={classes.button}
-        >
-          Start Now
-        </Button>
+        <Link to={routes.dashboard.path}>
+          <Button
+            variant="raised"
+            className={classes.button}
+          >
+            Start Now
+          </Button>
+        </Link>
 
         <Typography
           variant="caption"
@@ -135,12 +139,14 @@ const Home = (props) => {
 
       {/* Bottom CTA */}
       <div className={classes.bottomCta}>
-        <Button
-          variant="raised"
-          className={classes.bottomCtaButton}
-        >
-          Start Now
-        </Button>
+        <Link to={routes.dashboard.path}>
+          <Button
+            variant="raised"
+            className={classes.bottomCtaButton}
+          >
+            Start Now
+          </Button>
+        </Link>
 
         <Typography
           variant="caption"

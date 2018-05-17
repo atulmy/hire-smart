@@ -7,10 +7,11 @@ import { Link, withRouter } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 import Typography from 'material-ui/Typography'
+import Tooltip from 'material-ui/Tooltip'
 import IconButton from 'material-ui/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import IconAccountCircle from '@material-ui/icons/AccountCircle'
-import IconInfo from '@material-ui/icons/Info'
+import IconPlaylistAddCheck from '@material-ui/icons/PlaylistAddCheck'
 import IconCall from '@material-ui/icons/Call'
 import { withStyles } from 'material-ui/styles'
 import styles from './styles'
@@ -33,9 +34,11 @@ class Header extends PureComponent {
       <AppBar elevation={this.isNotHomePage() ? 1 : 0}>
         <Toolbar>
           {/* Menu */}
-          <IconButton className={classes.menu} color={'inherit'} aria-label={'Menu'}>
-            <MenuIcon />
-          </IconButton>
+          <Tooltip title={'Menu'} placement={'bottom'}>
+            <IconButton className={classes.menu} color={'inherit'} aria-label={'Menu'}>
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
 
           {/* Logo */}
           <Typography variant={'title'} color={'inherit'} className={classes.title}>
@@ -46,23 +49,29 @@ class Header extends PureComponent {
 
           {/* Call */}
           <Link to={routes.contact.path}>
-            <IconButton color={'inherit'}>
-              <IconCall />
-            </IconButton>
+            <Tooltip title={'Get in touch'} placement={'bottom'}>
+              <IconButton color={'inherit'}>
+                <IconCall />
+              </IconButton>
+            </Tooltip>
           </Link>
 
           {/* Features */}
           <Link to={routes.features.path}>
-            <IconButton color={'inherit'}>
-              <IconInfo />
-            </IconButton>
+            <Tooltip title={'Check out features'} placement={'bottom'}>
+              <IconButton color={'inherit'}>
+                <IconPlaylistAddCheck />
+              </IconButton>
+            </Tooltip>
           </Link>
 
           {/* Account */}
-          <Link to={routes.home.path}>
-            <IconButton color={'inherit'} className={classes.account}>
-              <IconAccountCircle />
-            </IconButton>
+          <Link to={routes.account.path}>
+            <Tooltip title={'Account'} placement={'bottom'}>
+              <IconButton color={'inherit'} className={classes.account}>
+                <IconAccountCircle />
+              </IconButton>
+            </Tooltip>
           </Link>
         </Toolbar>
       </AppBar>

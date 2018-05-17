@@ -11,20 +11,20 @@ import styles from './styles'
 // App Imports
 
 // Component
-const Features = (props) => {
+const Dashboard = (props) => {
   const { classes } = props
   
   return(
     <div>
       {/* Meta tags */}
       <Helmet>
-        <title>Features - Hire Smart</title>
+        <title>Dashboard - Hire Smart</title>
       </Helmet>
 
       <Grid container>
         <Grid item xs={12}>
           <Typography variant="display1">
-            Features
+            Dashboard
           </Typography>
         </Grid>
       </Grid>
@@ -32,4 +32,4 @@ const Features = (props) => {
   )
 }
 
-export default withStyles(styles)(Features)
+export default withStyles(styles)(Dashboard)
