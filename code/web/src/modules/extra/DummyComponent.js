@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
 // UI Imports
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports

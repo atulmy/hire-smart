@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // UI Imports
-import { withStyles } from 'material-ui/styles/index'
+import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
 // App Imports

@@ -1,6 +1,6 @@
 // UI Imports
-import yellow from 'material-ui/colors/yellow'
-import grey from 'material-ui/colors/grey'
+import yellow from '@material-ui/core/colors/yellow'
+import grey from '@material-ui/core/colors/grey'
 
 // Component Styles
 const styles = theme => ({

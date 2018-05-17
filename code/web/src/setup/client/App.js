@@ -3,7 +3,7 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 // UI Imports
-import { MuiThemeProvider } from 'material-ui/styles'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 
 // App Imports
 import { routes } from '../../setup/routes'

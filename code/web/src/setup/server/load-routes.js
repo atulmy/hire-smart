@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 
 // UI Imports
-import { createGenerateClassName } from 'material-ui/styles'
+import { createGenerateClassName } from '@material-ui/core/styles'
 import { SheetsRegistry } from 'react-jss/lib/jss'
 import JssProvider from 'react-jss/lib/JssProvider'
 

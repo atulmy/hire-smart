@@ -3,10 +3,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 // UI Imports
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button'
-import Divider from 'material-ui/Divider'
-import { withStyles } from 'material-ui/styles'
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button'
+import Divider from '@material-ui/core/Divider'
+import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports

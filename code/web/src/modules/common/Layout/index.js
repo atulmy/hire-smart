@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
 // UI Imports
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
