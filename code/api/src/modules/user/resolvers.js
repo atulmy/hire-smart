@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken'
 
 // App Imports
 import serverConfig from '../../setup/config/server'
-import params from '../../setup/config/params'
 import User from './model'
 
 // Create (Register)
@@ -72,9 +71,4 @@ export async function getAll() {
 // Delete
 export async function remove(parentValue, { id }) {
   return await User.remove({ _id: id })
-}
-
-// User genders
-export async function getGenders() {
-  return Object.values(params.user.gender)
 }

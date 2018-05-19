@@ -12,7 +12,7 @@ async function seed() {
 
   console.log('SEED - Started')
 
-  // Clear database
+  // Clear database, only in development, do not do in production. I repeat, do not do it in production or you will be featured on www.commitstrip.com!
   if(NODE_ENV === 'development') {
     console.log('SEED - Dropping database..')
 

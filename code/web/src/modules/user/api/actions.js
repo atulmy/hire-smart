@@ -89,6 +89,18 @@ export function register(userDetails) {
   }
 }
 
+// Create a demo user and login
+export function demoUser(userDetails) {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'userSignup',
+      data: userDetails,
+      fields: ['id', 'name', 'email']
+    }))
+  }
+}
+
 // Log out user and remove token from localStorage
 export function logout() {
   return dispatch => {
@@ -108,15 +120,4 @@ export function logoutUnsetUserLocalStorageAndCookie() {
 
   // Remove cookie
   cookie.remove('auth')
-}
-
-// Get user gender
-export function getGenders() {
-  return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
-      operation: 'userGenders',
-      fields: ['id', 'name']
-    }))
-  }
 }

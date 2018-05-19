@@ -13,14 +13,14 @@
     "build:server:prod": "babel src -s -D -d build",
     "start:server:prod": " node build/index.js",
     "notify:pre": "osascript -e 'display notification \"🕙 Building..\" with title \"Development\"'",
-    "notify:post": "osascript -e 'display notification \"✅ Build complete\" with title \"Development\"'"
+    "notify:post": "osascript -e 'display notification \"✅ Build complete\" with title \"Development\" sound name \"Purr\"'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@material-ui/core": "1.0.0-rc.1",
-    "@material-ui/icons": "1.0.0-rc.0",
+    "@material-ui/core": "1.0.0",
+    "@material-ui/icons": "1.0.0",
     "axios": "0.18.0",
     "body-parser": "1.18.2",
     "cookie-parser": "1.4.3",
