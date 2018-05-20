@@ -14,15 +14,57 @@ export const LOGOUT = 'AUTH/LOGOUT'
 
 // Actions
 
-// Set a user after login or using localStorage token
-export function setUser(token, user) {
-  if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-  } else {
-    delete axios.defaults.headers.common['Authorization']
-  }
+// Create a demo user and login
+export function startNow(isLoading = true) {
+  return dispatch => {
+    dispatch({
+      type: LOGIN_REQUEST,
+      isLoading
+    })
 
-  return { type: SET_USER, user }
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'userStartNow',
+      fields: ['user {name, email, role}', 'token']
+    }))
+      .then(response => {
+        let error = ''
+
+        if (response.data.errors && response.data.errors.length > 0) {
+          error = response.data.errors[0].message
+        } else if (response.data.data.userStartNow.token !== '') {
+          const token = response.data.data.userStartNow.token
+          const user = response.data.data.userStartNow.user
+
+          dispatch(setUser(token, user))
+
+          loginSetUserLocalStorageAndCookie(token, user)
+        }
+
+        dispatch({
+          type: LOGIN_RESPONSE,
+          error
+        })
+      })
+      .catch(error => {
+        dispatch({
+          type: LOGIN_RESPONSE,
+          error: 'Please try again'
+        })
+      })
+  }
+}
+
+// Register a user
+export function register(userDetails) {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'userSignup',
+      data: userDetails,
+      fields: ['_id', 'name', 'email']
+    }))
+  }
 }
 
 // Login a user using credentials
@@ -67,6 +109,17 @@ export function login(userCredentials, isLoading = true) {
   }
 }
 
+// Set a user after login or using localStorage token
+export function setUser(token, user) {
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  } else {
+    delete axios.defaults.headers.common['Authorization']
+  }
+
+  return { type: SET_USER, user }
+}
+
 // Set user token and info in localStorage and cookie
 export function loginSetUserLocalStorageAndCookie(token, user) {
   // Update token
@@ -75,30 +128,6 @@ export function loginSetUserLocalStorageAndCookie(token, user) {
 
   // Set cookie for SSR
   cookie.set('auth', { token, user }, { path: '/' })
-}
-
-// Register a user
-export function register(userDetails) {
-  return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
-      operation: 'userSignup',
-      data: userDetails,
-      fields: ['id', 'name', 'email']
-    }))
-  }
-}
-
-// Create a demo user and login
-export function demoUser(userDetails) {
-  return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
-      operation: 'userSignup',
-      data: userDetails,
-      fields: ['id', 'name', 'email']
-    }))
-  }
 }
 
 // Log out user and remove token from localStorage

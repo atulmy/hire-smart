@@ -31,8 +31,8 @@ class Layout extends PureComponent {
       <div className={classes.root}>
         {/* Meta tags */}
         <Helmet>
-          <title>{ params.meta.title }</title>
-          <meta name={'description'} content={params.meta.description} />
+          <title>{ params.site.title }</title>
+          <meta name={'description'} content={params.site.description} />
         </Helmet>
 
         {/* Header */}

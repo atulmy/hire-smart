@@ -23,7 +23,7 @@ const Schema = new mongoose.Schema({
     required: true,
     default: params.user.roles.user.key
   }
-})
+}, {timestamps: true})
 
 // Model
 export default mongoose.model('User', Schema)

@@ -11,7 +11,7 @@ import styles from './styles'
 
 // App Imports
 import params from '../../../setup/config/params'
-import { routes } from '../../../setup/routes'
+import routes from '../../../setup/routes'
 
 // Component
 class Footer extends PureComponent {
@@ -23,7 +23,7 @@ class Footer extends PureComponent {
         <Grid container>
           <Grid item sm={6} className={classes.left}>
             <Typography variant={'button'} className={classes.copyright}>
-              &copy; { params.meta.copyright_year } { params.meta.site_name }
+              &copy; { params.site.copyright_year } { params.site.name }
             </Typography>
           </Grid>
 

@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken'
 
 // App Imports
 import serverConfig from '../../setup/config/server'
+import params from '../../setup/config/params'
+import DemoUser from '../demo-user/model'
 import User from './model'
 
 // Create (Register)
@@ -43,7 +45,7 @@ export async function login(parentValue, { email, password }) {
       // Incorrect password
       throw new Error(`Sorry, the password you entered is incorrect. Please try again.`)
     } else {
-      const userDetailsToken = {
+      const token = {
         id: userDetails.id,
         name: userDetails.name,
         email: userDetails.email,
@@ -52,8 +54,45 @@ export async function login(parentValue, { email, password }) {
 
       return {
         user: userDetails,
-        token: jwt.sign(userDetailsToken, serverConfig.secret)
+        token: jwt.sign(token, serverConfig.secret)
       }
+    }
+  }
+}
+
+// Create a demo user and login
+export async function startNow(parentValue, {}, { auth }) {
+  // Check if user is already logged in
+  console.log(auth.user)
+  if(!auth.user) {
+    throw new Error(`You are already logged in. Please go to your dashboard to continue.`)
+  } else {
+    try {
+      // Create a new demo user
+      const demoUser = await DemoUser.create({})
+
+      // User does not exists
+      const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), serverConfig.saltRounds)
+
+      const userDetails = await User.create({
+        name: 'Demo User',
+        email: `demo.user+${ demoUser._id }@${ params.site.domain }`,
+        password: passwordHashed
+      })
+
+      const token = {
+        id: userDetails.id,
+        name: userDetails.name,
+        email: userDetails.email,
+        role: userDetails.role
+      }
+
+      return {
+        user: userDetails,
+        token: jwt.sign(token, serverConfig.secret)
+      }
+    } catch(error) {
+      throw new Error(`There was some error. Please try again.`)
     }
   }
 }

@@ -17,7 +17,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { routes } from '../../../setup/routes'
+import routes from '../../../setup/routes'
 
 // Component
 class Header extends PureComponent {

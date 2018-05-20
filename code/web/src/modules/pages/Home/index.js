@@ -4,21 +4,19 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // UI Imports
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
-
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-
+import Snackbar from '@material-ui/core/Snackbar'
+import IconButton from '@material-ui/core/IconButton'
+import CloseIcon from '@material-ui/icons/Close'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
 import { APP_URL } from '../../../setup/config/env'
-import { routes } from '../../../setup/routes'
-import { demoUser } from '../../user/api/actions'
+import routes from '../../../setup/routes'
+import { startNow } from '../../user/api/actions'
 
 // Component
 class Home extends PureComponent {
@@ -52,26 +50,7 @@ class Home extends PureComponent {
 
     this.messageShow('Please wait...')
 
-    return false
-
-    this.props.demoUser()
-      .then(response => {
-        if (response.data.errors && response.data.errors.length > 0) {
-          this.messageShow(response.data.errors[0].message)
-        } else {
-          this.messageShow('Signed up successfully.')
-
-          this.props.history.push(routes.dashboard.path)
-        }
-      })
-      .catch(error => {
-        this.messageShow('There was some error signing you up. Please try again.')
-      })
-      .then(() => {
-        this.setState({
-          isLoading: false
-        })
-      })
+    this.props.startNow()
   }
 
   render() {
@@ -249,4 +228,4 @@ function homesState(state) {
   }
 }
 
-export default connect(homesState, { demoUser })(withStyles(styles)(Home))
+export default connect(homesState, { startNow })(withStyles(styles)(Home))
