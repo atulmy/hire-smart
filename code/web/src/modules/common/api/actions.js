@@ -1,6 +1,6 @@
 // Actions Types
 import axios from 'axios/index'
-import { routeApi } from '../../../setup/routes'
+import API_URL from '../../../setup/config/env'
 
 export const MESSAGE_SHOW = 'COMMON_MESSAGE_SHOW'
 export const MESSAGE_HIDE = 'COMMON_MESSAGE_HIDE'
@@ -16,7 +16,7 @@ export function messageHide() {
 
 export function upload(data) {
   return dispatch => {
-    return axios.post(routeApi + '/upload', data, {
+    return axios.post(`${ API_URL }/upload`, data, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

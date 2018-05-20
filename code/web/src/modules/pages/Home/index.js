@@ -7,15 +7,13 @@ import { connect } from 'react-redux'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
-import Snackbar from '@material-ui/core/Snackbar'
-import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
 import { APP_URL } from '../../../setup/config/env'
 import routes from '../../../setup/routes'
+import { messageShow } from '../../common/api/actions'
 import { startNow } from '../../user/api/actions'
 
 // Component
@@ -25,36 +23,43 @@ class Home extends PureComponent {
 
     this.state = {
       isLoading: false,
-
-      messageText: '',
-      messageShow: false
     }
-  }
-
-  messageShow = (messageText) => {
-    this.setState({ messageText, messageShow: true })
-  }
-
-  messageHide = () => {
-    this.setState({ messageShow: false })
   }
 
   loadingToggle = (isLoading) => {
     this.setState({ isLoading })
   }
 
-  start = (event) => {
+  startNow = (event) => {
     event.preventDefault()
+
+    const { messageShow, startNow, user, history } = this.props
 
     this.loadingToggle(true)
 
-    this.messageShow('Please wait...')
+    messageShow('Please wait...')
 
-    this.props.startNow()
+    startNow()
+      .then(() => {
+        if (user.error && user.error.length > 0) {
+          messageShow(user.error)
+        } else {
+          messageShow('You are now logged in as a demo user.')
+
+          history.push(routes.dashboard.path)
+        }
+      })
+      .catch(() => {
+        messageShow('There was some error. Please try again.')
+      })
+      .then(() => {
+        this.loadingToggle(false)
+      })
   }
 
   render() {
     const { classes } = this.props
+    const { isLoading } = this.state
 
     return(
       <div>
@@ -80,9 +85,10 @@ class Home extends PureComponent {
           <Button
             variant={'raised'}
             className={classes.button}
-            onClick={this.start}
+            onClick={this.startNow}
+            disabled={isLoading}
           >
-            Start Now
+            { !isLoading ? `Start Now` : `Please Wait..` }
           </Button>
 
           <Typography
@@ -177,9 +183,10 @@ class Home extends PureComponent {
           <Button
             variant={'raised'}
             className={classes.bottomCtaButton}
-            onClick={this.start}
+            onClick={this.startNow}
+            disabled={isLoading}
           >
-            Start Now
+            { !isLoading ? `Start Now` : `Please Wait..` }
           </Button>
 
           <Typography
@@ -190,27 +197,6 @@ class Home extends PureComponent {
             login not required
           </Typography>
         </div>
-
-        {/* Message */}
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          open={this.state.messageShow}
-          autoHideDuration={3000}
-          onClose={this.messageHide}
-          message={this.state.messageText}
-          action={[
-            <IconButton
-              key={'close'}
-              color={'inherit'}
-              onClick={this.messageHide}
-            >
-              <CloseIcon />
-            </IconButton>
-          ]}
-        />
       </div>
     )
   }
@@ -218,7 +204,10 @@ class Home extends PureComponent {
 
 // Component Properties
 Home.propTypes = {
-  classes: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
+  startNow: PropTypes.func.isRequired,
+  messageShow: PropTypes.func.isRequired,
 }
 
 // Component State
@@ -228,4 +217,4 @@ function homesState(state) {
   }
 }
 
-export default connect(homesState, { startNow })(withStyles(styles)(Home))
+export default connect(homesState, { startNow, messageShow })(withStyles(styles)(Home))
