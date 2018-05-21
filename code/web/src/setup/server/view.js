@@ -38,11 +38,10 @@ const view = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initial
       text-decoration: none;
     }
   </style>
-</head>
-<body>
   <!-- CSS - Generated -->
-  <style type="text/css" id="server-side-css">${ appCss }</style>
-  
+  <style type="text/css">${ appCss }</style>
+</head>
+<body>  
   <!-- App -->
   <main id="app">${ appHtml }</main>
   

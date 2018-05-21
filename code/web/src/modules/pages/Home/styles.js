@@ -4,10 +4,6 @@ import grey from '@material-ui/core/colors/grey'
 
 // Component Styles
 const styles = theme => ({
-  root: {
-
-  },
-
   hero: {
     height: '40vh',
     minHeight: '30rem',

@@ -35,26 +35,32 @@ class Home extends PureComponent {
 
     const { messageShow, startNow, user, history } = this.props
 
-    this.loadingToggle(true)
+    if(user.isAuthenticated) {
+      // User is already logged in, redirect to dashboard
+      history.push(routes.dashboard.path)
+    } else {
+      // Create new demo user and redirect to dashboard
+      this.loadingToggle(true)
 
-    messageShow('Please wait...')
+      messageShow('Please wait...')
 
-    startNow()
-      .then(() => {
-        if (user.error && user.error.length > 0) {
-          messageShow(user.error)
-        } else {
-          messageShow('You are now logged in as a demo user.')
+      startNow()
+        .then(() => {
+          if (user.error && user.error.length > 0) {
+            messageShow(user.error)
+          } else {
+            messageShow('You are now logged in as a new demo user.')
 
-          history.push(routes.dashboard.path)
-        }
-      })
-      .catch(() => {
-        messageShow('There was some error. Please try again.')
-      })
-      .then(() => {
-        this.loadingToggle(false)
-      })
+            history.push(routes.dashboard.path)
+          }
+        })
+        .catch(() => {
+          messageShow('There was some error. Please try again.')
+        })
+        .then(() => {
+          this.loadingToggle(false)
+        })
+    }
   }
 
   render() {
@@ -79,9 +85,9 @@ class Home extends PureComponent {
             className={classes.subTitle}
           >
             Streamline your hiring process, scheduling interviews and tracking candidates.
-            {/* Schedule and manage interviews efficiently. */}
           </Typography>
 
+          {/* Hero CTA */}
           <Button
             variant={'raised'}
             className={classes.button}
