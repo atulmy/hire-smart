@@ -5,8 +5,9 @@ import grey from '@material-ui/core/colors/grey'
 const styles = {
   root: {
     backgroundColor: grey[50],
-    padding: '1.5rem 2rem',
+    padding: '0.5rem 1rem',
     color: grey[500],
+    borderTop: `1px solid ${ grey[100] }`
   },
   left: {
     textAlign: 'left'

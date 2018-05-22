@@ -5,7 +5,7 @@ const styles = {
   },
 
   main: {
-    minHeight: 'calc(100vh - 130px)'
+    minHeight: 'calc(100vh - 99px)'
   }
 }
 
