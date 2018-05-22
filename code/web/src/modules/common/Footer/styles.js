@@ -7,7 +7,7 @@ const styles = {
     backgroundColor: grey[50],
     padding: '0.5rem 1rem',
     color: grey[500],
-    borderTop: `1px solid ${ grey[100] }`
+    borderTop: `1px solid ${ grey[200] }`
   },
   left: {
     textAlign: 'left'

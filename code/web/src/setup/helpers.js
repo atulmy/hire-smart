@@ -1,8 +1,33 @@
+// UI Imports
+import grey from '@material-ui/core/colors/grey'
+import red from '@material-ui/core/colors/red'
+import blue from '@material-ui/core/colors/blue'
+import green from '@material-ui/core/colors/green'
+import purple from '@material-ui/core/colors/purple'
+import pink from '@material-ui/core/colors/pink'
+import orange from '@material-ui/core/colors/orange'
+
 // Helpers
 
 // Render element or component by provided condition
 export function renderIf(condition, renderFn) {
   return condition ? renderFn() : null
+}
+
+export function avatarColor(firstName = '', lastName = '') {
+  if(firstName.length === 0) {
+    return grey[400]
+  } else {
+    const colors = [
+      red[500], green[500], purple[500], blue[500], pink[500], orange[500]
+    ]
+
+    return colors[(firstName.length + lastName.length) % colors.length]
+  }
+}
+
+export function avatarLetter(firstName = '', lastName = '') {
+  return firstName.substr(0, 1).toUpperCase() + lastName.substr(0, 1).toUpperCase()
 }
 
 // Substring with ...

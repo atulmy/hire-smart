@@ -2,12 +2,14 @@
 import mongoose from 'mongoose'
 
 // App Imports
-import { NODE_ENV, MONGO_URL } from '../config/env'
+import { NODE_ENV } from '../config/env'
 import database from '../server/database'
 import user from '../../modules/user/seeds'
+import organization from '../../modules/organization/seeds'
+import client from '../../modules/client/seeds'
 
-// Seed
-async function seed() {
+// Seeder
+async function seeder() {
   await database()
 
   console.log('SEED - Started')
@@ -19,8 +21,10 @@ async function seed() {
     await mongoose.connection.dropDatabase()
   }
 
-  // User
+  // Seeds
   await user()
+  await organization()
+  await client()
 
   // Close connection
   mongoose.connection.close()
@@ -29,4 +33,4 @@ async function seed() {
 }
 
 // Run seeder
-seed()
+seeder()

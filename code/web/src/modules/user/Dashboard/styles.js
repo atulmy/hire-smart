@@ -15,6 +15,10 @@ const styles = theme => ({
     borderRight: `1px solid ${ grey[200] }`,
     overflowY: 'auto'
   },
+  sidebarTitle: {
+    textTransform: 'uppercase',
+    backgroundColor: grey[100],
+  },
 
   content: {
     minHeight: 'calc(100vh - 99px)',

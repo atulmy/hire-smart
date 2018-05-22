@@ -16,6 +16,8 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
+import params from '../../../setup/config/params'
+import { avatarLetter, avatarColor } from '../../../setup/helpers'
 
 // Component
 class Dashboard extends React.Component {
@@ -35,25 +37,22 @@ class Dashboard extends React.Component {
       <div className={classes.root}>
         {/* Meta tags */}
         <Helmet>
-          <title>Dashboard - Hire Smart</title>
+          <title>Dashboard - { params.site.name }</title>
         </Helmet>
 
         <div className={classes.sidebar}>
           <List
             component="nav"
-            subheader={<ListSubheader component="div" style={{ textTransform: 'uppercase' }}>Clients</ListSubheader>}
+            subheader={<ListSubheader component="div" className={classes.sidebarTitle}>Clients</ListSubheader>}
           >
-            <ListItem button>
-              <Avatar>
-                H
-              </Avatar>
-              <ListItemText primary="Hobsons" secondary="3 candidates" />
+            <ListItem button style={{ backgroundColor: '#ddd' }}>
+              <Avatar style={{ backgroundColor: avatarColor('Forestics') }}>{ avatarLetter('Forestics') }</Avatar>
+              <ListItemText primary="Forestics" secondary="3 candidates" />
             </ListItem>
+
             <ListItem button>
-              <Avatar>
-                S
-              </Avatar>
-              <ListItemText primary="Skillsoft" secondary="10 candidates" />
+              <Avatar>{ avatarLetter('Happytime') }</Avatar>
+              <ListItemText primary="Happytime" secondary="10 candidates" />
             </ListItem>
           </List>
         </div>
