@@ -47,7 +47,7 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-2": "6.24.1",
     "dotenv-webpack": "1.5.5",
-    "nodemon": "1.17.4",
+    "nodemon": "1.17.5",
     "webpack": "4.8.3",
     "webpack-cli": "2.1.3"
   }

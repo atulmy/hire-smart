@@ -45,8 +45,6 @@ class Dashboard extends React.Component {
     const { classes, clients } = this.props
     const { tab } = this.state
 
-    console.log(clients)
-
     return(
       <div className={classes.root}>
         {/* Meta tags */}
