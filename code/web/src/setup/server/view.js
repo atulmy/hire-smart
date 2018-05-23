@@ -25,6 +25,7 @@ const view = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initial
       box-sizing: border-box;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     }
     *, *::before, *::after {
       box-sizing: inherit;

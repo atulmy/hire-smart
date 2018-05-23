@@ -13,14 +13,14 @@ export default async function () {
   await Client.create({
     organizationId: organization._id,
     userId: user._id,
-    name: 'Happytime',
+    name: 'Wolf Limited',
     description: 'IT Software and Services',
   })
 
   await Client.create({
     organizationId: organization._id,
     userId: user._id,
-    name: 'Forestics',
+    name: 'Stark Industries',
     description: 'Financial Support and Services'
   })
 }

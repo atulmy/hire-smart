@@ -27,8 +27,8 @@ export function getList(isLoading = true) {
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'CLIENT',
-      fields: ['id', 'name', 'slug', 'description', 'image', 'createdAt', 'updatedAt']
+      operation: 'clientsByUser',
+      fields: ['_id', 'name']
     }))
       .then(response => {
         if (response.status === 200) {
@@ -36,7 +36,7 @@ export function getList(isLoading = true) {
             type: CLIENTS_GET_LIST_RESPONSE,
             error: null,
             isLoading: false,
-            list: response.data.data.client
+            list: response.data.data.clientsByUser
           })
         } else {
           dispatch({

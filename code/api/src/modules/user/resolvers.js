@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 
 // App Imports
 import serverConfig from '../../setup/config/server'
+import { NODE_ENV } from '../../setup/config/env'
 import params from '../../setup/config/params'
 import DemoUser from '../demo-user/model'
 import User from './model'
@@ -68,17 +69,24 @@ export async function startNow(parentValue, {}, { auth }) {
     throw new Error(`You are already logged in. Please go to your dashboard to continue.`)
   } else {
     try {
-      // Create a new demo user
-      const demoUser = await DemoUser.create({})
+      let userDetails
 
-      // User does not exists
-      const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), serverConfig.saltRounds)
+      if(NODE_ENV === 'development') {
+        // Use already created user instead of creating new every time
+        userDetails = await User.findOne({email: 'user@hiresmart.in'})
+      } else {
+        // Create a new demo user
+        const demoUser = await DemoUser.create({})
 
-      const userDetails = await User.create({
-        name: 'Demo User',
-        email: `demo.user+${ demoUser._id }@${ params.site.domain }`,
-        password: passwordHashed
-      })
+        // User does not exists
+        const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), serverConfig.saltRounds)
+
+        userDetails = await User.create({
+          name: 'Demo User',
+          email: `demo.user+${ demoUser._id }@${ params.site.domain }`,
+          password: passwordHashed
+        })
+      }
 
       const token = {
         id: userDetails.id,

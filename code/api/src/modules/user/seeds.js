@@ -13,14 +13,14 @@ export default async function () {
   const passwordHashed = await bcrypt.hash('123', serverConfig.saltRounds)
 
   await User.create({
-    name: 'Admin',
+    name: 'The Admin',
     email: 'admin@hiresmart.in',
     password: passwordHashed,
     role: params.user.roles.admin.key
   })
 
   await User.create({
-    name: 'User',
+    name: 'The User',
     email: 'user@hiresmart.in',
     password: passwordHashed,
     role: params.user.roles.user.key

@@ -1,14 +1,21 @@
-// Imports
-import { NODE_ENV, PORT } from '../config/env'
+// App Imports
+import { PORT, NODE_ENV } from '../config/env'
 
+// Start server
 export default function (server) {
-  console.info('SETUP - Start server..')
+  console.info('SETUP - Starting server..')
 
   server.listen(PORT, (error) => {
     if (error) {
-      return console.error(error)
+      console.error('ERROR - Unable to start server.')
     } else {
-      return console.info(`Server running on http://localhost:${ PORT } [${ NODE_ENV }]`)
+      console.info(`INFO - Server started on http://localhost:${ PORT } [${ NODE_ENV }]`)
     }
+  })
+
+  process.on('SIGTERM', function () {
+    server.close(function () {
+      console.log('Finished all requests. Server stopped.')
+    })
   })
 }

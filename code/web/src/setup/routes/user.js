@@ -10,7 +10,8 @@ export default {
   },
   account: {
     path: '/account',
-    component: Account
+    component: Account,
+    auth: true
   },
   dashboard: {
     path: '/dashboard',

@@ -1,8 +1,10 @@
 // App Imports
-import { MESSAGE_SHOW, MESSAGE_HIDE } from './actions'
+import { DRAWER_SHOW, DRAWER_HIDE, MESSAGE_SHOW, MESSAGE_HIDE } from './actions'
 
 // Initial State
 export const commonInitialState = {
+  drawerVisible: false,
+
   message: {
     text: null,
     open: false
@@ -12,6 +14,18 @@ export const commonInitialState = {
 // State
 export default (state = commonInitialState, action) => {
   switch (action.type) {
+    case DRAWER_SHOW:
+      return {
+        ...state,
+        drawerVisible: true
+      }
+
+    case DRAWER_HIDE:
+      return {
+        ...state,
+        drawerVisible: false
+      }
+
     case MESSAGE_SHOW:
       return {
         ...state,

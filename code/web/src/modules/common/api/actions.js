@@ -2,10 +2,20 @@
 import axios from 'axios/index'
 import API_URL from '../../../setup/config/env'
 
-export const MESSAGE_SHOW = 'COMMON_MESSAGE_SHOW'
-export const MESSAGE_HIDE = 'COMMON_MESSAGE_HIDE'
+export const DRAWER_SHOW = 'COMMON/DRAWER_SHOW'
+export const DRAWER_HIDE = 'COMMON/DRAWER_HIDE'
+export const MESSAGE_SHOW = 'COMMON/MESSAGE_SHOW'
+export const MESSAGE_HIDE = 'COMMON/MESSAGE_HIDE'
 
 // Actions
+export function drawerShow() {
+  return { type: DRAWER_SHOW }
+}
+
+export function drawerHide() {
+  return { type: DRAWER_HIDE }
+}
+
 export function messageShow(message) {
   return { type: MESSAGE_SHOW, message }
 }

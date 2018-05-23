@@ -210,10 +210,10 @@ class Home extends PureComponent {
 
 // Component Properties
 Home.propTypes = {
-  user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   startNow: PropTypes.func.isRequired,
-  messageShow: PropTypes.func.isRequired,
+  messageShow: PropTypes.func.isRequired
 }
 
 // Component State
