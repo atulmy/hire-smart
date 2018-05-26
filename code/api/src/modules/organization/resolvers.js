@@ -11,7 +11,7 @@ export async function getByUser(parentValue, {}, { auth }) {
   if(auth.user && auth.user.id) {
     return await Organization.findOne({ userId: auth.user.id })
   } else {
-    throw new Error('Please login to view your organizations.')
+    throw new Error('Please login to view your organization.')
   }
 }
 
@@ -31,6 +31,22 @@ export async function create(parentValue, { name, description, domain }, { auth 
     })
   } else {
     throw new Error('Please login to create organization.')
+  }
+}
+
+// Update product
+export async function update(parentValue, { id, name, description, domain }, { auth }) {
+  if(auth.user && auth.user.id) {
+    const organization = await Organization.findOne({ userId: auth.user.id })
+
+    return await Organization.updateOne(
+      { _id: organization._id },
+      {
+        $set: { name, description, domain }
+      }
+    )
+  } else {
+    throw new Error('Please login to update organization.')
   }
 }
 

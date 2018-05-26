@@ -21,7 +21,7 @@ export const organization = {
 }
 
 // Get by user
-export const organizationsByUser = {
+export const organizationByUser = {
   type: OrganizationType,
   resolve: getByUser
 }

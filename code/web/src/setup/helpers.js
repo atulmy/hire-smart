@@ -42,7 +42,7 @@ export function duplicate(object) {
 
 // Return empty string if value is null
 export function nullToEmptyString(value) {
-  return value === null ? '' : value
+  return value || ''
 }
 
 // Return zero if value is null

@@ -56,7 +56,7 @@ export function getList(isLoading = true) {
 }
 
 // Get single
-export function get(isLoading = true) {
+export function get(organizationId, isLoading = true) {
   return dispatch => {
     dispatch({
       type: ORGANIZATIONS_GET_REQUEST,
@@ -65,7 +65,8 @@ export function get(isLoading = true) {
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'organizationsByUser',
+      operation: 'organization',
+      data: { id: organizationId },
       fields: ['_id', 'name', 'description', 'domain', 'createdAt']
     }))
       .then(response => {
@@ -81,7 +82,7 @@ export function get(isLoading = true) {
               type: ORGANIZATIONS_GET_RESPONSE,
               error: null,
               isLoading: false,
-              item: response.data.data.organizationsByUser
+              item: response.data.data.organization
             })
           }
         } else {
@@ -99,6 +100,17 @@ export function get(isLoading = true) {
           isLoading: false
         })
       })
+  }
+}
+
+// Get single by user
+export function getByUser() {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'query',
+      operation: 'organizationByUser',
+      fields: ['_id', 'name', 'description', 'domain', 'createdAt']
+    }))
   }
 }
 
