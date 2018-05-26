@@ -8,8 +8,8 @@ export async function get(parentValue, { id }) {
 
 // Get by user
 export async function getByUser(parentValue, {}, { auth }) {
-  if(auth.user && auth.user.id > 0) {
-    return await Organization.find({ userId: auth.user.id })
+  if(auth.user && auth.user.id) {
+    return await Organization.findOne({ userId: auth.user.id })
   } else {
     throw new Error('Please login to view your organizations.')
   }
@@ -22,7 +22,7 @@ export async function getAll() {
 
 // Create
 export async function create(parentValue, { name, description, domain }, { auth }) {
-  if(auth.user && auth.user.id > 0) {
+  if(auth.user && auth.user.id) {
     return await Organization.create({
       userId: auth.user.id,
       name,
@@ -36,7 +36,7 @@ export async function create(parentValue, { name, description, domain }, { auth 
 
 // Delete
 export async function remove(parentValue, { id }, { auth }) {
-  if(auth.user && auth.user.id > 0) {
+  if(auth.user && auth.user.id) {
     return await Organization.remove({
       _id: _id,
       userId: auth.user.id

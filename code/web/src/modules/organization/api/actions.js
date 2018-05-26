@@ -6,13 +6,12 @@ import { API_URL } from '../../../setup/config/env'
 import { queryBuilder } from '../../../setup/helpers'
 
 // Actions Types
-export const CLIENTS_GET_LIST_REQUEST = 'CLIENT/GET_LIST_REQUEST'
-export const CLIENTS_GET_LIST_RESPONSE = 'CLIENT/GET_LIST_RESPONSE'
-export const CLIENTS_GET_LIST_FAILURE = 'CLIENT/GET_LIST_FAILURE'
-export const CLIENTS_GET_LIST_RESET = 'CLIENT/GET_LIST_RESET'
-export const CLIENTS_GET_REQUEST = 'CLIENT/GET_REQUEST'
-export const CLIENTS_GET_RESPONSE = 'CLIENT/GET_RESPONSE'
-export const CLIENTS_GET_FAILURE = 'CLIENT/GET_FAILURE'
+export const ORGANIZATIONS_GET_LIST_REQUEST = 'ORGANIZATION/GET_LIST_REQUEST'
+export const ORGANIZATIONS_GET_LIST_RESPONSE = 'ORGANIZATION/GET_LIST_RESPONSE'
+export const ORGANIZATIONS_GET_LIST_FAILURE = 'ORGANIZATION/GET_LIST_FAILURE'
+export const ORGANIZATIONS_GET_REQUEST = 'ORGANIZATION/GET_REQUEST'
+export const ORGANIZATIONS_GET_RESPONSE = 'ORGANIZATION/GET_RESPONSE'
+export const ORGANIZATIONS_GET_FAILURE = 'ORGANIZATION/GET_FAILURE'
 
 // Actions
 
@@ -20,27 +19,27 @@ export const CLIENTS_GET_FAILURE = 'CLIENT/GET_FAILURE'
 export function getList(isLoading = true) {
   return dispatch => {
     dispatch({
-      type: CLIENTS_GET_LIST_REQUEST,
+      type: ORGANIZATIONS_GET_LIST_REQUEST,
       error: null,
       isLoading
     })
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'clientsByUser',
+      operation: 'organizationsByUser',
       fields: ['_id', 'name']
     }))
       .then(response => {
         if (response.status === 200) {
           dispatch({
-            type: CLIENTS_GET_LIST_RESPONSE,
+            type: ORGANIZATIONS_GET_LIST_RESPONSE,
             error: null,
             isLoading: false,
-            list: response.data.data.clientsByUser
+            list: response.data.data.organizationsByUser
           })
         } else {
           dispatch({
-            type: CLIENTS_GET_LIST_FAILURE,
+            type: ORGANIZATIONS_GET_LIST_FAILURE,
             error: 'Some error occurred. Please try again.',
             isLoading: false
           })
@@ -48,7 +47,7 @@ export function getList(isLoading = true) {
       })
       .catch(() => {
         dispatch({
-          type: CLIENTS_GET_LIST_FAILURE,
+          type: ORGANIZATIONS_GET_LIST_FAILURE,
           error: 'Some error occurred. Please try again.',
           isLoading: false
         })
@@ -57,38 +56,37 @@ export function getList(isLoading = true) {
 }
 
 // Get single
-export function get(clientId, isLoading = true) {
+export function get(isLoading = true) {
   return dispatch => {
     dispatch({
-      type: CLIENTS_GET_REQUEST,
+      type: ORGANIZATIONS_GET_REQUEST,
       isLoading
     })
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'client',
-      data: { id: clientId },
-      fields: ['_id', 'name', 'description', 'createdAt']
+      operation: 'organizationsByUser',
+      fields: ['_id', 'name', 'description', 'domain', 'createdAt']
     }))
       .then(response => {
         if (response.status === 200) {
           if (response.data.errors && response.data.errors.length > 0) {
             dispatch({
-              type: CLIENTS_GET_FAILURE,
+              type: ORGANIZATIONS_GET_FAILURE,
               error: response.data.errors[0].message,
               isLoading: false
             })
           } else {
             dispatch({
-              type: CLIENTS_GET_RESPONSE,
+              type: ORGANIZATIONS_GET_RESPONSE,
               error: null,
               isLoading: false,
-              item: response.data.data.client
+              item: response.data.data.organizationsByUser
             })
           }
         } else {
           dispatch({
-            type: CLIENTS_GET_FAILURE,
+            type: ORGANIZATIONS_GET_FAILURE,
             error: 'Some error occurred. Please try again.',
             isLoading: false
           })
@@ -96,7 +94,7 @@ export function get(clientId, isLoading = true) {
       })
       .catch(error => {
         dispatch({
-          type: CLIENTS_GET_FAILURE,
+          type: ORGANIZATIONS_GET_FAILURE,
           error: error,
           isLoading: false
         })
@@ -105,34 +103,34 @@ export function get(clientId, isLoading = true) {
 }
 
 // Create or update
-export function createOrUpdate(client) {
-  if (client.id > 0) {
-    return update(client)
+export function createOrUpdate(organization) {
+  if (organization.id > 0) {
+    return update(organization)
   } else {
-    delete client.id
-    return create(client)
+    delete organization.id
+    return create(organization)
   }
 }
 
 // Create
-export function create(client) {
+export function create(organization) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'clientCreate',
-      data: client,
+      operation: 'organizationCreate',
+      data: organization,
       fields: ['_id']
     }))
   }
 }
 
 // Update
-export function update(client) {
+export function update(organization) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'clientUpdate',
-      data: client,
+      operation: 'organizationUpdate',
+      data: organization,
       fields: ['_id']
     }))
   }
@@ -143,7 +141,7 @@ export function remove(data) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'clientRemove',
+      operation: 'organizationRemove',
       data,
       fields: ['_id']
     }))

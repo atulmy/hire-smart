@@ -23,7 +23,7 @@ class Footer extends PureComponent {
         <Grid container>
           <Grid item sm={6} className={classes.left}>
             <Typography variant={'button'} className={classes.copyright}>
-              &copy; { params.site.copyright_year } { params.site.name }
+              &copy; { params.site.copyright_year } <Link to={routes.home.path}>{ params.site.name }</Link>
             </Typography>
           </Grid>
 

@@ -18,7 +18,7 @@ const Contact = (props) => {
     <div>
       {/* Meta tags */}
       <Helmet>
-        <title>Contact - Hire Smart</title>
+        <title>Contact - HireSmart</title>
       </Helmet>
 
       <Grid container>

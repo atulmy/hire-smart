@@ -54,20 +54,18 @@ class Header extends PureComponent {
         <AppBar elevation={0}>
           <Toolbar>
             {/* Menu */}
-            <Tooltip title={'Menu'} placement={'bottom'}>
-              <IconButton
-                onClick={drawerShow}
-                className={classes.menu}
-                color={'inherit'}
-                aria-label={'Menu'}
-              >
-                <IconMenu />
-              </IconButton>
-            </Tooltip>
+            <IconButton
+              onClick={drawerShow}
+              className={classes.menu}
+              color={'inherit'}
+              aria-label={'Menu'}
+            >
+              <IconMenu />
+            </IconButton>
 
             {/* Logo */}
             <Typography variant={'title'} color={'inherit'} className={classes.title}>
-              <Link to={routes.home.path}>
+              <Link to={routes.dashboard.path}>
                 { this.isNotHomePage() && <span>Hire<span className={classes.titleHighlight}>Smart</span></span> }
               </Link>
             </Typography>
@@ -132,10 +130,12 @@ class Header extends PureComponent {
                       <ListItemText primary={'Clients'} secondary={'Manage all clients'} />
                     </ListItem>
 
-                    <ListItem button>
-                      <Avatar style={{ backgroundColor: green[500] }}><IconAccountBalance /></Avatar>
-                      <ListItemText primary={'Organization'} secondary={'Manage your organization'} />
-                    </ListItem>
+                    <Link to={routes.organization.path}>
+                      <ListItem button>
+                        <Avatar style={{ backgroundColor: green[500] }}><IconAccountBalance /></Avatar>
+                        <ListItemText primary={'Organization'} secondary={'Manage your organization'} />
+                      </ListItem>
+                    </Link>
                   </List>
                 : <List component={'nav'}>
                     <ListItem button>

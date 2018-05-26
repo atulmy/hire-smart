@@ -57,7 +57,7 @@ class Home extends PureComponent {
         .catch(() => {
           messageShow('There was some error. Please try again.')
         })
-        .then(() => {
+        .finally(() => {
           this.loadingToggle(false)
         })
     }
@@ -73,7 +73,7 @@ class Home extends PureComponent {
         <div className={classes.hero}>
           <Typography
             variant={'display4'}
-            title={'Hire Smart'}
+            title={'HireSmart'}
             className={classes.title}
           >
             Hire<span className={classes.titleHighlight}>Smart</span>

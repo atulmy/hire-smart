@@ -7,12 +7,14 @@ import thunk from 'redux-thunk'
 import common from '../modules/common/api/state'
 import user from '../modules/user/api/state'
 import * as client from '../modules/client/api/state'
+import * as organization from '../modules/organization/api/state'
 
 // App Reducer
 const appReducer = combineReducers({
   common,
   user,
   ...client,
+  ...organization
 })
 
 // Root Reducer

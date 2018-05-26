@@ -11,7 +11,7 @@ import styles from './styles'
 // import { someAction } from './api/actions'
 
 // Component
-class DummyComponentRedux extends PureComponent {
+class People extends PureComponent {
 
   constructor(props) {
     super(props)
@@ -20,30 +20,27 @@ class DummyComponentRedux extends PureComponent {
   }
 
   componentDidMount() {
-    // const { someAction } = this.props
+    // this.props.someAction()
   }
 
   render() {
     return (
       <div>
-        <h1>Dummy Component Redux</h1>
+        <h1>People</h1>
       </div>
     )
   }
 }
 
 // Component Properties
-DummyComponentRedux.propTypes = {
+People.propTypes = {
   classes: PropTypes.object.isRequired,
-  dummyId: PropTypes.number.isRequired,
   // someAction: PropTypes.func.isRequired,
 }
 
 // Component State
-function dummyComponentReduxState(state) {
-  return {
-    common: state.common
-  }
+function peopleState(state) {
+  return state
 }
 
-export default connect(dummyComponentReduxState, { /* someAction */ })(withStyles(styles)(DummyComponentRedux))
+export default connect(peopleState, { /* someAction */ })(withStyles(styles)(People))

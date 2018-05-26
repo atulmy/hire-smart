@@ -138,6 +138,10 @@ export function logout() {
     dispatch({
       type: LOGOUT
     })
+
+    dispatch({
+      type: 'RESET'
+    })
   }
 }
 

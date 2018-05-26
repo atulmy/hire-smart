@@ -7,6 +7,12 @@ const styles = theme => ({
     padding: theme.spacing.unit,
     backgroundColor: grey[500]
   },
+
+  buttonsContainer: {
+    textAlign: 'right',
+    marginTop: theme.spacing.unit
+  },
+
 })
 
 export default styles

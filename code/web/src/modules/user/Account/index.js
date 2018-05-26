@@ -1,5 +1,5 @@
 // Imports
-import React from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
@@ -12,41 +12,53 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
+import { messageShow } from '../../common/api/actions'
 import { logout } from '../api/actions'
 
 // Component
-const Account = (props) => {
-  const { classes, logout } = props
-  
-  return(
-    <div>
-      {/* Meta tags */}
-      <Helmet>
-        <title>Account - Hire Smart</title>
-      </Helmet>
+class Account extends PureComponent {
+  onLogout = () => {
+    const { logout, messageShow } = this.props
+    logout()
 
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant={'display1'}>
-            Account
-          </Typography>
+    messageShow('You have been logged out successfully.')
+  }
 
-          <Button
-            variant={'raised'}
-            onClick={logout}
-          >
-            Logout
-          </Button>
+  render() {
+    const { classes } = this.props
+
+    return(
+      <div>
+        {/* Meta tags */}
+        <Helmet>
+          <title>Account - HireSmart</title>
+        </Helmet>
+
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography variant={'display1'}>
+              Account
+            </Typography>
+
+            <Button
+              variant={'raised'}
+              color={'primary'}
+              onClick={this.onLogout}
+            >
+              Logout
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
-  )
+      </div>
+    )
+  }
 }
 
 // Component Properties
 Account.propTypes = {
   classes: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  messageShow: PropTypes.func.isRequired
 }
 
-export default connect(null, { logout })(withStyles(styles)(Account))
+export default connect(null, { logout, messageShow })(withStyles(styles)(Account))

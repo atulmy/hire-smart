@@ -22,6 +22,6 @@ export const organization = {
 
 // Get by user
 export const organizationsByUser = {
-  type: new GraphQLList(OrganizationType),
+  type: OrganizationType,
   resolve: getByUser
 }

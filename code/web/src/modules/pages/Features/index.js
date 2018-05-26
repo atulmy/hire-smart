@@ -18,7 +18,7 @@ const Features = (props) => {
     <div>
       {/* Meta tags */}
       <Helmet>
-        <title>Features - Hire Smart</title>
+        <title>Features - HireSmart</title>
       </Helmet>
 
       <Grid container>
