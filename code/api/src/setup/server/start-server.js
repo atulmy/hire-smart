@@ -1,3 +1,6 @@
+// Imports
+import ip from 'ip'
+
 // App Imports
 import { PORT, NODE_ENV } from '../config/env'
 
@@ -9,7 +12,9 @@ export default function (server) {
     if (error) {
       console.error('ERROR - Unable to start server.')
     } else {
-      console.info(`INFO - Server started on http://localhost:${ PORT } [${ NODE_ENV }]`)
+      console.info(`INFO - Server started on`)
+      console.info(`  Local   http://localhost:${ PORT } [${ NODE_ENV }]`)
+      console.info(`  Network http://${ ip.address() }:${ PORT } [${ NODE_ENV }]`)
     }
   })
 

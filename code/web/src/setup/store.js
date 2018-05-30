@@ -6,15 +6,19 @@ import thunk from 'redux-thunk'
 // App Imports
 import common from '../modules/common/api/state'
 import user from '../modules/user/api/state'
-import * as client from '../modules/client/api/state'
 import * as organization from '../modules/organization/api/state'
+import * as client from '../modules/client/api/state'
+import * as candidate from '../modules/candidate/api/state'
+import * as panel from '../modules/panel/api/state'
 
 // App Reducer
 const appReducer = combineReducers({
   common,
   user,
+  ...organization,
   ...client,
-  ...organization
+  ...candidate,
+  ...panel
 })
 
 // Root Reducer

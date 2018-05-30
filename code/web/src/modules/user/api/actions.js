@@ -25,7 +25,7 @@ export function startNow(isLoading = true) {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
       operation: 'userStartNow',
-      fields: ['user {name, email, role}', 'token']
+      fields: ['user {organizationId, name, email, role}', 'token']
     }))
       .then(response => {
         let error = ''
@@ -35,6 +35,48 @@ export function startNow(isLoading = true) {
         } else if (response.data.data.userStartNow.token !== '') {
           const token = response.data.data.userStartNow.token
           const user = response.data.data.userStartNow.user
+
+          dispatch(setUser(token, user))
+
+          loginSetUserLocalStorageAndCookie(token, user)
+        }
+
+        dispatch({
+          type: LOGIN_RESPONSE,
+          error
+        })
+      })
+      .catch(error => {
+        dispatch({
+          type: LOGIN_RESPONSE,
+          error: 'Please try again'
+        })
+      })
+  }
+}
+
+// Login a user using credentials
+export function login(userCredentials, isLoading = true) {
+  return dispatch => {
+    dispatch({
+      type: LOGIN_REQUEST,
+      isLoading
+    })
+
+    return axios.post(API_URL, queryBuilder({
+      type: 'query',
+      operation: 'userLogin',
+      data: userCredentials,
+      fields: ['user {organizationId, name, email, role}', 'token']
+    }))
+      .then(response => {
+        let error = ''
+
+        if (response.data.errors && response.data.errors.length > 0) {
+          error = response.data.errors[0].message
+        } else if (response.data.data.userLogin.token !== '') {
+          const token = response.data.data.userLogin.token
+          const user = response.data.data.userLogin.user
 
           dispatch(setUser(token, user))
 
@@ -67,45 +109,26 @@ export function register(userDetails) {
   }
 }
 
-// Login a user using credentials
-export function login(userCredentials, isLoading = true) {
+// Invite user to organization (create)
+export function inviteToOrganization(userDetails) {
   return dispatch => {
-    dispatch({
-      type: LOGIN_REQUEST,
-      isLoading
-    })
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'userInviteToOrganization',
+      data: userDetails,
+      fields: ['_id']
+    }))
+  }
+}
 
+// Get list by organization
+export function getListByOrganization() {
+  return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'userLogin',
-      data: userCredentials,
-      fields: ['user {name, email, role}', 'token']
+      operation: 'usersByOrganization',
+      fields: ['_id', 'name', 'email', 'createdAt']
     }))
-      .then(response => {
-        let error = ''
-
-        if (response.data.errors && response.data.errors.length > 0) {
-          error = response.data.errors[0].message
-        } else if (response.data.data.userLogin.token !== '') {
-          const token = response.data.data.userLogin.token
-          const user = response.data.data.userLogin.user
-
-          dispatch(setUser(token, user))
-
-          loginSetUserLocalStorageAndCookie(token, user)
-        }
-
-        dispatch({
-          type: LOGIN_RESPONSE,
-          error
-        })
-      })
-      .catch(error => {
-        dispatch({
-          type: LOGIN_RESPONSE,
-          error: 'Please try again'
-        })
-      })
   }
 }
 

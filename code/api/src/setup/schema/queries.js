@@ -5,6 +5,8 @@ import { GraphQLObjectType } from 'graphql'
 import * as user from '../../modules/user/query'
 import * as organization from '../../modules/organization/query'
 import * as client from '../../modules/client/query'
+import * as candidate from '../../modules/candidate/query'
+import * as panel from '../../modules/panel/query'
 
 // Query
 const query = new GraphQLObjectType({
@@ -15,6 +17,8 @@ const query = new GraphQLObjectType({
     ...user,
     ...organization,
     ...client,
+    ...candidate,
+    ...panel
   })
 })
 

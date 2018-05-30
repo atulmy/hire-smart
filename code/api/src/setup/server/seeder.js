@@ -4,9 +4,11 @@ import mongoose from 'mongoose'
 // App Imports
 import { NODE_ENV } from '../config/env'
 import database from '../server/database'
-import user from '../../modules/user/seeds'
 import organization from '../../modules/organization/seeds'
+import user from '../../modules/user/seeds'
 import client from '../../modules/client/seeds'
+import candidate from '../../modules/candidate/seeds'
+import panel from '../../modules/panel/seeds'
 
 // Seeder
 async function seeder() {
@@ -22,9 +24,11 @@ async function seeder() {
   }
 
   // Seeds
-  await user()
   await organization()
+  await user()
   await client()
+  await candidate()
+  await panel()
 
   // Close connection
   mongoose.connection.close()

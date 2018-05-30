@@ -6,6 +6,10 @@ import params from '../../setup/config/params'
 
 // Schema
 const Schema = new mongoose.Schema({
+  organizationId: {
+    type: String,
+    required: true
+  },
   name: {
     type: String,
     required: true
@@ -22,6 +26,11 @@ const Schema = new mongoose.Schema({
     type: String,
     required: true,
     default: params.user.roles.user.key
+  },
+  demo: {
+    type: Boolean,
+    required: true,
+    default: true
   }
 }, {timestamps: true})
 

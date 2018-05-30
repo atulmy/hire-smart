@@ -24,6 +24,8 @@ class DummyComponentRedux extends PureComponent {
   }
 
   render() {
+    const { classes } = this.props
+
     return (
       <div>
         <h1>Dummy Component Redux</h1>

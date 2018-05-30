@@ -19,7 +19,7 @@ import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
 
 // Component
-class Quick extends PureComponent {
+class ClientList extends PureComponent {
   componentDidMount() {
     this.refreshClientsList()
   }
@@ -47,13 +47,13 @@ class Quick extends PureComponent {
 
     return (
       <List
-        component="nav"
+        component={'nav'}
         subheader={<ListSubheader component={'div'} className={classes.title}>Clients</ListSubheader>}
       >
         {
           clients.isLoading
             ? <Loading message={'loading clients..'} />
-            : clients.list.length > 0
+            : clients.list && clients.list.length > 0
                 ? clients.list.map(item => (
                     <ListItem
                       key={item._id}
@@ -74,7 +74,7 @@ class Quick extends PureComponent {
 }
 
 // Component Properties
-Quick.propTypes = {
+ClientList.propTypes = {
   classes: PropTypes.object.isRequired,
   clients: PropTypes.object.isRequired,
   getClientsList: PropTypes.func.isRequired,
@@ -82,11 +82,11 @@ Quick.propTypes = {
 }
 
 // Component State
-function quickState(state) {
+function clientListState(state) {
   return {
     clients: state.clients,
     client: state.client,
   }
 }
 
-export default connect(quickState, { getClientsList, getClient })(withStyles(styles)(Quick))
+export default connect(clientListState, { getClientsList, getClient })(withStyles(styles)(ClientList))

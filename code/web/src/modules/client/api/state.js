@@ -8,7 +8,9 @@ import {
   CLIENTS_GET_LIST_RESET,
   CLIENTS_GET_REQUEST,
   CLIENTS_GET_RESPONSE,
-  CLIENTS_GET_FAILURE
+  CLIENTS_GET_FAILURE,
+  CLIENTS_EDIT_SET,
+  CLIENTS_EDIT_UNSET
 } from './actions'
 
 // list
@@ -86,6 +88,38 @@ export const client = (state = clientInitialState, action) => {
         ...state,
         isLoading: false,
         error: action.error
+      }
+
+    default:
+      return state
+  }
+}
+
+// Edit
+
+// Initial State
+const clientEditState = {
+  edit: {
+    client: null,
+    open: true
+  }
+}
+
+// State
+export const clientEdit = (state = clientEditState, action) => {
+  switch (action.type) {
+    case CLIENTS_EDIT_SET:
+      return {
+        ...state,
+        client: action.client,
+        open: true
+      }
+
+    case CLIENTS_EDIT_UNSET:
+      return {
+        ...state,
+        client: null,
+        open: true
       }
 
     default:

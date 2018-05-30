@@ -42,7 +42,7 @@ export const organizationUpdate = {
     },
 
     domain: {
-      name: 'description',
+      name: 'domain',
       type: GraphQLString
     }
   },

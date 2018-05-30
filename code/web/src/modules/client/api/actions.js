@@ -1,5 +1,6 @@
 // Imports
 import axios from 'axios'
+import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
 import { API_URL } from '../../../setup/config/env'
@@ -13,6 +14,8 @@ export const CLIENTS_GET_LIST_RESET = 'CLIENT/GET_LIST_RESET'
 export const CLIENTS_GET_REQUEST = 'CLIENT/GET_REQUEST'
 export const CLIENTS_GET_RESPONSE = 'CLIENT/GET_RESPONSE'
 export const CLIENTS_GET_FAILURE = 'CLIENT/GET_FAILURE'
+export const CLIENTS_EDIT_SET = 'CLIENT/EDIT_SET'
+export const CLIENTS_EDIT_UNSET = 'CLIENT/EDIT_UNSET'
 
 // Actions
 
@@ -28,7 +31,7 @@ export function getList(isLoading = true) {
     return axios.post(API_URL, queryBuilder({
       type: 'query',
       operation: 'clientsByUser',
-      fields: ['_id', 'name']
+      fields: ['_id', 'name', 'description']
     }))
       .then(response => {
         if (response.status === 200) {
@@ -106,7 +109,7 @@ export function get(clientId, isLoading = true) {
 
 // Create or update
 export function createOrUpdate(client) {
-  if (client.id > 0) {
+  if (!isEmpty(client.id)) {
     return update(client)
   } else {
     delete client.id
@@ -148,4 +151,12 @@ export function remove(data) {
       fields: ['_id']
     }))
   }
+}
+
+// Edit
+export function edit(client) {
+  return { type: CLIENTS_EDIT_SET, client }
+}
+export function editClose() {
+  return { type: CLIENTS_EDIT_UNSET }
 }

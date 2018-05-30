@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Helmet } from 'react-helmet'
 
 // UI Imports
+import Fade from '@material-ui/core/Fade'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
@@ -18,18 +19,20 @@ class Dashboard extends React.Component {
     const { classes } = this.props
 
     return(
-      <div className={classes.root}>
-        {/* Meta tags */}
-        <Helmet>
-          <title>Dashboard - { params.site.name }</title>
-        </Helmet>
+      <Fade in={true}>
+        <div className={classes.root}>
+          {/* Meta tags */}
+          <Helmet>
+            <title>Dashboard - { params.site.name }</title>
+          </Helmet>
 
-        {/* Sidebar */}
-        <Sidebar />
+          {/* Sidebar */}
+          <Sidebar />
 
-        {/* Tabs */}
-        <TabContent />
-      </div>
+          {/* Tabs */}
+          <TabContent />
+        </div>
+      </Fade>
     )
   }
 }

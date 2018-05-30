@@ -6,8 +6,9 @@ import { connect } from 'react-redux'
 // UI Imports
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import IconDomain from '@material-ui/icons/Domain';
+import IconDomain from '@material-ui/icons/Domain'
 import { withStyles } from '@material-ui/core/styles'
+import Fade from '@material-ui/core/Fade'
 import styles from './styles'
 
 // App Imports
@@ -33,49 +34,51 @@ class Content extends PureComponent {
     const { tab } = this.state
 
     return (
-      <div className={classes.root}>
-        {
-          isLoading
-            ? <AlignCenterMiddle>
-                <Loading />
-              </AlignCenterMiddle>
-            : item && item._id
-                ? <div>
-                    <div className={classes.tabs}>
-                      <Tabs
-                        value={tab}
-                        onChange={this.tabSwitch}
-                      >
-                        <Tab label={'Overview'} value={'overview'} />
-                        <Tab label={'Interviews'} value={'interviews'} />
-                        <Tab label={'Candidates'} value={'candidates'} />
-                        <Tab label={'Panel'} value={'panel'} />
-                      </Tabs>
-                    </div>
+      <Fade in={true}>
+        <div className={classes.root}>
+          {
+            isLoading
+              ? <AlignCenterMiddle>
+                  <Loading />
+                </AlignCenterMiddle>
+              : item && item._id
+                  ? <div>
+                      <div className={classes.tabs}>
+                        <Tabs
+                          value={tab}
+                          onChange={this.tabSwitch}
+                        >
+                          <Tab label={'Overview'} value={'overview'} />
+                          <Tab label={'Interviews'} value={'interviews'} />
+                          <Tab label={'Candidates'} value={'candidates'} />
+                          <Tab label={'Panel'} value={'panel'} />
+                        </Tabs>
+                      </div>
 
-                    <div className={classes.tabContent}>
-                      {
+                      <div className={classes.tabContent}>
                         {
-                          overview: <span>Overview</span>,
+                          {
+                            overview: <span>Overview</span>,
 
-                          interviews: <span>Interviews</span>,
+                            interviews: <span>Interviews</span>,
 
-                          candidates: <span>Candidates</span>,
+                            candidates: <span>Candidates</span>,
 
-                          panel: <span>Panel</span>,
-                        }[tab]
-                      }
+                            panel: <span>Panel</span>,
+                          }[tab]
+                        }
 
-                      <p>{ item.name }</p>
-                      <p>{ item.description }</p>
+                        <p>{ item.name }</p>
+                        <p>{ item.description }</p>
+                      </div>
                     </div>
-                  </div>
-                : <AlignCenterMiddle>
-                    <IconDomain className={classes.messageIcon} />
-                    <p className={classes.messageText}>Select a client to begin</p>
-                  </AlignCenterMiddle>
-        }
-      </div>
+                  : <AlignCenterMiddle>
+                      <IconDomain className={classes.messageIcon} />
+                      <p className={classes.messageText}>Select a client to begin</p>
+                    </AlignCenterMiddle>
+          }
+        </div>
+      </Fade>
     )
   }
 }

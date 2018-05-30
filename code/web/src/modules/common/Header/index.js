@@ -26,10 +26,12 @@ import IconAccountBalance from '@material-ui/icons/AccountBalance'
 import IconDomain from '@material-ui/icons/Domain'
 import IconPerson from '@material-ui/icons/Person'
 import IconPersonAdd from '@material-ui/icons/PersonAdd'
+import IconThumbsUpDown from '@material-ui/icons/ThumbsUpDown'
 import blue from '@material-ui/core/colors/blue'
 import pink from '@material-ui/core/colors/pink'
 import green from '@material-ui/core/colors/green'
 import purple from '@material-ui/core/colors/purple'
+import teal from '@material-ui/core/colors/teal'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
@@ -120,15 +122,26 @@ class Header extends PureComponent {
                       </ListItem>
                     </Link>
 
-                    <ListItem button>
-                      <Avatar style={{ backgroundColor: pink[500] }}><IconSupervisorAccount /></Avatar>
-                      <ListItemText primary={'Candidates'} secondary={'Manage all candidates'} />
-                    </ListItem>
+                    <Link to={routes.candidate.path}>
+                      <ListItem button>
+                        <Avatar style={{ backgroundColor: pink[500] }}><IconSupervisorAccount /></Avatar>
+                        <ListItemText primary={'Candidates'} secondary={'Manage all candidates'} />
+                      </ListItem>
+                    </Link>
 
-                    <ListItem button>
-                      <Avatar style={{ backgroundColor: purple[500] }}><IconDomain /></Avatar>
-                      <ListItemText primary={'Clients'} secondary={'Manage all clients'} />
-                    </ListItem>
+                    <Link to={routes.panel.path}>
+                      <ListItem button>
+                        <Avatar style={{ backgroundColor: teal[500] }}><IconThumbsUpDown /></Avatar>
+                        <ListItemText primary={'Panel'} secondary={'Manage all panel'} />
+                      </ListItem>
+                    </Link>
+
+                    <Link to={routes.client.path}>
+                      <ListItem button>
+                        <Avatar style={{ backgroundColor: purple[500] }}><IconDomain /></Avatar>
+                        <ListItemText primary={'Clients'} secondary={'Manage all clients'} />
+                      </ListItem>
+                    </Link>
 
                     <Link to={routes.organization.path}>
                       <ListItem button>

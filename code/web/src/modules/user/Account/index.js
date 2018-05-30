@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import Fade from '@material-ui/core/Fade'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
@@ -28,28 +29,30 @@ class Account extends PureComponent {
     const { classes } = this.props
 
     return(
-      <div>
-        {/* Meta tags */}
-        <Helmet>
-          <title>Account - HireSmart</title>
-        </Helmet>
+      <Fade in={true}>
+        <div>
+          {/* Meta tags */}
+          <Helmet>
+            <title>Account - HireSmart</title>
+          </Helmet>
 
-        <Grid container>
-          <Grid item xs={12}>
-            <Typography variant={'display1'}>
-              Account
-            </Typography>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant={'display1'}>
+                Account
+              </Typography>
 
-            <Button
-              variant={'raised'}
-              color={'primary'}
-              onClick={this.onLogout}
-            >
-              Logout
-            </Button>
+              <Button
+                variant={'raised'}
+                color={'primary'}
+                onClick={this.onLogout}
+              >
+                Logout
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
+        </div>
+      </Fade>
     )
   }
 }

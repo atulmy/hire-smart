@@ -3,10 +3,11 @@ import React, { PureComponent } from 'react'
 import { Helmet } from 'react-helmet'
 
 // UI Imports
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
+import Fade from '@material-ui/core/Fade'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
@@ -16,11 +17,11 @@ import People from './People'
 
 // Component
 class Manage extends PureComponent {
-  constructor () {
+  constructor() {
     super()
 
     this.state = {
-      tab: 'details'
+      tab: 'people'
     }
   }
 
@@ -33,44 +34,46 @@ class Manage extends PureComponent {
     const { tab } = this.state
 
     return (
-      <div>
-        {/* Meta tags */}
-        <Helmet>
-          <title>Organization - HireSmart</title>
-        </Helmet>
+      <Fade in={true}>
+        <div>
+          {/* Meta tags */}
+          <Helmet>
+            <title>Manage Organization - HireSmart</title>
+          </Helmet>
 
-        {/* Toolbar - Heading */}
-        <Toolbar className={classes.toolbar}>
-          <Typography
-            variant={'subheading'}
-            color={'inherit'}
-            className={classes.title}
-          >
-            Organization
-          </Typography>
-        </Toolbar>
+          {/* Toolbar - Heading */}
+          <Toolbar className={classes.toolbar}>
+            <Typography
+              variant={'body2'}
+              color={'inherit'}
+              className={classes.title}
+            >
+              Manage Organization
+            </Typography>
+          </Toolbar>
 
-        {/* Toolbar Secondary - Tabs */}
-        <Toolbar className={classes.toolbarSecondary}>
-          <Tabs
-            value={tab}
-            onChange={this.tabSwitch}
-          >
-            <Tab label={'Details'} value={'details'}/>
-            <Tab label={'People'} value={'people'}/>
-          </Tabs>
-        </Toolbar>
+          {/* Toolbar Secondary - Tabs */}
+          <Toolbar className={classes.toolbarSecondary}>
+            <Tabs
+              value={tab}
+              onChange={this.tabSwitch}
+            >
+              <Tab label={'People'} value={'people'} className={classes.tabItem} />
+              <Tab label={'Details'} value={'details'} className={classes.tabItem} />
+            </Tabs>
+          </Toolbar>
 
-        {/* Tabs Content */}
-        <div className={classes.tabContent}>
-          {
+          {/* Tabs Content */}
+          <div className={classes.tabContent}>
             {
-              details: <Details />,
-              people: <People />
-            }[tab]
-          }
+              {
+                people: <People />,
+                details: <Details />
+              }[tab]
+            }
+          </div>
         </div>
-      </div>
+      </Fade>
     )
   }
 }

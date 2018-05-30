@@ -7,7 +7,7 @@ import Client from './model'
 export default async function () {
   console.log('SEED - Client..')
 
-  const user = await User.findOne({ email: 'user@hiresmart.in' })
+  const user = await User.findOne({ email: 'user@hiresmart.app' })
   const organization = await Organization.findOne()
 
   await Client.create({

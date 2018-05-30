@@ -9,7 +9,7 @@ export async function get(parentValue, { id }) {
 // Get by user
 export async function getByUser(parentValue, {}, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Organization.findOne({ userId: auth.user.id })
+    return await Organization.findOne({ _id: auth.user.organizationId })
   } else {
     throw new Error('Please login to view your organization.')
   }
@@ -37,10 +37,8 @@ export async function create(parentValue, { name, description, domain }, { auth 
 // Update product
 export async function update(parentValue, { id, name, description, domain }, { auth }) {
   if(auth.user && auth.user.id) {
-    const organization = await Organization.findOne({ userId: auth.user.id })
-
     return await Organization.updateOne(
-      { _id: organization._id },
+      { _id: auth.user.organizationId },
       {
         $set: { name, description, domain }
       }

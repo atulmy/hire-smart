@@ -3,12 +3,18 @@ import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
 import { UserType, UserLoginType } from './types'
-import { getAll, getById, login } from './resolvers'
+import { getAll, getById, login, getByOrganization } from './resolvers'
 
 // All
 export const users = {
   type: new GraphQLList(UserType),
   resolve: getAll
+}
+
+// All by organization
+export const usersByOrganization = {
+  type: new GraphQLList(UserType),
+  resolve: getByOrganization
 }
 
 // By ID

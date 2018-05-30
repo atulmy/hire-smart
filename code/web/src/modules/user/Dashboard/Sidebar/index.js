@@ -10,8 +10,8 @@ import styles from './styles'
 
 // App Imports
 import { get as getClient } from '../../../client/api/actions'
-import ClientList from '../../../client/list/Quick'
-import ClientCreate from '../../../client/create/Quick'
+import ClientList from '../../../client/widgets/List'
+import ClientCreate from '../../../client/widgets/Create'
 
 // Component
 class Sidebar extends PureComponent {

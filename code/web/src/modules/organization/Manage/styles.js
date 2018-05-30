@@ -16,7 +16,12 @@ const styles = theme => ({
 
   title: {
     flex: 1,
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    color: grey[700]
+  },
+
+  tabItem: {
+    minWidth: 'auto'
   },
 
   tabContent: {

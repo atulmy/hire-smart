@@ -8,7 +8,6 @@ const OrganizationType = new GraphQLObjectType({
 
   fields: () => ({
     _id: { type: GraphQLString },
-    userId: { type: GraphQLString },
     name: { type: GraphQLString },
     description: { type: GraphQLString },
     domain: { type: GraphQLString },

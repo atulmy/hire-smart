@@ -8,6 +8,7 @@ import { NODE_ENV } from '../../setup/config/env'
 import params from '../../setup/config/params'
 import DemoUser from '../demo-user/model'
 import User from './model'
+import Organization from '../organization/model'
 
 // Create (Register)
 export async function create(parentValue, { name, email, password }) {
@@ -47,7 +48,8 @@ export async function login(parentValue, { email, password }) {
       throw new Error(`Sorry, the password you entered is incorrect. Please try again.`)
     } else {
       const token = {
-        id: userDetails.id,
+        id: userDetails._id,
+        organizationId: userDetails.organizationId,
         name: userDetails.name,
         email: userDetails.email,
         role: userDetails.role
@@ -64,7 +66,6 @@ export async function login(parentValue, { email, password }) {
 // Create a demo user and login
 export async function startNow(parentValue, {}, { auth }) {
   // Check if user is already logged in
-  console.log(auth.user)
   if(!auth.user) {
     throw new Error(`You are already logged in. Please go to your dashboard to continue.`)
   } else {
@@ -73,8 +74,13 @@ export async function startNow(parentValue, {}, { auth }) {
 
       if(NODE_ENV === 'development') {
         // Use already created user instead of creating new every time
-        userDetails = await User.findOne({email: 'user@hiresmart.in'})
+        userDetails = await User.findOne({email: 'user@hiresmart.app'})
       } else {
+        // Create new Organization
+        const organization = await Organization.create({
+          name: 'Demo Organization'
+        })
+
         // Create a new demo user
         const demoUser = await DemoUser.create({})
 
@@ -82,6 +88,7 @@ export async function startNow(parentValue, {}, { auth }) {
         const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), serverConfig.saltRounds)
 
         userDetails = await User.create({
+          organizationId: organization._id,
           name: 'Demo User',
           email: `demo.user+${ demoUser._id }@${ params.site.domain }`,
           password: passwordHashed
@@ -89,10 +96,11 @@ export async function startNow(parentValue, {}, { auth }) {
       }
 
       const token = {
-        id: userDetails.id,
+        id: userDetails._id,
+        organizationId: userDetails.organizationId,
         name: userDetails.name,
         email: userDetails.email,
-        role: userDetails.role
+        role: userDetails.role,
       }
 
       return {
@@ -113,6 +121,45 @@ export async function getById(parentValue, { id }) {
 // Get all
 export async function getAll() {
   return await User.find()
+}
+
+// Get all
+export async function getByOrganization(parentValue, { id }, { auth }) {
+  if(auth.user && auth.user.id) {
+    return await User.find({ organizationId: auth.user.organizationId })
+  } else {
+    throw new Error('Please login to view your organization.')
+  }
+}
+
+// Create (Register)
+export async function inviteToOrganization(parentValue, { name, email }, { auth }) {
+  if(auth.user && auth.user.id) {
+    // Users exists with same email check
+    const user = await User.findOne({ email })
+
+    if (!user) {
+      // Create a new demo user
+      const demoUser = await DemoUser.create({})
+
+      // User does not exists
+      const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), serverConfig.saltRounds)
+
+      // @todo Send email
+
+      return await User.create({
+        organizationId: auth.user.organizationId,
+        name,
+        email,
+        password: passwordHashed
+      })
+    } else {
+      // User exists
+      throw new Error(`The email ${ email } is already registered. Please ask the user to login.`)
+    }
+  } else {
+    throw new Error('Please login to view invite team mate to your organization.')
+  }
 }
 
 // Delete

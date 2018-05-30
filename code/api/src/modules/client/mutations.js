@@ -5,20 +5,23 @@ import { GraphQLString } from 'graphql'
 import ClientType from './types'
 import { create, remove, update } from './resolvers'
 
+// Client fields
+const fields = {
+  name: {
+    name: 'name',
+    type: GraphQLString
+  },
+
+  description: {
+    name: 'description',
+    type: GraphQLString
+  }
+}
+
 // Client create
 export const clientCreate = {
   type: ClientType,
-  args: {
-    name: {
-      name: 'name',
-      type: GraphQLString
-    },
-
-    description: {
-      name: 'description',
-      type: GraphQLString
-    }
-  },
+  args: fields,
   resolve: create
 }
 
@@ -31,15 +34,7 @@ export const clientUpdate = {
       type: GraphQLString
     },
 
-    name: {
-      name: 'name',
-      type: GraphQLString
-    },
-
-    description: {
-      name: 'description',
-      type: GraphQLString
-    }
+    ...fields
   },
   resolve: update
 }

@@ -6,6 +6,7 @@ import isEmpty from 'validator/lib/isEmpty'
 
 // UI Imports
 import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import IconButton from '@material-ui/core/IconButton'
 import IconCheck from '@material-ui/icons/Check'
@@ -82,15 +83,13 @@ class Details extends Component {
     event.preventDefault()
 
     const { updateOrganization, messageShow } = this.props
-    const { name } = this.state
+    const { name, description, domain } = this.state
 
     // Validate
     if(!isEmpty(name)) {
       messageShow('Adding client, please wait..')
 
       this.isLoadingSubmitToggle(true)
-
-      const { name, description, domain } = this.state
 
       // Update
       updateOrganization({ name, description, domain })
@@ -133,65 +132,66 @@ class Details extends Component {
             : <form onSubmit={this.update}>
                 <Grid container>
                   <Grid item xs={12} md={6}>
-                    {/* Input - Organization name */}
-                    <Grid item xs={12}>
-                      <TextField
-                        name={'name'}
-                        value={nullToEmptyString(name)}
-                        onChange={this.onType}
-                        label={'Organization name'}
-                        placeholder={'Enter name (eg: HireSmart)'}
-                        required={true}
-                        margin={'normal'}
-                        autoComplete={'off'}
-                        style={{ marginTop: 0 }}
-                        fullWidth
-                        autoFocus
-                      />
-                    </Grid>
+                    <Paper elevation={1} className={classes.formContainer}>
+                      {/* Input - Organization name */}
+                      <Grid item xs={12}>
+                        <TextField
+                          name={'name'}
+                          value={nullToEmptyString(name)}
+                          onChange={this.onType}
+                          label={'Organization name'}
+                          placeholder={'Enter name (eg: HireSmart)'}
+                          required={true}
+                          margin={'normal'}
+                          autoComplete={'off'}
+                          style={{ marginTop: 0 }}
+                          fullWidth
+                        />
+                      </Grid>
 
-                    {/* Input - Organization description */}
-                    <Grid item xs={12}>
-                      <TextField
-                        name={'description'}
-                        value={nullToEmptyString(description)}
-                        onChange={this.onType}
-                        label={'Organization description'}
-                        placeholder={'Enter description (eg: HireSmart is a platform to streamline hiring process, scheduling interviews and tracking candidates.)'}
-                        margin={'normal'}
-                        autoComplete={'off'}
-                        rowsMax={3}
-                        rows={1}
-                        multiline
-                        fullWidth
-                      />
-                    </Grid>
+                      {/* Input - Organization description */}
+                      <Grid item xs={12}>
+                        <TextField
+                          name={'description'}
+                          value={nullToEmptyString(description)}
+                          onChange={this.onType}
+                          label={'Organization description'}
+                          placeholder={'Enter description (eg: HireSmart is a platform to streamline hiring process, scheduling interviews and tracking candidates.)'}
+                          margin={'normal'}
+                          autoComplete={'off'}
+                          rowsMax={3}
+                          rows={1}
+                          multiline
+                          fullWidth
+                        />
+                      </Grid>
 
-                    {/* Input - Organization domain */}
-                    <Grid item xs={12}>
-                      <TextField
-                        name={'domain'}
-                        value={nullToEmptyString(domain)}
-                        onChange={this.onType}
-                        label={'Organization website domain'}
-                        placeholder={'Enter website domain (eg: hiresmart.com)'}
-                        margin={'normal'}
-                        autoComplete={'off'}
-                        fullWidth
-                      />
-                    </Grid>
+                      {/* Input - Organization domain */}
+                      <Grid item xs={12}>
+                        <TextField
+                          name={'domain'}
+                          value={nullToEmptyString(domain)}
+                          onChange={this.onType}
+                          label={'Organization website domain'}
+                          placeholder={'Enter website domain (eg: hiresmart.com)'}
+                          margin={'normal'}
+                          autoComplete={'off'}
+                          fullWidth
+                        />
+                      </Grid>
 
-                    {/* Button -  Save */}
-                    <Grid item xs={12} className={classes.buttonsContainer}>
-                      <IconButton
-                        type={'submit'}
-                        aria-label={'Save'}
-                        color={'primary'}
-                        disabled={isLoadingSubmit}
-                      >
-                        <IconCheck />
-                      </IconButton>
-                    </Grid>
+                      {/* Button -  Save */}
+                      <Grid item xs={12} className={classes.buttonsContainer}>
+                        <IconButton
+                          type={'submit'}
+                          aria-label={'Save'}
+                          color={'primary'}
+                          disabled={isLoadingSubmit}
+                        >
+                          <IconCheck />
+                        </IconButton>
+                      </Grid>
+                    </Paper>
                   </Grid>
                 </Grid>
               </form>

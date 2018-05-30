@@ -3,7 +3,7 @@ import { GraphQLString } from 'graphql'
 
 // App Imports
 import { UserType, UserLoginType } from './types'
-import { create, remove, startNow } from './resolvers'
+import { create, remove, startNow, inviteToOrganization } from './resolvers'
 
 // Create a demo user and login
 export const userStartNow = {
@@ -43,4 +43,20 @@ export const userRemove = {
     }
   },
   resolve: remove
+}
+
+// Remove
+export const userInviteToOrganization = {
+  type: UserType,
+  args: {
+    name: {
+      name: 'name',
+      type: GraphQLString
+    },
+    email: {
+      name: 'email',
+      type: GraphQLString
+    }
+  },
+  resolve: inviteToOrganization
 }
