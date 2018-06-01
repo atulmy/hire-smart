@@ -5,5 +5,15 @@
     "title": "HireSmart - Streamline your hiring process, scheduling interviews and tracking candidates.",
     "description": "An online application to streamline your hiring process, scheduling interviews and tracking candidates.",
     "copyright_year": 2018
+  },
+
+  "kanban": {
+    "columns": [
+      { "key": "sourced", "name": "Sourced", "color": "grey" },
+      { "key": "interview", "name": "Interview", "color": "blue" },
+      { "key": "hold", "name": "On Hold", "color": "orange" },
+      { "key": "rejected", "name": "Rejected", "color": "red" },
+      { "key": "selected", "name": "Selected", "color": "green" }
+    ]
   }
 }

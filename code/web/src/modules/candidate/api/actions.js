@@ -30,7 +30,7 @@ export function getList(isLoading = true) {
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'candidatesByUser',
+      operation: 'candidatesByOrganization',
       fields: ['_id', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
     }))
       .then(response => {
@@ -39,7 +39,7 @@ export function getList(isLoading = true) {
             type: CANDIDATES_GET_LIST_RESPONSE,
             error: null,
             isLoading: false,
-            list: response.data.data.candidatesByUser
+            list: response.data.data.candidatesByOrganization
           })
         } else {
           dispatch({
@@ -159,4 +159,16 @@ export function edit(candidate) {
 }
 export function editClose() {
   return { type: CANDIDATES_EDIT_UNSET }
+}
+
+// Get by Client
+export function getListByClient({ clientId }) {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'query',
+      operation: 'candidatesByClient',
+      data: { clientId },
+      fields: ['_id', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+    }))
+  }
 }

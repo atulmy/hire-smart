@@ -30,7 +30,7 @@ export function getList(isLoading = true) {
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'panelsByUser',
+      operation: 'panelsByOrganization',
       fields: ['_id', 'name', 'email', 'mobile', 'createdAt']
     }))
       .then(response => {
@@ -39,7 +39,7 @@ export function getList(isLoading = true) {
             type: PANELS_GET_LIST_RESPONSE,
             error: null,
             isLoading: false,
-            list: response.data.data.panelsByUser
+            list: response.data.data.panelsByOrganization
           })
         } else {
           dispatch({
@@ -159,4 +159,16 @@ export function edit(panel) {
 }
 export function editClose() {
   return { type: PANELS_EDIT_UNSET }
+}
+
+// Get by Client
+export function getListByClient({ clientId }) {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'query',
+      operation: 'panelsByClient',
+      data: { clientId },
+      fields: ['_id', 'name', 'email', 'mobile', 'createdAt']
+    }))
+  }
 }

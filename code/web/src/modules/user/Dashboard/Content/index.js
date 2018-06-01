@@ -14,11 +14,14 @@ import styles from './styles'
 // App Imports
 import Loading from '../../../common/Loading'
 import AlignCenterMiddle from '../../../common/AlignCenterMiddle'
+import Overview from './Overview'
+import Candidates from './Candidates'
+import Panel from './Panel'
 
 // Component
 class Content extends PureComponent {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       tab: 'overview'
@@ -58,18 +61,15 @@ class Content extends PureComponent {
                       <div className={classes.tabContent}>
                         {
                           {
-                            overview: <span>Overview</span>,
+                            overview: <Overview />,
 
                             interviews: <span>Interviews</span>,
 
-                            candidates: <span>Candidates</span>,
+                            candidates: <Candidates />,
 
-                            panel: <span>Panel</span>,
+                            panel: <Panel />,
                           }[tab]
                         }
-
-                        <p>{ item.name }</p>
-                        <p>{ item.description }</p>
                       </div>
                     </div>
                   : <AlignCenterMiddle>

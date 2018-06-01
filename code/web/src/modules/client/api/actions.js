@@ -30,7 +30,7 @@ export function getList(isLoading = true) {
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'clientsByUser',
+      operation: 'clientsByOrganization',
       fields: ['_id', 'name', 'description']
     }))
       .then(response => {
@@ -39,7 +39,7 @@ export function getList(isLoading = true) {
             type: CLIENTS_GET_LIST_RESPONSE,
             error: null,
             isLoading: false,
-            list: response.data.data.clientsByUser
+            list: response.data.data.clientsByOrganization
           })
         } else {
           dispatch({

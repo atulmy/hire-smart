@@ -14,7 +14,9 @@ const styles = theme => ({
   },
 
   tabContent: {
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit * 3,
+    height: 'calc(100vh - 149px)',
+    overflowY: 'auto'
   },
 
   messageIcon: {

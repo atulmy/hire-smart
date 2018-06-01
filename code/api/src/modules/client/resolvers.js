@@ -15,7 +15,6 @@ export async function get(parentValue, { id }) {
 export async function getByOrganization(parentValue, {}, { auth }) {
   if(auth.user && auth.user.id) {
     return await Client.find({
-      userId: auth.user.id,
       organizationId: auth.user.organizationId
     })
   } else {

@@ -15,7 +15,6 @@ export async function get(parentValue, { id }) {
 export async function getByClient(parentValue, { clientId }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Panel.find({
-      userId: auth.user.id,
       organizationId: auth.user.organizationId,
       clientId
     })
@@ -28,7 +27,6 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
 export async function getByOrganization(parentValue, {}, { auth }) {
   if(auth.user && auth.user.id) {
     return await Panel.find({
-      userId: auth.user.id,
       organizationId: auth.user.organizationId
     })
   } else {

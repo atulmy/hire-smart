@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography'
 
 // Component
 const EmptyMessage = (props) => (
-  <Typography variant={'caption'} gutterBottom align="center">
+  <Typography variant={'caption'} align="center">
     { props.message }
   </Typography>
 )
