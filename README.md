@@ -3,9 +3,9 @@
 </p>
 
 <h1 align="center">HIRE SMART</h1>
-<p align="center">An application for human resource team / recruitment consultancies to streamline hiring process, scheduling interviews and tracking candidates.</p>
+<p align="center">An application for human resource team / recruitment consultancies to streamline hiring process, scheduling interviews and tracking candidates. This project is currently <i><strong>work in progress</strong></i>.</p>
 
-## Proposed Features
+### Proposed Features
   - Candidates management
     - Basic info
     - Total experience
@@ -51,6 +51,7 @@
     - React Native
     - Redux
     - React Navigation
+<<<<<<< HEAD
 
 ## Setup and Running
 - Prerequisites
@@ -75,3 +76,8 @@
 - Production
   - Run API `cd api` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
   - Run Webapp `cd web` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
+=======
+    
+## Website
+[hiresmart.app](https://hiresmart.app/)
+>>>>>>> bd99ee7c4500b06ff86fb1349484eab8904745c0
