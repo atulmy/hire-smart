@@ -51,7 +51,6 @@
     - React Native
     - Redux
     - React Navigation
-<<<<<<< HEAD
 
 ## Setup and Running
 - Prerequisites
@@ -76,8 +75,7 @@
 - Production
   - Run API `cd api` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
   - Run Webapp `cd web` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
-=======
+  
     
 ## Website
 [hiresmart.app](https://hiresmart.app/)
->>>>>>> bd99ee7c4500b06ff86fb1349484eab8904745c0
