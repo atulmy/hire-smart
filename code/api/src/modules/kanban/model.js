@@ -15,6 +15,9 @@ const Schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
+  interviewId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
   status: {
     type: String,
     required: true

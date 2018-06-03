@@ -5,20 +5,27 @@ import { GraphQLString } from 'graphql'
 import OrganizationType from './types'
 import { create, remove, update } from './resolvers'
 
+const fields = {
+  name: {
+    name: 'name',
+    type: GraphQLString
+  },
+
+  description: {
+    name: 'description',
+    type: GraphQLString
+  },
+
+  domain: {
+    name: 'domain',
+    type: GraphQLString
+  }
+}
+
 // Organization create
 export const organizationCreate = {
   type: OrganizationType,
-  args: {
-    name: {
-      name: 'name',
-      type: GraphQLString
-    },
-
-    description: {
-      name: 'description',
-      type: GraphQLString
-    }
-  },
+  args: fields,
   resolve: create
 }
 
@@ -31,20 +38,7 @@ export const organizationUpdate = {
       type: GraphQLString
     },
 
-    name: {
-      name: 'name',
-      type: GraphQLString
-    },
-
-    description: {
-      name: 'description',
-      type: GraphQLString
-    },
-
-    domain: {
-      name: 'domain',
-      type: GraphQLString
-    }
+    ...fields
   },
   resolve: update
 }

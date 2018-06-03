@@ -9,15 +9,16 @@ import styles from './styles'
 // App Imports
 
 // Component
-const DummyComponentPure = () => (
+const DummyComponentPure = (props) => (
   <div>
-    <h1>Dummy Component Pure</h1>
+    <h1>Dummy Component Pure { props.dummyId } </h1>
   </div>
 )
 
 // Component Properties
 DummyComponentPure.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  dummyId: PropTypes.string.isRequired
 }
 
 export default withStyles(styles)(DummyComponentPure)

@@ -17,7 +17,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { getList, edit, editClose } from '../../api/actions'
+import { getList, edit } from '../../api/actions'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
 
@@ -96,8 +96,7 @@ class List extends PureComponent {
 List.propTypes = {
   classes: PropTypes.object.isRequired,
   getList: PropTypes.func.isRequired,
-  edit: PropTypes.func.isRequired,
-  editClose: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired
 }
 
 // Component State
@@ -107,4 +106,4 @@ function listState(state) {
   }
 }
 
-export default connect(listState, { getList, edit, editClose })(withStyles(styles)(List))
+export default connect(listState, { getList, edit })(withStyles(styles)(List))

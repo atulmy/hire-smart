@@ -91,7 +91,7 @@ export function queryBuilder(options) {
               ${ options.fields.join(',') }
           }
       }`,
-    variables: Object.assign(options.data, options.variables)
+    variables: { ...options.data, ...options.variables }
   }
 
   return query

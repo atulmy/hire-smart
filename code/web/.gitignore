@@ -1,4 +1,4 @@
 node_modules/
 build/
-public/js/bundle.js
+public/js/bundles/
 .env
