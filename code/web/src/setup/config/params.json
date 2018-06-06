@@ -9,8 +9,8 @@
 
   "kanban": {
     "columns": [
-      { "key": "sourced", "name": "Sourced", "color": "grey" },
-      { "key": "interview", "name": "Interview", "color": "blue" },
+      { "key": "shortlisted", "name": "Shortlisted", "color": "grey" },
+      { "key": "progress", "name": "In Progress", "color": "blue" },
       { "key": "hold", "name": "On Hold", "color": "orange" },
       { "key": "rejected", "name": "Rejected", "color": "red" },
       { "key": "selected", "name": "Selected", "color": "green" }

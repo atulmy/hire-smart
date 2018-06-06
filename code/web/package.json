@@ -19,12 +19,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@material-ui/core": "1.1.0",
+    "@material-ui/core": "1.2.0",
     "@material-ui/icons": "1.1.0",
     "axios": "0.18.0",
     "body-parser": "1.18.3",
     "cookie-parser": "1.4.3",
-    "dotenv": "5.0.1",
+    "dotenv": "6.0.0",
     "express": "4.16.3",
     "ip": "1.1.5",
     "js-cookie": "2.2.0",
@@ -37,7 +37,7 @@
     "react-router-dom": "4.2.2",
     "redux": "4.0.0",
     "redux-thunk": "2.3.0",
-    "validator": "10.2.0"
+    "validator": "10.3.0"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
@@ -47,9 +47,9 @@
     "babel-preset-env": "1.7.0",
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-2": "6.24.1",
-    "dotenv-webpack": "1.5.5",
+    "dotenv-webpack": "1.5.7",
     "nodemon": "1.17.5",
-    "webpack": "4.10.2",
-    "webpack-cli": "2.1.4"
+    "webpack": "4.11.1",
+    "webpack-cli": "3.0.2"
   }
 }

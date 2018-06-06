@@ -5,10 +5,7 @@ import { connect } from 'react-redux'
 
 // UI Imports
 import Typography from '@material-ui/core/Typography'
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 import Fade from '@material-ui/core/Fade'
 import grey from '@material-ui/core/colors/grey'
 import { withStyles } from '@material-ui/core/styles'
@@ -55,32 +52,27 @@ class Overview extends PureComponent {
                 >
                   <div style={{ textAlign: 'center', borderBottom: `2px solid ${ column.color }`, margin: '0 20px', paddingBottom: 10 }}>
                     <Typography variant="button" style={{ color: grey[800], textTransform: 'uppercase', fontWeight: 400, fontSize: '0.75rem' }}>
-                      { column.name }
+                      { column.name } (5)
                     </Typography>
                   </div>
 
-                  <div style={{ padding: '0 20px' }}>
+                  <div style={{ padding: '0 20px', height: 'calc(100vh - 223px)', overflowY: 'auto' }}>
                     {
                       i === 0 &&
-                      <Card style={{ marginTop: 20 }}>
-                        <CardContent style={{ padding: '10px 15px 0 15px' }}>
-                          <Typography variant="headline">
-                            Jon Snow
-                          </Typography>
-                          <Typography>
-                            Panel: Tyrion Lannister
-                          </Typography>
-                          <Typography color="textSecondary">
-                            5.5 years
-                          </Typography>
-                          <Typography color="textSecondary">
-                            9930306893
-                          </Typography>
-                        </CardContent>
-                        <CardActions style={{ padding: 5 }}>
-                          <Button size="small">Resume</Button>
-                        </CardActions>
-                      </Card>
+                      <Paper style={{ margin: '20px 0', padding: '10px', cursor: 'pointer' }}>
+                        <Typography variant="title">
+                          Jon Snow 1
+                        </Typography>
+                        <Typography>
+                          Panel: Tyrion Lannister
+                        </Typography>
+                        <Typography color="textSecondary">
+                          5.5 years
+                        </Typography>
+                        <Typography color="textSecondary">
+                          9930306893
+                        </Typography>
+                      </Paper>
                     }
                   </div>
                 </div>
