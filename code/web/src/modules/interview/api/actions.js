@@ -7,15 +7,15 @@ import { API_URL } from '../../../setup/config/env'
 import { queryBuilder } from '../../../setup/helpers'
 
 // Actions Types
-export const CANDIDATES_GET_LIST_REQUEST = 'CANDIDATE/GET_LIST_REQUEST'
-export const CANDIDATES_GET_LIST_RESPONSE = 'CANDIDATE/GET_LIST_RESPONSE'
-export const CANDIDATES_GET_LIST_FAILURE = 'CANDIDATE/GET_LIST_FAILURE'
-export const CANDIDATES_GET_LIST_RESET = 'CANDIDATE/GET_LIST_RESET'
-export const CANDIDATES_GET_REQUEST = 'CANDIDATE/GET_REQUEST'
-export const CANDIDATES_GET_RESPONSE = 'CANDIDATE/GET_RESPONSE'
-export const CANDIDATES_GET_FAILURE = 'CANDIDATE/GET_FAILURE'
-export const CANDIDATES_EDIT_SET = 'CANDIDATE/EDIT_SET'
-export const CANDIDATES_EDIT_UNSET = 'CANDIDATE/EDIT_UNSET'
+export const INTERVIEWS_GET_LIST_REQUEST = 'INTERVIEW/GET_LIST_REQUEST'
+export const INTERVIEWS_GET_LIST_RESPONSE = 'INTERVIEW/GET_LIST_RESPONSE'
+export const INTERVIEWS_GET_LIST_FAILURE = 'INTERVIEW/GET_LIST_FAILURE'
+export const INTERVIEWS_GET_LIST_RESET = 'INTERVIEW/GET_LIST_RESET'
+export const INTERVIEWS_GET_REQUEST = 'INTERVIEW/GET_REQUEST'
+export const INTERVIEWS_GET_RESPONSE = 'INTERVIEW/GET_RESPONSE'
+export const INTERVIEWS_GET_FAILURE = 'INTERVIEW/GET_FAILURE'
+export const INTERVIEWS_EDIT_SET = 'INTERVIEW/EDIT_SET'
+export const INTERVIEWS_EDIT_UNSET = 'INTERVIEW/EDIT_UNSET'
 
 // Actions
 
@@ -23,27 +23,27 @@ export const CANDIDATES_EDIT_UNSET = 'CANDIDATE/EDIT_UNSET'
 export function getList(isLoading = true) {
   return dispatch => {
     dispatch({
-      type: CANDIDATES_GET_LIST_REQUEST,
+      type: INTERVIEWS_GET_LIST_REQUEST,
       error: null,
       isLoading
     })
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'candidatesByOrganization',
-      fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+      operation: 'interviewsByOrganization',
+      fields: ['_id', 'name', 'description']
     }))
       .then(response => {
         if (response.status === 200) {
           dispatch({
-            type: CANDIDATES_GET_LIST_RESPONSE,
+            type: INTERVIEWS_GET_LIST_RESPONSE,
             error: null,
             isLoading: false,
-            list: response.data.data.candidatesByOrganization
+            list: response.data.data.interviewsByOrganization
           })
         } else {
           dispatch({
-            type: CANDIDATES_GET_LIST_FAILURE,
+            type: INTERVIEWS_GET_LIST_FAILURE,
             error: 'Some error occurred. Please try again.',
             isLoading: false
           })
@@ -51,7 +51,7 @@ export function getList(isLoading = true) {
       })
       .catch(() => {
         dispatch({
-          type: CANDIDATES_GET_LIST_FAILURE,
+          type: INTERVIEWS_GET_LIST_FAILURE,
           error: 'Some error occurred. Please try again.',
           isLoading: false
         })
@@ -60,38 +60,38 @@ export function getList(isLoading = true) {
 }
 
 // Get single
-export function get(candidateId, isLoading = true) {
+export function get(interviewId, isLoading = true) {
   return dispatch => {
     dispatch({
-      type: CANDIDATES_GET_REQUEST,
+      type: INTERVIEWS_GET_REQUEST,
       isLoading
     })
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'candidate',
-      data: { id: candidateId },
-      fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+      operation: 'interview',
+      data: { id: interviewId },
+      fields: ['_id', 'name', 'description', 'createdAt']
     }))
       .then(response => {
         if (response.status === 200) {
           if (response.data.errors && response.data.errors.length > 0) {
             dispatch({
-              type: CANDIDATES_GET_FAILURE,
+              type: INTERVIEWS_GET_FAILURE,
               error: response.data.errors[0].message,
               isLoading: false
             })
           } else {
             dispatch({
-              type: CANDIDATES_GET_RESPONSE,
+              type: INTERVIEWS_GET_RESPONSE,
               error: null,
               isLoading: false,
-              item: response.data.data.candidate
+              item: response.data.data.interview
             })
           }
         } else {
           dispatch({
-            type: CANDIDATES_GET_FAILURE,
+            type: INTERVIEWS_GET_FAILURE,
             error: 'Some error occurred. Please try again.',
             isLoading: false
           })
@@ -99,7 +99,7 @@ export function get(candidateId, isLoading = true) {
       })
       .catch(error => {
         dispatch({
-          type: CANDIDATES_GET_FAILURE,
+          type: INTERVIEWS_GET_FAILURE,
           error: error,
           isLoading: false
         })
@@ -112,42 +112,42 @@ export function getListByClient({ clientId }) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'candidatesByClient',
+      operation: 'interviewsByClient',
       data: { clientId },
-      fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+      fields: ['_id', 'organizationId', 'clientId', 'candidateId', 'panelId', 'userId', 'dateTime', 'mode', 'createdAt']
     }))
   }
 }
 
 // Create or update
-export function createOrUpdate(candidate) {
-  if (!isEmpty(candidate.id)) {
-    return update(candidate)
+export function createOrUpdate(interview) {
+  if (!isEmpty(interview.id)) {
+    return update(interview)
   } else {
-    delete candidate.id
-    return create(candidate)
+    delete interview.id
+    return create(interview)
   }
 }
 
 // Create
-export function create(candidate) {
+export function create(interview) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'candidateCreate',
-      data: candidate,
+      operation: 'interviewCreate',
+      data: interview,
       fields: ['_id']
     }))
   }
 }
 
 // Update
-export function update(candidate) {
+export function update(interview) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'candidateUpdate',
-      data: candidate,
+      operation: 'interviewUpdate',
+      data: interview,
       fields: ['_id']
     }))
   }
@@ -158,7 +158,7 @@ export function remove(data) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'candidateRemove',
+      operation: 'interviewRemove',
       data,
       fields: ['_id']
     }))
@@ -166,9 +166,9 @@ export function remove(data) {
 }
 
 // Edit
-export function edit(candidate) {
-  return { type: CANDIDATES_EDIT_SET, candidate }
+export function edit(interview) {
+  return { type: INTERVIEWS_EDIT_SET, interview }
 }
 export function editClose() {
-  return { type: CANDIDATES_EDIT_UNSET }
+  return { type: INTERVIEWS_EDIT_UNSET }
 }

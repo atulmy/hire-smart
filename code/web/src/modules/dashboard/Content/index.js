@@ -12,11 +12,30 @@ import Fade from '@material-ui/core/Fade'
 import styles from './styles'
 
 // App Imports
-import Loading from '../../../common/Loading'
-import AlignCenterMiddle from '../../../common/AlignCenterMiddle'
+import Loading from '../../common/Loading'
+import AlignCenterMiddle from '../../common/AlignCenterMiddle'
 import Overview from './Overview'
 import Candidates from './Candidates'
 import Panel from './Panel'
+
+export const overviewTabs = {
+  overview: {
+    key: 'overview',
+    label: 'Overview'
+  },
+  interviews: {
+    key: 'interviews',
+    label: 'Interviews'
+  },
+  candidates: {
+    key: 'candidates',
+    label: 'Candidates'
+  },
+  panel: {
+    key: 'panel',
+    label: 'Panel'
+  }
+}
 
 // Component
 class Content extends PureComponent {
@@ -24,7 +43,8 @@ class Content extends PureComponent {
     super(props)
 
     this.state = {
-      tab: 'overview'
+      // Default tab
+      tab: overviewTabs.overview.key
     }
   }
 
@@ -51,17 +71,14 @@ class Content extends PureComponent {
                           value={tab}
                           onChange={this.tabSwitch}
                         >
-                          <Tab label={'Overview'} value={'overview'} />
-                          <Tab label={'Interviews'} value={'interviews'} />
-                          <Tab label={'Candidates'} value={'candidates'} />
-                          <Tab label={'Panel'} value={'panel'} />
+                          { Object.values(overviewTabs).map(item => <Tab key={item.key} label={item.label} value={item.key} />)}
                         </Tabs>
                       </div>
 
                       <div className={classes.tabContent}>
                         {
                           {
-                            overview: <Overview />,
+                            overview: <Overview tabSwitch={this.tabSwitch} />,
 
                             interviews: <span>Interviews</span>,
 

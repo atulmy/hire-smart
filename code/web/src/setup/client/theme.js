@@ -7,7 +7,7 @@ const theme = createMuiTheme({
   palette: {
     primary: blue,
     secondary: yellow
-  },
+  }
 })
 
 export default theme

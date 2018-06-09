@@ -1,6 +1,7 @@
 // App Imports
 import pages from './pages'
 import user from './user'
+import dashboard from './dashboard'
 import organization from './organization'
 import client from './client'
 import candidate from './candidate'
@@ -10,6 +11,7 @@ import panel from './panel'
 const routes = {
   ...pages,
   ...user,
+  ...dashboard,
   ...organization,
   ...client,
   ...candidate,

@@ -9,9 +9,9 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import params from '../../../setup/config/params'
+import params from '../../setup/config/params'
 import Sidebar from './Sidebar'
-import TabContent from './Content'
+import Content from './Content'
 
 // Component
 class Dashboard extends React.Component {
@@ -29,8 +29,8 @@ class Dashboard extends React.Component {
           {/* Sidebar */}
           <Sidebar />
 
-          {/* Tabs */}
-          <TabContent />
+          {/* Content */}
+          <Content />
         </div>
       </Fade>
     )

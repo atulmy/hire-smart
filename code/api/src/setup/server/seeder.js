@@ -7,8 +7,8 @@ import database from '../server/database'
 import organization from '../../modules/organization/seeds'
 import user from '../../modules/user/seeds'
 import client from '../../modules/client/seeds'
-import candidate from '../../modules/candidate/seeds'
 import panel from '../../modules/panel/seeds'
+import candidate from '../../modules/candidate/seeds'
 
 // Seeder
 async function seeder() {
@@ -27,8 +27,8 @@ async function seeder() {
   await organization()
   await user()
   await client()
-  await candidate()
   await panel()
+  await candidate()
 
   // Close connection
   mongoose.connection.close()

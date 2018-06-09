@@ -14,10 +14,10 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { messageShow } from '../../../../common/api/actions'
-import { getListByClient } from '../../../../panel/api/actions'
-import Loading from '../../../../common/Loading'
-import EmptyMessage from '../../../../common/EmptyMessage'
+import { messageShow } from '../../../common/api/actions'
+import { getListByClient } from '../../../panel/api/actions'
+import Loading from '../../../common/Loading'
+import EmptyMessage from '../../../common/EmptyMessage'
 
 // Component
 class Panel extends PureComponent {
@@ -68,7 +68,7 @@ class Panel extends PureComponent {
     const { isLoading, panels } = this.state
 
     return (
-      <div>
+      <div className={classes.root}>
         {
           isLoading
             ? <Loading />

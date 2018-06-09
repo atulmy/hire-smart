@@ -25,13 +25,12 @@ const Schema = new mongoose.Schema({
   },
   dateTime: {
     type: Date,
-    required: true
+    default: new Date()
   },
   mode: {
-    type: String,
-    required: true
+    type: String
   },
 }, {timestamps: true})
 
 // Model
-export default mongoose.model('Candidate', Schema, 'Candidate')
+export default mongoose.model('Interview', Schema, 'Interview')

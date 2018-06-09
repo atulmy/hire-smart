@@ -52,10 +52,11 @@ export async function getAll() {
 // Mutations
 
 // Create
-export async function create(parentValue, { name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
+export async function create(parentValue, { clientId, name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Candidate.create({
       organizationId: auth.user.organizationId,
+      clientId,
       userId: auth.user.id,
       name,
       email,
@@ -71,12 +72,13 @@ export async function create(parentValue, { name, email, mobile, experience, res
 }
 
 // Update
-export async function update(parentValue, { id, name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
+export async function update(parentValue, { id, clientId, name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     return await Candidate.updateOne(
       { _id: id },
       {
         $set: {
+          clientId,
           name,
           email,
           mobile,

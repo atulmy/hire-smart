@@ -9,9 +9,9 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { get as getClient } from '../../../client/api/actions'
-import ClientList from '../../../client/widgets/List'
-import ClientCreate from '../../../client/widgets/Create'
+import { get as getClient } from '../../client/api/actions'
+import ClientList from '../../client/widgets/List'
+import ClientCreate from '../../client/widgets/Create'
 
 // Component
 class Sidebar extends PureComponent {

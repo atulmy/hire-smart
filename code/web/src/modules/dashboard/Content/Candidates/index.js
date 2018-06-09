@@ -9,28 +9,39 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import Drawer from '@material-ui/core/Drawer'
+import Button from '@material-ui/core/Button'
+import Divider from '@material-ui/core/Divider'
+import IconAdd from '@material-ui/icons/Add'
+import IconCached from '@material-ui/icons/Cached'
 import Fade from '@material-ui/core/Fade'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { messageShow } from '../../../../common/api/actions'
-import { getListByClient } from '../../../../candidate/api/actions'
-import Loading from '../../../../common/Loading'
-import EmptyMessage from '../../../../common/EmptyMessage'
+import { messageShow } from '../../../common/api/actions'
+import { getListByClient, editClose } from '../../../candidate/api/actions'
+import Loading from '../../../common/Loading'
+import EmptyMessage from '../../../common/EmptyMessage'
+import CreateOrEdit from '../../../candidate/Manage/CreateOrEdit'
 
 // Component
 class Candidates extends PureComponent {
 
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
 
     this.state = {
-      candidates: []
+      candidates: [],
+      right: false,
     }
   }
 
   componentDidMount() {
+    const { editClose } = this.props
+
+    editClose()
+
     this.refresh()
   }
 
@@ -63,12 +74,34 @@ class Candidates extends PureComponent {
     })
   }
 
+  toggleDrawer = (side, open) => () => {
+    this.setState({
+      [side]: open,
+    });
+  };
+
   render() {
-    const { classes } = this.props
+    const { classes, client } = this.props
     const { isLoading, candidates } = this.state
 
     return (
-      <div>
+      <div className={classes.root}>
+        {/* Actions */}
+        <div style={{ textAlign: 'right' }}>
+          <Button onClick={this.toggleDrawer('right', true)}>
+            <IconAdd style={{ width: 20, height: 20, marginRight: 5 }} />
+            Add
+          </Button>
+
+          <Button onClick={this.refresh}>
+            <IconCached style={{ width: 20, height: 20, marginRight: 5 }} />
+            Refresh
+          </Button>
+        </div>
+
+        <Divider style={{ marginTop: 5 }} />
+
+        {/* Candidate list */}
         {
           isLoading
             ? <Loading />
@@ -82,6 +115,7 @@ class Candidates extends PureComponent {
                       <TableCell>Experience</TableCell>
                       <TableCell>Resume</TableCell>
                       <TableCell>Salary Current/Expected</TableCell>
+                      <TableCell>Shortlist</TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -96,6 +130,9 @@ class Candidates extends PureComponent {
                             <TableCell>{ candidate.experience }</TableCell>
                             <TableCell>{ candidate.resume }</TableCell>
                             <TableCell>{ candidate.salaryCurrent }/{ candidate.salaryExpected }</TableCell>
+                            <TableCell>
+
+                            </TableCell>
                           </TableRow>
                         ))
                         : <TableRow>
@@ -108,6 +145,15 @@ class Candidates extends PureComponent {
                 </Table>
               </Fade>
         }
+
+        {/* Candidate create or edit */}
+        <Drawer anchor="right" open={this.state.right} onClose={this.toggleDrawer('right', false)}>
+          <CreateOrEdit
+            elevation={0}
+            clientId={client.item._id}
+            clientShowLoading={false}
+          />
+        </Drawer>
       </div>
     )
   }
@@ -118,6 +164,7 @@ Candidates.propTypes = {
   classes: PropTypes.object.isRequired,
   client: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
+  editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 
@@ -128,4 +175,4 @@ function candidatesState(state) {
   }
 }
 
-export default connect(candidatesState, { getListByClient, messageShow })(withStyles(styles)(Candidates))
+export default connect(candidatesState, { getListByClient, editClose, messageShow })(withStyles(styles)(Candidates))

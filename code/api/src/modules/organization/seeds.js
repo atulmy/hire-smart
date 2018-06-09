@@ -7,6 +7,7 @@ export default async function () {
 
   await Organization.create({
     name: 'HireSmart Inc.',
-    description: 'Streamline your hiring process, scheduling interviews and tracking candidates.'
+    description: 'Streamline your hiring process, scheduling interviews and tracking candidates.',
+    domain: 'hiresmart.app'
   })
 }

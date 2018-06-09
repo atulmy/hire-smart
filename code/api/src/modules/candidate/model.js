@@ -7,12 +7,12 @@ const Schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
+  clientId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
-  },
-  clientId: {
-    type: mongoose.Schema.Types.ObjectId
   },
   name: {
     type: String,
