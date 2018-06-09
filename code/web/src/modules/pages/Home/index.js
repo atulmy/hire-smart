@@ -186,6 +186,16 @@ class Home extends PureComponent {
 
         {/* Bottom CTA */}
         <div className={classes.bottomCta}>
+          <div style={{ padding: '0 5rem' }}>
+            <Typography
+              variant={'headline'}
+              gutterBottom
+              className={classes.featureItemTitle}
+            >
+              From the moment you get a resume to either the candidate is selected or rejected, HIRESMART enables you manage everything in between efficiently.
+            </Typography>
+          </div>
+
           <Button
             variant={'raised'}
             className={classes.bottomCtaButton}

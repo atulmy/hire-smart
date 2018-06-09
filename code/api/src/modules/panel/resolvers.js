@@ -52,11 +52,12 @@ export async function getAll() {
 // Mutations
 
 // Create
-export async function create(parentValue, { name, email, mobile }, { auth }) {
+export async function create(parentValue, { clientId, name, email, mobile }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Panel.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
+      clientId,
       name,
       email,
       mobile
@@ -67,12 +68,13 @@ export async function create(parentValue, { name, email, mobile }, { auth }) {
 }
 
 // Update
-export async function update(parentValue, { id, name, email, mobile }, { auth }) {
+export async function update(parentValue, { id, clientId, name, email, mobile }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     return await Panel.updateOne(
       { _id: id },
       {
         $set: {
+          clientId,
           name,
           email,
           mobile

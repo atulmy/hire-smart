@@ -10,6 +10,10 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
 import TextField from '@material-ui/core/TextField'
+import Select from '@material-ui/core/Select'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
 import IconButton from '@material-ui/core/IconButton'
 import IconCheck from '@material-ui/icons/Check'
 import IconClose from '@material-ui/icons/Close'
@@ -19,7 +23,8 @@ import styles from './styles'
 
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
-import { createOrUpdate, getList } from '../../api/actions'
+import { getList as getClientList } from '../../../client/api/actions'
+import { createOrUpdate, getList, editClose } from '../../api/actions'
 import { messageShow } from '../../../common/api/actions'
 
 // Component
@@ -27,22 +32,34 @@ class CreateOrEdit extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {
-      isLoading: false,
-
+    this.panel = {
       id: '',
+      clientId: props.clientId,
       name: '',
       email: '',
       mobile: ''
     }
+
+    this.state = {
+      isLoading: false,
+
+      ...this.panel
+    }
+  }
+
+  componentDidMount() {
+    const { getClientList, clientShowLoading } = this.props
+
+    getClientList(clientShowLoading)
   }
 
   componentWillReceiveProps(nextProps) {
     const { panel } = nextProps.panelEdit
 
-    if(panel._id !== this.state.id) {
+    if(panel && panel._id !== this.state.id) {
       this.setState({
         id: panel._id,
+        clientId: panel.clientId,
         name: panel.name,
         email: panel.email,
         mobile: panel.mobile
@@ -64,11 +81,10 @@ class CreateOrEdit extends PureComponent {
 
   reset = () => {
     this.setState({
-      id: '',
-      name: '',
-      email: '',
-      mobile: ''
+      ...this.panel
     })
+
+    editClose()
   }
 
   save = (event) => {
@@ -76,7 +92,7 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, getList, messageShow } = this.props
 
-    const { id, name, email, mobile } = this.state
+    const { id, clientId, name, email, mobile } = this.state
 
     // Validate
     if(!isEmpty(name) && !isEmpty(email) && !isEmpty(mobile)) {
@@ -85,7 +101,7 @@ class CreateOrEdit extends PureComponent {
       this.isLoadingToggle(true)
 
       // Create or Update
-      createOrUpdate({ id, name, email, mobile })
+      createOrUpdate({ id, clientId, name, email, mobile })
         .then(response => {
           if(response.data.errors && !isEmpty(response.data.errors)) {
             messageShow(response.data.errors[0].message)
@@ -115,11 +131,11 @@ class CreateOrEdit extends PureComponent {
   }
 
   render() {
-    const { classes } = this.props
-    const { isLoading, id, name, email, mobile } = this.state
+    const { classes, clients, elevation } = this.props
+    const { isLoading, id, clientId, name, email, mobile } = this.state
 
     return (
-      <Paper elevation={1} className={classes.formContainer}>
+      <Paper elevation={elevation} className={classes.formContainer}>
         <Typography
           variant={'subheading'}
           color={'inherit'}
@@ -134,13 +150,48 @@ class CreateOrEdit extends PureComponent {
               name={'name'}
               value={nullToEmptyString(name)}
               onChange={this.onType}
-              label={'Panel Name'}
-              placeholder={'Enter name'}
+              label={'Name'}
+              placeholder={'Enter panel name'}
               required={true}
               margin={'normal'}
               autoComplete={'off'}
               fullWidth
             />
+          </Grid>
+
+          {/* Input - client */}
+          <Grid item xs={12}>
+            <FormControl
+              style={{ marginTop: 10 }}
+              fullWidth
+              required={true}
+            >
+              <InputLabel htmlFor="client-id">Client</InputLabel>
+              <Select
+                value={nullToEmptyString(clientId)}
+                onChange={this.onType}
+                inputProps={{
+                  id: 'client-id',
+                  name: 'clientId',
+                  required: 'required'
+                }}
+              >
+                <MenuItem value="">
+                  <em>Select client</em>
+                </MenuItem>
+                {
+                  clients.isLoading
+                    ? <Loading />
+                    : clients.list && clients.list.length > 0
+                        ? clients.list.map(client => (
+                            <MenuItem key={client._id} value={client._id}>{ client.name }</MenuItem>
+                          ))
+                        : <MenuItem value="">
+                            <em>No client added.</em>
+                          </MenuItem>
+                }
+              </Select>
+            </FormControl>
           </Grid>
 
           {/* Input - email */}
@@ -150,8 +201,8 @@ class CreateOrEdit extends PureComponent {
               type={'email'}
               value={nullToEmptyString(email)}
               onChange={this.onType}
-              label={'Panel email'}
-              placeholder={'Enter email'}
+              label={'Email'}
+              placeholder={'Enter panel email'}
               required={true}
               margin={'normal'}
               autoComplete={'off'}
@@ -165,8 +216,8 @@ class CreateOrEdit extends PureComponent {
               name={'mobile'}
               value={nullToEmptyString(mobile)}
               onChange={this.onType}
-              label={'Panel mobile'}
-              placeholder={'Enter mobile'}
+              label={'Mobile'}
+              placeholder={'Enter panel mobile'}
               required={true}
               margin={'normal'}
               autoComplete={'off'}
@@ -206,18 +257,30 @@ class CreateOrEdit extends PureComponent {
 
 // Component Properties
 CreateOrEdit.propTypes = {
+  elevation: PropTypes.number.isRequired,
+  clientId: PropTypes.string.isRequired,
+  clientShowLoading: PropTypes.bool.isRequired,
   classes: PropTypes.object.isRequired,
   panelEdit: PropTypes.object.isRequired,
+  clients: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
   getList: PropTypes.func.isRequired,
+  editClose: PropTypes.func.isRequired,
+  getClientList: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
+}
+CreateOrEdit.defaultProps = {
+  elevation: 1,
+  clientId: '',
+  clientShowLoading: true
 }
 
 // Component State
 function createOrEditState(state) {
   return {
-    panelEdit: state.panelEdit
+    panelEdit: state.panelEdit,
+    clients: state.clients
   }
 }
 
-export default connect(createOrEditState, { createOrUpdate, getList, messageShow })(withStyles(styles)(CreateOrEdit))
+export default connect(createOrEditState, { createOrUpdate, getList, editClose, getClientList, messageShow })(withStyles(styles)(CreateOrEdit))

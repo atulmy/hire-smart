@@ -2,6 +2,8 @@
 import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
+import params from '../../setup/config/params'
+import Kanban from '../kanban/model'
 import Candidate from './model'
 
 // Query
@@ -54,7 +56,7 @@ export async function getAll() {
 // Create
 export async function create(parentValue, { clientId, name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Candidate.create({
+    const candidate = await Candidate.create({
       organizationId: auth.user.organizationId,
       clientId,
       userId: auth.user.id,
@@ -66,6 +68,16 @@ export async function create(parentValue, { clientId, name, email, mobile, exper
       salaryCurrent,
       salaryExpected
     })
+
+    await Kanban.create({
+      clientId,
+      candidateId: candidate._id,
+      userId: auth.user.id,
+      status: params.kanban.columns[0].key,
+      highlight: false
+    })
+
+    return candidate
   } else {
     throw new Error('Please login to create candidate.')
   }

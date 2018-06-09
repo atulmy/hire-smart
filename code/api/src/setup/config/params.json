@@ -3,6 +3,7 @@
     "name": "HireSmart",
     "domain": "hiresmart.app"
   },
+
   "user": {
     "roles": {
       "admin": {
@@ -14,5 +15,15 @@
         "title": "User"
       }
     }
+  },
+
+  "kanban": {
+    "columns": [
+      { "key": "shortlisted", "name": "Shortlisted", "color": "grey" },
+      { "key": "progress", "name": "In Progress", "color": "blue" },
+      { "key": "hold", "name": "On Hold", "color": "orange" },
+      { "key": "rejected", "name": "Rejected", "color": "red" },
+      { "key": "selected", "name": "Selected", "color": "green" }
+    ]
   }
 }

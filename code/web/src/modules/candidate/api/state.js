@@ -4,21 +4,25 @@
 import {
   CANDIDATES_GET_LIST_REQUEST,
   CANDIDATES_GET_LIST_RESPONSE,
-  CANDIDATES_GET_LIST_FAILURE,
+  CANDIDATES_GET_LIST_DONE,
   CANDIDATES_GET_LIST_RESET,
-  CANDIDATES_GET_REQUEST,
-  CANDIDATES_GET_RESPONSE,
-  CANDIDATES_GET_FAILURE,
-  CANDIDATES_EDIT_SET,
-  CANDIDATES_EDIT_UNSET
-} from './actions'
+  CANDIDATES_GET_LIST_BY_CLIENT_REQUEST,
+  CANDIDATES_GET_LIST_BY_CLIENT_RESPONSE,
+  CANDIDATES_GET_LIST_BY_CLIENT_DONE,
+  CANDIDATES_GET_LIST_BY_CLIENT_RESET,
+  CANDIDATE_GET_REQUEST,
+  CANDIDATE_GET_RESPONSE,
+  CANDIDATE_GET_DONE,
+  CANDIDATE_GET_RESET,
+  CANDIDATE_EDIT_SET,
+  CANDIDATE_EDIT_UNSET
+} from './actions/types'
 
-// list
+// List
 
 // Initial State
 const candidatesInitialState = {
   isLoading: false,
-  error: null,
   list: []
 }
 
@@ -28,27 +32,23 @@ export const candidates = (state = candidatesInitialState, action) => {
     case CANDIDATES_GET_LIST_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
     case CANDIDATES_GET_LIST_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         list: action.list
       }
 
-    case CANDIDATES_GET_LIST_FAILURE:
+    case CANDIDATES_GET_LIST_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
 
     case CANDIDATES_GET_LIST_RESET:
-      return Object.assign({}, candidatesInitialState)
+      return { ...candidatesInitialState }
 
     default:
       return state
@@ -61,34 +61,69 @@ export const candidates = (state = candidatesInitialState, action) => {
 // Initial State
 const candidateInitialState = {
   isLoading: false,
-  error: null,
   item: {}
 }
 
 // State
 export const candidate = (state = candidateInitialState, action) => {
   switch (action.type) {
-    case CANDIDATES_GET_REQUEST:
+    case CANDIDATE_GET_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
-    case CANDIDATES_GET_RESPONSE:
+    case CANDIDATE_GET_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         item: action.item
       }
 
-    case CANDIDATES_GET_FAILURE:
+    case CANDIDATE_GET_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
+
+    case CANDIDATE_GET_RESET:
+      return { ...candidateInitialState }
+
+    default:
+      return state
+  }
+}
+
+// List by Client
+
+// Initial State
+const candidateByClientInitialState = {
+  isLoading: false,
+  list: []
+}
+
+// State
+export const candidatesByClient = (state = candidateByClientInitialState, action) => {
+  switch (action.type) {
+    case CANDIDATES_GET_LIST_BY_CLIENT_REQUEST:
+      return {
+        ...state,
+        isLoading: action.isLoading
+      }
+
+    case CANDIDATES_GET_LIST_BY_CLIENT_RESPONSE:
+      return {
+        ...state,
+        list: action.list
+      }
+
+    case CANDIDATES_GET_LIST_BY_CLIENT_DONE:
+      return {
+        ...state,
+        isLoading: action.isLoading
+      }
+
+    case CANDIDATES_GET_LIST_BY_CLIENT_RESET:
+      return { ...candidatesInitialState }
 
     default:
       return state
@@ -108,14 +143,14 @@ const candidateEditState = {
 // State
 export const candidateEdit = (state = candidateEditState, action) => {
   switch (action.type) {
-    case CANDIDATES_EDIT_SET:
+    case CANDIDATE_EDIT_SET:
       return {
         ...state,
         candidate: action.candidate,
         open: true
       }
 
-    case CANDIDATES_EDIT_UNSET:
+    case CANDIDATE_EDIT_UNSET:
       return {
         ...state,
         candidate: null,

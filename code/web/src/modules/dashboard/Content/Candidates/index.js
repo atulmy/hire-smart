@@ -20,7 +20,8 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getListByClient, editClose } from '../../../candidate/api/actions'
+import { getListByClient } from '../../../candidate/api/actions/query'
+import { editClose } from '../../../candidate/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
 import CreateOrEdit from '../../../candidate/Manage/CreateOrEdit'
@@ -32,8 +33,7 @@ class Candidates extends PureComponent {
     super()
 
     this.state = {
-      candidates: [],
-      right: false,
+      drawerAdd: false
     }
   }
 
@@ -46,60 +46,37 @@ class Candidates extends PureComponent {
   }
 
   refresh = async (isLoading = true) => {
-    this.isLoadingToggle(isLoading)
+    const { getListByClient, client } = this.props
 
-    const { client, getListByClient, messageShow } = this.props
-
-    try {
-      // Get candidate list by clientId
-      const response = await getListByClient({ clientId: client.item._id })
-
-      if (response.data.errors && response.data.errors.length > 0) {
-        messageShow(response.data.errors[0].message)
-      } else {
-        this.setState({
-          candidates: response.data.data.candidatesByClient
-        })
-      }
-    } catch (error) {
-      messageShow('There was some error. Please try again.')
-    } finally {
-      this.isLoadingToggle(false)
-    }
+    getListByClient({ clientId: client.item._id }, isLoading)
   }
 
-  isLoadingToggle = isLoading => {
+  toggleDrawer = (open) => () => {
     this.setState({
-      isLoading
+      drawerAdd: open
     })
   }
 
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open,
-    });
-  };
-
   render() {
-    const { classes, client } = this.props
-    const { isLoading, candidates } = this.state
+    const { classes, client, candidatesByClient: { isLoading, list } } = this.props
+    const { drawerAdd } = this.state
 
     return (
       <div className={classes.root}>
         {/* Actions */}
-        <div style={{ textAlign: 'right' }}>
-          <Button onClick={this.toggleDrawer('right', true)}>
-            <IconAdd style={{ width: 20, height: 20, marginRight: 5 }} />
+        <div className={classes.actions}>
+          <Button onClick={this.toggleDrawer(true)}>
+            <IconAdd className={classes.actionIcon} />
             Add
           </Button>
 
           <Button onClick={this.refresh}>
-            <IconCached style={{ width: 20, height: 20, marginRight: 5 }} />
+            <IconCached className={classes.actionIcon} />
             Refresh
           </Button>
         </div>
 
-        <Divider style={{ marginTop: 5 }} />
+        <Divider className={classes.divider} />
 
         {/* Candidate list */}
         {
@@ -115,14 +92,13 @@ class Candidates extends PureComponent {
                       <TableCell>Experience</TableCell>
                       <TableCell>Resume</TableCell>
                       <TableCell>Salary Current/Expected</TableCell>
-                      <TableCell>Shortlist</TableCell>
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
                     {
-                      candidates && candidates.length > 0
-                        ? candidates.map(candidate => (
+                      list && list.length > 0
+                        ? list.map(candidate => (
                           <TableRow key={candidate._id}>
                             <TableCell>{ candidate.name }</TableCell>
                             <TableCell>{ candidate.email }</TableCell>
@@ -130,9 +106,6 @@ class Candidates extends PureComponent {
                             <TableCell>{ candidate.experience }</TableCell>
                             <TableCell>{ candidate.resume }</TableCell>
                             <TableCell>{ candidate.salaryCurrent }/{ candidate.salaryExpected }</TableCell>
-                            <TableCell>
-
-                            </TableCell>
                           </TableRow>
                         ))
                         : <TableRow>
@@ -147,7 +120,7 @@ class Candidates extends PureComponent {
         }
 
         {/* Candidate create or edit */}
-        <Drawer anchor="right" open={this.state.right} onClose={this.toggleDrawer('right', false)}>
+        <Drawer anchor={'right'} open={drawerAdd} onClose={this.toggleDrawer(false)}>
           <CreateOrEdit
             elevation={0}
             clientId={client.item._id}
@@ -162,6 +135,7 @@ class Candidates extends PureComponent {
 // Component Properties
 Candidates.propTypes = {
   classes: PropTypes.object.isRequired,
+  candidatesByClient: PropTypes.object.isRequired,
   client: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
@@ -171,6 +145,7 @@ Candidates.propTypes = {
 // Component State
 function candidatesState(state) {
   return {
+    candidatesByClient: state.candidatesByClient,
     client: state.client
   }
 }

@@ -1,15 +1,18 @@
 // App Imports
+import params from '../../setup/config/params'
 import Organization from '../organization/model'
 import User from '../user/model'
 import Client from '../client/model'
 import Panel from '../panel/model'
 import Interview from '../interview/model'
+import Kanban from '../kanban/model'
 import Candidate from './model'
 
 // Seeds
 export default async function () {
   console.log('SEED - Candidate..')
   console.log('SEED - Interview..')
+  console.log('SEED - Kanban..')
 
   const user = await User.findOne({ email: 'user@hiresmart.app' })
   const organization = await Organization.findOne()
@@ -38,6 +41,14 @@ export default async function () {
       userId: user._id,
       dateTime: new Date(),
       mode: ''
+    })
+
+    await Kanban.create({
+      clientId: client._id,
+      candidateId: candidate._id,
+      userId: user.id,
+      status: params.kanban.columns[0].key,
+      highlight: false
     })
   }
 }

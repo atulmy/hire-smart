@@ -24,7 +24,8 @@ import styles from './styles'
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
 import { getList as getClientList } from '../../../client/api/actions'
-import { createOrUpdate, getList, editClose } from '../../api/actions'
+import { getList } from '../../api/actions/query'
+import { createOrUpdate, editClose } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
 
@@ -145,8 +146,6 @@ class CreateOrEdit extends PureComponent {
     const { classes, clients, elevation } = this.props
     const { isLoading, id, clientId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
 
-    console.log(clientId)
-
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
         <Typography
@@ -163,8 +162,8 @@ class CreateOrEdit extends PureComponent {
               name={'name'}
               value={nullToEmptyString(name)}
               onChange={this.onType}
-              label={'Candidate Name'}
-              placeholder={'Enter name'}
+              label={'Name'}
+              placeholder={`Enter candidate's name`}
               required={true}
               margin={'normal'}
               autoComplete={'off'}
@@ -177,7 +176,7 @@ class CreateOrEdit extends PureComponent {
             <FormControl
               style={{ marginTop: 10 }}
               fullWidth
-              required={'required'}
+              required={true}
             >
               <InputLabel htmlFor="client-id">Client</InputLabel>
               <Select
@@ -197,7 +196,7 @@ class CreateOrEdit extends PureComponent {
                     ? <Loading />
                     : clients.list && clients.list.length > 0
                         ? clients.list.map(client => (
-                          <MenuItem value={client._id}>{ client.name }</MenuItem>
+                          <MenuItem key={client._id} value={client._id}>{ client.name }</MenuItem>
                         ))
                         : <MenuItem value="">
                             <em>No client added.</em>
@@ -214,8 +213,8 @@ class CreateOrEdit extends PureComponent {
               type={'email'}
               value={nullToEmptyString(email)}
               onChange={this.onType}
-              label={'Candidate email'}
-              placeholder={'Enter email'}
+              label={'Email'}
+              placeholder={`Enter candidate's email`}
               required={true}
               margin={'normal'}
               autoComplete={'off'}
@@ -244,8 +243,8 @@ class CreateOrEdit extends PureComponent {
               name={'experience'}
               value={nullToEmptyString(experience)}
               onChange={this.onType}
-              label={'Candidate experience'}
-              placeholder={'Enter experience'}
+              label={'Experience'}
+              placeholder={`Enter candidate's experience`}
               required={true}
               margin={'normal'}
               autoComplete={'off'}
@@ -259,8 +258,8 @@ class CreateOrEdit extends PureComponent {
               name={'resume'}
               value={nullToEmptyString(resume)}
               onChange={this.onType}
-              label={'Candidate resume'}
-              placeholder={'Enter resume'}
+              label={'Resume'}
+              placeholder={'Upload candidate resume'}
               required={true}
               margin={'normal'}
               autoComplete={'off'}

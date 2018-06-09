@@ -16,6 +16,7 @@ import Loading from '../../common/Loading'
 import AlignCenterMiddle from '../../common/AlignCenterMiddle'
 import Overview from './Overview'
 import Candidates from './Candidates'
+import Interviews from './Interviews'
 import Panel from './Panel'
 
 export const overviewTabs = {
@@ -23,13 +24,13 @@ export const overviewTabs = {
     key: 'overview',
     label: 'Overview'
   },
-  interviews: {
-    key: 'interviews',
-    label: 'Interviews'
-  },
   candidates: {
     key: 'candidates',
     label: 'Candidates'
+  },
+  interviews: {
+    key: 'interviews',
+    label: 'Interviews'
   },
   panel: {
     key: 'panel',
@@ -44,7 +45,7 @@ class Content extends PureComponent {
 
     this.state = {
       // Default tab
-      tab: overviewTabs.overview.key
+      tab: overviewTabs.panel.key
     }
   }
 
@@ -80,9 +81,9 @@ class Content extends PureComponent {
                           {
                             overview: <Overview tabSwitch={this.tabSwitch} />,
 
-                            interviews: <span>Interviews</span>,
-
                             candidates: <Candidates />,
+
+                            interviews: <Interviews />,
 
                             panel: <Panel />,
                           }[tab]
