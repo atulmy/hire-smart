@@ -2,20 +2,20 @@
 
 // App Imports
 import {
-  CANDIDATES_GET_LIST_REQUEST,
-  CANDIDATES_GET_LIST_RESPONSE,
-  CANDIDATES_GET_LIST_DONE,
-  CANDIDATES_GET_LIST_RESET,
-  CANDIDATES_GET_LIST_BY_CLIENT_REQUEST,
-  CANDIDATES_GET_LIST_BY_CLIENT_RESPONSE,
-  CANDIDATES_GET_LIST_BY_CLIENT_DONE,
-  CANDIDATES_GET_LIST_BY_CLIENT_RESET,
-  CANDIDATE_GET_REQUEST,
-  CANDIDATE_GET_RESPONSE,
-  CANDIDATE_GET_DONE,
-  CANDIDATE_GET_RESET,
-  CANDIDATE_EDIT_SET,
-  CANDIDATE_EDIT_UNSET
+  LIST_REQUEST,
+  LIST_RESPONSE,
+  LIST_DONE,
+  LIST_RESET,
+  LIST_BY_CLIENT_REQUEST,
+  LIST_BY_CLIENT_RESPONSE,
+  LIST_BY_CLIENT_DONE,
+  LIST_BY_CLIENT_RESET,
+  SINGLE_REQUEST,
+  SINGLE_RESPONSE,
+  SINGLE_DONE,
+  SINGLE_RESET,
+  EDIT_SET,
+  EDIT_UNSET
 } from './actions/types'
 
 // List
@@ -29,25 +29,25 @@ const candidatesInitialState = {
 // State
 export const candidates = (state = candidatesInitialState, action) => {
   switch (action.type) {
-    case CANDIDATES_GET_LIST_REQUEST:
+    case LIST_REQUEST:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case CANDIDATES_GET_LIST_RESPONSE:
+    case LIST_RESPONSE:
       return {
         ...state,
         list: action.list
       }
 
-    case CANDIDATES_GET_LIST_DONE:
+    case LIST_DONE:
       return {
         ...state,
         isLoading: false
       }
 
-    case CANDIDATES_GET_LIST_RESET:
+    case LIST_RESET:
       return { ...candidatesInitialState }
 
     default:
@@ -67,25 +67,25 @@ const candidateInitialState = {
 // State
 export const candidate = (state = candidateInitialState, action) => {
   switch (action.type) {
-    case CANDIDATE_GET_REQUEST:
+    case SINGLE_REQUEST:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case CANDIDATE_GET_RESPONSE:
+    case SINGLE_RESPONSE:
       return {
         ...state,
         item: action.item
       }
 
-    case CANDIDATE_GET_DONE:
+    case SINGLE_DONE:
       return {
         ...state,
         isLoading: false
       }
 
-    case CANDIDATE_GET_RESET:
+    case SINGLE_RESET:
       return { ...candidateInitialState }
 
     default:
@@ -104,25 +104,25 @@ const candidateByClientInitialState = {
 // State
 export const candidatesByClient = (state = candidateByClientInitialState, action) => {
   switch (action.type) {
-    case CANDIDATES_GET_LIST_BY_CLIENT_REQUEST:
+    case LIST_BY_CLIENT_REQUEST:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case CANDIDATES_GET_LIST_BY_CLIENT_RESPONSE:
+    case LIST_BY_CLIENT_RESPONSE:
       return {
         ...state,
         list: action.list
       }
 
-    case CANDIDATES_GET_LIST_BY_CLIENT_DONE:
+    case LIST_BY_CLIENT_DONE:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case CANDIDATES_GET_LIST_BY_CLIENT_RESET:
+    case LIST_BY_CLIENT_RESET:
       return { ...candidatesInitialState }
 
     default:
@@ -143,14 +143,14 @@ const candidateEditState = {
 // State
 export const candidateEdit = (state = candidateEditState, action) => {
   switch (action.type) {
-    case CANDIDATE_EDIT_SET:
+    case EDIT_SET:
       return {
         ...state,
         candidate: action.candidate,
         open: true
       }
 
-    case CANDIDATE_EDIT_UNSET:
+    case EDIT_UNSET:
       return {
         ...state,
         candidate: null,

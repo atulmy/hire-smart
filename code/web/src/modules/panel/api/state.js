@@ -2,53 +2,53 @@
 
 // App Imports
 import {
-  PANELS_GET_LIST_REQUEST,
-  PANELS_GET_LIST_RESPONSE,
-  PANELS_GET_LIST_FAILURE,
-  PANELS_GET_LIST_RESET,
-  PANELS_GET_REQUEST,
-  PANELS_GET_RESPONSE,
-  PANELS_GET_FAILURE,
-  PANELS_EDIT_SET,
-  PANELS_EDIT_UNSET
-} from './actions'
+  LIST_REQUEST,
+  LIST_RESPONSE,
+  LIST_DONE,
+  LIST_RESET,
+  LIST_BY_CLIENT_REQUEST,
+  LIST_BY_CLIENT_RESPONSE,
+  LIST_BY_CLIENT_DONE,
+  LIST_BY_CLIENT_RESET,
+  SINGLE_REQUEST,
+  SINGLE_RESPONSE,
+  SINGLE_DONE,
+  SINGLE_RESET,
+  EDIT_SET,
+  EDIT_UNSET
+} from './actions/types'
 
-// list
+// List
 
 // Initial State
 const panelsInitialState = {
   isLoading: false,
-  error: null,
   list: []
 }
 
 // State
 export const panels = (state = panelsInitialState, action) => {
   switch (action.type) {
-    case PANELS_GET_LIST_REQUEST:
+    case LIST_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
-    case PANELS_GET_LIST_RESPONSE:
+    case LIST_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         list: action.list
       }
 
-    case PANELS_GET_LIST_FAILURE:
+    case LIST_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
 
-    case PANELS_GET_LIST_RESET:
-      return Object.assign({}, panelsInitialState)
+    case LIST_RESET:
+      return { ...panelsInitialState }
 
     default:
       return state
@@ -61,34 +61,69 @@ export const panels = (state = panelsInitialState, action) => {
 // Initial State
 const panelInitialState = {
   isLoading: false,
-  error: null,
   item: {}
 }
 
 // State
 export const panel = (state = panelInitialState, action) => {
   switch (action.type) {
-    case PANELS_GET_REQUEST:
+    case SINGLE_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
-    case PANELS_GET_RESPONSE:
+    case SINGLE_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         item: action.item
       }
 
-    case PANELS_GET_FAILURE:
+    case SINGLE_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
+
+    case SINGLE_RESET:
+      return { ...panelInitialState }
+
+    default:
+      return state
+  }
+}
+
+// List by Client
+
+// Initial State
+const panelByClientInitialState = {
+  isLoading: false,
+  list: []
+}
+
+// State
+export const panelsByClient = (state = panelByClientInitialState, action) => {
+  switch (action.type) {
+    case LIST_BY_CLIENT_REQUEST:
+      return {
+        ...state,
+        isLoading: action.isLoading
+      }
+
+    case LIST_BY_CLIENT_RESPONSE:
+      return {
+        ...state,
+        list: action.list
+      }
+
+    case LIST_BY_CLIENT_DONE:
+      return {
+        ...state,
+        isLoading: action.isLoading
+      }
+
+    case LIST_BY_CLIENT_RESET:
+      return { ...panelsInitialState }
 
     default:
       return state
@@ -108,14 +143,14 @@ const panelEditState = {
 // State
 export const panelEdit = (state = panelEditState, action) => {
   switch (action.type) {
-    case PANELS_EDIT_SET:
+    case EDIT_SET:
       return {
         ...state,
         panel: action.panel,
         open: true
       }
 
-    case PANELS_EDIT_UNSET:
+    case EDIT_UNSET:
       return {
         ...state,
         panel: null,

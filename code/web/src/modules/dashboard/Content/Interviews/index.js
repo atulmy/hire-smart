@@ -20,7 +20,8 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getListByClient, editClose } from '../../../interview/api/actions'
+import { getListByClient } from '../../../interview/api/actions/query'
+import { editClose } from '../../../interview/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
 import CreateOrEdit from '../../../candidate/Manage/CreateOrEdit'
@@ -32,8 +33,7 @@ class Interviews extends PureComponent {
     super()
 
     this.state = {
-      interviews: [],
-      drawerAdd: false,
+      drawerAdd: false
     }
   }
 
@@ -46,32 +46,9 @@ class Interviews extends PureComponent {
   }
 
   refresh = async (isLoading = true) => {
-    this.isLoadingToggle(isLoading)
+    const { getListByClient, client } = this.props
 
-    const { client, getListByClient, messageShow } = this.props
-
-    try {
-      // Get candidate list by clientId
-      const response = await getListByClient({ clientId: client.item._id })
-
-      if (response.data.errors && response.data.errors.length > 0) {
-        messageShow(response.data.errors[0].message)
-      } else {
-        this.setState({
-          interviews: response.data.data.interviewsByClient
-        })
-      }
-    } catch (error) {
-      messageShow('There was some error. Please try again.')
-    } finally {
-      this.isLoadingToggle(false)
-    }
-  }
-
-  isLoadingToggle = isLoading => {
-    this.setState({
-      isLoading
-    })
+    getListByClient({ clientId: client.item._id }, isLoading)
   }
 
   toggleDrawer = (open) => () => {
@@ -81,8 +58,8 @@ class Interviews extends PureComponent {
   }
 
   render() {
-    const { classes, client } = this.props
-    const { isLoading, interviews, drawerAdd } = this.state
+    const { classes, client, interviewsByClient: { isLoading, list } } = this.props
+    const { drawerAdd } = this.state
 
     return (
       <div className={classes.root}>
@@ -101,7 +78,7 @@ class Interviews extends PureComponent {
 
         <Divider className={classes.divider} />
 
-        {/* Interview list */}
+        {/* Candidate list */}
         {
           isLoading
             ? <Loading />
@@ -117,8 +94,8 @@ class Interviews extends PureComponent {
 
                   <TableBody>
                     {
-                      interviews && interviews.length > 0
-                        ? interviews.map(interview => (
+                      list && list.length > 0
+                        ? list.map(interview => (
                           <TableRow key={interview._id}>
                             <TableCell>{ interview.candidateId }</TableCell>
                             <TableCell>{ interview.panelId }</TableCell>
@@ -126,17 +103,17 @@ class Interviews extends PureComponent {
                           </TableRow>
                         ))
                         : <TableRow>
-                            <TableCell colSpan={3}>
-                              <EmptyMessage message={'You have not scheduled any interview yet.'} />
-                            </TableCell>
-                          </TableRow>
+                          <TableCell colSpan={3}>
+                            <EmptyMessage message={'You have not scheduled any interview yet.'} />
+                          </TableCell>
+                        </TableRow>
                     }
                   </TableBody>
                 </Table>
               </Fade>
         }
 
-        {/* Interview create or edit */}
+        {/* Candidate create or edit */}
         <Drawer anchor={'right'} open={drawerAdd} onClose={this.toggleDrawer(false)}>
           <CreateOrEdit
             elevation={0}
@@ -152,6 +129,7 @@ class Interviews extends PureComponent {
 // Component Properties
 Interviews.propTypes = {
   classes: PropTypes.object.isRequired,
+  interviewsByClient: PropTypes.object.isRequired,
   client: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
@@ -159,10 +137,11 @@ Interviews.propTypes = {
 }
 
 // Component State
-function candidatesState(state) {
+function interviewsState(state) {
   return {
+    interviewsByClient: state.interviewsByClient,
     client: state.client
   }
 }
 
-export default connect(candidatesState, { getListByClient, editClose, messageShow })(withStyles(styles)(Interviews))
+export default connect(interviewsState, { getListByClient, editClose, messageShow })(withStyles(styles)(Interviews))

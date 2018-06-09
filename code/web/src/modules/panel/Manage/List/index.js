@@ -17,7 +17,8 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { getList, edit, editClose } from '../../api/actions'
+import { getList } from '../../api/actions/query'
+import { edit, editClose } from '../../api/actions/mutation'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
 

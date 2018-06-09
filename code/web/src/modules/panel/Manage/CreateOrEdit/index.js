@@ -24,8 +24,10 @@ import styles from './styles'
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
 import { getList as getClientList } from '../../../client/api/actions'
-import { createOrUpdate, getList, editClose } from '../../api/actions'
+import { getList } from '../../api/actions/query'
+import { createOrUpdate, editClose } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
+import Loading from '../../../common/Loading'
 
 // Component
 class CreateOrEdit extends PureComponent {

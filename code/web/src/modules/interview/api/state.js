@@ -2,53 +2,53 @@
 
 // App Imports
 import {
-  INTERVIEWS_GET_LIST_REQUEST,
-  INTERVIEWS_GET_LIST_RESPONSE,
-  INTERVIEWS_GET_LIST_FAILURE,
-  INTERVIEWS_GET_LIST_RESET,
-  INTERVIEWS_GET_REQUEST,
-  INTERVIEWS_GET_RESPONSE,
-  INTERVIEWS_GET_FAILURE,
-  INTERVIEWS_EDIT_SET,
-  INTERVIEWS_EDIT_UNSET
-} from './actions'
+  LIST_REQUEST,
+  LIST_RESPONSE,
+  LIST_DONE,
+  LIST_RESET,
+  LIST_BY_CLIENT_REQUEST,
+  LIST_BY_CLIENT_RESPONSE,
+  LIST_BY_CLIENT_DONE,
+  LIST_BY_CLIENT_RESET,
+  SINGLE_REQUEST,
+  SINGLE_RESPONSE,
+  SINGLE_DONE,
+  SINGLE_RESET,
+  EDIT_SET,
+  EDIT_UNSET
+} from './actions/types'
 
-// list
+// List
 
 // Initial State
 const interviewsInitialState = {
   isLoading: false,
-  error: null,
   list: []
 }
 
 // State
 export const interviews = (state = interviewsInitialState, action) => {
   switch (action.type) {
-    case INTERVIEWS_GET_LIST_REQUEST:
+    case LIST_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
-    case INTERVIEWS_GET_LIST_RESPONSE:
+    case LIST_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         list: action.list
       }
 
-    case INTERVIEWS_GET_LIST_FAILURE:
+    case LIST_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
 
-    case INTERVIEWS_GET_LIST_RESET:
-      return Object.assign({}, interviewsInitialState)
+    case LIST_RESET:
+      return { ...interviewsInitialState }
 
     default:
       return state
@@ -61,34 +61,69 @@ export const interviews = (state = interviewsInitialState, action) => {
 // Initial State
 const interviewInitialState = {
   isLoading: false,
-  error: null,
   item: {}
 }
 
 // State
 export const interview = (state = interviewInitialState, action) => {
   switch (action.type) {
-    case INTERVIEWS_GET_REQUEST:
+    case SINGLE_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
-    case INTERVIEWS_GET_RESPONSE:
+    case SINGLE_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         item: action.item
       }
 
-    case INTERVIEWS_GET_FAILURE:
+    case SINGLE_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
+
+    case SINGLE_RESET:
+      return { ...interviewInitialState }
+
+    default:
+      return state
+  }
+}
+
+// List by Client
+
+// Initial State
+const interviewByClientInitialState = {
+  isLoading: false,
+  list: []
+}
+
+// State
+export const interviewsByClient = (state = interviewByClientInitialState, action) => {
+  switch (action.type) {
+    case LIST_BY_CLIENT_REQUEST:
+      return {
+        ...state,
+        isLoading: action.isLoading
+      }
+
+    case LIST_BY_CLIENT_RESPONSE:
+      return {
+        ...state,
+        list: action.list
+      }
+
+    case LIST_BY_CLIENT_DONE:
+      return {
+        ...state,
+        isLoading: action.isLoading
+      }
+
+    case LIST_BY_CLIENT_RESET:
+      return { ...interviewsInitialState }
 
     default:
       return state
@@ -108,14 +143,14 @@ const interviewEditState = {
 // State
 export const interviewEdit = (state = interviewEditState, action) => {
   switch (action.type) {
-    case INTERVIEWS_EDIT_SET:
+    case EDIT_SET:
       return {
         ...state,
         interview: action.interview,
         open: true
       }
 
-    case INTERVIEWS_EDIT_UNSET:
+    case EDIT_UNSET:
       return {
         ...state,
         interview: null,

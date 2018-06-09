@@ -10,6 +10,7 @@ import * as organization from '../modules/organization/api/state'
 import * as client from '../modules/client/api/state'
 import * as candidate from '../modules/candidate/api/state'
 import * as panel from '../modules/panel/api/state'
+import * as interview from '../modules/interview/api/state'
 
 // App Reducer
 const appReducer = combineReducers({
@@ -18,7 +19,8 @@ const appReducer = combineReducers({
   ...organization,
   ...client,
   ...candidate,
-  ...panel
+  ...panel,
+  ...interview
 })
 
 // Root Reducer

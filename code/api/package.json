@@ -6,8 +6,8 @@
   "scripts": {
     "seed": "babel-node src/setup/server/seeder.js",
     "setup": "npm install && npm run seed",
-    "start": "export NODE_ENV=development && nodemon src/index.js --exec babel-node",
-    "start:prod": "export NODE_ENV=production && npm run build:prod && npm run start:server",
+    "start": "nodemon src/index.js --exec babel-node",
+    "start:prod": "npm run build:prod && npm run start:server",
     "build:prod": "babel src -s -D -d build",
     "start:server": "node build/index.js"
   },

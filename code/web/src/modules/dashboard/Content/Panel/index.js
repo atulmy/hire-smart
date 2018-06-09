@@ -20,54 +20,35 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getListByClient } from '../../../panel/api/actions'
-import CreateOrEdit from '../../../panel/Manage/CreateOrEdit'
+import { getListByClient } from '../../../panel/api/actions/query'
+import { editClose } from '../../../panel/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
+import CreateOrEdit from '../../../panel/Manage/CreateOrEdit'
 
 // Component
-class Panel extends PureComponent {
+class Panels extends PureComponent {
 
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
 
     this.state = {
-      panels: [],
       drawerAdd: false
     }
   }
 
   componentDidMount() {
+    const { editClose } = this.props
+
+    editClose()
+
     this.refresh()
   }
 
   refresh = async (isLoading = true) => {
-    this.isLoadingToggle(isLoading)
+    const { getListByClient, client } = this.props
 
-    const { client, getListByClient, messageShow } = this.props
-
-    try {
-      // Get panel list by clientId
-      const response = await getListByClient({ clientId: client.item._id })
-
-      if (response.data.errors && response.data.errors.length > 0) {
-        messageShow(response.data.errors[0].message)
-      } else {
-        this.setState({
-          panels: response.data.data.panelsByClient
-        })
-      }
-    } catch(error) {
-      messageShow('There was some error. Please try again.')
-    } finally {
-      this.isLoadingToggle(false)
-    }
-  }
-
-  isLoadingToggle = isLoading => {
-    this.setState({
-      isLoading
-    })
+    getListByClient({ clientId: client.item._id }, isLoading)
   }
 
   toggleDrawer = (open) => () => {
@@ -77,8 +58,8 @@ class Panel extends PureComponent {
   }
 
   render() {
-    const { classes, client } = this.props
-    const { isLoading, panels, drawerAdd } = this.state
+    const { classes, client, panelsByClient: { isLoading, list } } = this.props
+    const { drawerAdd } = this.state
 
     return (
       <div className={classes.root}>
@@ -97,7 +78,7 @@ class Panel extends PureComponent {
 
         <Divider className={classes.divider} />
 
-        {/* Panel list */}
+        {/* Candidate list */}
         {
           isLoading
             ? <Loading />
@@ -110,11 +91,11 @@ class Panel extends PureComponent {
                       <TableCell>Mobile</TableCell>
                     </TableRow>
                   </TableHead>
-
+  
                   <TableBody>
                     {
-                      panels && panels.length > 0
-                        ? panels.map(panel => (
+                      list && list.length > 0
+                        ? list.map(panel => (
                           <TableRow key={panel._id}>
                             <TableCell>{ panel.name }</TableCell>
                             <TableCell>{ panel.email }</TableCell>
@@ -134,13 +115,11 @@ class Panel extends PureComponent {
 
         {/* Candidate create or edit */}
         <Drawer anchor={'right'} open={drawerAdd} onClose={this.toggleDrawer(false)}>
-          <div className={classes.drawer}>
-            <CreateOrEdit
-              elevation={0}
-              clientId={client.item._id}
-              clientShowLoading={false}
-            />
-          </div>
+          <CreateOrEdit
+            elevation={0}
+            clientId={client.item._id}
+            clientShowLoading={false}
+          />
         </Drawer>
       </div>
     )
@@ -148,18 +127,21 @@ class Panel extends PureComponent {
 }
 
 // Component Properties
-Panel.propTypes = {
+Panels.propTypes = {
   classes: PropTypes.object.isRequired,
+  panelsByClient: PropTypes.object.isRequired,
   client: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
+  editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 
 // Component State
-function panelState(state) {
+function panelsState(state) {
   return {
+    panelsByClient: state.panelsByClient,
     client: state.client
   }
 }
 
-export default connect(panelState, { getListByClient, messageShow })(withStyles(styles)(Panel))
+export default connect(panelsState, { getListByClient, editClose, messageShow })(withStyles(styles)(Panels))

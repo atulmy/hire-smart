@@ -8,34 +8,34 @@ import { queryBuilder } from '../../../../setup/helpers'
 import { EDIT_SET, EDIT_UNSET } from './types'
 
 // Create or update
-export function createOrUpdate(candidate) {
-  if (!isEmpty(candidate.id)) {
-    return update(candidate)
+export function createOrUpdate(panel) {
+  if (!isEmpty(panel.id)) {
+    return update(panel)
   } else {
-    delete candidate.id
-    return create(candidate)
+    delete panel.id
+    return create(panel)
   }
 }
 
 // Create
-export function create(candidate) {
+export function create(panel) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'candidateCreate',
-      data: candidate,
+      operation: 'panelCreate',
+      data: panel,
       fields: ['_id']
     }))
   }
 }
 
 // Update
-export function update(candidate) {
+export function update(panel) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'candidateUpdate',
-      data: candidate,
+      operation: 'panelUpdate',
+      data: panel,
       fields: ['_id']
     }))
   }
@@ -46,7 +46,7 @@ export function remove(data) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'candidateRemove',
+      operation: 'panelRemove',
       data,
       fields: ['_id']
     }))
@@ -54,8 +54,8 @@ export function remove(data) {
 }
 
 // Edit
-export function edit(candidate) {
-  return { type: EDIT_SET, candidate }
+export function edit(panel) {
+  return { type: EDIT_SET, panel }
 }
 export function editClose() {
   return { type: EDIT_UNSET }

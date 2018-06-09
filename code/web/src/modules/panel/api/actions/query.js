@@ -27,8 +27,8 @@ export function getList(isLoading = true) {
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'candidatesByOrganization',
-      fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+      operation: 'panelsByOrganization',
+      fields: ['_id', 'name', 'email', 'mobile', 'createdAt']
     }))
       .then(response => {
         if (response.data.errors && response.data.errors.length > 0) {
@@ -39,7 +39,7 @@ export function getList(isLoading = true) {
         } else {
           dispatch({
             type: LIST_RESPONSE,
-            list: response.data.data.candidatesByOrganization
+            list: response.data.data.panelsByOrganization
           })
         }
       })
@@ -59,7 +59,7 @@ export function getList(isLoading = true) {
 }
 
 // Get single
-export function get(candidateId, isLoading = true) {
+export function get(panelId, isLoading = true) {
   return dispatch => {
     dispatch({
       type: SINGLE_REQUEST,
@@ -68,9 +68,9 @@ export function get(candidateId, isLoading = true) {
 
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'candidate',
-      data: { id: candidateId },
-      fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+      operation: 'panel',
+      data: { id: panelId },
+      fields: ['_id', 'name', 'email', 'mobile', 'createdAt']
     }))
       .then(response => {
         if(response.data.errors && response.data.errors.length > 0) {
@@ -81,7 +81,7 @@ export function get(candidateId, isLoading = true) {
         } else {
           dispatch({
             type: SINGLE_RESPONSE,
-            item: response.data.data.candidate
+            item: response.data.data.panel
           })
         }
       })
@@ -111,9 +111,9 @@ export function getListByClient({ clientId }, isLoading = true) {
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
-        operation: 'candidatesByClient',
+        operation: 'panelsByClient',
         data: { clientId },
-        fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+        fields: ['_id', 'name', 'email', 'mobile', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {
@@ -124,7 +124,7 @@ export function getListByClient({ clientId }, isLoading = true) {
       } else {
         dispatch({
           type: LIST_BY_CLIENT_RESPONSE,
-          list: data.data.candidatesByClient
+          list: data.data.panelsByClient
         })
       }
     } catch (e) {
