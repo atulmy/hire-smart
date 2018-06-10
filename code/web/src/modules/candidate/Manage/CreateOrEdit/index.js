@@ -113,30 +113,29 @@ class CreateOrEdit extends PureComponent {
       this.isLoadingToggle(true)
 
       // Create or Update
-      createOrUpdate({ id, clientId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
-        .then(response => {
-          if(response.data.errors && !isEmpty(response.data.errors)) {
-            messageShow(response.data.errors[0].message)
+      try {
+        const { data } = createOrUpdate({ id, clientId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
+
+        if(data.errors && !isEmpty(data.errors)) {
+          messageShow(data.errors[0].message)
+        } else {
+          // Update candidates list
+          getList(false)
+
+          // Reset form data
+          this.reset()
+
+          if(!isEmpty(id)) {
+            messageShow('Candidate updated successfully.')
           } else {
-            // Update candidates list
-            getList(false)
-
-            // Reset form data
-            this.reset()
-
-            if(!isEmpty(id)) {
-              messageShow('Candidate updated successfully.')
-            } else {
-              messageShow('Candidate added successfully.')
-            }
+            messageShow('Candidate added successfully.')
           }
-        })
-        .catch(() => {
-          messageShow('There was some error. Please try again.')
-        })
-        .finally(() => {
-          this.isLoadingToggle(false)
-        })
+        }
+      } catch (e) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.isLoadingToggle(false)
+      }
     } else {
       messageShow('Please enter all the required information.')
     }

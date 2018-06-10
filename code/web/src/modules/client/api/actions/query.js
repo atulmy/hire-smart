@@ -16,83 +16,81 @@ import {
 
 // Get list
 export function getList(isLoading = true) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({
       type: LIST_REQUEST,
       isLoading
     })
 
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
-      operation: 'clientsByOrganization',
-      fields: ['_id', 'name', 'description', 'createdAt']
-    }))
-      .then(response => {
-        if (response.data.errors && response.data.errors.length > 0) {
-          dispatch({
-            type: MESSAGE_SHOW,
-            message: response.data.errors[0].message
-          })
-        } else {
-          dispatch({
-            type: LIST_RESPONSE,
-            list: response.data.data.clientsByOrganization
-          })
-        }
-      })
-      .catch(() => {
+    try {
+      const { data } = await axios.post(API_URL, queryBuilder({
+        type: 'query',
+        operation: 'clientsByOrganization',
+        fields: ['_id', 'name', 'description', 'createdAt']
+      }))
+
+      if(data.errors && data.errors.length > 0) {
         dispatch({
           type: MESSAGE_SHOW,
-          message: 'Some error occurred. Please try again.'
+          message: data.errors[0].message
         })
-      })
-      .finally(() => {
+      } else {
         dispatch({
-          type: LIST_DONE,
-          isLoading: false
+          type: LIST_RESPONSE,
+          list: data.data.clientsByOrganization
         })
+      }
+    } catch (e) {
+      dispatch({
+        type: MESSAGE_SHOW,
+        message: 'Some error occurred. Please try again.'
       })
+    } finally {
+      dispatch({
+        type: LIST_DONE,
+        isLoading: false
+      })
+    }
   }
 }
 
 // Get single
 export function get(clientId, isLoading = true) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({
       type: SINGLE_REQUEST,
       isLoading
     })
 
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
-      operation: 'client',
-      data: { id: clientId },
-      fields: ['_id', 'name', 'description', 'createdAt']
-    }))
-      .then(response => {
-        if(response.data.errors && response.data.errors.length > 0) {
-          dispatch({
-            type: MESSAGE_SHOW,
-            message: response.data.errors[0].message
-          })
-        } else {
-          dispatch({
-            type: SINGLE_RESPONSE,
-            item: response.data.data.client
-          })
-        }
-      })
-      .catch(error => {
+    try {
+      const { data } = await axios.post(API_URL, queryBuilder({
+        type: 'query',
+        operation: 'client',
+        data: { id: clientId },
+        fields: ['_id', 'name', 'description', 'createdAt']
+      }))
+
+      if(data.errors && data.errors.length > 0) {
         dispatch({
           type: MESSAGE_SHOW,
-          message: 'Some error occurred. Please try again.'
+          message: data.errors[0].message
         })
-      })
-      .finally(() => {
+      } else {
         dispatch({
-          type: SINGLE_DONE,
-          isLoading: false
+          type: SINGLE_RESPONSE,
+          item: data.data.client
         })
+      }
+    } catch (e) {
+      dispatch({
+        type: MESSAGE_SHOW,
+        message: 'Some error occurred. Please try again.'
       })
+    } finally {
+      dispatch({
+        type: SINGLE_DONE,
+        isLoading: false
+      })
+    }
   }
 }

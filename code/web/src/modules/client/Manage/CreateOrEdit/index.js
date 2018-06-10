@@ -69,7 +69,7 @@ class CreateOrEdit extends PureComponent {
     })
   }
 
-  save = (event) => {
+  save = async (event) => {
     event.preventDefault()
 
     const { createOrUpdate, getList, messageShow } = this.props
@@ -83,30 +83,29 @@ class CreateOrEdit extends PureComponent {
       this.isLoadingToggle(true)
 
       // Create or Update
-      createOrUpdate({ id, name, description })
-        .then(response => {
-          if(response.data.errors && !isEmpty(response.data.errors)) {
-            messageShow(response.data.errors[0].message)
+      try {
+        const { data } = await createOrUpdate({ id, name, description })
+
+        if(data.errors && !isEmpty(data.errors)) {
+          messageShow(data.errors[0].message)
+        } else {
+          // Update clients list
+          getList(false)
+
+          // Reset form data
+          this.reset()
+
+          if(!isEmpty(id)) {
+            messageShow('Client updated successfully.')
           } else {
-            // Update clients list
-            getList(false)
-
-            // Reset form data
-            this.reset()
-
-            if(!isEmpty(id)) {
-              messageShow('Client updated successfully.')
-            } else {
-              messageShow('Client added successfully.')
-            }
+            messageShow('Client added successfully.')
           }
-        })
-        .catch(() => {
-          messageShow('There was some error. Please try again.')
-        })
-        .finally(() => {
-          this.isLoadingToggle(false)
-        })
+        }
+      } catch (error) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.isLoadingToggle(false)
+      }
     } else {
       messageShow('Please enter client name.')
     }

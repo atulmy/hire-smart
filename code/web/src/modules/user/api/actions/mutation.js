@@ -8,43 +8,43 @@ import { API_URL } from '../../../../setup/config/env'
 import { LOGIN_REQUEST, LOGIN_RESPONSE, SET_USER, LOGOUT } from './types'
 
 export function login(userCredentials, isLoading = true) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({
       type: LOGIN_REQUEST,
       isLoading
     })
 
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
-      operation: 'userLogin',
-      data: userCredentials,
-      fields: ['user {organizationId, name, email, role}', 'token']
-    }))
-      .then(response => {
-        let error = ''
+    try {
+      const { data } = await axios.post(API_URL, queryBuilder({
+        type: 'query',
+        operation: 'userLogin',
+        data: userCredentials,
+        fields: ['user {organizationId, name, email, role}', 'token']
+      }))
 
-        if (response.data.errors && response.data.errors.length > 0) {
-          error = response.data.errors[0].message
-        } else if (response.data.data.userLogin.token !== '') {
-          const token = response.data.data.userLogin.token
-          const user = response.data.data.userLogin.user
+      let error = ''
 
-          dispatch(setUser(token, user))
+      if (data.errors && data.errors.length > 0) {
+        error = data.errors[0].message
+      } else if (data.data.userLogin.token !== '') {
+        const token = data.data.userLogin.token
+        const user = data.data.userLogin.user
 
-          loginSetUserLocalStorageAndCookie(token, user)
-        }
+        dispatch(setUser(token, user))
 
-        dispatch({
-          type: LOGIN_RESPONSE,
-          error
-        })
+        loginSetUserLocalStorageAndCookie(token, user)
+      }
+
+      dispatch({
+        type: LOGIN_RESPONSE,
+        error
       })
-      .catch(error => {
-        dispatch({
-          type: LOGIN_RESPONSE,
-          error: 'Please try again'
-        })
+    } catch (error) {
+      dispatch({
+        type: LOGIN_RESPONSE,
+        error: 'Please try again'
       })
+    }
   }
 }
 
@@ -62,42 +62,42 @@ export function register(userDetails) {
 
 // Create a demo user and login
 export function startNow(isLoading = true) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({
       type: LOGIN_REQUEST,
       isLoading
     })
 
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
-      operation: 'userStartNow',
-      fields: ['user {organizationId, name, email, role}', 'token']
-    }))
-      .then(response => {
-        let error = ''
+    try {
+      const { data } = await axios.post(API_URL, queryBuilder({
+        type: 'mutation',
+        operation: 'userStartNow',
+        fields: ['user {organizationId, name, email, role}', 'token']
+      }))
 
-        if (response.data.errors && response.data.errors.length > 0) {
-          error = response.data.errors[0].message
-        } else if (response.data.data.userStartNow.token !== '') {
-          const token = response.data.data.userStartNow.token
-          const user = response.data.data.userStartNow.user
+      let error = ''
 
-          dispatch(setUser(token, user))
+      if (data.errors && data.errors.length > 0) {
+        error = data.errors[0].message
+      } else if (data.data.userStartNow.token !== '') {
+        const token = data.data.userStartNow.token
+        const user = data.data.userStartNow.user
 
-          loginSetUserLocalStorageAndCookie(token, user)
-        }
+        dispatch(setUser(token, user))
 
-        dispatch({
-          type: LOGIN_RESPONSE,
-          error
-        })
+        loginSetUserLocalStorageAndCookie(token, user)
+      }
+
+      dispatch({
+        type: LOGIN_RESPONSE,
+        error
       })
-      .catch(error => {
-        dispatch({
-          type: LOGIN_RESPONSE,
-          error: 'Please try again'
-        })
+    } catch (error) {
+      dispatch({
+        type: LOGIN_RESPONSE,
+        error: 'Please try again'
       })
+    }
   }
 }
 

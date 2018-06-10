@@ -47,27 +47,27 @@ class People extends PureComponent {
     this.refresh()
   }
 
-  refresh = (isLoading = true) => {
+  refresh = async (isLoading = true) => {
     const { getListByOrganization, messageShow } = this.props
 
     this.isLoadingToggle(isLoading)
 
-    getListByOrganization()
-      .then(response => {
-        if (response.data.errors && response.data.errors.length > 0) {
-          messageShow(response.data.errors[0].message)
-        } else {
-          this.setState({
-            users: response.data.data.usersByOrganization
-          })
-        }
-      })
-      .catch(() => {
-        messageShow('There was some error. Please try again.')
-      })
-      .finally(() => {
-        this.isLoadingToggle(false)
-      })
+    // Get users list by organization
+    try {
+      const { data } = await getListByOrganization()
+
+      if (data.errors && data.errors.length > 0) {
+        messageShow(response.data.errors[0].message)
+      } else {
+        this.setState({
+          users: data.data.usersByOrganization
+        })
+      }
+    } catch (error) {
+      messageShow('There was some error. Please try again.')
+    } finally {
+      this.isLoadingToggle(false)
+    }
   }
 
   isLoadingToggle = isLoading => {
@@ -82,7 +82,7 @@ class People extends PureComponent {
     })
   }
 
-  invite = event => {
+  invite = async event => {
     event.preventDefault()
 
     const { inviteToOrganization, messageShow } = this.props
@@ -94,30 +94,28 @@ class People extends PureComponent {
 
       this.isLoadingSubmitToggle(true)
 
-      // Update
-      inviteToOrganization({ name, email })
-        .then(response => {
-          if(response.data.errors && !isEmpty(response.data.errors)) {
-            messageShow(response.data.errors[0].message)
-          } else {
-            // Reset form data
-            this.setState({
-              name: '',
-              email: ''
-            })
+      try {
+        const { data } = await inviteToOrganization({ name, email })
 
-            messageShow(`${ name } has been invited successfully.`)
+        if(data.errors && !isEmpty(data.errors)) {
+          messageShow(data.errors[0].message)
+        } else {
+          // Reset form data
+          this.setState({
+            name: '',
+            email: ''
+          })
 
-            // Refresh people list, silently
-            this.refresh(false)
-          }
-        })
-        .catch(() => {
-          messageShow('There was some error. Please try again.')
-        })
-        .finally(() => {
-          this.isLoadingSubmitToggle(false)
-        })
+          messageShow(`${ name } has been invited successfully.`)
+
+          // Refresh people list, silently
+          this.refresh(false)
+        }
+      } catch (error) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.isLoadingSubmitToggle(false)
+      }
     } else {
       messageShow('Please enter name and email.')
     }

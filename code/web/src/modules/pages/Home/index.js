@@ -30,7 +30,7 @@ class Home extends PureComponent {
     this.setState({ isLoading })
   }
 
-  startNow = (event) => {
+  startNow = async event => {
     event.preventDefault()
 
     const { messageShow, startNow, user, history } = this.props
@@ -44,22 +44,21 @@ class Home extends PureComponent {
 
       messageShow('Please wait...')
 
-      startNow()
-        .then(() => {
-          if (user.error && user.error.length > 0) {
-            messageShow(user.error)
-          } else {
-            messageShow('You are now logged in as a new demo user.')
+      try {
+        await startNow()
 
-            history.push(routes.dashboard.path)
-          }
-        })
-        .catch(() => {
-          messageShow('There was some error. Please try again.')
-        })
-        .finally(() => {
-          this.loadingToggle(false)
-        })
+        if (user.error && user.error.length > 0) {
+          messageShow(user.error)
+        } else {
+          messageShow('You are now logged in as a new demo user.')
+
+          history.push(routes.dashboard.path)
+        }
+      } catch (error) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.loadingToggle(false)
+      }
     }
   }
 

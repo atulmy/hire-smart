@@ -89,7 +89,7 @@ class CreateOrEdit extends PureComponent {
     editClose()
   }
 
-  save = (event) => {
+  save = async event => {
     event.preventDefault()
 
     const { createOrUpdate, getList, messageShow } = this.props
@@ -103,30 +103,29 @@ class CreateOrEdit extends PureComponent {
       this.isLoadingToggle(true)
 
       // Create or Update
-      createOrUpdate({ id, clientId, name, email, mobile })
-        .then(response => {
-          if(response.data.errors && !isEmpty(response.data.errors)) {
-            messageShow(response.data.errors[0].message)
+      try {
+        const { data } = createOrUpdate({ id, clientId, name, email, mobile })
+
+        if(data.errors && !isEmpty(data.errors)) {
+          messageShow(data.errors[0].message)
+        } else {
+          // Update panels list
+          getList(false)
+
+          // Reset form data
+          this.reset()
+
+          if(!isEmpty(id)) {
+            messageShow('Panel updated successfully.')
           } else {
-            // Update panels list
-            getList(false)
-
-            // Reset form data
-            this.reset()
-
-            if(!isEmpty(id)) {
-              messageShow('Panel updated successfully.')
-            } else {
-              messageShow('Panel added successfully.')
-            }
+            messageShow('Panel added successfully.')
           }
-        })
-        .catch(() => {
-          messageShow('There was some error. Please try again.')
-        })
-        .finally(() => {
-          this.isLoadingToggle(false)
-        })
+        }
+      } catch (e) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.isLoadingToggle(false)
+      }
     } else {
       messageShow('Please enter panel name.')
     }

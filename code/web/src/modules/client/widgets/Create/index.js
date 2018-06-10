@@ -31,7 +31,7 @@ class Quick extends PureComponent {
     }
   }
 
-  create = (event) => {
+  create = async event => {
     event.preventDefault()
 
     const { createClient, getClientsList, messageShow } = this.props
@@ -44,26 +44,25 @@ class Quick extends PureComponent {
       this.isLoadingToggle(true)
 
       // Create
-      createClient({ name })
-        .then(response => {
-          if(response.data.errors && !isEmpty(response.data.errors)) {
-            messageShow(response.data.errors[0].message)
-          } else {
-            // Refresh client list
-            getClientsList(false)
+      try {
+        const { data } = await createClient({ name })
 
-            // Hide create client form
-            this.visibleToggle(false)
+        if(data.errors && !isEmpty(data.errors)) {
+          messageShow(data.errors[0].message)
+        } else {
+          // Refresh client list
+          getClientsList(false)
 
-            messageShow('Client added successfully.')
-          }
-        })
-        .catch(() => {
-          messageShow('There was some error. Please try again.')
-        })
-        .finally(() => {
-          this.isLoadingToggle(false)
-        })
+          // Hide create client form
+          this.visibleToggle(false)
+
+          messageShow('Client added successfully.')
+        }
+      } catch (error) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.isLoadingToggle(false)
+      }
     } else {
       messageShow('Please enter client name.')
     }

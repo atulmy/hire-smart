@@ -19,84 +19,82 @@ import {
 
 // Get list
 export function getList(isLoading = true) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({
       type: LIST_REQUEST,
       isLoading
     })
 
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
-      operation: 'candidatesByOrganization',
-      fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
-    }))
-      .then(response => {
-        if (response.data.errors && response.data.errors.length > 0) {
-          dispatch({
-            type: MESSAGE_SHOW,
-            message: response.data.errors[0].message
-          })
-        } else {
-          dispatch({
-            type: LIST_RESPONSE,
-            list: response.data.data.candidatesByOrganization
-          })
-        }
-      })
-      .catch(() => {
+    try {
+      const { data } = await axios.post(API_URL, queryBuilder({
+        type: 'query',
+        operation: 'candidatesByOrganization',
+        fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+      }))
+
+      if(data.errors && data.errors.length > 0) {
         dispatch({
           type: MESSAGE_SHOW,
-          message: 'Some error occurred. Please try again.'
+          message: data.errors[0].message
         })
-      })
-      .finally(() => {
+      } else {
         dispatch({
-          type: LIST_DONE,
-          isLoading: false
+          type: LIST_RESPONSE,
+          list: data.data.candidatesByOrganization
         })
+      }
+    } catch (e) {
+      dispatch({
+        type: MESSAGE_SHOW,
+        message: 'Some error occurred. Please try again.'
       })
+    } finally {
+      dispatch({
+        type: LIST_DONE,
+        isLoading: false
+      })
+    }
   }
 }
 
 // Get single
 export function get(candidateId, isLoading = true) {
-  return dispatch => {
+  return async dispatch => {
     dispatch({
       type: SINGLE_REQUEST,
       isLoading
     })
 
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
-      operation: 'candidate',
-      data: { id: candidateId },
-      fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
-    }))
-      .then(response => {
-        if(response.data.errors && response.data.errors.length > 0) {
-          dispatch({
-            type: MESSAGE_SHOW,
-            message: response.data.errors[0].message
-          })
-        } else {
-          dispatch({
-            type: SINGLE_RESPONSE,
-            item: response.data.data.candidate
-          })
-        }
-      })
-      .catch(error => {
+    try {
+      const { data } = await axios.post(API_URL, queryBuilder({
+        type: 'query',
+        operation: 'candidate',
+        data: { id: candidateId },
+        fields: ['_id', 'clientId', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+      }))
+
+      if(data.errors && data.errors.length > 0) {
         dispatch({
           type: MESSAGE_SHOW,
-          message: 'Some error occurred. Please try again.'
+          message: data.errors[0].message
         })
-      })
-      .finally(() => {
+      } else {
         dispatch({
-          type: SINGLE_DONE,
-          isLoading: false
+          type: SINGLE_RESPONSE,
+          item: data.data.candidate
         })
+      }
+    } catch (e) {
+      dispatch({
+        type: MESSAGE_SHOW,
+        message: 'Some error occurred. Please try again.'
       })
+    } finally {
+      dispatch({
+        type: SINGLE_DONE,
+        isLoading: false
+      })
+    }
   }
 }
 

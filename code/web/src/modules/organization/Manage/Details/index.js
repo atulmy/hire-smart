@@ -39,25 +39,24 @@ class Details extends Component {
     this.refresh()
   }
 
-  refresh = (isLoading = true) => {
+  refresh = async (isLoading = true) => {
     const { getOrganization, messageShow } = this.props
 
     this.isLoadingToggle(isLoading)
 
-    getOrganization()
-      .then(response => {
-        if (response.data.errors && response.data.errors.length > 0) {
-          messageShow(response.data.errors[0].message)
-        } else {
-          this.setData(response.data.data.organizationByUser)
-        }
-      })
-      .catch(() => {
-        messageShow('There was some error. Please try again.')
-      })
-      .finally(() => {
-        this.isLoadingToggle(false)
-      })
+    try {
+      const { data } = await getOrganization()
+
+      if (data.errors && data.errors.length > 0) {
+        messageShow(data.errors[0].message)
+      } else {
+        this.setData(data.data.organizationByUser)
+      }
+    } catch (error) {
+      messageShow('There was some error. Please try again.')
+    } finally {
+      this.isLoadingToggle(false)
+    }
   }
 
   setData = ({ name, description, domain }) => {
@@ -80,7 +79,7 @@ class Details extends Component {
     })
   }
 
-  update = event => {
+  update = async event => {
     event.preventDefault()
 
     const { updateOrganization, messageShow } = this.props
@@ -93,23 +92,22 @@ class Details extends Component {
       this.isLoadingSubmitToggle(true)
 
       // Update
-      updateOrganization({ name, description, domain })
-        .then(response => {
-          if(response.data.errors && !isEmpty(response.data.errors)) {
-            messageShow(response.data.errors[0].message)
-          } else {
-            // Refresh details, silently
-            this.refresh(false)
+      try {
+        const { data } = await updateOrganization({ name, description, domain })
 
-            messageShow('Organization details updated successfully.')
-          }
-        })
-        .catch(() => {
-          messageShow('There was some error. Please try again.')
-        })
-        .finally(() => {
-          this.isLoadingSubmitToggle(false)
-        })
+        if(data.errors && !isEmpty(data.errors)) {
+          messageShow(data.errors[0].message)
+        } else {
+          // Refresh details, silently
+          this.refresh(false)
+
+          messageShow('Organization details updated successfully.')
+        }
+      } catch (error) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.isLoadingSubmitToggle(false)
+      }
     } else {
       messageShow('Please enter organization name.')
     }
