@@ -13,7 +13,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { getList as getClientsList, get as getClient } from '../../../client/api/actions'
+import { getList as getClientsList, get as getClient } from '../../../client/api/actions/query'
 import { avatarColor, avatarLetter } from '../../../../setup/helpers'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'

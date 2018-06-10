@@ -115,11 +115,13 @@ class Panels extends PureComponent {
 
         {/* Candidate create or edit */}
         <Drawer anchor={'right'} open={drawerAdd} onClose={this.toggleDrawer(false)}>
-          <CreateOrEdit
-            elevation={0}
-            clientId={client.item._id}
-            clientShowLoading={false}
-          />
+          <div className={classes.drawer}>
+            <CreateOrEdit
+              elevation={0}
+              clientId={client.item._id}
+              clientShowLoading={false}
+            />
+          </div>
         </Drawer>
       </div>
     )

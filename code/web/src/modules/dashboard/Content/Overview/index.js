@@ -10,6 +10,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import Drawer from '@material-ui/core/Drawer'
 import Paper from '@material-ui/core/Paper'
 import Fade from '@material-ui/core/Fade'
 import Divider from '@material-ui/core/Divider'
@@ -31,7 +32,9 @@ class Overview extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = {
+      candidateInfo: false
+    }
   }
 
   componentDidMount() {
@@ -52,8 +55,15 @@ class Overview extends PureComponent {
     tabSwitch(null, overviewTabs.candidates.key)
   }
 
+  toggleDrawer = (open) => () => {
+    this.setState({
+      candidateInfo: open
+    })
+  }
+
   render() {
     const { classes } = this.props
+    const { candidateInfo } = this.state
     const { kanban: { columns } } = params
 
     return (
@@ -85,7 +95,10 @@ class Overview extends PureComponent {
                   <div className={classes.candidatesContainer}>
                     {
                       i === 0 &&
-                      <Paper className={classes.candidate}>
+                      <Paper
+                        className={classes.candidate}
+                        onClick={this.toggleDrawer(true)}
+                      >
                         <Typography variant={'title'} className={classes.candidateName}>
                           Jon Snow
                         </Typography>
@@ -152,6 +165,11 @@ class Overview extends PureComponent {
               )) }
             </div>
           </div>
+
+          {/* Candidate info */}
+          <Drawer anchor={'right'} open={candidateInfo} onClose={this.toggleDrawer(false)}>
+            <p>Info</p>
+          </Drawer>
         </div>
       </Fade>
     )

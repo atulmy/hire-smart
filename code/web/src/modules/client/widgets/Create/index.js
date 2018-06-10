@@ -16,7 +16,8 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getList as getClientsList, create as createClient } from '../../../client/api/actions'
+import { getList as getClientsList } from '../../../client/api/actions/query'
+import { create as createClient } from '../../../client/api/actions/mutation'
 
 // Component
 class Quick extends PureComponent {

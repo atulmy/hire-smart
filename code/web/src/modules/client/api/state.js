@@ -2,53 +2,49 @@
 
 // App Imports
 import {
-  CLIENTS_GET_LIST_REQUEST,
-  CLIENTS_GET_LIST_RESPONSE,
-  CLIENTS_GET_LIST_FAILURE,
-  CLIENTS_GET_LIST_RESET,
-  CLIENTS_GET_REQUEST,
-  CLIENTS_GET_RESPONSE,
-  CLIENTS_GET_FAILURE,
-  CLIENTS_EDIT_SET,
-  CLIENTS_EDIT_UNSET
-} from './actions'
+  LIST_REQUEST,
+  LIST_RESPONSE,
+  LIST_DONE,
+  LIST_RESET,
+  SINGLE_REQUEST,
+  SINGLE_RESPONSE,
+  SINGLE_DONE,
+  SINGLE_RESET,
+  EDIT_SET,
+  EDIT_UNSET
+} from './actions/types'
 
-// list
+// List
 
 // Initial State
 const clientsInitialState = {
   isLoading: false,
-  error: null,
   list: []
 }
 
 // State
 export const clients = (state = clientsInitialState, action) => {
   switch (action.type) {
-    case CLIENTS_GET_LIST_REQUEST:
+    case LIST_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
-    case CLIENTS_GET_LIST_RESPONSE:
+    case LIST_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         list: action.list
       }
 
-    case CLIENTS_GET_LIST_FAILURE:
+    case LIST_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
 
-    case CLIENTS_GET_LIST_RESET:
-      return Object.assign({}, clientsInitialState)
+    case LIST_RESET:
+      return { ...clientsInitialState }
 
     default:
       return state
@@ -61,39 +57,38 @@ export const clients = (state = clientsInitialState, action) => {
 // Initial State
 const clientInitialState = {
   isLoading: false,
-  error: null,
   item: {}
 }
 
 // State
 export const client = (state = clientInitialState, action) => {
   switch (action.type) {
-    case CLIENTS_GET_REQUEST:
+    case SINGLE_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
-    case CLIENTS_GET_RESPONSE:
+    case SINGLE_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         item: action.item
       }
 
-    case CLIENTS_GET_FAILURE:
+    case SINGLE_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
+
+    case SINGLE_RESET:
+      return { ...clientInitialState }
 
     default:
       return state
   }
 }
+
 
 // Edit
 
@@ -108,14 +103,14 @@ const clientEditState = {
 // State
 export const clientEdit = (state = clientEditState, action) => {
   switch (action.type) {
-    case CLIENTS_EDIT_SET:
+    case EDIT_SET:
       return {
         ...state,
         client: action.client,
         open: true
       }
 
-    case CLIENTS_EDIT_UNSET:
+    case EDIT_UNSET:
       return {
         ...state,
         client: null,

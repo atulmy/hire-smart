@@ -19,7 +19,8 @@ import styles from './styles'
 
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
-import { createOrUpdate, getList } from '../../api/actions'
+import { getList } from '../../api/actions/query'
+import { createOrUpdate } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 
 // Component
