@@ -15,7 +15,8 @@ import styles from './styles'
 
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
-import { getByUser as getOrganization, update as updateOrganization } from '../../api/actions'
+import { getByUser as getOrganization } from '../../api/actions/query'
+import { update as updateOrganization } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
 

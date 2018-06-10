@@ -2,51 +2,47 @@
 
 // App Imports
 import {
-  ORGANIZATIONS_GET_LIST_REQUEST,
-  ORGANIZATIONS_GET_LIST_RESPONSE,
-  ORGANIZATIONS_GET_LIST_FAILURE,
-  ORGANIZATIONS_GET_LIST_RESET,
-  ORGANIZATIONS_GET_REQUEST,
-  ORGANIZATIONS_GET_RESPONSE,
-  ORGANIZATIONS_GET_FAILURE
-} from './actions'
+  LIST_REQUEST,
+  LIST_RESPONSE,
+  LIST_DONE,
+  LIST_RESET,
+  SINGLE_REQUEST,
+  SINGLE_RESPONSE,
+  SINGLE_DONE,
+  SINGLE_RESET
+} from './actions/types'
 
-// list
+// List
 
 // Initial State
 const organizationsInitialState = {
   isLoading: false,
-  error: null,
   list: []
 }
 
 // State
 export const organizations = (state = organizationsInitialState, action) => {
   switch (action.type) {
-    case ORGANIZATIONS_GET_LIST_REQUEST:
+    case LIST_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
-    case ORGANIZATIONS_GET_LIST_RESPONSE:
+    case LIST_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         list: action.list
       }
 
-    case ORGANIZATIONS_GET_LIST_FAILURE:
+    case LIST_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
 
-    case ORGANIZATIONS_GET_LIST_RESET:
-      return Object.assign({}, organizationsInitialState)
+    case LIST_RESET:
+      return { ...organizationsInitialState }
 
     default:
       return state
@@ -59,36 +55,35 @@ export const organizations = (state = organizationsInitialState, action) => {
 // Initial State
 const organizationInitialState = {
   isLoading: false,
-  error: null,
   item: {}
 }
 
 // State
 export const organization = (state = organizationInitialState, action) => {
   switch (action.type) {
-    case ORGANIZATIONS_GET_REQUEST:
+    case SINGLE_REQUEST:
       return {
         ...state,
-        isLoading: action.isLoading,
-        error: null
+        isLoading: action.isLoading
       }
 
-    case ORGANIZATIONS_GET_RESPONSE:
+    case SINGLE_RESPONSE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error,
         item: action.item
       }
 
-    case ORGANIZATIONS_GET_FAILURE:
+    case SINGLE_DONE:
       return {
         ...state,
-        isLoading: false,
-        error: action.error
+        isLoading: false
       }
+
+    case SINGLE_RESET:
+      return { ...organizationInitialState }
 
     default:
       return state
   }
 }
+
