@@ -14,7 +14,7 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../common/api/actions'
-import { logout } from '../api/actions'
+import { logout } from '../api/actions/mutation'
 
 // Component
 class Account extends PureComponent {

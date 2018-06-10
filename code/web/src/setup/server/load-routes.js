@@ -17,7 +17,7 @@ import JssProvider from 'react-jss/lib/JssProvider'
 import { APP_URL, NODE_ENV } from '../config/env'
 import { rootReducer } from '../store'
 import routes from '../routes'
-import { setUser } from '../../modules/user/api/actions'
+import { setUser } from '../../modules/user/api/actions/mutation'
 import App from '../client/App'
 import view from './view'
 

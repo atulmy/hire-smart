@@ -14,7 +14,7 @@ import styles from './styles'
 import { APP_URL } from '../../../setup/config/env'
 import routes from '../../../setup/routes'
 import { messageShow } from '../../common/api/actions'
-import { startNow } from '../../user/api/actions'
+import { startNow } from '../../user/api/actions/mutation'
 
 // Component
 class Home extends PureComponent {

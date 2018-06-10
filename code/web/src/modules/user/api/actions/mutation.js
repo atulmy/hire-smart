@@ -1,61 +1,12 @@
 // Imports
-import axios from 'axios'
-
-// App Imports
-import { API_URL } from '../../../setup/config/env'
-import { queryBuilder } from '../../../setup/helpers'
+import axios from 'axios/index'
 import cookie from 'js-cookie'
 
-// Actions Types
-export const LOGIN_REQUEST = 'AUTH/LOGIN_REQUEST'
-export const LOGIN_RESPONSE = 'AUTH/LOGIN_RESPONSE'
-export const SET_USER = 'AUTH/SET_USER'
-export const LOGOUT = 'AUTH/LOGOUT'
+// App Imports
+import { queryBuilder } from '../../../../setup/helpers'
+import { API_URL } from '../../../../setup/config/env'
+import { LOGIN_REQUEST, LOGIN_RESPONSE, SET_USER, LOGOUT } from './types'
 
-// Actions
-
-// Create a demo user and login
-export function startNow(isLoading = true) {
-  return dispatch => {
-    dispatch({
-      type: LOGIN_REQUEST,
-      isLoading
-    })
-
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
-      operation: 'userStartNow',
-      fields: ['user {organizationId, name, email, role}', 'token']
-    }))
-      .then(response => {
-        let error = ''
-
-        if (response.data.errors && response.data.errors.length > 0) {
-          error = response.data.errors[0].message
-        } else if (response.data.data.userStartNow.token !== '') {
-          const token = response.data.data.userStartNow.token
-          const user = response.data.data.userStartNow.user
-
-          dispatch(setUser(token, user))
-
-          loginSetUserLocalStorageAndCookie(token, user)
-        }
-
-        dispatch({
-          type: LOGIN_RESPONSE,
-          error
-        })
-      })
-      .catch(error => {
-        dispatch({
-          type: LOGIN_RESPONSE,
-          error: 'Please try again'
-        })
-      })
-  }
-}
-
-// Login a user using credentials
 export function login(userCredentials, isLoading = true) {
   return dispatch => {
     dispatch({
@@ -109,6 +60,47 @@ export function register(userDetails) {
   }
 }
 
+// Create a demo user and login
+export function startNow(isLoading = true) {
+  return dispatch => {
+    dispatch({
+      type: LOGIN_REQUEST,
+      isLoading
+    })
+
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'userStartNow',
+      fields: ['user {organizationId, name, email, role}', 'token']
+    }))
+      .then(response => {
+        let error = ''
+
+        if (response.data.errors && response.data.errors.length > 0) {
+          error = response.data.errors[0].message
+        } else if (response.data.data.userStartNow.token !== '') {
+          const token = response.data.data.userStartNow.token
+          const user = response.data.data.userStartNow.user
+
+          dispatch(setUser(token, user))
+
+          loginSetUserLocalStorageAndCookie(token, user)
+        }
+
+        dispatch({
+          type: LOGIN_RESPONSE,
+          error
+        })
+      })
+      .catch(error => {
+        dispatch({
+          type: LOGIN_RESPONSE,
+          error: 'Please try again'
+        })
+      })
+  }
+}
+
 // Invite user to organization (create)
 export function inviteToOrganization(userDetails) {
   return dispatch => {
@@ -117,17 +109,6 @@ export function inviteToOrganization(userDetails) {
       operation: 'userInviteToOrganization',
       data: userDetails,
       fields: ['_id']
-    }))
-  }
-}
-
-// Get list by organization
-export function getListByOrganization() {
-  return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
-      operation: 'usersByOrganization',
-      fields: ['_id', 'name', 'email', 'createdAt']
     }))
   }
 }

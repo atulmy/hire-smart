@@ -21,7 +21,8 @@ import styles from './styles'
 
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
-import { inviteToOrganization, getListByOrganization } from '../../../user/api/actions'
+import { getListByOrganization } from '../../../user/api/actions/query'
+import { inviteToOrganization } from '../../../user/api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
 import isEmpty from 'validator/lib/isEmpty'

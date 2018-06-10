@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 
 // App Imports
 import { store } from '../../setup/store'
-import { setUser, loginSetUserLocalStorageAndCookie } from '../../modules/user/api/actions'
+import { setUser, loginSetUserLocalStorageAndCookie } from '../../modules/user/api/actions/mutation'
 import ScrollToTop from '../../modules/common/ScrollToTop'
 import App from './App'
 
