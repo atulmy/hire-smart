@@ -104,7 +104,7 @@ class CreateOrEdit extends PureComponent {
 
       // Create or Update
       try {
-        const { data } = createOrUpdate({ id, clientId, name, email, mobile })
+        const { data } = await createOrUpdate({ id, clientId, name, email, mobile })
 
         if(data.errors && !isEmpty(data.errors)) {
           messageShow(data.errors[0].message)
@@ -121,7 +121,7 @@ class CreateOrEdit extends PureComponent {
             messageShow('Panel added successfully.')
           }
         }
-      } catch (e) {
+      } catch(error) {
         messageShow('There was some error. Please try again.')
       } finally {
         this.isLoadingToggle(false)

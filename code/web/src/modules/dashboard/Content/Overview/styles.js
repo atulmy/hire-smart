@@ -12,7 +12,7 @@ const styles = theme => ({
     overflowX: 'auto',
     overflowY: 'hidden',
     position: 'relative',
-    width: 'calc(100vw - 250px)'
+    width: 'calc(100vw - 249px)'
   },
 
   columnsContainer: {
@@ -63,6 +63,10 @@ const styles = theme => ({
   },
   infoItemText: {
     padding: 0
+  },
+
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.15)'
   }
 })
 

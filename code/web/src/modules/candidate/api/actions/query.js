@@ -43,7 +43,7 @@ export function getList(isLoading = true) {
           list: data.data.candidatesByOrganization
         })
       }
-    } catch (e) {
+    } catch(error) {
       dispatch({
         type: MESSAGE_SHOW,
         message: 'Some error occurred. Please try again.'
@@ -84,7 +84,7 @@ export function get(candidateId, isLoading = true) {
           item: data.data.candidate
         })
       }
-    } catch (e) {
+    } catch(error) {
       dispatch({
         type: MESSAGE_SHOW,
         message: 'Some error occurred. Please try again.'
@@ -125,7 +125,7 @@ export function getListByClient({ clientId }, isLoading = true) {
           list: data.data.candidatesByClient
         })
       }
-    } catch (e) {
+    } catch(error) {
       dispatch({
         type: MESSAGE_SHOW,
         message: 'Some error occurred. Please try again.'

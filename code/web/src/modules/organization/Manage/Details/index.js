@@ -52,7 +52,7 @@ class Details extends Component {
       } else {
         this.setData(data.data.organizationByUser)
       }
-    } catch (error) {
+    } catch(error) {
       messageShow('There was some error. Please try again.')
     } finally {
       this.isLoadingToggle(false)
@@ -103,7 +103,7 @@ class Details extends Component {
 
           messageShow('Organization details updated successfully.')
         }
-      } catch (error) {
+      } catch(error) {
         messageShow('There was some error. Please try again.')
       } finally {
         this.isLoadingSubmitToggle(false)

@@ -40,7 +40,7 @@ export function getList(isLoading = true) {
           list: data.data.clientsByOrganization
         })
       }
-    } catch (e) {
+    } catch(error) {
       dispatch({
         type: MESSAGE_SHOW,
         message: 'Some error occurred. Please try again.'
@@ -81,7 +81,7 @@ export function get(clientId, isLoading = true) {
           item: data.data.client
         })
       }
-    } catch (e) {
+    } catch(error) {
       dispatch({
         type: MESSAGE_SHOW,
         message: 'Some error occurred. Please try again.'

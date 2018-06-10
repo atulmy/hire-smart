@@ -99,7 +99,7 @@ class CreateOrEdit extends PureComponent {
     editClose()
   }
 
-  save = (event) => {
+  save = async event => {
     event.preventDefault()
 
     const { createOrUpdate, getList, messageShow } = this.props
@@ -114,7 +114,7 @@ class CreateOrEdit extends PureComponent {
 
       // Create or Update
       try {
-        const { data } = createOrUpdate({ id, clientId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
+        const { data } = await createOrUpdate({ id, clientId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
 
         if(data.errors && !isEmpty(data.errors)) {
           messageShow(data.errors[0].message)
@@ -131,7 +131,7 @@ class CreateOrEdit extends PureComponent {
             messageShow('Candidate added successfully.')
           }
         }
-      } catch (e) {
+      } catch(error) {
         messageShow('There was some error. Please try again.')
       } finally {
         this.isLoadingToggle(false)

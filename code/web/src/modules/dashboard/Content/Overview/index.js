@@ -42,7 +42,7 @@ class Overview extends PureComponent {
   }
 
   columnWidth = () => {
-    let width = parseInt((window.innerWidth - 250) / params.kanban.columns.length, 10) - 1
+    let width = parseInt((window.innerWidth - 249) / params.kanban.columns.length, 10) - 1
     if(width < 225) {
       width = 225
     }
@@ -167,8 +167,20 @@ class Overview extends PureComponent {
           </div>
 
           {/* Candidate info */}
-          <Drawer anchor={'right'} open={candidateInfo} onClose={this.toggleDrawer(false)}>
-            <p>Info</p>
+          <Drawer
+            anchor={'right'}
+            open={candidateInfo}
+            onClose={this.toggleDrawer(false)}
+            ModalProps={{
+              BackdropProps: {
+                //invisible: true,
+                classes: { root: classes.backdrop }
+              }
+            }}
+          >
+            <div style={{ width: 300 }}>
+              <p>Info</p>
+            </div>
           </Drawer>
         </div>
       </Fade>

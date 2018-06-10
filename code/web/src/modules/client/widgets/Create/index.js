@@ -58,7 +58,7 @@ class Quick extends PureComponent {
 
           messageShow('Client added successfully.')
         }
-      } catch (error) {
+      } catch(error) {
         messageShow('There was some error. Please try again.')
       } finally {
         this.isLoadingToggle(false)

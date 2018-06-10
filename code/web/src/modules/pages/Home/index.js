@@ -54,7 +54,7 @@ class Home extends PureComponent {
 
           history.push(routes.dashboard.path)
         }
-      } catch (error) {
+      } catch(error) {
         messageShow('There was some error. Please try again.')
       } finally {
         this.loadingToggle(false)

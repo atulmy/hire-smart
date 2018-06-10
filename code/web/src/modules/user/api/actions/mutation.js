@@ -39,7 +39,7 @@ export function login(userCredentials, isLoading = true) {
         type: LOGIN_RESPONSE,
         error
       })
-    } catch (error) {
+    } catch(error) {
       dispatch({
         type: LOGIN_RESPONSE,
         error: 'Please try again'
@@ -92,7 +92,7 @@ export function startNow(isLoading = true) {
         type: LOGIN_RESPONSE,
         error
       })
-    } catch (error) {
+    } catch(error) {
       dispatch({
         type: LOGIN_RESPONSE,
         error: 'Please try again'

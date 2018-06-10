@@ -63,7 +63,7 @@ class People extends PureComponent {
           users: data.data.usersByOrganization
         })
       }
-    } catch (error) {
+    } catch(error) {
       messageShow('There was some error. Please try again.')
     } finally {
       this.isLoadingToggle(false)
@@ -111,7 +111,7 @@ class People extends PureComponent {
           // Refresh people list, silently
           this.refresh(false)
         }
-      } catch (error) {
+      } catch(error) {
         messageShow('There was some error. Please try again.')
       } finally {
         this.isLoadingSubmitToggle(false)
