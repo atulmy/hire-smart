@@ -45,7 +45,7 @@ class Content extends PureComponent {
 
     this.state = {
       // Default tab
-      tab: overviewTabs.candidates.key
+      tab: overviewTabs.interviews.key
     }
   }
 

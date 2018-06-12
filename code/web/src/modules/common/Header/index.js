@@ -102,7 +102,15 @@ class Header extends PureComponent {
         </AppBar>
 
         {/* Drawer */}
-        <Drawer open={drawerVisible} onClose={drawerHide}>
+        <Drawer
+          open={drawerVisible}
+          onClose={drawerHide}
+          ModalProps={{
+            BackdropProps: {
+              classes: { root: classes.backdrop }
+            }
+          }}
+        >
           <div
             tabIndex={0}
             role={'button'}

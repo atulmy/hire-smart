@@ -14,6 +14,10 @@ const styles = theme => ({
 
   divider: {
     marginTop: 5
+  },
+
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.15)'
   }
 })
 

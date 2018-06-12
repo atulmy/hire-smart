@@ -114,7 +114,16 @@ class Interviews extends PureComponent {
         }
 
         {/* Candidate create or edit */}
-        <Drawer anchor={'right'} open={drawerAdd} onClose={this.toggleDrawer(false)}>
+        <Drawer
+          anchor={'right'}
+          open={drawerAdd}
+          onClose={this.toggleDrawer(false)}
+          ModalProps={{
+            BackdropProps: {
+              classes: { root: classes.backdrop }
+            }
+          }}
+        >
           <CreateOrEdit
             elevation={0}
             clientId={client.item._id}

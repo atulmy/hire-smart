@@ -120,7 +120,16 @@ class Panels extends PureComponent {
         }
 
         {/* Candidate create or edit */}
-        <Drawer anchor={'right'} open={drawerAdd} onClose={this.toggleDrawer(false)}>
+        <Drawer
+          anchor={'right'}
+          open={drawerAdd}
+          onClose={this.toggleDrawer(false)}
+          ModalProps={{
+            BackdropProps: {
+              classes: { root: classes.backdrop }
+            }
+          }}
+        >
           <div className={classes.drawer}>
             <CreateOrEdit
               elevation={0}

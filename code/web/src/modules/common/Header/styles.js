@@ -7,16 +7,22 @@ const styles = {
     flex: 1,
     textTransform: 'uppercase'
   },
+
   menu: {
     marginLeft: '-0.6rem',
     marginRight: '0.2rem'
   },
+
   account: {
     marginRight: '-0.6rem'
   },
   titleHighlight: {
     color: yellow[600]
   },
+
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.15)'
+  }
 }
 
 export default styles

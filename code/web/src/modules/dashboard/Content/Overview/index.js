@@ -173,7 +173,6 @@ class Overview extends PureComponent {
             onClose={this.toggleDrawer(false)}
             ModalProps={{
               BackdropProps: {
-                //invisible: true,
                 classes: { root: classes.backdrop }
               }
             }}
