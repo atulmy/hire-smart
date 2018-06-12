@@ -1,6 +1,9 @@
 // Imports
 import mongoose from 'mongoose'
 
+// Collection name
+export const collection = 'Organization'
+
 // Schema
 const Schema = new mongoose.Schema({
   name: {
@@ -16,4 +19,4 @@ const Schema = new mongoose.Schema({
 }, {timestamps: true})
 
 // Model
-export default mongoose.model('Organization', Schema, 'Organization')
+export default mongoose.model(collection, Schema, collection)

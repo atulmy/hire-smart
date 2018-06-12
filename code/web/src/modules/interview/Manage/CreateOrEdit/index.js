@@ -242,7 +242,7 @@ class CreateOrEdit extends PureComponent {
                       margin={'normal'}
                       autoComplete={'off'}
                       fullWidth
-                      inputProps={{ readonly: 'readonly' }}
+                      inputProps={{ readOnly: true }}
                     />
                   );
                 }

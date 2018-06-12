@@ -1,26 +1,41 @@
 // Imports
 import mongoose from 'mongoose'
 
+// App Imports
+import { collection as Organization } from '../organization/model'
+import { collection as Client } from '../client/model'
+import { collection as Candidate } from '../candidate/model'
+import { collection as Interview } from '../interview/model'
+import { collection as User } from '../user/model'
+
+// Collection name
+export const collection = 'Kanban'
+
 // Schema
 const Schema = new mongoose.Schema({
+  organizationId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: Organization
+  },
   clientId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'Client'
+    ref: Client
   },
   candidateId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'Candidate'
+    ref: Candidate
   },
   interviewId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Interview'
+    ref: Interview
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'User'
+    ref: User
   },
   status: {
     type: String,
@@ -34,4 +49,4 @@ const Schema = new mongoose.Schema({
 }, {timestamps: true})
 
 // Model
-export default mongoose.model('Kanban', Schema, 'Kanban')
+export default mongoose.model(collection, Schema, collection)

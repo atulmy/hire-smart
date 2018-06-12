@@ -3,13 +3,17 @@ import mongoose from 'mongoose'
 
 // App Imports
 import params from '../../setup/config/params'
+import { collection as Organization } from '../organization/model'
+
+// Collection name
+export const collection = 'User'
 
 // Schema
 const Schema = new mongoose.Schema({
   organizationId: {
     type: String,
     required: true,
-    ref: 'Organization'
+    ref: Organization
   },
   name: {
     type: String,
@@ -36,4 +40,4 @@ const Schema = new mongoose.Schema({
 }, {timestamps: true})
 
 // Model
-export default mongoose.model('User', Schema, 'User')
+export default mongoose.model(collection, Schema, collection)

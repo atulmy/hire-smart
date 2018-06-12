@@ -1,21 +1,29 @@
 // Imports
 import mongoose from 'mongoose'
 
+// App Imports
+import { collection as Organization } from '../organization/model'
+import { collection as Client } from '../client/model'
+import { collection as User } from '../user/model'
+
+// Collection name
+export const collection = 'Panel'
+
 // Schema
 const Schema = new mongoose.Schema({
   organizationId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'Organization'
+    ref: Organization
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'User'
+    ref: User
   },
   clientId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Client'
+    ref: Client
   },
   name: {
     type: String,
@@ -32,4 +40,4 @@ const Schema = new mongoose.Schema({
 }, {timestamps: true})
 
 // Model
-export default mongoose.model('Panel', Schema, 'Panel')
+export default mongoose.model(collection, Schema, collection)

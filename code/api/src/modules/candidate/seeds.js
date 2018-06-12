@@ -44,6 +44,7 @@ export default async function () {
     })
 
     await Kanban.create({
+      organizationId: organization._id,
       clientId: client._id,
       candidateId: candidate._id,
       userId: user.id,
