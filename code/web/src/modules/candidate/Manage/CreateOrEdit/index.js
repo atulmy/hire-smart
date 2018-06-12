@@ -65,7 +65,7 @@ class CreateOrEdit extends PureComponent {
     if(candidate && candidate._id !== this.state.id) {
       this.setState({
         id: candidate._id,
-        clientId: candidate.clientId,
+        clientId: candidate.clientId._id,
         name: candidate.name,
         email: candidate.email,
         mobile: candidate.mobile,
@@ -102,7 +102,7 @@ class CreateOrEdit extends PureComponent {
   save = async event => {
     event.preventDefault()
 
-    const { createOrUpdate, getList, messageShow } = this.props
+    const { createOrUpdate, successCallback, messageShow } = this.props
 
     const { id, clientId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
 
@@ -120,7 +120,7 @@ class CreateOrEdit extends PureComponent {
           messageShow(data.errors[0].message)
         } else {
           // Update candidates list
-          getList(false)
+          successCallback(false)
 
           // Reset form data
           this.reset()
@@ -333,10 +333,10 @@ CreateOrEdit.propTypes = {
   elevation: PropTypes.number.isRequired,
   clientId: PropTypes.string.isRequired,
   clientShowLoading: PropTypes.bool.isRequired,
+  successCallback: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   candidateEdit: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
-  getList: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   getClientList: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
@@ -355,4 +355,4 @@ function createOrEditState(state) {
   }
 }
 
-export default connect(createOrEditState, { createOrUpdate, getList, editClose, getClientList, messageShow })(withStyles(styles)(CreateOrEdit))
+export default connect(createOrEditState, { createOrUpdate, editClose, getClientList, messageShow })(withStyles(styles)(CreateOrEdit))

@@ -34,7 +34,7 @@ class List extends PureComponent {
     getList(isLoading)
   }
 
-  edit = (client) => {
+  edit = client => () => {
     const { edit } = this.props
 
     edit(client)
@@ -70,7 +70,7 @@ class List extends PureComponent {
                                 <Tooltip title={'Edit'} placement={'bottom'} enterDelay={500}>
                                   <IconButton
                                     aria-label={'Edit'}
-                                    onClick={() => this.edit(client)}
+                                    onClick={this.edit(client)}
                                   >
                                     <IconEdit />
                                   </IconButton>

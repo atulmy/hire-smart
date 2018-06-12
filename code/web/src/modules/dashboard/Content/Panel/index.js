@@ -57,6 +57,12 @@ class Panels extends PureComponent {
     })
   }
 
+  successCallback = () => {
+    this.refresh(false)
+
+    this.toggleDrawer(false)()
+  }
+
   render() {
     const { classes, client, panelsByClient: { isLoading, list } } = this.props
     const { drawerAdd } = this.state
@@ -120,6 +126,7 @@ class Panels extends PureComponent {
               elevation={0}
               clientId={client.item._id}
               clientShowLoading={false}
+              successCallback={this.successCallback}
             />
           </div>
         </Drawer>

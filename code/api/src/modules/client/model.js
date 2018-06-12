@@ -5,11 +5,13 @@ import mongoose from 'mongoose'
 const Schema = new mongoose.Schema({
   organizationId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'Organization'
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'User'
   },
   name: {
     type: String,

@@ -42,7 +42,7 @@ class Overview extends PureComponent {
   }
 
   columnWidth = () => {
-    let width = parseInt((window.innerWidth - 249) / params.kanban.columns.length, 10) - 1
+    let width = parseInt((window.innerWidth - 250) / params.kanban.columns.length, 10) - 1
     if(width < 225) {
       width = 225
     }

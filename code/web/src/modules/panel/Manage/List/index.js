@@ -34,7 +34,7 @@ class List extends PureComponent {
     getList(isLoading)
   }
 
-  edit = (panel) => {
+  edit = panel => () => {
     const { edit } = this.props
 
     edit(panel)
@@ -54,6 +54,7 @@ class List extends PureComponent {
                   <TableHead>
                     <TableRow>
                       <TableCell>Name</TableCell>
+                      <TableCell>Client</TableCell>
                       <TableCell>Email</TableCell>
                       <TableCell>Mobile</TableCell>
                       <TableCell width={120} className={classes.textCenter}>Actions</TableCell>
@@ -66,13 +67,14 @@ class List extends PureComponent {
                         ? list.map(panel => (
                             <TableRow key={panel._id}>
                               <TableCell>{ panel.name }</TableCell>
+                              <TableCell>{ panel.clientId.name }</TableCell>
                               <TableCell>{ panel.email }</TableCell>
                               <TableCell>{ panel.mobile }</TableCell>
                               <TableCell className={classes.textCenter}>
                                 <Tooltip title={'Edit'} placement={'bottom'} enterDelay={500}>
                                   <IconButton
                                     aria-label={'Edit'}
-                                    onClick={() => this.edit(panel)}
+                                    onClick={this.edit(panel)}
                                   >
                                     <IconEdit />
                                   </IconButton>

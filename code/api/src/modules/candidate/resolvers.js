@@ -31,6 +31,8 @@ export async function getByOrganization(parentValue, {}, { auth }) {
     return await Candidate.find({
       organizationId: auth.user.organizationId
     })
+      .populate('organizationId')
+      .populate('clientId')
   } else {
     throw new Error('Please login to view your candidates.')
   }

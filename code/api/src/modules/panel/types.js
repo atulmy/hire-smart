@@ -1,6 +1,11 @@
 // Imports
 import { GraphQLObjectType, GraphQLString } from 'graphql'
 
+// App Imports
+import OrganizationType from '../organization/types'
+import ClientType from '../client/types'
+import { UserType } from '../user/types'
+
 // Type
 const PanelType = new GraphQLObjectType({
   name: 'panel',
@@ -8,9 +13,9 @@ const PanelType = new GraphQLObjectType({
 
   fields: () => ({
     _id: { type: GraphQLString },
-    organizationId: { type: GraphQLString },
-    clientId: { type: GraphQLString },
-    userId: { type: GraphQLString },
+    organizationId: { type: OrganizationType },
+    clientId: { type: ClientType },
+    userId: { type: UserType },
     name: { type: GraphQLString },
     email: { type: GraphQLString },
     mobile: { type: GraphQLString },

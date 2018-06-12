@@ -9,7 +9,7 @@ import routes from '../../setup/routes'
 
 // Component
 const AuthCheck = (props) => (
-  props.user.isAuthenticated ? (props.user.details.role === 'ADMIN' ? <Redirect to={routes.dashboard.path}/> : <Redirect to={routes.home.path}/>) : ''
+  props.user.isAuthenticated ? <Redirect to={routes.dashboard.path}/> : <Redirect to={routes.home.path} />
 )
 
 // Component Properties

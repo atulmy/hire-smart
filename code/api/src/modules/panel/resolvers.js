@@ -18,6 +18,8 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
       organizationId: auth.user.organizationId,
       clientId
     })
+      .populate('organizationId')
+      .populate('clientId')
   } else {
     throw new Error('Please login to view your panels.')
   }
@@ -29,6 +31,8 @@ export async function getByOrganization(parentValue, {}, { auth }) {
     return await Panel.find({
       organizationId: auth.user.organizationId
     })
+      .populate('organizationId')
+      .populate('clientId')
   } else {
     throw new Error('Please login to view your panels.')
   }

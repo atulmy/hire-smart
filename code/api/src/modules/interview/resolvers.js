@@ -38,6 +38,11 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
       organizationId: auth.user.organizationId,
       clientId
     })
+      .populate('organizationId')
+      .populate('clientId')
+      .populate('candidateId')
+      .populate('panelId')
+      .populate('userId')
   } else {
     throw new Error('Please login to view interviews.')
   }

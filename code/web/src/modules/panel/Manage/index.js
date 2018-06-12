@@ -1,6 +1,8 @@
 // Imports
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { Helmet } from 'react-helmet'
+import { connect } from 'react-redux'
 
 // UI Imports
 import Toolbar from '@material-ui/core/Toolbar'
@@ -11,13 +13,14 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
+import { getList } from '../api/actions/query'
 import List from './List'
 import CreateOrEdit from './CreateOrEdit'
 
 // Component
 class Manage extends PureComponent {
   render () {
-    const { classes } = this.props
+    const { classes, getList } = this.props
 
     return (
       <Fade in={true}>
@@ -42,7 +45,7 @@ class Manage extends PureComponent {
             <Grid container spacing={24}>
               {/* Add or Edit */}
               <Grid item xs={12} md={3}>
-                <CreateOrEdit />
+                <CreateOrEdit successCallback={getList} />
               </Grid>
 
               {/* List */}
@@ -57,4 +60,9 @@ class Manage extends PureComponent {
   }
 }
 
-export default withStyles(styles)(Manage)
+// Component Properties
+Manage.propTypes = {
+  getList: PropTypes.func.isRequired
+}
+
+export default connect(null, { getList })(withStyles(styles)(Manage))

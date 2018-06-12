@@ -1,6 +1,10 @@
 // Imports
 import { GraphQLObjectType, GraphQLString } from 'graphql'
 
+// App Imports
+import OrganizationType from '../organization/types'
+import { UserType } from '../user/types'
+
 // Type
 const ClientType = new GraphQLObjectType({
   name: 'client',
@@ -8,8 +12,8 @@ const ClientType = new GraphQLObjectType({
 
   fields: () => ({
     _id: { type: GraphQLString },
-    organizationId: { type: GraphQLString },
-    userId: { type: GraphQLString },
+    organizationId: { type: OrganizationType },
+    userId: { type: UserType },
     name: { type: GraphQLString },
     description: { type: GraphQLString },
     createdAt: { type: GraphQLString },

@@ -5,6 +5,7 @@ import cookie from 'js-cookie'
 // App Imports
 import { queryBuilder } from '../../../../setup/helpers'
 import { API_URL } from '../../../../setup/config/env'
+import { MESSAGE_SHOW } from '../../../common/api/actions'
 import { LOGIN_REQUEST, LOGIN_RESPONSE, SET_USER, LOGOUT } from './types'
 
 export function login(userCredentials, isLoading = true) {
@@ -19,7 +20,7 @@ export function login(userCredentials, isLoading = true) {
         type: 'query',
         operation: 'userLogin',
         data: userCredentials,
-        fields: ['user {organizationId, name, email, role}', 'token']
+        fields: ['user {name, email, role}', 'token']
       }))
 
       let error = ''
@@ -68,17 +69,22 @@ export function startNow(isLoading = true) {
       isLoading
     })
 
+    dispatch({
+      type: MESSAGE_SHOW,
+      message: 'Please wait..'
+    })
+
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'mutation',
         operation: 'userStartNow',
-        fields: ['user {organizationId, name, email, role}', 'token']
+        fields: ['user {name, email, role}', 'token']
       }))
 
-      let error = ''
+      let message = ''
 
       if (data.errors && data.errors.length > 0) {
-        error = data.errors[0].message
+        message = data.errors[0].message
       } else if (data.data.userStartNow.token !== '') {
         const token = data.data.userStartNow.token
         const user = data.data.userStartNow.user
@@ -86,16 +92,22 @@ export function startNow(isLoading = true) {
         dispatch(setUser(token, user))
 
         loginSetUserLocalStorageAndCookie(token, user)
+
+        message = 'You are now logged in as a new demo user.'
       }
 
       dispatch({
-        type: LOGIN_RESPONSE,
-        error
+        type: MESSAGE_SHOW,
+        message
       })
     } catch(error) {
       dispatch({
-        type: LOGIN_RESPONSE,
-        error: 'Please try again'
+        type: MESSAGE_SHOW,
+        message: 'There was some server error. Please try again.'
+      })
+    } finally {
+      dispatch({
+        type: LOGIN_RESPONSE
       })
     }
   }

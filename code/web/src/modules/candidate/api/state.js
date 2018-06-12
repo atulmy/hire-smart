@@ -1,21 +1,10 @@
-// Imports
-
 // App Imports
 import {
-  LIST_REQUEST,
-  LIST_RESPONSE,
-  LIST_DONE,
-  LIST_RESET,
-  LIST_BY_CLIENT_REQUEST,
-  LIST_BY_CLIENT_RESPONSE,
-  LIST_BY_CLIENT_DONE,
-  LIST_BY_CLIENT_RESET,
-  SINGLE_REQUEST,
-  SINGLE_RESPONSE,
-  SINGLE_DONE,
-  SINGLE_RESET,
-  EDIT_SET,
-  EDIT_UNSET
+  LIST_REQUEST, LIST_RESPONSE, LIST_DONE, LIST_RESET,
+  LIST_BY_CLIENT_REQUEST, LIST_BY_CLIENT_RESPONSE, LIST_BY_CLIENT_DONE, LIST_BY_CLIENT_RESET,
+  SINGLE_REQUEST, SINGLE_RESPONSE, SINGLE_DONE, SINGLE_RESET,
+  EDIT_SET, EDIT_UNSET,
+  VIEW_SET, VIEW_UNSET, VIEW_HIDE
 } from './actions/types'
 
 // List
@@ -134,10 +123,8 @@ export const candidatesByClient = (state = candidateByClientInitialState, action
 
 // Initial State
 const candidateEditState = {
-  edit: {
-    candidate: null,
-    open: true
-  }
+  candidate: null,
+  open: false
 }
 
 // State
@@ -153,8 +140,43 @@ export const candidateEdit = (state = candidateEditState, action) => {
     case EDIT_UNSET:
       return {
         ...state,
-        candidate: null,
+        ...candidateEditState
+      }
+
+    default:
+      return state
+  }
+}
+
+
+// View
+
+// Initial State
+const candidateViewState = {
+  candidate: null,
+  open: false
+}
+
+// State
+export const candidateView = (state = candidateEditState, action) => {
+  switch (action.type) {
+    case VIEW_SET:
+      return {
+        ...state,
+        candidate: action.candidate,
         open: true
+      }
+
+    case VIEW_UNSET:
+      return {
+        ...state,
+        ...candidateViewState
+      }
+
+    case VIEW_HIDE:
+      return {
+        ...state,
+        open: false
       }
 
     default:

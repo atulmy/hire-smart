@@ -23,21 +23,18 @@ export default (state = userInitialState, action) => {
     case LOGIN_REQUEST:
       return {
         ...state,
-        error: null,
         isLoading: action.isLoading
       }
 
     case LOGIN_RESPONSE:
       return {
         ...state,
-        error: action.error,
         isLoading: false
       }
 
     case LOGOUT:
       return {
         ...state,
-        error: null,
         isLoading: false,
         isAuthenticated: false,
         details: null

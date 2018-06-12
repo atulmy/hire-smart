@@ -5,18 +5,22 @@ import mongoose from 'mongoose'
 const Schema = new mongoose.Schema({
   clientId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'Client'
   },
   candidateId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'Candidate'
   },
   interviewId: {
-    type: mongoose.Schema.Types.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Interview'
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'User'
   },
   status: {
     type: String,

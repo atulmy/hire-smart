@@ -28,7 +28,6 @@ import CreateOrEdit from '../../../candidate/Manage/CreateOrEdit'
 
 // Component
 class Candidates extends PureComponent {
-
   constructor() {
     super()
 
@@ -55,6 +54,12 @@ class Candidates extends PureComponent {
     this.setState({
       drawerAdd: open
     })
+  }
+
+  successCallback = () => {
+    this.refresh(false)
+
+    this.toggleDrawer(false)()
   }
 
   render() {
@@ -125,6 +130,7 @@ class Candidates extends PureComponent {
             elevation={0}
             clientId={client.item._id}
             clientShowLoading={false}
+            successCallback={this.successCallback}
           />
         </Drawer>
       </div>

@@ -97,8 +97,8 @@ class Interviews extends PureComponent {
                       list && list.length > 0
                         ? list.map(interview => (
                           <TableRow key={interview._id}>
-                            <TableCell>{ interview.candidateId }</TableCell>
-                            <TableCell>{ interview.panelId }</TableCell>
+                            <TableCell>{ interview.candidateId.name }</TableCell>
+                            <TableCell>{ interview.panelId.name }</TableCell>
                             <TableCell>{ interview.dateTime }</TableCell>
                           </TableRow>
                         ))

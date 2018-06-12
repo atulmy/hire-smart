@@ -12,17 +12,17 @@ const styles = theme => ({
     overflowX: 'auto',
     overflowY: 'hidden',
     position: 'relative',
-    width: 'calc(100vw - 249px)'
+    width: 'calc(100vw - 250px)'
   },
 
   columnsContainer: {
     display: 'inline-block',
-    height: 'calc(100vh - 201px)'
+    height: 'calc(100vh - 193px)'
   },
   column: {
     display: 'inline-block',
     float: 'left',
-    height: 'calc(100vh - 196px)',
+    height: 'calc(100vh - 190px)',
     overflowY: 'hidden'
   },
   columnTitle: {
@@ -36,7 +36,7 @@ const styles = theme => ({
 
   candidatesContainer: {
     padding: `0 ${ theme.spacing.unit * 2.5 }px`,
-    height: 'calc(100vh - 223px)',
+    height: 'calc(100vh - 214px)',
     overflowY: 'auto'
   },
   candidate: {

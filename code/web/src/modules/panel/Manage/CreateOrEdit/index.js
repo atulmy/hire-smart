@@ -24,7 +24,6 @@ import styles from './styles'
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
 import { getList as getClientList } from '../../../client/api/actions/query'
-import { getList } from '../../api/actions/query'
 import { createOrUpdate, editClose } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
@@ -61,7 +60,7 @@ class CreateOrEdit extends PureComponent {
     if(panel && panel._id !== this.state.id) {
       this.setState({
         id: panel._id,
-        clientId: panel.clientId,
+        clientId: panel.clientId._id,
         name: panel.name,
         email: panel.email,
         mobile: panel.mobile
@@ -92,7 +91,7 @@ class CreateOrEdit extends PureComponent {
   save = async event => {
     event.preventDefault()
 
-    const { createOrUpdate, getList, messageShow } = this.props
+    const { createOrUpdate, successCallback, messageShow } = this.props
 
     const { id, clientId, name, email, mobile } = this.state
 
@@ -110,7 +109,7 @@ class CreateOrEdit extends PureComponent {
           messageShow(data.errors[0].message)
         } else {
           // Update panels list
-          getList(false)
+          successCallback(false)
 
           // Reset form data
           this.reset()
@@ -261,11 +260,11 @@ CreateOrEdit.propTypes = {
   elevation: PropTypes.number.isRequired,
   clientId: PropTypes.string.isRequired,
   clientShowLoading: PropTypes.bool.isRequired,
+  successCallback: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   panelEdit: PropTypes.object.isRequired,
   clients: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
-  getList: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   getClientList: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
@@ -284,4 +283,4 @@ function createOrEditState(state) {
   }
 }
 
-export default connect(createOrEditState, { createOrUpdate, getList, editClose, getClientList, messageShow })(withStyles(styles)(CreateOrEdit))
+export default connect(createOrEditState, { createOrUpdate, editClose, getClientList, messageShow })(withStyles(styles)(CreateOrEdit))

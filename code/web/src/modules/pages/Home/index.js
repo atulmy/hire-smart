@@ -15,6 +15,7 @@ import { APP_URL } from '../../../setup/config/env'
 import routes from '../../../setup/routes'
 import { messageShow } from '../../common/api/actions'
 import { startNow } from '../../user/api/actions/mutation'
+import AuthCheck from '../../auth/AuthCheck'
 
 // Component
 class Home extends PureComponent {
@@ -22,49 +23,33 @@ class Home extends PureComponent {
     super(props)
 
     this.state = {
-      isLoading: false,
+      redirect: false
     }
   }
 
-  loadingToggle = (isLoading) => {
-    this.setState({ isLoading })
+  redirectToggle = (redirect) => {
+    this.setState({ redirect })
   }
 
-  startNow = async event => {
+  startNow = event => {
     event.preventDefault()
 
-    const { messageShow, startNow, user, history } = this.props
+    const { startNow, user, history } = this.props
 
     if(user.isAuthenticated) {
       // User is already logged in, redirect to dashboard
       history.push(routes.dashboard.path)
     } else {
+      this.redirectToggle(true)
+
       // Create new demo user and redirect to dashboard
-      this.loadingToggle(true)
-
-      messageShow('Please wait...')
-
-      try {
-        await startNow()
-
-        if (user.error && user.error.length > 0) {
-          messageShow(user.error)
-        } else {
-          messageShow('You are now logged in as a new demo user.')
-
-          history.push(routes.dashboard.path)
-        }
-      } catch(error) {
-        messageShow('There was some error. Please try again.')
-      } finally {
-        this.loadingToggle(false)
-      }
+      startNow()
     }
   }
 
   render() {
-    const { classes } = this.props
-    const { isLoading } = this.state
+    const { classes, user: { isLoading } } = this.props
+    const { redirect } = this.state
 
     return(
       <div>
@@ -95,6 +80,8 @@ class Home extends PureComponent {
           >
             { !isLoading ? `Start Now` : `Please Wait..` }
           </Button>
+
+          { redirect && <AuthCheck /> }
 
           <Typography
             variant={'caption'}

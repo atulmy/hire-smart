@@ -1,6 +1,13 @@
 // Imports
 import { GraphQLObjectType, GraphQLString } from 'graphql'
 
+// App Imports
+import OrganizationType from '../organization/types'
+import ClientType from '../client/types'
+import CandidateType from '../candidate/types'
+import PanelType from '../panel/types'
+import { UserType } from '../user/types'
+
 // Type
 const InterviewType = new GraphQLObjectType({
   name: 'interview',
@@ -8,11 +15,11 @@ const InterviewType = new GraphQLObjectType({
 
   fields: () => ({
     _id: { type: GraphQLString },
-    organizationId: { type: GraphQLString },
-    clientId: { type: GraphQLString },
-    candidateId: { type: GraphQLString },
-    panelId: { type: GraphQLString },
-    userId: { type: GraphQLString },
+    organizationId: { type: OrganizationType },
+    clientId: { type: ClientType },
+    candidateId: { type: CandidateType },
+    panelId: { type: PanelType },
+    userId: { type: UserType },
     dateTime: { type: GraphQLString },
     mode: { type: GraphQLString },
     createdAt: { type: GraphQLString },

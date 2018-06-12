@@ -5,14 +5,17 @@ import mongoose from 'mongoose'
 const Schema = new mongoose.Schema({
   organizationId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'Organization'
   },
   clientId: {
-    type: mongoose.Schema.Types.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Client'
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: 'User'
   },
   name: {
     type: String,

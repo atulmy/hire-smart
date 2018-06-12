@@ -8,7 +8,8 @@ import params from '../../setup/config/params'
 const Schema = new mongoose.Schema({
   organizationId: {
     type: String,
-    required: true
+    required: true,
+    ref: 'Organization'
   },
   name: {
     type: String,

@@ -30,7 +30,7 @@ class ClientList extends PureComponent {
     getClientsList(isLoading)
   }
 
-  onSelectClient = (clientId) => {
+  onSelectClient = clientId => () => {
     const { getClient } = this.props
 
     getClient(clientId)
@@ -57,7 +57,7 @@ class ClientList extends PureComponent {
                 ? clients.list.map(item => (
                     <ListItem
                       key={item._id}
-                      onClick={() => this.onSelectClient(item._id)}
+                      onClick={this.onSelectClient(item._id)}
                       button
                       style={ this.selected(item._id)  ? { backgroundColor: '#ddd' } : {}}
                     >

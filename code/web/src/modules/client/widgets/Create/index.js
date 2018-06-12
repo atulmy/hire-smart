@@ -54,7 +54,7 @@ class Quick extends PureComponent {
           getClientsList(false)
 
           // Hide create client form
-          this.visibleToggle(false)
+          this.visibleToggle(false)()
 
           messageShow('Client added successfully.')
         }
@@ -68,7 +68,7 @@ class Quick extends PureComponent {
     }
   }
 
-  visibleToggle = (visible) => {
+  visibleToggle = visible => () => {
     this.setState({
       visible
     })
@@ -120,7 +120,7 @@ class Quick extends PureComponent {
                   <Grid item xs={12} className={classes.buttonsContainer}>
                     {/* Button - Cancel */}
                     <IconButton
-                      onClick={() => this.visibleToggle(false)}
+                      onClick={this.visibleToggle(false)}
                       aria-label={'Cancel'}
                     >
                       <IconClose />
@@ -139,7 +139,7 @@ class Quick extends PureComponent {
                 </Grid>
               </form>
             : <Button
-                onClick={() => this.visibleToggle(true)}
+                onClick={this.visibleToggle(true)}
                 fullWidth
                 className={classes.buttonAdd}
               >

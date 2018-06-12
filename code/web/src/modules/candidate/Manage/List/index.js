@@ -9,21 +9,32 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import Drawer from '@material-ui/core/Drawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import IconButton from '@material-ui/core/IconButton'
 import IconEdit from '@material-ui/icons/Edit'
+import IconVisibility from '@material-ui/icons/Visibility'
 import Fade from '@material-ui/core/Fade'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
 import { getList } from '../../api/actions/query'
-import { edit, editClose } from '../../api/actions/mutation'
+import { edit, view, viewHide } from '../../api/actions/mutation'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
+import View from '../View'
 
 // Component
 class List extends PureComponent {
+  constructor() {
+    super()
+
+    this.state = {
+      drawerView: false
+    }
+  }
+  
   componentDidMount() {
     this.refresh()
   }
@@ -34,14 +45,20 @@ class List extends PureComponent {
     getList(isLoading)
   }
 
-  edit = (candidate) => {
+  edit = candidate => () => {
     const { edit } = this.props
 
     edit(candidate)
   }
 
+  view = candidate => () => {
+    const { view } = this.props
+
+    view(candidate)
+  }
+
   render() {
-    const { classes, candidates } = this.props
+    const { classes, candidates, candidateView, viewHide } = this.props
     const { isLoading, list } = candidates
 
     return (
@@ -54,12 +71,10 @@ class List extends PureComponent {
                   <TableHead>
                     <TableRow>
                       <TableCell>Name</TableCell>
+                      <TableCell>Client</TableCell>
                       <TableCell>Email</TableCell>
                       <TableCell>Mobile</TableCell>
-                      <TableCell>Experience</TableCell>
-                      <TableCell>Resume</TableCell>
-                      <TableCell>Salary Current/Expected</TableCell>
-                      <TableCell width={120} className={classes.textCenter}>Actions</TableCell>
+                      <TableCell width={145} className={classes.textCenter}>Actions</TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -69,16 +84,23 @@ class List extends PureComponent {
                         ? list.map(candidate => (
                             <TableRow key={candidate._id}>
                               <TableCell>{ candidate.name }</TableCell>
+                              <TableCell>{ candidate.clientId.name }</TableCell>
                               <TableCell>{ candidate.email }</TableCell>
                               <TableCell>{ candidate.mobile }</TableCell>
-                              <TableCell>{ candidate.experience }</TableCell>
-                              <TableCell>{ candidate.resume }</TableCell>
-                              <TableCell>{ candidate.salaryCurrent }/{ candidate.salaryExpected }</TableCell>
                               <TableCell className={classes.textCenter}>
-                                <Tooltip title={'Edit'} placement={'bottom'} enterDelay={500}>
+                                <Tooltip title={'More info'} placement={'top'} enterDelay={500}>
+                                  <IconButton
+                                    aria-label={'More info'}
+                                    onClick={this.view(candidate)}
+                                  >
+                                    <IconVisibility />
+                                  </IconButton>
+                                </Tooltip>
+
+                                <Tooltip title={'Edit'} placement={'top'} enterDelay={500}>
                                   <IconButton
                                     aria-label={'Edit'}
-                                    onClick={() => this.edit(candidate)}
+                                    onClick={this.edit(candidate)}
                                   >
                                     <IconEdit />
                                   </IconButton>
@@ -96,6 +118,11 @@ class List extends PureComponent {
                 </Table>
               </Fade>
         }
+
+        {/* Candidate create or edit */}
+        <Drawer anchor={'right'} open={candidateView.open} onClose={viewHide}>
+          { <View /> }
+        </Drawer>
       </div>
     )
   }
@@ -104,16 +131,20 @@ class List extends PureComponent {
 // Component Properties
 List.propTypes = {
   classes: PropTypes.object.isRequired,
+  candidates: PropTypes.object.isRequired,
+  candidateView: PropTypes.object.isRequired,
   getList: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired,
-  editClose: PropTypes.func.isRequired,
+  view: PropTypes.func.isRequired,
+  viewHide: PropTypes.func.isRequired
 }
 
 // Component State
 function listState(state) {
   return {
-    candidates: state.candidates
+    candidates: state.candidates,
+    candidateView: state.candidateView
   }
 }
 
-export default connect(listState, { getList, edit, editClose })(withStyles(styles)(List))
+export default connect(listState, { getList, edit, view, viewHide })(withStyles(styles)(List))

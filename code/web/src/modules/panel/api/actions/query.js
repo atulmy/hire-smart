@@ -29,7 +29,7 @@ export function getList(isLoading = true) {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
         operation: 'panelsByOrganization',
-        fields: ['_id', 'name', 'email', 'mobile', 'createdAt']
+        fields: ['_id', 'clientId { _id, name }', 'name', 'email', 'mobile', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {
@@ -111,7 +111,7 @@ export function getListByClient({ clientId }, isLoading = true) {
         type: 'query',
         operation: 'panelsByClient',
         data: { clientId },
-        fields: ['_id', 'name', 'email', 'mobile', 'createdAt']
+        fields: ['_id', 'clientId { _id, name }', 'name', 'email', 'mobile', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {
