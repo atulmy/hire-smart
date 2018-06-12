@@ -57,13 +57,15 @@ export async function getAll() {
 // Mutations
 
 // Create
-export async function create(parentValue, { name, description = '' }, { auth }) {
+export async function create(parentValue, { clientId, candidateId, panelId, dateTime }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Interview.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
-      name,
-      description
+      clientId,
+      candidateId,
+      panelId,
+      dateTime
     })
   } else {
     throw new Error('Please login to create interview.')
@@ -71,14 +73,16 @@ export async function create(parentValue, { name, description = '' }, { auth }) 
 }
 
 // Update
-export async function update(parentValue, { id, name, description }, { auth }) {
+export async function update(parentValue, { id, clientId, candidateId, panelId, dateTime }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     return await Interview.updateOne(
       { _id: id },
       {
         $set: {
-          name,
-          description
+          clientId,
+          candidateId,
+          panelId,
+          dateTime
         }
       }
     )

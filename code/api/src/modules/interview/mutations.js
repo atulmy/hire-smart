@@ -7,13 +7,23 @@ import { create, remove, update } from './resolvers'
 
 // Interview fields
 const fields = {
-  name: {
-    name: 'name',
+  clientId: {
+    name: 'candidateId',
     type: GraphQLString
   },
 
-  description: {
-    name: 'description',
+  candidateId: {
+    name: 'candidateId',
+    type: GraphQLString
+  },
+
+  panelId: {
+    name: 'panelId',
+    type: GraphQLString
+  },
+
+  dateTime: {
+    name: 'dateTime',
     type: GraphQLString
   }
 }

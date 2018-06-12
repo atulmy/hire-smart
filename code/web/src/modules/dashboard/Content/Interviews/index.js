@@ -24,7 +24,7 @@ import { getListByClient } from '../../../interview/api/actions/query'
 import { editClose } from '../../../interview/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
-import CreateOrEdit from '../../../candidate/Manage/CreateOrEdit'
+import CreateOrEdit from '../../../interview/Manage/CreateOrEdit'
 
 // Component
 class Interviews extends PureComponent {
@@ -55,6 +55,10 @@ class Interviews extends PureComponent {
     this.setState({
       drawerAdd: open
     })
+  }
+
+  successCallback = () => {
+    this.refresh(false)
   }
 
   render() {
@@ -124,11 +128,13 @@ class Interviews extends PureComponent {
             }
           }}
         >
-          <CreateOrEdit
-            elevation={0}
-            clientId={client.item._id}
-            clientShowLoading={false}
-          />
+          <div className={classes.drawer}>
+            <CreateOrEdit
+              elevation={0}
+              clientId={client.item._id}
+              successCallback={this.successCallback}
+            />
+          </div>
         </Drawer>
       </div>
     )

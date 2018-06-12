@@ -16,6 +16,10 @@ const styles = theme => ({
     marginTop: 5
   },
 
+  drawer: {
+    minWidth: 350
+  },
+
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.15)'
   }
