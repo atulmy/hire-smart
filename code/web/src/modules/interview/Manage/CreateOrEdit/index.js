@@ -3,12 +3,14 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import isEmpty from 'validator/lib/isEmpty'
+import Datetime from 'react-datetime'
 
 // UI Imports
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
+import TextField from '@material-ui/core/TextField'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -21,6 +23,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
+import params from '../../../../setup/config/params'
 import { nullToEmptyString } from '../../../../setup/helpers'
 import { getListByClient as getCandidateListByClient } from '../../../candidate/api/actions/query'
 import { getListByClient as getInterviewListByClient } from '../../../panel/api/actions/query'
@@ -38,9 +41,7 @@ class CreateOrEdit extends PureComponent {
       clientId: props.clientId,
       candidateId: '',
       panelId: '',
-      name: '',
-      email: '',
-      mobile: ''
+      dateTime: ''
     }
 
     this.state = {
@@ -65,7 +66,8 @@ class CreateOrEdit extends PureComponent {
         id: interview._id,
         clientId: interview.clientId._id,
         candidateId: interview.candidateId._id,
-        panelId: interview.panelId._id
+        panelId: interview.panelId._id,
+        dateTime: interview.dateTime,
       })
     }
   }
@@ -95,7 +97,7 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, candidateId, panelId } = this.state
+    const { id, clientId, candidateId, panelId, dateTime } = this.state
 
     // Validate
     if(!isEmpty(clientId) && !isEmpty(candidateId) && !isEmpty(panelId)) {
@@ -105,7 +107,7 @@ class CreateOrEdit extends PureComponent {
 
       // Create or Update
       try {
-        const { data } = await createOrUpdate({ id, clientId, candidateId, panelId, dateTime: new Date() })
+        const { data } = await createOrUpdate({ id, clientId, candidateId, panelId, dateTime: dateTime.format() })
 
         if(data.errors && !isEmpty(data.errors)) {
           messageShow(data.errors[0].message)
@@ -128,13 +130,19 @@ class CreateOrEdit extends PureComponent {
         this.isLoadingToggle(false)
       }
     } else {
-      messageShow('Please enter panel name.')
+      messageShow('Please enter all the required information.')
     }
+  }
+
+  onDateSelect = (dateTime) => {
+    this.setState({
+      dateTime
+    })
   }
 
   render() {
     const { classes, elevation, candidatesByClient, panelsByClient } = this.props
-    const { isLoading, id, candidateId, panelId } = this.state
+    const { isLoading, id, candidateId, panelId, dateTime } = this.state
 
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
@@ -215,6 +223,30 @@ class CreateOrEdit extends PureComponent {
                 }
               </Select>
             </FormControl>
+          </Grid>
+
+          {/* Input - dateTime */}
+          <Grid item xs={12}>
+            <Datetime
+              onChange={this.onDateSelect}
+              value={dateTime ? dateTime.format(`${ params.date.format.date } ${ params.date.format.time }`) : '' }
+              dateFormat={params.date.format.date}
+              timeFormat={params.date.format.time}
+              renderInput={
+                (props) => {
+                  return (
+                    <TextField
+                      {...props}
+                      label={'Date and time'}
+                      placeholder={'Select date and time'}
+                      margin={'normal'}
+                      autoComplete={'off'}
+                      fullWidth
+                    />
+                  );
+                }
+              }
+            />
           </Grid>
 
           {/* Button -  Save */}

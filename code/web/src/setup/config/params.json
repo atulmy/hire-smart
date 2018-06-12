@@ -15,5 +15,12 @@
       { "key": "rejected", "name": "Rejected", "color": "red" },
       { "key": "selected", "name": "Selected", "color": "green" }
     ]
+  },
+
+  "date": {
+    "format": {
+      "date": "YYYY-MM-DD",
+      "time": "hh:mm a"
+    }
   }
 }

@@ -28,7 +28,7 @@ const Schema = new mongoose.Schema({
     required: true
   },
   dateTime: {
-    type: Date,
+    type: String,
     default: new Date()
   },
   mode: {

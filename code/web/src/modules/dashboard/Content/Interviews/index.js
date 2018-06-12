@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 // UI Imports
 import Table from '@material-ui/core/Table'
@@ -19,6 +20,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
+import params from '../../../../setup/config/params'
 import { messageShow } from '../../../common/api/actions'
 import { getListByClient } from '../../../interview/api/actions/query'
 import { editClose } from '../../../interview/api/actions/mutation'
@@ -92,7 +94,7 @@ class Interviews extends PureComponent {
                     <TableRow>
                       <TableCell>Candidate</TableCell>
                       <TableCell>Panel</TableCell>
-                      <TableCell>Date</TableCell>
+                      <TableCell title={'Year-Month-Date Hour:Minute'}>Date and time</TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -103,7 +105,7 @@ class Interviews extends PureComponent {
                           <TableRow key={interview._id}>
                             <TableCell>{ interview.candidateId.name }</TableCell>
                             <TableCell>{ interview.panelId.name }</TableCell>
-                            <TableCell>{ interview.dateTime }</TableCell>
+                            <TableCell title={'Year-Month-Date Hour:Minute'}>{ moment(interview.dateTime).format(`${ params.date.format.date } ${ params.date.format.time }`)  }</TableCell>
                           </TableRow>
                         ))
                         : <TableRow>

@@ -41,6 +41,8 @@ const view = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initial
   </style>
   <!-- CSS - Generated -->
   <style type="text/css">${ appCss }</style>
+  <!-- CSS - Datetime -->
+  <link rel="stylesheet" media="all" href="/css/datetime.css" />
 </head>
 <body>  
   <!-- App -->
