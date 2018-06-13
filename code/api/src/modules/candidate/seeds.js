@@ -39,7 +39,7 @@ export default async function () {
       candidateId: candidate._id,
       panelId: panel._id,
       userId: user._id,
-      dateTime: new Date(),
+      dateTime: '2018-06-01T00:00:00+05:30',
       mode: ''
     })
 

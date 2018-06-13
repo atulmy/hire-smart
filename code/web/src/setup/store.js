@@ -11,6 +11,7 @@ import * as client from '../modules/client/api/state'
 import * as candidate from '../modules/candidate/api/state'
 import * as panel from '../modules/panel/api/state'
 import * as interview from '../modules/interview/api/state'
+import * as kanban from '../modules/kanban/api/state'
 
 // App Reducer
 const appReducer = combineReducers({
@@ -20,7 +21,8 @@ const appReducer = combineReducers({
   ...client,
   ...candidate,
   ...panel,
-  ...interview
+  ...interview,
+  ...kanban
 })
 
 // Root Reducer

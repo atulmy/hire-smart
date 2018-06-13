@@ -8,6 +8,7 @@ import * as client from '../../modules/client/mutations'
 import * as candidate from '../../modules/candidate/mutations'
 import * as panel from '../../modules/panel/mutations'
 import * as interview from '../../modules/interview/mutations'
+import * as kanban from '../../modules/kanban/mutations'
 
 // Mutation
 const mutation = new GraphQLObjectType({
@@ -20,7 +21,8 @@ const mutation = new GraphQLObjectType({
     ...client,
     ...candidate,
     ...panel,
-    ...interview
+    ...interview,
+    ...kanban
   }
 })
 

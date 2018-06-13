@@ -8,6 +8,7 @@ import * as client from '../../modules/client/query'
 import * as candidate from '../../modules/candidate/query'
 import * as panel from '../../modules/panel/query'
 import * as interview from '../../modules/interview/query'
+import * as kanban from '../../modules/kanban/query'
 
 // Query
 const query = new GraphQLObjectType({
@@ -20,7 +21,8 @@ const query = new GraphQLObjectType({
     ...client,
     ...candidate,
     ...panel,
-    ...interview
+    ...interview,
+    ...kanban
   })
 })
 
