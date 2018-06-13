@@ -2,41 +2,12 @@
 import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
-import Kanban from './model'
-
-// Query
-
-// Get panel by ID
-export async function get(parentValue, { id }) {
-  return await Kanban.findOne({ _id: id })
-}
-
-// Get by client
-export async function getByClient(parentValue, { clientId }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Kanban.find({
-      organizationId: auth.user.organizationId,
-      clientId
-    })
-      .populate('organizationId')
-      .populate('clientId')
-  } else {
-    throw new Error('Please login to view your panels.')
-  }
-}
-
-// Get all
-export async function getAll() {
-  return await Kanban.find()
-}
-
-
-// Mutations
+import Panel from '../model'
 
 // Create
 export async function create(parentValue, { clientId, name, email, mobile }, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Kanban.create({
+    return await Panel.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
       clientId,
@@ -52,7 +23,7 @@ export async function create(parentValue, { clientId, name, email, mobile }, { a
 // Update
 export async function update(parentValue, { id, clientId, name, email, mobile }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
-    return await Kanban.updateOne(
+    return await Panel.updateOne(
       { _id: id },
       {
         $set: {
@@ -71,7 +42,7 @@ export async function update(parentValue, { id, clientId, name, email, mobile },
 // Delete
 export async function remove(parentValue, { id }, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Kanban.remove({
+    return await Panel.remove({
       _id: _id,
       userId: auth.user.id
     })

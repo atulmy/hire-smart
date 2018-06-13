@@ -2,7 +2,7 @@
 import { GraphQLString } from 'graphql'
 
 // App Imports
-import { UserType, UserLoginType } from './types'
+import { UserType, UserLoginType } from '../types'
 import { create, remove, startNow, inviteToOrganization } from './resolvers'
 
 // Create a demo user and login

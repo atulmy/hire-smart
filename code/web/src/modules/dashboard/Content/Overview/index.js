@@ -24,7 +24,7 @@ import styles from './styles'
 // App Imports
 import params from '../../../../setup/config/params'
 import { overviewTabs } from '../index'
-// import { someAction } from './api/actions'
+import { getListByClient as getKanbanListByClient } from '../../../kanban/api/actions/query'
 
 // Component
 class Overview extends PureComponent {
@@ -38,7 +38,13 @@ class Overview extends PureComponent {
   }
 
   componentDidMount() {
-    // const { someAction } = this.props
+    this.refresh()
+  }
+
+  refresh = (isLoading = true) => {
+    const { getKanbanListByClient, client } = this.props
+
+    getKanbanListByClient({ clientId: client.item._id }, isLoading)
   }
 
   columnWidth = () => {
@@ -62,9 +68,11 @@ class Overview extends PureComponent {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, kanbansByClient } = this.props
     const { candidateInfo } = this.state
     const { kanban: { columns } } = params
+
+    console.log(kanbansByClient)
 
     return (
       <Fade in={true}>
@@ -190,14 +198,17 @@ class Overview extends PureComponent {
 // Component Properties
 Overview.propTypes = {
   classes: PropTypes.object.isRequired,
-  tabSwitch: PropTypes.func.isRequired
+  tabSwitch: PropTypes.func.isRequired,
+  client: PropTypes.object.isRequired,
+  getKanbanListByClient: PropTypes.func.isRequired,
 }
 
 // Component State
 function overviewState(state) {
   return {
-    common: state.common
+    kanbansByClient: state.kanbansByClient,
+    client: state.client
   }
 }
 
-export default connect(overviewState, { /* someAction */ })(withStyles(styles)(Overview))
+export default connect(overviewState, { getKanbanListByClient })(withStyles(styles)(Overview))

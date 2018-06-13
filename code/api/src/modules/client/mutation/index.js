@@ -2,7 +2,7 @@
 import { GraphQLString } from 'graphql'
 
 // App Imports
-import ClientType from './types'
+import ClientType from '../types'
 import { create, remove, update } from './resolvers'
 
 // Client fields

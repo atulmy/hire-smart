@@ -2,7 +2,7 @@
 import { GraphQLString } from 'graphql'
 
 // App Imports
-import CandidateType from './types'
+import CandidateType from '../types'
 import { create, remove, update } from './resolvers'
 
 // Candidate fields

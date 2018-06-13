@@ -2,42 +2,36 @@
 import { GraphQLString } from 'graphql'
 
 // App Imports
-import InterviewType from './types'
+import OrganizationType from '../types'
 import { create, remove, update } from './resolvers'
 
-// Interview fields
 const fields = {
-  clientId: {
-    name: 'candidateId',
+  name: {
+    name: 'name',
     type: GraphQLString
   },
 
-  candidateId: {
-    name: 'candidateId',
+  description: {
+    name: 'description',
     type: GraphQLString
   },
 
-  panelId: {
-    name: 'panelId',
-    type: GraphQLString
-  },
-
-  dateTime: {
-    name: 'dateTime',
+  domain: {
+    name: 'domain',
     type: GraphQLString
   }
 }
 
-// Interview create
-export const interviewCreate = {
-  type: InterviewType,
+// Organization create
+export const organizationCreate = {
+  type: OrganizationType,
   args: fields,
   resolve: create
 }
 
-// Interview update
-export const interviewUpdate = {
-  type: InterviewType,
+// Organization update
+export const organizationUpdate = {
+  type: OrganizationType,
   args: {
     id: {
       name: 'id',
@@ -49,9 +43,9 @@ export const interviewUpdate = {
   resolve: update
 }
 
-// Interview remove
-export const interviewRemove = {
-  type: InterviewType,
+// Organization remove
+export const organizationRemove = {
+  type: OrganizationType,
   args: {
     id: {
       name: 'id',

@@ -2,7 +2,7 @@
 import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
-import OrganizationType from './types'
+import OrganizationType from '../types'
 import { getAll, getByUser, get } from './resolvers'
 
 // Get all

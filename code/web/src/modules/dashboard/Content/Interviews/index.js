@@ -47,7 +47,7 @@ class Interviews extends PureComponent {
     this.refresh()
   }
 
-  refresh = async (isLoading = true) => {
+  refresh = (isLoading = true) => {
     const { getListByClient, client } = this.props
 
     getListByClient({ clientId: client.item._id }, isLoading)

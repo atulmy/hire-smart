@@ -2,47 +2,42 @@
 import { GraphQLString } from 'graphql'
 
 // App Imports
-import KanbanType from './types'
+import PanelType from '../types'
 import { create, remove, update } from './resolvers'
 
-// Kanban fields
+// Panel fields
 const fields = {
   clientId: {
     name: 'clientId',
     type: GraphQLString
   },
 
-  candidateId: {
-    name: 'candidateId',
+  name: {
+    name: 'name',
     type: GraphQLString
   },
 
-  interviewId: {
-    name: 'interviewId',
+  email: {
+    name: 'email',
     type: GraphQLString
   },
 
-  status: {
-    name: 'status',
-    type: GraphQLString
-  },
-
-  highlight: {
-    name: 'highlight',
+  mobile: {
+    name: 'mobile',
     type: GraphQLString
   }
 }
 
-// Kanban create
-export const kanbanCreate = {
-  type: KanbanType,
+// Panel create
+export const panelCreate = {
+  type: PanelType,
   args: fields,
   resolve: create
 }
 
-// Kanban update
-export const kanbanUpdate = {
-  type: KanbanType,
+// Panel update
+export const panelUpdate = {
+  type: PanelType,
   args: {
     id: {
       name: 'id',
@@ -54,9 +49,9 @@ export const kanbanUpdate = {
   resolve: update
 }
 
-// Kanban remove
-export const kanbanRemove = {
-  type: KanbanType,
+// Panel remove
+export const panelRemove = {
+  type: PanelType,
   args: {
     id: {
       name: 'id',

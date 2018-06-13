@@ -2,7 +2,7 @@
 import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
-import KanbanType from './types'
+import KanbanType from '../types'
 import { getAll, get, getByClient } from './resolvers'
 
 // Get all

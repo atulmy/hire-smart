@@ -2,13 +2,13 @@
 import { GraphQLObjectType } from 'graphql'
 
 // App Imports
-import * as user from '../../modules/user/mutations'
-import * as organization from '../../modules/organization/mutations'
-import * as client from '../../modules/client/mutations'
-import * as candidate from '../../modules/candidate/mutations'
-import * as panel from '../../modules/panel/mutations'
-import * as interview from '../../modules/interview/mutations'
-import * as kanban from '../../modules/kanban/mutations'
+import * as user from '../../modules/user/mutation'
+import * as organization from '../../modules/organization/mutation'
+import * as client from '../../modules/client/mutation'
+import * as candidate from '../../modules/candidate/mutation'
+import * as panel from '../../modules/panel/mutation'
+import * as interview from '../../modules/interview/mutation'
+import * as kanban from '../../modules/kanban/mutation'
 
 // Mutation
 const mutation = new GraphQLObjectType({
