@@ -2,6 +2,9 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 // UI Imports
 import Button from '@material-ui/core/Button'
@@ -17,7 +20,8 @@ import params from '../../../../setup/config/params'
 import { overviewTabs } from '../index'
 import { getListByClient as getKanbanListByClient } from '../../../kanban/api/actions/query'
 import Loading from '../../../common/Loading'
-import Candidate from './Candidate'
+import Column from './Column'
+import Item from './Item'
 
 // Component
 class Overview extends PureComponent {
@@ -78,6 +82,24 @@ class Overview extends PureComponent {
     return count > 0 ? `(${ count })` : ''
   }
 
+  handleDrop = (index, item) => {
+    const { name } = item
+    const droppedBoxNames = name ? { $push: [name] } : {}
+
+    this.setState(
+      update(this.state, {
+        dustbins: {
+          [index]: {
+            lastDroppedItem: {
+              $set: item,
+            },
+          },
+        },
+        droppedBoxNames,
+      }),
+    )
+  }
+
   render() {
     const { classes, kanbansByClient: { isLoading, list } } = this.props
     const { candidateInfo } = this.state
@@ -97,47 +119,51 @@ class Overview extends PureComponent {
                     >
                       {/* Columns */}
                       { columns.map((column, i) => (
-                        <div
+                        <Column
                           key={column.key}
-                          className={classes.column}
-                          style={{ width: this.columnWidth(), borderRight: i !== (columns.length - 1) ? `1px solid ${ grey[200] }` : '' }}
+                          column={column}
+                          columns={columns}
+                          columnWidth={this.columnWidth()}
+                          i={i}
                         >
-                          {/* Column Title */}
-                          <div
-                            className={classes.columnTitle}
-                            style={{ borderBottom: `2px solid ${ column.color }`,  }}
-                          >
-                            <Typography variant="button" style={{ color: grey[800], textTransform: 'uppercase', fontWeight: 400, fontSize: '0.75rem' }}>
-                              { column.name } { this.columnCount(column.key) }
-                            </Typography>
-                          </div>
+                          <div>
+                            {/* Column Title */}
+                            <div
+                              className={classes.columnTitle}
+                              style={{ borderBottom: `2px solid ${ column.color }`,  }}
+                            >
+                              <Typography variant="button" style={{ color: grey[800], textTransform: 'uppercase', fontWeight: 400, fontSize: '0.75rem' }}>
+                                { column.name } { this.columnCount(column.key) }
+                              </Typography>
+                            </div>
 
-                          {/* Candidates */}
-                          <div className={classes.candidatesContainer}>
-                            {
-                              list && list.length > 0 && list.map(
-                                item => item.status === column.key &&
-                                  <Candidate
-                                    key={item._id}
-                                    item={item}
-                                    toggleDrawer={this.toggleDrawer}
-                                  />
-                              )
-                            }
+                            {/* Candidates */}
+                            <div className={classes.candidatesContainer}>
+                              {
+                                list && list.length > 0 && list.map(
+                                  item => item.status === column.key &&
+                                    <Item
+                                      key={item._id}
+                                      item={item}
+                                      toggleDrawer={this.toggleDrawer}
+                                    />
+                                )
+                              }
 
-                            {/* Add */}
-                            {
-                              i === 0 &&
-                              <Button
-                                fullWidth={true}
-                                className={classes.columnButtonAdd}
-                                onClick={this.tabSwitch}
-                              >
-                                Add Candidate
-                              </Button>
-                            }
+                              {/* Add */}
+                              {
+                                i === 0 &&
+                                <Button
+                                  fullWidth={true}
+                                  className={classes.columnButtonAdd}
+                                  onClick={this.tabSwitch}
+                                >
+                                  Add Candidate
+                                </Button>
+                              }
+                            </div>
                           </div>
-                        </div>
+                        </Column>
                       )) }
                     </div>
 
@@ -181,4 +207,8 @@ function overviewState(state) {
   }
 }
 
-export default connect(overviewState, { getKanbanListByClient })(withStyles(styles)(Overview))
+export default compose(
+  DragDropContext(HTML5Backend),
+  connect(overviewState, { getKanbanListByClient }),
+  withStyles(styles)
+)(Overview)

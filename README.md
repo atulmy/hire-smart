@@ -61,10 +61,10 @@
 - Configurations
   - API
     - Modify `/api/src/config/database.json` for database credentials
-    - Create local environment file `cp /api/.env.example .env`
+    - Create local environment file `cp /api/.env.example /api/.env`
     - Modify `/api/.env` for PORT (optional)
    - Webapp
-      - Create local environment file `cp /web/.env.example .env`
+      - Create local environment file `cp /web/.env.example /web/.env`
       - Modify `/web/.env` for PORT / API URL (optional)
 - Setup
   - API: Install packages and database setup (migrations and seed) `cd api` and `npm run setup`

@@ -32,6 +32,8 @@
     "prop-types": "15.6.1",
     "react": "16.4.0",
     "react-datetime": "2.14.0",
+    "react-dnd": "4.0.5",
+    "react-dnd-html5-backend": "4.0.5",
     "react-dom": "16.4.0",
     "react-helmet": "5.2.0",
     "react-jss": "8.5.1",

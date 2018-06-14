@@ -52,7 +52,7 @@ export function nullToZero(value) {
 
 // Add (s) to any string by count
 export function plural(value) {
-  return value === 1 ? '' : 's'
+  return value == 1 ? '' : 's'
 }
 
 // Check if object is empty

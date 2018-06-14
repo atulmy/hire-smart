@@ -243,6 +243,7 @@ class CreateOrEdit extends PureComponent {
           <Grid item xs={12}>
             <TextField
               name={'experience'}
+              type={'number'}
               value={nullToEmptyString(experience)}
               onChange={this.onType}
               label={'Experience'}
