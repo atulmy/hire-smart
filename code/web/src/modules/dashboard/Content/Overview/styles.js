@@ -5,7 +5,6 @@ import grey from '@material-ui/core/colors/grey'
 const styles = theme => ({
   root: {
     position: 'relative',
-    padding: `${ theme.spacing.unit * 2.5 }px 0`,
   },
 
   kanban: {
@@ -17,17 +16,18 @@ const styles = theme => ({
 
   columnsContainer: {
     display: 'inline-block',
-    height: 'calc(100vh - 193px)'
+    height: 'calc(100vh - 153px)'
   },
   column: {
     display: 'inline-block',
     float: 'left',
-    height: 'calc(100vh - 190px)',
+    height: 'calc(100vh - 149px)',
     overflowY: 'hidden'
   },
   columnTitle: {
     textAlign: 'center',
     margin: `0 ${ theme.spacing.unit * 2.5 }px`,
+    paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit
   },
   columnButtonAdd: {
@@ -37,7 +37,7 @@ const styles = theme => ({
 
   candidatesContainer: {
     padding: `0 ${ theme.spacing.unit * 2.5 }px`,
-    height: 'calc(100vh - 214px)',
+    height: 'calc(100vh - 190px)',
     overflowY: 'auto'
   },
 

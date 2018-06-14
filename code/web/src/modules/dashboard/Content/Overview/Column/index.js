@@ -5,21 +5,28 @@ import { compose } from 'redux'
 import { DropTarget } from 'react-dnd'
 
 // UI Imports
+import grey from '@material-ui/core/colors/grey'
+import yellow from '@material-ui/core/colors/yellow'
 import { withStyles } from '@material-ui/core/styles/index'
 import styles from '../styles'
 
 // App Imports
-import grey from '@material-ui/core/colors/grey'
 
 // Component
 class Column extends PureComponent {
   render() {
-    const { children, classes, last, columnWidth, connectDropTarget } = this.props
+    const { children, classes, last, columnWidth, connectDropTarget, isOver } = this.props
+
+    console.log(isOver)
 
     return connectDropTarget(
       <div
         className={classes.column}
-        style={{ width: columnWidth, borderRight: last ? `1px solid ${ grey[200] }` : '' }}
+        style={{
+          width: columnWidth,
+          borderRight: last ? `1px solid ${ grey[200] }` : '',
+          backgroundColor: isOver ? yellow[50] : 'transparent'
+        }}
       >
         { children }
       </div>
@@ -38,7 +45,8 @@ Column.propTypes = {
 // Collect
 function collect(connect, monitor) {
   return {
-    connectDropTarget: connect.dropTarget()
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
   }
 }
 // Receive

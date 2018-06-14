@@ -20,7 +20,7 @@ import params from '../../../../setup/config/params'
 import { overviewTabs } from '../index'
 import { getListByClient as getKanbanListByClient } from '../../../kanban/api/actions/query'
 import { updateStatus as updateKanbanStatus } from '../../../kanban/api/actions/mutation'
-import { messageShow } from '../../../common/api/actions'
+import { messageShow, messageHide } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
 import Column from './Column'
 import Item from './Item'
@@ -102,9 +102,9 @@ class Overview extends PureComponent {
   }
 
   itemDropped = async (kanbanId, columnKey) => {
-    const { messageShow, updateKanbanStatus } = this.props
-    console.log(kanbanId)
-    console.log(columnKey)
+    const { updateKanbanStatus, messageShow, messageHide } = this.props
+
+    // messageShow('Please wait..')
 
     try {
       const { data } = await updateKanbanStatus({ id: kanbanId, status: columnKey })
@@ -113,11 +113,11 @@ class Overview extends PureComponent {
       if(data.errors && !isEmpty(data.errors)) {
         messageShow(data.errors[0].message)
       } else {
+        // messageHide()
+
         this.refresh(false)
       }
     } catch(error) {
-      console.log(error)
-
       messageShow('There was some error. Please try again.')
     }
   }
@@ -220,7 +220,8 @@ Overview.propTypes = {
   clientDashboard: PropTypes.object.isRequired,
   getKanbanListByClient: PropTypes.func.isRequired,
   updateKanbanStatus: PropTypes.func.isRequired,
-  messageShow: PropTypes.func.isRequired
+  messageShow: PropTypes.func.isRequired,
+  messageHide: PropTypes.func.isRequired
 }
 
 // Component State
@@ -233,6 +234,6 @@ function overviewState(state) {
 
 export default compose(
   DragDropContext(HTML5Backend),
-  connect(overviewState, { getKanbanListByClient, updateKanbanStatus, messageShow }),
+  connect(overviewState, { getKanbanListByClient, updateKanbanStatus, messageShow, messageHide }),
   withStyles(styles)
 )(Overview)
