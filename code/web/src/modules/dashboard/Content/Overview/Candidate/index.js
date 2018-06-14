@@ -29,6 +29,7 @@ class Candidate extends PureComponent {
         className={classes.root}
         onClick={toggleDrawer(true)}
       >
+        {/* Candidate details */}
         <Typography variant={'title'} className={classes.name}>
           { candidateId.name }
         </Typography>
@@ -41,34 +42,40 @@ class Candidate extends PureComponent {
           { candidateId.experience } years
         </Typography>
 
-        <Divider className={classes.divider} />
-
+        {/* Interviews */}
         {
-          interviews.length > 0 && interviews.map(interview => (
-            <List dense={true}>
-              <ListItem title={'Interview'} className={classes.infoItem}>
-                <ListItemIcon className={classes.infoItemIcon}>
-                  <IconCall />
-                </ListItemIcon>
+          interviews.length > 0 &&
+          <React.Fragment>
+            <Divider className={classes.divider} />
 
-                <ListItemText
-                  primary={moment(interview.panelId.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)}
-                  className={classes.infoItemText}
-                />
-              </ListItem>
+            {
+              interviews.map(interview => (
+                <List dense={true}>
+                  <ListItem title={'Interview'} className={classes.infoItem}>
+                    <ListItemIcon className={classes.infoItemIcon}>
+                      <IconCall />
+                    </ListItemIcon>
 
-              <ListItem title={'Panel'} className={classes.infoItem}>
-                <ListItemIcon className={classes.infoItemIcon}>
-                  <IconThumbsUpDown />
-                </ListItemIcon>
+                    <ListItemText
+                      primary={moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)}
+                      className={classes.infoItemText}
+                    />
+                  </ListItem>
 
-                <ListItemText
-                  primary={interview.panelId.name}
-                  className={classes.infoItemText}
-                />
-              </ListItem>
-            </List>
-          ))
+                  <ListItem title={'Panel'} className={classes.infoItem}>
+                    <ListItemIcon className={classes.infoItemIcon}>
+                      <IconThumbsUpDown />
+                    </ListItemIcon>
+
+                    <ListItemText
+                      primary={interview.panelId.name}
+                      className={classes.infoItemText}
+                    />
+                  </ListItem>
+                </List>
+              ))
+            }
+          </React.Fragment>
         }
       </Paper>
     )

@@ -115,7 +115,7 @@ class Interviews extends PureComponent {
                           <TableRow key={interview._id}>
                             <TableCell>{ interview.candidateId.name }</TableCell>
                             <TableCell>{ interview.panelId.name }</TableCell>
-                            <TableCell title={'Year-Month-Date Hour:Minute'}>{ moment(interview.dateTime).format(`${ params.date.format.date } ${ params.date.format.time }`)  }</TableCell>
+                            <TableCell>{ moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)  }</TableCell>
                           </TableRow>
                         ))
                         : <TableRow>
