@@ -1,5 +1,5 @@
 // Imports
-import { GraphQLString } from 'graphql'
+import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
 import KanbanType from '../types'
@@ -17,9 +17,9 @@ const fields = {
     type: GraphQLString
   },
 
-  interviewId: {
-    name: 'interviewId',
-    type: GraphQLString
+  interviews: {
+    name: 'interviews',
+    type: GraphQLList(GraphQLString)
   },
 
   status: {

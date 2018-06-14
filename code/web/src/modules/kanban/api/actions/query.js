@@ -29,7 +29,7 @@ export function getList(isLoading = true) {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
         operation: 'kanbansByOrganization',
-        fields: ['_id', 'clientId { _id, name }', 'candidateId { _id, name }', 'interviewId { _id, dateTime }', 'status', 'highlight', 'createdAt']
+        fields: ['_id', 'clientId { _id, name }', 'candidateId { _id, name }', 'interviews { _id, dateTime }', 'status', 'highlight', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {
@@ -70,7 +70,7 @@ export function get(kanbanId, isLoading = true) {
         type: 'query',
         operation: 'kanban',
         data: { id: kanbanId },
-        fields: ['_id', 'clientId { _id, name }', 'candidateId { _id, name }', 'interviewId { _id, dateTime }', 'status', 'highlight', 'createdAt']
+        fields: ['_id', 'clientId { _id, name }', 'candidateId { _id, name }', 'interviews { _id, dateTime }', 'status', 'highlight', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {
@@ -111,7 +111,7 @@ export function getListByClient({ clientId }, isLoading = true) {
         type: 'query',
         operation: 'kanbansByClient',
         data: { clientId },
-        fields: ['_id', 'candidateId { _id, name, mobile, experience }', 'interviewId { _id, panelId { _id, name }, dateTime }', 'status', 'highlight', 'createdAt']
+        fields: ['_id', 'candidateId { _id, name, mobile, experience }', 'interviews { _id, panelId { _id, name }, dateTime }', 'status', 'highlight', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {

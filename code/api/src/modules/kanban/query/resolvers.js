@@ -16,7 +16,10 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
       .populate('organizationId')
       .populate('clientId')
       .populate('candidateId')
-      .populate('interviewId')
+      .populate({
+        path: 'interviews',
+        populate: { path: 'panelId' }
+      })
   } else {
     throw new Error('Please login to view your panels.')
   }

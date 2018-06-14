@@ -19,7 +19,7 @@ export default async function () {
   const client = await Client.findOne()
   const panel = await Panel.findOne()
 
-  for (let i of [1, 2, 3, 4, 5]) {
+  for (let i of [1, 2]) {
     const candidate = await Candidate.create({
       organizationId: organization._id,
       clientId: client._id,
@@ -33,7 +33,7 @@ export default async function () {
       salaryExpected: '15 LPA'
     })
 
-    await Interview.create({
+    const interview = await Interview.create({
       organizationId: organization._id,
       clientId: client._id,
       candidateId: candidate._id,
@@ -47,6 +47,7 @@ export default async function () {
       organizationId: organization._id,
       clientId: client._id,
       candidateId: candidate._id,
+      interviews: [interview._id],
       userId: user.id,
       status: params.kanban.columns[0].key,
       highlight: false

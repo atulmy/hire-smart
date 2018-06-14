@@ -1,6 +1,7 @@
 // Imports
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
 // UI Imports
 import List from '@material-ui/core/List'
@@ -16,11 +17,12 @@ import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
 // App Imports
+import params from '../../../../../setup/config/params'
 
 // Component
 class Candidate extends PureComponent {
   render() {
-    const { classes, item: { candidateId, interviewId, highlight }, toggleDrawer } = this.props
+    const { classes, item: { candidateId, interviews, highlight }, toggleDrawer } = this.props
 
     return (
       <Paper
@@ -41,29 +43,33 @@ class Candidate extends PureComponent {
 
         <Divider className={classes.divider} />
 
-        <List dense={true}>
-          <ListItem title={'Interview'} className={classes.infoItem}>
-            <ListItemIcon className={classes.infoItemIcon}>
-              <IconCall />
-            </ListItemIcon>
+        {
+          interviews.length > 0 && interviews.map(interview => (
+            <List dense={true}>
+              <ListItem title={'Interview'} className={classes.infoItem}>
+                <ListItemIcon className={classes.infoItemIcon}>
+                  <IconCall />
+                </ListItemIcon>
 
-            <ListItemText
-              primary={'12th June, 3:30pm'}
-              className={classes.infoItemText}
-            />
-          </ListItem>
+                <ListItemText
+                  primary={moment(interview.panelId.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)}
+                  className={classes.infoItemText}
+                />
+              </ListItem>
 
-          <ListItem title={'Panel'} className={classes.infoItem}>
-            <ListItemIcon className={classes.infoItemIcon}>
-              <IconThumbsUpDown />
-            </ListItemIcon>
+              <ListItem title={'Panel'} className={classes.infoItem}>
+                <ListItemIcon className={classes.infoItemIcon}>
+                  <IconThumbsUpDown />
+                </ListItemIcon>
 
-            <ListItemText
-              primary={'Tyrion Lannister'}
-              className={classes.infoItemText}
-            />
-          </ListItem>
-        </List>
+                <ListItemText
+                  primary={interview.panelId.name}
+                  className={classes.infoItemText}
+                />
+              </ListItem>
+            </List>
+          ))
+        }
       </Paper>
     )
   }

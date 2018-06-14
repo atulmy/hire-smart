@@ -1,5 +1,5 @@
 // Imports
-import { GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
 import OrganizationType from '../organization/types'
@@ -18,7 +18,7 @@ const KanbanType = new GraphQLObjectType({
     organizationId: { type: OrganizationType },
     clientId: { type: ClientType },
     candidateId: { type: CandidateType },
-    interviewId: { type: InterviewType },
+    interviews: { type: GraphQLList(InterviewType) },
     userId: { type: UserType },
     status: { type: GraphQLString },
     highlight: { type: GraphQLString },
