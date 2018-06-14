@@ -23,6 +23,7 @@ export async function create(parentValue, { clientId, name, email, mobile, exper
     })
 
     await Kanban.create({
+      organizationId: auth.user.organizationId,
       clientId,
       candidateId: candidate._id,
       userId: auth.user.id,

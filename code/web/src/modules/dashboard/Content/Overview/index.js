@@ -4,19 +4,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // UI Imports
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Drawer from '@material-ui/core/Drawer'
-import Paper from '@material-ui/core/Paper'
 import Fade from '@material-ui/core/Fade'
-import Divider from '@material-ui/core/Divider'
-import Tooltip from '@material-ui/core/Tooltip'
-import IconCall from '@material-ui/icons/Call'
-import IconThumbsUpDown from '@material-ui/icons/ThumbsUpDown'
 import grey from '@material-ui/core/colors/grey'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
@@ -25,6 +16,8 @@ import styles from './styles'
 import params from '../../../../setup/config/params'
 import { overviewTabs } from '../index'
 import { getListByClient as getKanbanListByClient } from '../../../kanban/api/actions/query'
+import Loading from '../../../common/Loading'
+import Candidate from './Candidate'
 
 // Component
 class Overview extends PureComponent {
@@ -38,13 +31,23 @@ class Overview extends PureComponent {
   }
 
   componentDidMount() {
-    this.refresh()
+    const { clientDashboard: { client } } = this.props
+
+    this.refresh(client._id)
   }
 
-  refresh = (isLoading = true) => {
-    const { getKanbanListByClient, client } = this.props
+  componentWillReceiveProps(nextProps) {
+    const { clientDashboard: { client } } = nextProps
 
-    getKanbanListByClient({ clientId: client.item._id }, isLoading)
+    if(client._id !== this.props.clientDashboard.client._id) {
+      this.refresh(client._id)
+    }
+  }
+
+  refresh = (clientId, isLoading = true) => {
+    const { getKanbanListByClient } = this.props
+
+    getKanbanListByClient({ clientId }, isLoading)
   }
 
   columnWidth = () => {
@@ -67,130 +70,97 @@ class Overview extends PureComponent {
     })
   }
 
+  columnCount = (key) => {
+    const { kanbansByClient } = this.props
+
+    const count =  kanbansByClient.list && kanbansByClient.list.length > 0 && kanbansByClient.list.filter(item => item.status === key).length
+
+    return count > 0 ? `(${ count })` : ''
+  }
+
   render() {
-    const { classes, kanbansByClient } = this.props
+    const { classes, kanbansByClient: { isLoading, list } } = this.props
     const { candidateInfo } = this.state
     const { kanban: { columns } } = params
 
-    console.log(kanbansByClient)
-
     return (
-      <Fade in={true}>
-        <div className={classes.root}>
-          <div className={classes.kanban}>
-            <div
-              className={classes.columnsContainer}
-              style={{ width: (this.columnWidth() * columns.length) + columns.length }}
-            >
-              {/* Columns */}
-              { columns.map((column, i) => (
-                <div
-                  key={column.key}
-                  className={classes.column}
-                  style={{ width: this.columnWidth(), borderRight: i !== (columns.length - 1) ? `1px solid ${ grey[200] }` : '' }}
-                >
-                  {/* Column Title */}
-                  <div
-                    className={classes.columnTitle}
-                    style={{ borderBottom: `2px solid ${ column.color }`,  }}
-                  >
-                    <Typography variant="button" style={{ color: grey[800], textTransform: 'uppercase', fontWeight: 400, fontSize: '0.75rem' }}>
-                      { column.name } (5)
-                    </Typography>
-                  </div>
-
-                  {/* Candidates */}
-                  <div className={classes.candidatesContainer}>
-                    {
-                      i === 0 &&
-                      <Paper
-                        className={classes.candidate}
-                        onClick={this.toggleDrawer(true)}
-                      >
-                        <Typography variant={'title'} className={classes.candidateName}>
-                          Jon Snow
-                        </Typography>
-
-                        <Typography color="textSecondary">
-                          5.5 years
-                        </Typography>
-                        <Typography color="textSecondary">
-                          9930306893
-                        </Typography>
-
-                        <Divider className={classes.candidateDivider} />
-
-                        <List dense={true}>
-                          <Tooltip
-                            title={'Interview'}
-                            placement={'right'}
-                            enterDelay={500}
+      <div className={classes.root}>
+        <div className={classes.kanban}>
+          {
+            isLoading
+              ? <Loading />
+              : <Fade in={true}>
+                  <div>
+                    <div
+                      className={classes.columnsContainer}
+                      style={{ width: (this.columnWidth() * columns.length) + columns.length }}
+                    >
+                      {/* Columns */}
+                      { columns.map((column, i) => (
+                        <div
+                          key={column.key}
+                          className={classes.column}
+                          style={{ width: this.columnWidth(), borderRight: i !== (columns.length - 1) ? `1px solid ${ grey[200] }` : '' }}
+                        >
+                          {/* Column Title */}
+                          <div
+                            className={classes.columnTitle}
+                            style={{ borderBottom: `2px solid ${ column.color }`,  }}
                           >
-                            <ListItem className={classes.infoItem}>
-                              <ListItemIcon className={classes.infoItemIcon}>
-                                <IconCall />
-                              </ListItemIcon>
+                            <Typography variant="button" style={{ color: grey[800], textTransform: 'uppercase', fontWeight: 400, fontSize: '0.75rem' }}>
+                              { column.name } { this.columnCount(column.key) }
+                            </Typography>
+                          </div>
 
-                              <ListItemText
-                                primary={'12th June, 3:30pm'}
-                                className={classes.infoItemText}
-                              />
-                            </ListItem>
-                          </Tooltip>
+                          {/* Candidates */}
+                          <div className={classes.candidatesContainer}>
+                            {
+                              list && list.length > 0 && list.map(
+                                item => item.status === column.key &&
+                                  <Candidate
+                                    key={item._id}
+                                    item={item}
+                                    toggleDrawer={this.toggleDrawer}
+                                  />
+                              )
+                            }
 
-                          <Tooltip
-                            title={'Panel'}
-                            placement={'right'}
-                            enterDelay={500}
-                          >
-                            <ListItem className={classes.infoItem}>
-                              <ListItemIcon className={classes.infoItemIcon}>
-                                <IconThumbsUpDown />
-                              </ListItemIcon>
+                            {/* Add */}
+                            {
+                              i === 0 &&
+                              <Button
+                                fullWidth={true}
+                                className={classes.columnButtonAdd}
+                                onClick={this.tabSwitch}
+                              >
+                                Add Candidate
+                              </Button>
+                            }
+                          </div>
+                        </div>
+                      )) }
+                    </div>
 
-                              <ListItemText
-                                primary={'Tyrion Lannister'}
-                                className={classes.infoItemText}
-                              />
-                            </ListItem>
-                          </Tooltip>
-                        </List>
-                      </Paper>
-                    }
-
-                    {
-                      i === 0 &&
-                      <Button
-                        fullWidth={true}
-                        className={classes.columnButtonAdd}
-                        onClick={this.tabSwitch}
-                      >
-                        Add Candidate
-                      </Button>
-                    }
+                    {/* Candidate info */}
+                    <Drawer
+                      anchor={'right'}
+                      open={candidateInfo}
+                      onClose={this.toggleDrawer(false)}
+                      ModalProps={{
+                        BackdropProps: {
+                          classes: { root: classes.backdrop }
+                        }
+                      }}
+                    >
+                      <div style={{ width: 300 }}>
+                        <p>Info</p>
+                      </div>
+                    </Drawer>
                   </div>
-                </div>
-              )) }
-            </div>
-          </div>
-
-          {/* Candidate info */}
-          <Drawer
-            anchor={'right'}
-            open={candidateInfo}
-            onClose={this.toggleDrawer(false)}
-            ModalProps={{
-              BackdropProps: {
-                classes: { root: classes.backdrop }
-              }
-            }}
-          >
-            <div style={{ width: 300 }}>
-              <p>Info</p>
-            </div>
-          </Drawer>
+                </Fade>
+          }
         </div>
-      </Fade>
+      </div>
     )
   }
 }
@@ -199,7 +169,7 @@ class Overview extends PureComponent {
 Overview.propTypes = {
   classes: PropTypes.object.isRequired,
   tabSwitch: PropTypes.func.isRequired,
-  client: PropTypes.object.isRequired,
+  clientDashboard: PropTypes.object.isRequired,
   getKanbanListByClient: PropTypes.func.isRequired,
 }
 
@@ -207,7 +177,7 @@ Overview.propTypes = {
 function overviewState(state) {
   return {
     kanbansByClient: state.kanbansByClient,
-    client: state.client
+    clientDashboard: state.clientDashboard
   }
 }
 

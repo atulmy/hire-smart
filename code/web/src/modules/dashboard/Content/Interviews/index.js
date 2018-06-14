@@ -47,10 +47,18 @@ class Interviews extends PureComponent {
     this.refresh()
   }
 
-  refresh = (isLoading = true) => {
-    const { getListByClient, client } = this.props
+  componentWillReceiveProps(nextProps) {
+    const { clientDashboard: { client } } = nextProps
 
-    getListByClient({ clientId: client.item._id }, isLoading)
+    if(client._id !== this.props.clientDashboard.client._id) {
+      this.refresh(false, client._id)
+    }
+  }
+
+  refresh = (isLoading = true, clientId = null) => {
+    const { getListByClient, clientDashboard: { client } } = this.props
+
+    getListByClient({ clientId: clientId || client._id }, isLoading)
   }
 
   toggleDrawer = (open) => () => {
@@ -61,10 +69,12 @@ class Interviews extends PureComponent {
 
   successCallback = () => {
     this.refresh(false)
+
+    this.toggleDrawer(false)()
   }
 
   render() {
-    const { classes, client, interviewsByClient: { isLoading, list } } = this.props
+    const { classes, clientDashboard: { client }, interviewsByClient: { isLoading, list } } = this.props
     const { drawerAdd } = this.state
 
     return (
@@ -133,7 +143,7 @@ class Interviews extends PureComponent {
           <div className={classes.drawer}>
             <CreateOrEdit
               elevation={0}
-              clientId={client.item._id}
+              clientId={client._id}
               successCallback={this.successCallback}
             />
           </div>
@@ -147,7 +157,7 @@ class Interviews extends PureComponent {
 Interviews.propTypes = {
   classes: PropTypes.object.isRequired,
   interviewsByClient: PropTypes.object.isRequired,
-  client: PropTypes.object.isRequired,
+  clientDashboard: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
@@ -157,7 +167,7 @@ Interviews.propTypes = {
 function interviewsState(state) {
   return {
     interviewsByClient: state.interviewsByClient,
-    client: state.client
+    clientDashboard: state.clientDashboard
   }
 }
 

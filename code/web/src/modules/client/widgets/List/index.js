@@ -13,7 +13,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { getList as getClientsList, get as getClient } from '../../../client/api/actions/query'
+import { getList as getClientsList, dashboardSet } from '../../../client/api/actions/query'
 import { avatarColor, avatarLetter } from '../../../../setup/helpers'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
@@ -30,16 +30,16 @@ class ClientList extends PureComponent {
     getClientsList(isLoading)
   }
 
-  onSelectClient = clientId => () => {
-    const { getClient } = this.props
+  onSelectClient = client => () => {
+    const { dashboardSet } = this.props
 
-    getClient(clientId)
+    dashboardSet(client)
   }
 
   selected = (id) => {
-    const { client: { item } } = this.props
+    const { clientDashboard: { client } } = this.props
 
-    return item._id === id
+    return client && client._id === id
   }
 
   render() {
@@ -57,7 +57,7 @@ class ClientList extends PureComponent {
                 ? clients.list.map(item => (
                     <ListItem
                       key={item._id}
-                      onClick={this.onSelectClient(item._id)}
+                      onClick={this.onSelectClient(item)}
                       button
                       style={ this.selected(item._id)  ? { backgroundColor: '#ddd' } : {}}
                     >
@@ -78,15 +78,15 @@ ClientList.propTypes = {
   classes: PropTypes.object.isRequired,
   clients: PropTypes.object.isRequired,
   getClientsList: PropTypes.func.isRequired,
-  getClient: PropTypes.func.isRequired
+  dashboardSet: PropTypes.func.isRequired
 }
 
 // Component State
 function clientListState(state) {
   return {
     clients: state.clients,
-    client: state.client,
+    clientDashboard: state.clientDashboard
   }
 }
 
-export default connect(clientListState, { getClientsList, getClient })(withStyles(styles)(ClientList))
+export default connect(clientListState, { getClientsList, dashboardSet })(withStyles(styles)(ClientList))

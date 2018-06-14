@@ -111,7 +111,7 @@ export function getListByClient({ clientId }, isLoading = true) {
         type: 'query',
         operation: 'kanbansByClient',
         data: { clientId },
-        fields: ['_id', 'clientId { _id, name }', 'candidateId { _id, name }', 'interviewId { _id, dateTime }', 'status', 'highlight', 'createdAt']
+        fields: ['_id', 'candidateId { _id, name, mobile, experience }', 'interviewId { _id, panelId { _id, name }, dateTime }', 'status', 'highlight', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {

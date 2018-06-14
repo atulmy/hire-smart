@@ -31,38 +31,14 @@ const styles = theme => ({
     paddingBottom: theme.spacing.unit
   },
   columnButtonAdd: {
-    color: grey[500]
+    color: grey[500],
+    marginTop: theme.spacing.unit,
   },
 
   candidatesContainer: {
     padding: `0 ${ theme.spacing.unit * 2.5 }px`,
     height: 'calc(100vh - 214px)',
     overflowY: 'auto'
-  },
-  candidate: {
-    margin: `${ theme.spacing.unit * 2.5 }px 0`,
-    padding: theme.spacing.unit * 1.5,
-    paddingBottom: theme.spacing.unit,
-    cursor: 'pointer',
-    backgroundColor: grey[50]
-  },
-  candidateName: {
-    fontSize: '1.1rem'
-  },
-  candidateDivider: {
-    marginTop: theme.spacing.unit
-  },
-
-  infoItem: {
-    padding: 0
-  },
-  infoItemIcon: {
-    marginRight: 0,
-    color: grey[400],
-    transform: 'scale(0.7)'
-  },
-  infoItemText: {
-    padding: 0
   },
 
   backdrop: {

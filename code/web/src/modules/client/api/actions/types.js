@@ -15,3 +15,7 @@ export const SINGLE_RESET = 'CLIENT/SINGLE/RESET'
 // Edit
 export const EDIT_SET = 'CLIENT/EDIT_SET'
 export const EDIT_UNSET = 'CLIENT/EDIT_UNSET'
+
+// Dashboard
+export const DASHBOARD_SET = 'CLIENT/DASHBOARD_SET'
+export const DASHBOARD_UNSET = 'CLIENT/DASHBOARD_UNSET'

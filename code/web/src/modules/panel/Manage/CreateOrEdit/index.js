@@ -131,7 +131,7 @@ class CreateOrEdit extends PureComponent {
   }
 
   render() {
-    const { classes, clients, elevation } = this.props
+    const { classes, clients, elevation, clientSelectionHide } = this.props
     const { isLoading, id, clientId, name, email, mobile } = this.state
 
     return (
@@ -160,39 +160,42 @@ class CreateOrEdit extends PureComponent {
           </Grid>
 
           {/* Input - client */}
-          <Grid item xs={12}>
-            <FormControl
-              style={{ marginTop: 10 }}
-              fullWidth
-              required={true}
-            >
-              <InputLabel htmlFor="client-id">Client</InputLabel>
-              <Select
-                value={nullToEmptyString(clientId)}
-                onChange={this.onType}
-                inputProps={{
-                  id: 'client-id',
-                  name: 'clientId',
-                  required: 'required'
-                }}
+          {
+            !clientSelectionHide &&
+            <Grid item xs={12}>
+              <FormControl
+                style={{ marginTop: 10 }}
+                fullWidth
+                required={true}
               >
-                <MenuItem value="">
-                  <em>Select client</em>
-                </MenuItem>
-                {
-                  clients.isLoading
-                    ? <Loading />
-                    : clients.list && clients.list.length > 0
-                        ? clients.list.map(client => (
-                            <MenuItem key={client._id} value={client._id}>{ client.name }</MenuItem>
-                          ))
-                        : <MenuItem value="">
-                            <em>No client added.</em>
-                          </MenuItem>
-                }
-              </Select>
-            </FormControl>
-          </Grid>
+                <InputLabel htmlFor="client-id">Client</InputLabel>
+                <Select
+                  value={nullToEmptyString(clientId)}
+                  onChange={this.onType}
+                  inputProps={{
+                    id: 'client-id',
+                    name: 'clientId',
+                    required: 'required'
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>Select client</em>
+                  </MenuItem>
+                  {
+                    clients.isLoading
+                      ? <Loading />
+                      : clients.list && clients.list.length > 0
+                      ? clients.list.map(client => (
+                        <MenuItem key={client._id} value={client._id}>{ client.name }</MenuItem>
+                      ))
+                      : <MenuItem value="">
+                        <em>No client added.</em>
+                      </MenuItem>
+                  }
+                </Select>
+              </FormControl>
+            </Grid>
+          }
 
           {/* Input - email */}
           <Grid item xs={12}>
@@ -272,7 +275,8 @@ CreateOrEdit.propTypes = {
 CreateOrEdit.defaultProps = {
   elevation: 1,
   clientId: '',
-  clientShowLoading: true
+  clientShowLoading: true,
+  clientSelectionHide: false
 }
 
 // Component State

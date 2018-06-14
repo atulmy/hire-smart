@@ -45,10 +45,18 @@ class Panels extends PureComponent {
     this.refresh()
   }
 
-  refresh = (isLoading = true) => {
-    const { getListByClient, client } = this.props
+  componentWillReceiveProps(nextProps) {
+    const { clientDashboard: { client } } = nextProps
 
-    getListByClient({ clientId: client.item._id }, isLoading)
+    if(client._id !== this.props.clientDashboard.client._id) {
+      this.refresh(client._id)
+    }
+  }
+
+  refresh = (isLoading = true, clientId = null) => {
+    const { getListByClient, clientDashboard: { client } } = this.props
+
+    getListByClient({ clientId: clientId || client._id }, isLoading)
   }
 
   toggleDrawer = (open) => () => {
@@ -64,7 +72,7 @@ class Panels extends PureComponent {
   }
 
   render() {
-    const { classes, client, panelsByClient: { isLoading, list } } = this.props
+    const { classes, clientDashboard: { client }, panelsByClient: { isLoading, list } } = this.props
     const { drawerAdd } = this.state
 
     return (
@@ -133,9 +141,10 @@ class Panels extends PureComponent {
           <div className={classes.drawer}>
             <CreateOrEdit
               elevation={0}
-              clientId={client.item._id}
+              clientId={client._id}
               clientShowLoading={false}
               successCallback={this.successCallback}
+              clientSelectionHide={true}
             />
           </div>
         </Drawer>
@@ -148,7 +157,7 @@ class Panels extends PureComponent {
 Panels.propTypes = {
   classes: PropTypes.object.isRequired,
   panelsByClient: PropTypes.object.isRequired,
-  client: PropTypes.object.isRequired,
+  clientDashboard: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
@@ -158,7 +167,7 @@ Panels.propTypes = {
 function panelsState(state) {
   return {
     panelsByClient: state.panelsByClient,
-    client: state.client
+    clientDashboard: state.clientDashboard
   }
 }
 

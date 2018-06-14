@@ -11,7 +11,9 @@ import {
   LIST_DONE,
   SINGLE_REQUEST,
   SINGLE_RESPONSE,
-  SINGLE_DONE
+  SINGLE_DONE,
+  DASHBOARD_SET,
+  DASHBOARD_UNSET
 } from './types'
 
 // Get list
@@ -93,4 +95,12 @@ export function get(clientId, isLoading = true) {
       })
     }
   }
+}
+
+// Dashboard
+export function dashboardSet(client) {
+  return { type: DASHBOARD_SET, client }
+}
+export function dashboardUnset() {
+  return { type: DASHBOARD_UNSET }
 }

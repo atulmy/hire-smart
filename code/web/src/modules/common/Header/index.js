@@ -83,7 +83,7 @@ class Header extends PureComponent {
 
             {/* Features */}
             <Link to={routes.features.path}>
-              <Tooltip title={'Check out features'} placement={'bottom'}>
+              <Tooltip title={'Features'} placement={'bottom'}>
                 <IconButton color={'inherit'}>
                   <IconPlaylistAddCheck />
                 </IconButton>

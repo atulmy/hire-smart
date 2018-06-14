@@ -28,10 +28,10 @@ const Schema = new mongoose.Schema({
     required: true,
     ref: Candidate
   },
-  interviewId: {
+  interviews: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: Interview
-  },
+  }],
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,

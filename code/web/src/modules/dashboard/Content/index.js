@@ -12,7 +12,6 @@ import Fade from '@material-ui/core/Fade'
 import styles from './styles'
 
 // App Imports
-import Loading from '../../common/Loading'
 import AlignCenterMiddle from '../../common/AlignCenterMiddle'
 import Overview from './Overview'
 import Candidates from './Candidates'
@@ -54,46 +53,42 @@ class Content extends PureComponent {
   }
 
   render() {
-    const { classes, client: { isLoading, item } } = this.props
+    const { classes, clientDashboard: { client } } = this.props
     const { tab } = this.state
 
     return (
       <Fade in={true}>
         <div className={classes.root}>
           {
-            isLoading
-              ? <AlignCenterMiddle>
-                  <Loading />
+            client && client._id
+              ? <div>
+                  <div className={classes.tabs}>
+                    <Tabs
+                      value={tab}
+                      onChange={this.tabSwitch}
+                    >
+                      { Object.values(overviewTabs).map(item => <Tab key={item.key} label={item.label} value={item.key} />)}
+                    </Tabs>
+                  </div>
+
+                  <div className={classes.tabContent}>
+                    {
+                      {
+                        overview: <Overview tabSwitch={this.tabSwitch} />,
+
+                        candidates: <Candidates />,
+
+                        interviews: <Interviews />,
+
+                        panel: <Panel />,
+                      }[tab]
+                    }
+                  </div>
+                </div>
+              : <AlignCenterMiddle>
+                  <IconDomain className={classes.messageIcon} />
+                  <p className={classes.messageText}>Select a client to begin</p>
                 </AlignCenterMiddle>
-              : item && item._id
-                  ? <div>
-                      <div className={classes.tabs}>
-                        <Tabs
-                          value={tab}
-                          onChange={this.tabSwitch}
-                        >
-                          { Object.values(overviewTabs).map(item => <Tab key={item.key} label={item.label} value={item.key} />)}
-                        </Tabs>
-                      </div>
-
-                      <div className={classes.tabContent}>
-                        {
-                          {
-                            overview: <Overview tabSwitch={this.tabSwitch} />,
-
-                            candidates: <Candidates />,
-
-                            interviews: <Interviews />,
-
-                            panel: <Panel />,
-                          }[tab]
-                        }
-                      </div>
-                    </div>
-                  : <AlignCenterMiddle>
-                      <IconDomain className={classes.messageIcon} />
-                      <p className={classes.messageText}>Select a client to begin</p>
-                    </AlignCenterMiddle>
           }
         </div>
       </Fade>
@@ -104,13 +99,13 @@ class Content extends PureComponent {
 // Component Properties
 Content.propTypes = {
   classes: PropTypes.object.isRequired,
-  client: PropTypes.object.isRequired
+  clientDashboard: PropTypes.object.isRequired
 }
 
 // Component State
 function tabContentState(state) {
   return {
-    client: state.client
+    clientDashboard: state.clientDashboard
   }
 }
 

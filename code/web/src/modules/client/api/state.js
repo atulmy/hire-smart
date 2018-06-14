@@ -11,7 +11,9 @@ import {
   SINGLE_DONE,
   SINGLE_RESET,
   EDIT_SET,
-  EDIT_UNSET
+  EDIT_UNSET,
+  DASHBOARD_SET,
+  DASHBOARD_UNSET
 } from './actions/types'
 
 // List
@@ -82,7 +84,10 @@ export const client = (state = clientInitialState, action) => {
       }
 
     case SINGLE_RESET:
-      return { ...clientInitialState }
+      return {
+        ...state,
+        ...clientInitialState
+      }
 
     default:
       return state
@@ -94,27 +99,52 @@ export const client = (state = clientInitialState, action) => {
 
 // Initial State
 const clientEditState = {
-  edit: {
-    client: null,
-    open: true
-  }
+  client: null,
+  open: true
 }
 
 // State
-export const clientEdit = (state = clientEditState, action) => {
-  switch (action.type) {
+export const clientEdit = (state = clientEditState, { type, client }) => {
+  switch (type) {
     case EDIT_SET:
       return {
         ...state,
-        client: action.client,
+        client,
         open: true
       }
 
     case EDIT_UNSET:
       return {
         ...state,
-        client: null,
-        open: true
+        ...clientEditState
+      }
+
+    default:
+      return state
+  }
+}
+
+
+// Dashboard
+
+// Initial State
+const clientDashboardState = {
+  client: null,
+}
+
+// State
+export const clientDashboard = (state = clientDashboardState, { type, client }) => {
+  switch (type) {
+    case DASHBOARD_SET:
+      return {
+        ...state,
+        client
+      }
+
+    case DASHBOARD_UNSET:
+      return {
+        ...state,
+        ...clientDashboardState
       }
 
     default:
