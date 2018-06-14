@@ -93,21 +93,26 @@ Item.propTypes = {
   item: PropTypes.object.isRequired,
   toggleDrawer: PropTypes.func.isRequired
 }
+
+// Drag and Drop
 const cardSource = {
   beginDrag(props) {
     return {
-      text: props.text
-    };
+      kanbanId: props.item._id
+    }
+  },
+
+  endDrag(props) {
+
   }
 };
-
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
+    didDrop: monitor.didDrop(),
   };
 }
-
 
 export default compose(
   DragSource('card', cardSource, collect),

@@ -12,14 +12,14 @@ import styles from '../styles'
 import grey from '@material-ui/core/colors/grey'
 
 // Component
-class Item extends PureComponent {
+class Column extends PureComponent {
   render() {
-    const { children, classes, i, column, columns, columnWidth, connectDropTarget } = this.props
+    const { children, classes, last, columnWidth, connectDropTarget } = this.props
 
     return connectDropTarget(
       <div
         className={classes.column}
-        style={{ width: columnWidth, borderRight: i !== (columns.length - 1) ? `1px solid ${ grey[200] }` : '' }}
+        style={{ width: columnWidth, borderRight: last ? `1px solid ${ grey[200] }` : '' }}
       >
         { children }
       </div>
@@ -28,21 +28,27 @@ class Item extends PureComponent {
 }
 
 // Component Properties
-Item.propTypes = {
+Column.propTypes = {
   classes: PropTypes.object.isRequired,
-  column: PropTypes.object.isRequired,
-  columns: PropTypes.array.isRequired,
   columnWidth: PropTypes.number.isRequired,
-  i: PropTypes.number.isRequired,
+  last: PropTypes.bool.isRequired
 }
 
+// Drag and Drop
+// Collect
 function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget()
   }
 }
+// Receive
+const dropTarget = {
+  drop(props, monitor) {
+    props.itemDropped(monitor.getItem().kanbanId, props.columnKey)
+  }
+}
 
 export default compose(
-  DropTarget('card', {}, collect),
+  DropTarget('card', dropTarget, collect),
   withStyles(styles)
-)(Item)
+)(Column)

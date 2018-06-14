@@ -19,9 +19,12 @@ import styles from './styles'
 import params from '../../../../setup/config/params'
 import { overviewTabs } from '../index'
 import { getListByClient as getKanbanListByClient } from '../../../kanban/api/actions/query'
+import { updateStatus as updateKanbanStatus } from '../../../kanban/api/actions/mutation'
+import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
 import Column from './Column'
 import Item from './Item'
+import isEmpty from 'validator/lib/isEmpty'
 
 // Component
 class Overview extends PureComponent {
@@ -35,23 +38,21 @@ class Overview extends PureComponent {
   }
 
   componentDidMount() {
-    const { clientDashboard: { client } } = this.props
-
-    this.refresh(client._id)
+    this.refresh()
   }
 
   componentWillReceiveProps(nextProps) {
     const { clientDashboard: { client } } = nextProps
 
     if(client._id !== this.props.clientDashboard.client._id) {
-      this.refresh(client._id)
+      this.refresh(true, client._id)
     }
   }
 
-  refresh = (clientId, isLoading = true) => {
-    const { getKanbanListByClient } = this.props
+  refresh = (isLoading = true, clientId) => {
+    const { getKanbanListByClient, clientDashboard: { client } } = this.props
 
-    getKanbanListByClient({ clientId }, isLoading)
+    getKanbanListByClient({ clientId: clientId ? clientId : client._id }, isLoading)
   }
 
   columnWidth = () => {
@@ -100,6 +101,27 @@ class Overview extends PureComponent {
     )
   }
 
+  itemDropped = async (kanbanId, columnKey) => {
+    const { messageShow, updateKanbanStatus } = this.props
+    console.log(kanbanId)
+    console.log(columnKey)
+
+    try {
+      const { data } = await updateKanbanStatus({ id: kanbanId, status: columnKey })
+
+      console.log(data)
+      if(data.errors && !isEmpty(data.errors)) {
+        messageShow(data.errors[0].message)
+      } else {
+        this.refresh(false)
+      }
+    } catch(error) {
+      console.log(error)
+
+      messageShow('There was some error. Please try again.')
+    }
+  }
+
   render() {
     const { classes, kanbansByClient: { isLoading, list } } = this.props
     const { candidateInfo } = this.state
@@ -121,10 +143,10 @@ class Overview extends PureComponent {
                       { columns.map((column, i) => (
                         <Column
                           key={column.key}
-                          column={column}
-                          columns={columns}
+                          columnKey={column.key}
                           columnWidth={this.columnWidth()}
-                          i={i}
+                          last={i !== columns.length - 1}
+                          itemDropped={this.itemDropped}
                         >
                           <div>
                             {/* Column Title */}
@@ -197,6 +219,8 @@ Overview.propTypes = {
   tabSwitch: PropTypes.func.isRequired,
   clientDashboard: PropTypes.object.isRequired,
   getKanbanListByClient: PropTypes.func.isRequired,
+  updateKanbanStatus: PropTypes.func.isRequired,
+  messageShow: PropTypes.func.isRequired
 }
 
 // Component State
@@ -209,6 +233,6 @@ function overviewState(state) {
 
 export default compose(
   DragDropContext(HTML5Backend),
-  connect(overviewState, { getKanbanListByClient }),
+  connect(overviewState, { getKanbanListByClient, updateKanbanStatus, messageShow }),
   withStyles(styles)
 )(Overview)

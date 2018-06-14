@@ -3,7 +3,7 @@ import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
 import KanbanType from '../types'
-import { create, remove, update } from './resolvers'
+import { create, remove, update, updateStatus } from './resolvers'
 
 // Kanban fields
 const fields = {
@@ -52,6 +52,20 @@ export const kanbanUpdate = {
     ...fields
   },
   resolve: update
+}
+
+// Kanban update
+export const kanbanUpdateStatus = {
+  type: KanbanType,
+  args: {
+    id: {
+      name: 'id',
+      type: GraphQLString
+    },
+
+    ...fields
+  },
+  resolve: updateStatus
 }
 
 // Kanban remove

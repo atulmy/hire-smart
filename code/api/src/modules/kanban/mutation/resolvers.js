@@ -5,15 +5,16 @@ import isEmpty from 'validator/lib/isEmpty'
 import Kanban from '../model'
 
 // Create
-export async function create(parentValue, { clientId, name, email, mobile }, { auth }) {
+export async function create(parentValue, { clientId, candidateId, interviews, status, highlight }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Kanban.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
       clientId,
-      name,
-      email,
-      mobile
+      candidateId,
+      interviews,
+      status,
+      highlight
     })
   } else {
     throw new Error('Please login to create panel.')
@@ -21,16 +22,32 @@ export async function create(parentValue, { clientId, name, email, mobile }, { a
 }
 
 // Update
-export async function update(parentValue, { id, clientId, name, email, mobile }, { auth }) {
+export async function update(parentValue, { id, interviews, status, highlight }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     return await Kanban.updateOne(
       { _id: id },
       {
         $set: {
           clientId,
-          name,
-          email,
-          mobile
+          interviews,
+          status,
+          highlight
+        }
+      }
+    )
+  } else {
+    throw new Error('Please login to update panel.')
+  }
+}
+
+// Update status
+export async function updateStatus(parentValue, { id, status }, { auth }) {
+  if(auth.user && auth.user.id && !isEmpty(id)) {
+    return await Kanban.updateOne(
+      { _id: id },
+      {
+        $set: {
+          status
         }
       }
     )

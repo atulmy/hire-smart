@@ -40,6 +40,18 @@ export function update(kanban) {
   }
 }
 
+// Update status
+export function updateStatus(kanban) {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'kanbanUpdateStatus',
+      data: kanban,
+      fields: ['_id']
+    }))
+  }
+}
+
 // Remove
 export function remove(data) {
   return dispatch => {
