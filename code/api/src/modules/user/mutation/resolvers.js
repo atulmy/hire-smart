@@ -4,8 +4,10 @@ import jwt from 'jsonwebtoken'
 
 // App Imports
 import serverConfig from '../../../setup/config/server'
-import { NODE_ENV } from '../../../setup/config/env'
+import { NODE_ENV, EMAIL_TEST } from '../../../setup/config/env'
 import params from '../../../setup/config/params'
+import transport from '../../../setup/server/email'
+import invite from '../../../setup/server/views/emails/invite'
 import DemoUser from '../../demo-user/model'
 import Organization from '../../organization/model'
 import User from '../model'
@@ -87,13 +89,21 @@ export async function inviteToOrganization(parentValue, { name, email }, { auth 
     const user = await User.findOne({ email })
 
     if (!user) {
-      // Create a new demo user
-      const demoUser = await DemoUser.create({})
-
       // User does not exists
-      const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), serverConfig.saltRounds)
+      const passwordHashed = await bcrypt.hash(name + email + Math.random(), serverConfig.saltRounds)
 
-      // @todo Send email
+      // Send invite email
+      if(transport) {
+        transport.sendMail({
+          from: `"${ auth.user.name }" <${ auth.user.email }>`,
+          to: `"${ name }" <${ NODE_ENV === 'development' ? EMAIL_TEST : email }>`,
+          subject: `${ params.site.name } - You have been invited!`,
+          html: invite({
+            invitedTo: name,
+            invitedBy: auth.user.name
+          })
+        })
+      }
 
       return await User.create({
         organizationId: auth.user.organizationId,
