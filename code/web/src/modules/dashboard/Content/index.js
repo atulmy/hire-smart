@@ -71,7 +71,7 @@ class Content extends PureComponent {
                       value={tab}
                       onChange={this.tabSwitch}
                     >
-                      { Object.values(overviewTabs).map(item => <Tab key={item.key} label={item.label} value={item.key} />)}
+                      { Object.values(overviewTabs).map(item => <Tab key={item.key} label={item.label} value={item.key} style={{ minWidth: 'auto' }} />)}
                     </Tabs>
                   </div>
 

@@ -66,8 +66,8 @@ class Details extends PureComponent {
                     value={tab}
                     onChange={this.tabSwitch}
                   >
-                    <Tab label={'Candidate'} value={'candidate'} />
-                    <Tab label={'Interview'} value={'interview'} />
+                    <Tab label={'Candidate'} value={'candidate'} style={{ minWidth: 'auto' }} />
+                    <Tab label={'Interview'} value={'interview'} style={{ minWidth: 'auto' }} />
                   </Tabs>
                 </div>
 

@@ -11,6 +11,8 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Drawer from '@material-ui/core/Drawer'
+import Divider from '@material-ui/core/Divider'
+import IconCached from '@material-ui/icons/Cached'
 import Fade from '@material-ui/core/Fade'
 import grey from '@material-ui/core/colors/grey'
 import { withStyles } from '@material-ui/core/styles'
@@ -152,6 +154,17 @@ class Overview extends PureComponent {
 
     return (
       <div className={classes.root}>
+        {/* Actions */}
+        <div className={classes.actions}>
+          <Button onClick={this.refresh}>
+            <IconCached className={classes.actionIcon} />
+            Refresh
+          </Button>
+        </div>
+
+        <Divider className={classes.divider} />
+
+        {/* Kanban */}
         <div className={classes.kanban}>
           {
             isLoading
