@@ -92,7 +92,7 @@ class Interviews extends PureComponent {
           </Button>
         </div>
 
-        <Divider className={classes.divider} />
+        <Divider />
 
         {/* Candidate list */}
         {

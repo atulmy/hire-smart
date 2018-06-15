@@ -14,6 +14,7 @@ import styles from './styles'
 // App Imports
 import AlignCenterMiddle from '../../common/AlignCenterMiddle'
 import Overview from './Overview'
+import Jobs from './Jobs'
 import Candidates from './Candidates'
 import Interviews from './Interviews'
 import Interviewer from './Interviewer'
@@ -80,7 +81,7 @@ class Content extends PureComponent {
                       {
                         overview: <Overview tabSwitch={this.tabSwitch} />,
 
-                        jobs: <Candidates />,
+                        jobs: <Jobs />,
 
                         candidates: <Candidates />,
 

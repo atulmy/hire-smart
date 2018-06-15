@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 // UI Imports
 import Table from '@material-ui/core/Table'
@@ -20,14 +21,14 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getListByClient } from '../../../interviewer/api/actions/query'
-import { editClose } from '../../../interviewer/api/actions/mutation'
+import { getListByClient } from '../../../job/api/actions/query'
+import { editClose } from '../../../job/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
-import CreateOrEdit from '../../../interviewer/Manage/CreateOrEdit'
+import CreateOrEdit from '../../../job/Manage/CreateOrEdit'
 
 // Component
-class Interviewers extends PureComponent {
+class Jobs extends PureComponent {
 
   constructor() {
     super()
@@ -49,7 +50,7 @@ class Interviewers extends PureComponent {
     const { clientDashboard: { client } } = nextProps
 
     if(client._id !== this.props.clientDashboard.client._id) {
-      this.refresh(client._id)
+      this.refresh(false, client._id)
     }
   }
 
@@ -72,7 +73,7 @@ class Interviewers extends PureComponent {
   }
 
   render() {
-    const { classes, clientDashboard: { client }, interviewersByClient: { isLoading, list } } = this.props
+    const { classes, clientDashboard: { client }, jobsByClient: { isLoading, list } } = this.props
     const { drawerAdd } = this.state
 
     return (
@@ -92,7 +93,7 @@ class Interviewers extends PureComponent {
 
         <Divider />
 
-        {/* Candidate list */}
+        {/* Job list */}
         {
           isLoading
             ? <Loading />
@@ -100,25 +101,23 @@ class Interviewers extends PureComponent {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Email</TableCell>
-                      <TableCell>Mobile</TableCell>
+                      <TableCell>Role</TableCell>
+                      <TableCell>Description</TableCell>
                     </TableRow>
                   </TableHead>
-  
+
                   <TableBody>
                     {
                       list && list.length > 0
-                        ? list.map(interviewer => (
-                          <TableRow key={interviewer._id}>
-                            <TableCell>{ interviewer.name }</TableCell>
-                            <TableCell>{ interviewer.email }</TableCell>
-                            <TableCell>{ interviewer.mobile }</TableCell>
+                        ? list.map(job => (
+                          <TableRow key={job._id}>
+                            <TableCell>{ job.role }</TableCell>
+                            <TableCell>{ job.description }</TableCell>
                           </TableRow>
                         ))
                         : <TableRow>
-                          <TableCell colSpan={4}>
-                            <EmptyMessage message={'You have not added any interviewer yet.'} />
+                          <TableCell colSpan={3}>
+                            <EmptyMessage message={'You have not added any job yet.'} />
                           </TableCell>
                         </TableRow>
                     }
@@ -127,7 +126,7 @@ class Interviewers extends PureComponent {
               </Fade>
         }
 
-        {/* Candidate create or edit */}
+        {/* Job create or edit */}
         <Drawer
           anchor={'right'}
           open={drawerAdd}
@@ -154,9 +153,9 @@ class Interviewers extends PureComponent {
 }
 
 // Component Properties
-Interviewers.propTypes = {
+Jobs.propTypes = {
   classes: PropTypes.object.isRequired,
-  interviewersByClient: PropTypes.object.isRequired,
+  jobsByClient: PropTypes.object.isRequired,
   clientDashboard: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
@@ -164,11 +163,11 @@ Interviewers.propTypes = {
 }
 
 // Component State
-function interviewersState(state) {
+function jobsState(state) {
   return {
-    interviewersByClient: state.interviewersByClient,
+    jobsByClient: state.jobsByClient,
     clientDashboard: state.clientDashboard
   }
 }
 
-export default connect(interviewersState, { getListByClient, editClose, messageShow })(withStyles(styles)(Interviewers))
+export default connect(jobsState, { getListByClient, editClose, messageShow })(withStyles(styles)(Jobs))

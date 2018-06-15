@@ -1,4 +1,4 @@
-const view = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initialState = {}) => (
+const view = (APP_URL, NODE_ENV, params, helmet = {}, appHtml = '', appCss = '', initialState = {}) => (
 `<!doctype html>
 <html lang="en">
 <head>
@@ -54,8 +54,8 @@ const view = (APP_URL, NODE_ENV, helmet = {}, appHtml = '', appCss = '', initial
   </script>
   
   <!-- JS Bundles -->
-  <script type="text/javascript" src="${ APP_URL }/js/bundles/vendor.js"></script>
-  <script type="text/javascript" src="${ APP_URL }/js/bundles/app.js${ NODE_ENV !== 'production' ? ('?'+Math.random()) : '' }"></script>
+  <script type="text/javascript" src="${ APP_URL }/js/bundles/vendor.js?v=0.1"></script>
+  <script type="text/javascript" src="${ APP_URL }/js/bundles/app.js?v=${ NODE_ENV !== 'production' ? Math.random() : params.site.version }"></script>
 </body>
 </html>`
 )

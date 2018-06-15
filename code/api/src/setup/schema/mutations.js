@@ -5,6 +5,7 @@ import { GraphQLObjectType } from 'graphql'
 import * as user from '../../modules/user/mutation'
 import * as organization from '../../modules/organization/mutation'
 import * as client from '../../modules/client/mutation'
+import * as job from '../../modules/job/mutation'
 import * as candidate from '../../modules/candidate/mutation'
 import * as interviewer from '../../modules/interviewer/mutation'
 import * as interview from '../../modules/interview/mutation'
@@ -19,6 +20,7 @@ const mutation = new GraphQLObjectType({
     ...user,
     ...organization,
     ...client,
+    ...job,
     ...candidate,
     ...interviewer,
     ...interview,

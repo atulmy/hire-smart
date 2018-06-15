@@ -8,6 +8,7 @@ import common from '../modules/common/api/state'
 import user from '../modules/user/api/state'
 import * as organization from '../modules/organization/api/state'
 import * as client from '../modules/client/api/state'
+import * as job from '../modules/job/api/state'
 import * as candidate from '../modules/candidate/api/state'
 import * as interviewer from '../modules/interviewer/api/state'
 import * as interview from '../modules/interview/api/state'
@@ -19,6 +20,7 @@ const appReducer = combineReducers({
   user,
   ...organization,
   ...client,
+  ...job,
   ...candidate,
   ...interviewer,
   ...interview,

@@ -6,14 +6,11 @@ const styles = theme => ({
   },
 
   actions: {
-    textAlign: 'right'
+    textAlign: 'right',
+    paddingBottom: theme.spacing.unit
   },
   actionIcon: {
     width: 20, height: 20, marginRight: 5
-  },
-
-  divider: {
-    marginTop: 5
   },
 
   drawer: {

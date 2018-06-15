@@ -15,6 +15,7 @@ import JssProvider from 'react-jss/lib/JssProvider'
 
 // App Imports
 import { APP_URL, NODE_ENV } from '../config/env'
+import params from '../config/params'
 import { rootReducer } from '../store'
 import routes from '../routes'
 import { setUser } from '../../modules/user/api/actions/mutation'
@@ -99,7 +100,7 @@ export default function (app) {
           // Get Meta header tags
           const helmet = Helmet.renderStatic()
 
-          const html = view(APP_URL, NODE_ENV, helmet, appHtml, appCss, initialState)
+          const html = view(APP_URL, NODE_ENV, params, helmet, appHtml, appCss, initialState)
 
           // Reset the state on server
           store.dispatch({

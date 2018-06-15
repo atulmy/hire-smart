@@ -1,5 +1,6 @@
 {
   "site": {
+    "version": 0.1,
     "name": "HireSmart",
     "domain": "hiresmart.app",
     "title": "HireSmart - Streamline your hiring process, scheduling interviews and tracking candidates.",

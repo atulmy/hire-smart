@@ -10,11 +10,17 @@ const styles = theme => ({
   actions: {
     textAlign: 'right',
     padding: `${ theme.spacing.unit }px ${ theme.spacing.unit * 2.5 }px`,
+    paddingBottom: theme.spacing.unit,
   },
   actionIcon: {
     width: 20,
     height: 20,
     marginRight: 5
+  },
+
+  divider: {
+    marginLeft: theme.spacing.unit * 2.5,
+    marginRight: theme.spacing.unit * 2.5
   },
 
   kanban: {
