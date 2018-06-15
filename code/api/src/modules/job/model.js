@@ -5,10 +5,9 @@ import mongoose from 'mongoose'
 import { collection as Organization } from '../organization/model'
 import { collection as Client } from '../client/model'
 import { collection as User } from '../user/model'
-import { collection as Job } from '../job/model'
 
 // Collection name
-export const collection = 'Candidate'
+export const collection = 'Job'
 
 // Schema
 const Schema = new mongoose.Schema({
@@ -19,44 +18,21 @@ const Schema = new mongoose.Schema({
   },
   clientId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: Client
-  },
-  jobId: {
-    type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: Job
+    ref: Client
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: User
   },
-  name: {
+  role: {
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true
-  },
-  mobile: {
-    type: String,
-    required: true
-  },
-  experience: {
-    type: String,
-    required: true
-  },
-  resume: {
-    type: String,
-    required: true
-  },
-  salaryCurrent: {
+  description: {
     type: String
-  },
-  salaryExpected: {
-    type: String
-  },
+  }
 }, {timestamps: true})
 
 // Model

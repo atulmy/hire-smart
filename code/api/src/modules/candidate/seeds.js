@@ -3,6 +3,7 @@ import params from '../../setup/config/params'
 import Organization from '../organization/model'
 import User from '../user/model'
 import Client from '../client/model'
+import Job from '../job/model'
 import Interviewer from '../interviewer/model'
 import Interview from '../interview/model'
 import Kanban from '../kanban/model'
@@ -17,12 +18,14 @@ export default async function () {
   const user = await User.findOne({ email: 'user@hiresmart.app' })
   const organization = await Organization.findOne()
   const client = await Client.findOne()
+  const job = await Job.findOne()
   const interviewer = await Interviewer.findOne()
 
   for (let i of [1, 2]) {
     const candidate = await Candidate.create({
       organizationId: organization._id,
       clientId: client._id,
+      jobId: job._id,
       userId: user._id,
       name: `Candidate ${ i }`,
       email: `candidate.${ i }@${ organization.domain }`,

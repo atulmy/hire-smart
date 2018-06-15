@@ -26,6 +26,7 @@ export async function getByOrganization(parentValue, {}, { auth }) {
     })
       .populate('organizationId')
       .populate('clientId')
+      .populate('jobId')
   } else {
     throw new Error('Please login to view your candidates.')
   }

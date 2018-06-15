@@ -4,30 +4,23 @@ import { GraphQLObjectType, GraphQLString } from 'graphql'
 // App Imports
 import OrganizationType from '../organization/types'
 import ClientType from '../client/types'
-import JobType from '../job/types'
 import { UserType } from '../user/types'
 
 // Type
-const CandidateType = new GraphQLObjectType({
-  name: 'candidate',
-  description: 'Candidate Type',
+const JobType = new GraphQLObjectType({
+  name: 'job',
+  description: 'Job Type',
 
   fields: () => ({
     _id: { type: GraphQLString },
     organizationId: { type: OrganizationType },
     clientId: { type: ClientType },
-    jobId: { type: JobType },
     userId: { type: UserType },
-    name: { type: GraphQLString },
-    email: { type: GraphQLString },
-    mobile: { type: GraphQLString },
-    experience: { type: GraphQLString },
-    resume: { type: GraphQLString },
-    salaryCurrent: { type: GraphQLString },
-    salaryExpected: { type: GraphQLString },
+    role: { type: GraphQLString },
+    description: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString }
   })
 })
 
-export default CandidateType
+export default JobType

@@ -140,7 +140,7 @@ class Header extends PureComponent {
                     <Link to={routes.interviewer.path}>
                       <ListItem button>
                         <Avatar style={{ backgroundColor: teal[500] }}><IconThumbsUpDown /></Avatar>
-                        <ListItemText primary={'Interviewer'} secondary={'Manage all interviewer'} />
+                        <ListItemText primary={'Interviewers'} secondary={'Manage all interviewers'} />
                       </ListItem>
                     </Link>
 

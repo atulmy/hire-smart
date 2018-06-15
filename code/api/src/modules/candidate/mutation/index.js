@@ -12,6 +12,11 @@ const fields = {
     type: GraphQLString
   },
 
+  jobId: {
+    name: 'jobId',
+    type: GraphQLString
+  },
+
   name: {
     name: 'name',
     type: GraphQLString

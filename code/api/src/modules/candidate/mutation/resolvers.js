@@ -7,11 +7,12 @@ import Kanban from '../../kanban/model'
 import Candidate from '../model'
 
 // Create
-export async function create(parentValue, { clientId, name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
+export async function create(parentValue, { clientId, jobId, name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
   if(auth.user && auth.user.id) {
     const candidate = await Candidate.create({
       organizationId: auth.user.organizationId,
       clientId,
+      jobId,
       userId: auth.user.id,
       name,
       email,
@@ -38,13 +39,14 @@ export async function create(parentValue, { clientId, name, email, mobile, exper
 }
 
 // Update
-export async function update(parentValue, { id, clientId, name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
+export async function update(parentValue, { id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     return await Candidate.updateOne(
       { _id: id },
       {
         $set: {
           clientId,
+          jobId,
           name,
           email,
           mobile,
