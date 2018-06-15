@@ -156,6 +156,7 @@ class CreateOrEdit extends PureComponent {
               margin={'normal'}
               autoComplete={'off'}
               fullWidth
+              autoFocus
             />
           </Grid>
 

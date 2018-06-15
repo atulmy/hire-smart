@@ -100,6 +100,7 @@ class Candidates extends PureComponent {
                   <TableHead>
                     <TableRow>
                       <TableCell>Name</TableCell>
+                      <TableCell>Job</TableCell>
                       <TableCell>Email</TableCell>
                       <TableCell>Mobile</TableCell>
                       <TableCell>Experience</TableCell>
@@ -114,6 +115,7 @@ class Candidates extends PureComponent {
                         ? list.map(candidate => (
                           <TableRow key={candidate._id}>
                             <TableCell>{ candidate.name }</TableCell>
+                            <TableCell>{ candidate.jobId.role }</TableCell>
                             <TableCell>{ candidate.email }</TableCell>
                             <TableCell>{ candidate.mobile }</TableCell>
                             <TableCell>{ candidate.experience }</TableCell>

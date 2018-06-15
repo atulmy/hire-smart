@@ -8,7 +8,10 @@ export async function get(parentValue, { id }, { auth }) {
       _id: id,
       organizationId: auth.user.organizationId
     })
-      .populate('candidateId')
+      .populate({
+        path: 'candidateId',
+        populate: { path: 'jobId' }
+      })
       .populate({
         path: 'interviews',
         populate: { path: 'interviewerId' }
@@ -25,7 +28,10 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
       organizationId: auth.user.organizationId,
       clientId
     })
-      .populate('candidateId')
+      .populate({
+        path: 'candidateId',
+        populate: { path: 'jobId' }
+      })
       .populate({
         path: 'interviews',
         populate: { path: 'interviewerId' }

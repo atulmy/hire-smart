@@ -24,7 +24,7 @@ import styles from './styles'
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
 import { getList as getClientList } from '../../../client/api/actions/query'
-import { getList } from '../../api/actions/query'
+import { getListByClient as getJobListByClient } from '../../../job/api/actions/query'
 import { createOrUpdate, editClose } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
@@ -54,9 +54,10 @@ class CreateOrEdit extends PureComponent {
   }
 
   componentDidMount() {
-    const { getClientList, clientShowLoading } = this.props
+    const { getClientList, clientShowLoading, getJobListByClient, clientId } = this.props
 
     getClientList(clientShowLoading)
+    getJobListByClient({ clientId })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -66,6 +67,7 @@ class CreateOrEdit extends PureComponent {
       this.setState({
         id: candidate._id,
         clientId: candidate.clientId._id,
+        jobId: candidate.jobId._id,
         name: candidate.name,
         email: candidate.email,
         mobile: candidate.mobile,
@@ -104,17 +106,17 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
+    const { id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
 
     // Validate
-    if(!isEmpty(clientId) && !isEmpty(name) && !isEmpty(email) && !isEmpty(mobile) && !isEmpty(experience) && !isEmpty(resume) && !isEmpty(salaryCurrent) && !isEmpty(salaryExpected)) {
+    if(!isEmpty(clientId) && !isEmpty(jobId) && !isEmpty(name) && !isEmpty(email) && !isEmpty(mobile) && !isEmpty(experience) && !isEmpty(resume) && !isEmpty(salaryCurrent) && !isEmpty(salaryExpected)) {
       messageShow('Adding candidate, please wait..')
 
       this.isLoadingToggle(true)
 
       // Create or Update
       try {
-        const { data } = await createOrUpdate({ id, clientId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
+        const { data } = await createOrUpdate({ id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
 
         if(data.errors && !isEmpty(data.errors)) {
           messageShow(data.errors[0].message)
@@ -142,8 +144,8 @@ class CreateOrEdit extends PureComponent {
   }
 
   render() {
-    const { classes, clients, elevation, clientSelectionHide } = this.props
-    const { isLoading, id, clientId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
+    const { classes, clients, elevation, clientSelectionHide, jobsByClient } = this.props
+    const { isLoading, id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
 
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
@@ -208,6 +210,41 @@ class CreateOrEdit extends PureComponent {
               </FormControl>
             </Grid>
           }
+
+          {/* Input - job */}
+          <Grid item xs={12}>
+            <FormControl
+              style={{marginTop: 10}}
+              fullWidth
+              required={true}
+            >
+              <InputLabel htmlFor="job-id">Job</InputLabel>
+              <Select
+                value={nullToEmptyString(jobId)}
+                onChange={this.onType}
+                inputProps={{
+                  id: 'job-id',
+                  name: 'jobId',
+                  required: 'required'
+                }}
+              >
+                <MenuItem value="">
+                  <em>Select job role</em>
+                </MenuItem>
+                {
+                  jobsByClient.isLoading
+                    ? <Loading/>
+                    : jobsByClient.list && jobsByClient.list.length > 0
+                        ? jobsByClient.list.map(job => (
+                            <MenuItem key={job._id} value={job._id}>{job.role}</MenuItem>
+                          ))
+                        : <MenuItem value="">
+                            <em>No job added.</em>
+                          </MenuItem>
+                }
+              </Select>
+            </FormControl>
+          </Grid>
 
           {/* Input - email */}
           <Grid item xs={12}>
@@ -344,6 +381,7 @@ CreateOrEdit.propTypes = {
   createOrUpdate: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   getClientList: PropTypes.func.isRequired,
+  getJobListByClient: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 CreateOrEdit.defaultProps = {
@@ -357,8 +395,9 @@ CreateOrEdit.defaultProps = {
 function createOrEditState(state) {
   return {
     candidateEdit: state.candidateEdit,
-    clients: state.clients
+    clients: state.clients,
+    jobsByClient: state.jobsByClient
   }
 }
 
-export default connect(createOrEditState, { createOrUpdate, editClose, getClientList, messageShow })(withStyles(styles)(CreateOrEdit))
+export default connect(createOrEditState, { createOrUpdate, editClose, getClientList, getJobListByClient, messageShow })(withStyles(styles)(CreateOrEdit))

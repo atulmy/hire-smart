@@ -103,6 +103,28 @@ class Details extends PureComponent {
                                 </Typography>
                               </div>
 
+                              {/* Job Role */}
+                              <div className={classes.item}>
+                                <Typography variant={'caption'} gutterBottom>
+                                  Job Role
+                                </Typography>
+
+                                <Typography gutterBottom>
+                                  { candidateId.jobId.role }
+                                </Typography>
+                              </div>
+
+                              {/* Job Description */}
+                              <div className={classes.item}>
+                                <Typography variant={'caption'} gutterBottom>
+                                  Job Description
+                                </Typography>
+
+                                <Typography gutterBottom>
+                                  { candidateId.jobId.description }
+                                </Typography>
+                              </div>
+
                               {/* Email */}
                               <div className={classes.item}>
                                 <Typography variant={'caption'} gutterBottom>

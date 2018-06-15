@@ -72,6 +72,7 @@ class List extends PureComponent {
                     <TableRow>
                       <TableCell>Name</TableCell>
                       <TableCell>Client</TableCell>
+                      <TableCell>Job</TableCell>
                       <TableCell>Email</TableCell>
                       <TableCell>Mobile</TableCell>
                       <TableCell width={145} className={classes.textCenter}>Actions</TableCell>
@@ -85,6 +86,7 @@ class List extends PureComponent {
                             <TableRow key={candidate._id}>
                               <TableCell>{ candidate.name }</TableCell>
                               <TableCell>{ candidate.clientId.name }</TableCell>
+                              <TableCell>{ candidate.jobId.role }</TableCell>
                               <TableCell>{ candidate.email }</TableCell>
                               <TableCell>{ candidate.mobile }</TableCell>
                               <TableCell className={classes.textCenter}>

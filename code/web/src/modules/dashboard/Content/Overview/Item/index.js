@@ -34,15 +34,15 @@ class Item extends PureComponent {
           onClick={detailsOpen}
         >
           {/* Item details */}
-          <Typography variant={'title'} className={classes.name}>
+          <Typography variant={'title'} className={classes.name} gutterBottom>
             { candidateId.name }
           </Typography>
 
-          <Typography color="textSecondary">
-            { candidateId.mobile }
+          <Typography color="textSecondary" title={'Job role'}>
+            { candidateId.jobId.role }
           </Typography>
 
-          <Typography color="textSecondary">
+          <Typography color="textSecondary" title={'Experience'}>
             { candidateId.experience } year{ plural(candidateId.experience) }
           </Typography>
 
@@ -55,7 +55,7 @@ class Item extends PureComponent {
               {
                 interviews.map(interview => (
                   <List key={interview._id} dense={true}>
-                    <ListItem title={'Interview'} className={classes.infoItem}>
+                    <ListItem title={'Interview date and time'} className={classes.infoItem}>
                       <ListItemIcon className={classes.infoItemIcon}>
                         <IconCall />
                       </ListItemIcon>
