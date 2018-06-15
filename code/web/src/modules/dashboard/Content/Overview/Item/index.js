@@ -25,13 +25,13 @@ import { plural } from '../../../../../setup/helpers'
 // Component
 class Item extends PureComponent {
   render() {
-    const { classes, item: { candidateId, interviews, highlight }, toggleDrawer, isDragging, connectDragSource } = this.props
+    const { classes, item: { candidateId, interviews, highlight }, detailsOpen, isDragging, connectDragSource } = this.props
 
     return connectDragSource(
       <div>
         <Paper
           className={classes.root}
-          onClick={toggleDrawer(true)}
+          onClick={detailsOpen}
         >
           {/* Item details */}
           <Typography variant={'title'} className={classes.name}>
@@ -91,7 +91,7 @@ class Item extends PureComponent {
 Item.propTypes = {
   classes: PropTypes.object.isRequired,
   item: PropTypes.object.isRequired,
-  toggleDrawer: PropTypes.func.isRequired
+  detailsOpen: PropTypes.func.isRequired
 }
 
 // Drag and Drop

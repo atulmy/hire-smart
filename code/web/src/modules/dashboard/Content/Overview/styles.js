@@ -18,12 +18,6 @@ const styles = theme => ({
     display: 'inline-block',
     height: 'calc(100vh - 153px)'
   },
-  column: {
-    display: 'inline-block',
-    float: 'left',
-    height: 'calc(100vh - 149px)',
-    overflowY: 'hidden'
-  },
   columnTitle: {
     textAlign: 'center',
     margin: `0 ${ theme.spacing.unit * 2.5 }px`,
@@ -35,7 +29,7 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
   },
 
-  candidatesContainer: {
+  itemContainer: {
     padding: `0 ${ theme.spacing.unit * 2.5 }px`,
     height: 'calc(100vh - 190px)',
     overflowY: 'auto'

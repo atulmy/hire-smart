@@ -70,7 +70,14 @@ export function get(kanbanId, isLoading = true) {
         type: 'query',
         operation: 'kanban',
         data: { id: kanbanId },
-        fields: ['_id', 'clientId { _id, name }', 'candidateId { _id, name }', 'interviews { _id, dateTime }', 'status', 'highlight', 'createdAt']
+        fields: [
+          '_id',
+          'candidateId { _id, name, email, mobile, experience, resume, salaryCurrent, salaryExpected }',
+          'interviews { _id, panelId { _id, name, email, mobile }, dateTime }',
+          'status',
+          'highlight',
+          'createdAt'
+        ]
       }))
 
       if(data.errors && data.errors.length > 0) {

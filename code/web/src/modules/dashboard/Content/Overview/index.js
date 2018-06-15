@@ -1,6 +1,7 @@
 // Imports
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import isEmpty from 'validator/lib/isEmpty'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { DragDropContext } from 'react-dnd'
@@ -24,7 +25,7 @@ import { messageShow, messageHide } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
 import Column from './Column'
 import Item from './Item'
-import isEmpty from 'validator/lib/isEmpty'
+import Details from './Details'
 
 // Component
 class Overview extends PureComponent {
@@ -33,7 +34,8 @@ class Overview extends PureComponent {
     super(props)
 
     this.state = {
-      candidateInfo: false
+      detailsOpen: false,
+      kanbanId: null
     }
   }
 
@@ -69,9 +71,17 @@ class Overview extends PureComponent {
     tabSwitch(null, overviewTabs.candidates.key)
   }
 
-  toggleDrawer = (open) => () => {
+  detailsOpen = (kanbanId) => () => {
     this.setState({
-      candidateInfo: open
+      kanbanId
+    }, () => {
+      this.toggleDrawer(true)()
+    })
+  }
+
+  toggleDrawer = (detailsOpen) => () => {
+    this.setState({
+      detailsOpen
     })
   }
 
@@ -109,7 +119,6 @@ class Overview extends PureComponent {
     try {
       const { data } = await updateKanbanStatus({ id: kanbanId, status: columnKey })
 
-      console.log(data)
       if(data.errors && !isEmpty(data.errors)) {
         messageShow(data.errors[0].message)
       } else {
@@ -124,7 +133,7 @@ class Overview extends PureComponent {
 
   render() {
     const { classes, kanbansByClient: { isLoading, list } } = this.props
-    const { candidateInfo } = this.state
+    const { detailsOpen, kanbanId } = this.state
     const { kanban: { columns } } = params
 
     return (
@@ -160,14 +169,14 @@ class Overview extends PureComponent {
                             </div>
 
                             {/* Candidates */}
-                            <div className={classes.candidatesContainer}>
+                            <div className={classes.itemContainer}>
                               {
                                 list && list.length > 0 && list.map(
                                   item => item.status === column.key &&
                                     <Item
                                       key={item._id}
                                       item={item}
-                                      toggleDrawer={this.toggleDrawer}
+                                      detailsOpen={this.detailsOpen(item._id)}
                                     />
                                 )
                               }
@@ -192,7 +201,7 @@ class Overview extends PureComponent {
                     {/* Candidate info */}
                     <Drawer
                       anchor={'right'}
-                      open={candidateInfo}
+                      open={detailsOpen}
                       onClose={this.toggleDrawer(false)}
                       ModalProps={{
                         BackdropProps: {
@@ -200,9 +209,10 @@ class Overview extends PureComponent {
                         }
                       }}
                     >
-                      <div style={{ width: 300 }}>
-                        <p>Info</p>
-                      </div>
+                      <Details
+                        kanbanId={kanbanId}
+                        toggleDrawer={this.toggleDrawer}
+                      />
                     </Drawer>
                   </div>
                 </Fade>

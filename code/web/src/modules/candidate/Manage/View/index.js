@@ -12,6 +12,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
+import { plural } from '../../../../setup/helpers'
 import { viewHide } from '../../api/actions/mutation'
 
 // Component
@@ -80,7 +81,7 @@ class View extends PureComponent {
           </Typography>
 
           <Typography gutterBottom>
-            { candidate.experience }
+            { candidate.experience } year{ plural(candidate.experience) }
           </Typography>
         </div>
 

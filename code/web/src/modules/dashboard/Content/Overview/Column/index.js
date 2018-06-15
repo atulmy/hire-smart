@@ -6,9 +6,8 @@ import { DropTarget } from 'react-dnd'
 
 // UI Imports
 import grey from '@material-ui/core/colors/grey'
-import yellow from '@material-ui/core/colors/yellow'
 import { withStyles } from '@material-ui/core/styles/index'
-import styles from '../styles'
+import styles from './styles'
 
 // App Imports
 
@@ -17,15 +16,13 @@ class Column extends PureComponent {
   render() {
     const { children, classes, last, columnWidth, connectDropTarget, isOver } = this.props
 
-    console.log(isOver)
-
     return connectDropTarget(
       <div
         className={classes.column}
         style={{
           width: columnWidth,
           borderRight: last ? `1px solid ${ grey[200] }` : '',
-          backgroundColor: isOver ? yellow[50] : 'transparent'
+          backgroundColor: isOver ? '#fffde7bb' : 'transparent'
         }}
       >
         { children }
