@@ -7,7 +7,7 @@ import { collection as Client } from '../client/model'
 import { collection as User } from '../user/model'
 
 // Collection name
-export const collection = 'Panel'
+export const collection = 'Interviewer'
 
 // Schema
 const Schema = new mongoose.Schema({

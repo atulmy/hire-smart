@@ -7,7 +7,7 @@ import Kanban from '../../kanban/model'
 import Interview from '../model'
 
 // Create
-export async function create(parentValue, { clientId, candidateId, panelId, dateTime }, { auth }) {
+export async function create(parentValue, { clientId, candidateId, interviewerId, dateTime }, { auth }) {
   if(auth.user && auth.user.id) {
     // Create interview
     const interview = await Interview.create({
@@ -15,7 +15,7 @@ export async function create(parentValue, { clientId, candidateId, panelId, date
       userId: auth.user.id,
       clientId,
       candidateId,
-      panelId,
+      interviewerId,
       dateTime
     })
 
@@ -49,7 +49,7 @@ export async function create(parentValue, { clientId, candidateId, panelId, date
 }
 
 // Update
-export async function update(parentValue, { id, clientId, candidateId, panelId, dateTime }, { auth }) {
+export async function update(parentValue, { id, clientId, candidateId, interviewerId, dateTime }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     return await Interview.updateOne(
       { _id: id },
@@ -57,7 +57,7 @@ export async function update(parentValue, { id, clientId, candidateId, panelId, 
         $set: {
           clientId,
           candidateId,
-          panelId,
+          interviewerId,
           dateTime
         }
       }

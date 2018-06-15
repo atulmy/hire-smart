@@ -17,7 +17,7 @@ export async function create(parentValue, { clientId, candidateId, interviews, s
       highlight
     })
   } else {
-    throw new Error('Please login to create panel.')
+    throw new Error('Please login to create interviewer.')
   }
 }
 
@@ -36,7 +36,7 @@ export async function update(parentValue, { id, interviews, status, highlight },
       }
     )
   } else {
-    throw new Error('Please login to update panel.')
+    throw new Error('Please login to update interviewer.')
   }
 }
 
@@ -52,7 +52,7 @@ export async function updateStatus(parentValue, { id, status }, { auth }) {
       }
     )
   } else {
-    throw new Error('Please login to update panel.')
+    throw new Error('Please login to update interviewer.')
   }
 }
 
@@ -64,6 +64,6 @@ export async function remove(parentValue, { id }, { auth }) {
       userId: auth.user.id
     })
   } else {
-    throw new Error('Please login to delete panel.')
+    throw new Error('Please login to delete interviewer.')
   }
 }

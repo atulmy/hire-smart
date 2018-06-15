@@ -21,13 +21,13 @@ import {
 // List
 
 // Initial State
-const panelsInitialState = {
+const interviewersInitialState = {
   isLoading: false,
   list: []
 }
 
 // State
-export const panels = (state = panelsInitialState, action) => {
+export const interviewers = (state = interviewersInitialState, action) => {
   switch (action.type) {
     case LIST_REQUEST:
       return {
@@ -48,7 +48,7 @@ export const panels = (state = panelsInitialState, action) => {
       }
 
     case LIST_RESET:
-      return { ...panelsInitialState }
+      return { ...interviewersInitialState }
 
     default:
       return state
@@ -59,13 +59,13 @@ export const panels = (state = panelsInitialState, action) => {
 // Single
 
 // Initial State
-const panelInitialState = {
+const interviewerInitialState = {
   isLoading: false,
   item: {}
 }
 
 // State
-export const panel = (state = panelInitialState, action) => {
+export const interviewer = (state = interviewerInitialState, action) => {
   switch (action.type) {
     case SINGLE_REQUEST:
       return {
@@ -86,7 +86,7 @@ export const panel = (state = panelInitialState, action) => {
       }
 
     case SINGLE_RESET:
-      return { ...panelInitialState }
+      return { ...interviewerInitialState }
 
     default:
       return state
@@ -96,13 +96,13 @@ export const panel = (state = panelInitialState, action) => {
 // List by Client
 
 // Initial State
-const panelByClientInitialState = {
+const interviewerByClientInitialState = {
   isLoading: false,
   list: []
 }
 
 // State
-export const panelsByClient = (state = panelByClientInitialState, action) => {
+export const interviewersByClient = (state = interviewerByClientInitialState, action) => {
   switch (action.type) {
     case LIST_BY_CLIENT_REQUEST:
       return {
@@ -123,7 +123,7 @@ export const panelsByClient = (state = panelByClientInitialState, action) => {
       }
 
     case LIST_BY_CLIENT_RESET:
-      return { ...panelsInitialState }
+      return { ...interviewersInitialState }
 
     default:
       return state
@@ -133,27 +133,27 @@ export const panelsByClient = (state = panelByClientInitialState, action) => {
 // Edit
 
 // Initial State
-const panelEditState = {
+const interviewerEditState = {
   edit: {
-    panel: null,
+    interviewer: null,
     open: true
   }
 }
 
 // State
-export const panelEdit = (state = panelEditState, action) => {
+export const interviewerEdit = (state = interviewerEditState, action) => {
   switch (action.type) {
     case EDIT_SET:
       return {
         ...state,
-        panel: action.panel,
+        interviewer: action.interviewer,
         open: true
       }
 
     case EDIT_UNSET:
       return {
         ...state,
-        panel: null,
+        interviewer: null,
         open: true
       }
 

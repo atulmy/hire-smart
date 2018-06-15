@@ -34,15 +34,15 @@ class List extends PureComponent {
     getList(isLoading)
   }
 
-  edit = panel => () => {
+  edit = interviewer => () => {
     const { edit } = this.props
 
-    edit(panel)
+    edit(interviewer)
   }
 
   render() {
-    const { classes, panels } = this.props
-    const { isLoading, list } = panels
+    const { classes, interviewers } = this.props
+    const { isLoading, list } = interviewers
 
     return (
       <div className={classes.root}>
@@ -64,17 +64,17 @@ class List extends PureComponent {
                   <TableBody>
                     {
                       list && list.length > 0
-                        ? list.map(panel => (
-                            <TableRow key={panel._id}>
-                              <TableCell>{ panel.name }</TableCell>
-                              <TableCell>{ panel.clientId.name }</TableCell>
-                              <TableCell>{ panel.email }</TableCell>
-                              <TableCell>{ panel.mobile }</TableCell>
+                        ? list.map(interviewer => (
+                            <TableRow key={interviewer._id}>
+                              <TableCell>{ interviewer.name }</TableCell>
+                              <TableCell>{ interviewer.clientId.name }</TableCell>
+                              <TableCell>{ interviewer.email }</TableCell>
+                              <TableCell>{ interviewer.mobile }</TableCell>
                               <TableCell className={classes.textCenter}>
                                 <Tooltip title={'Edit'} placement={'bottom'} enterDelay={500}>
                                   <IconButton
                                     aria-label={'Edit'}
-                                    onClick={this.edit(panel)}
+                                    onClick={this.edit(interviewer)}
                                   >
                                     <IconEdit />
                                   </IconButton>
@@ -84,7 +84,7 @@ class List extends PureComponent {
                           ))
                         : <TableRow>
                             <TableCell colSpan={4}>
-                              <EmptyMessage message={'You have not added any panels yet.'} />
+                              <EmptyMessage message={'You have not added any interviewers yet.'} />
                             </TableCell>
                           </TableRow>
                     }
@@ -108,7 +108,7 @@ List.propTypes = {
 // Component State
 function listState(state) {
   return {
-    panels: state.panels
+    interviewers: state.interviewers
   }
 }
 

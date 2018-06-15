@@ -151,7 +151,7 @@ class Home extends PureComponent {
                 gutterBottom
                 className={classes.featureItemTitle}
               >
-                Get feedback from panel
+                Get feedback from interviewer
               </Typography>
 
               <Typography

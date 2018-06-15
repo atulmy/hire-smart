@@ -6,7 +6,7 @@ import * as user from '../../modules/user/query'
 import * as organization from '../../modules/organization/query'
 import * as client from '../../modules/client/query'
 import * as candidate from '../../modules/candidate/query'
-import * as panel from '../../modules/panel/query'
+import * as interviewer from '../../modules/interviewer/query'
 import * as interview from '../../modules/interview/query'
 import * as kanban from '../../modules/kanban/query'
 
@@ -20,7 +20,7 @@ const query = new GraphQLObjectType({
     ...organization,
     ...client,
     ...candidate,
-    ...panel,
+    ...interviewer,
     ...interview,
     ...kanban
   })

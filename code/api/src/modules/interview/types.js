@@ -5,7 +5,7 @@ import { GraphQLObjectType, GraphQLString } from 'graphql'
 import OrganizationType from '../organization/types'
 import ClientType from '../client/types'
 import CandidateType from '../candidate/types'
-import PanelType from '../panel/types'
+import InterviewerType from '../interviewer/types'
 import { UserType } from '../user/types'
 
 // Type
@@ -18,7 +18,7 @@ const InterviewType = new GraphQLObjectType({
     organizationId: { type: OrganizationType },
     clientId: { type: ClientType },
     candidateId: { type: CandidateType },
-    panelId: { type: PanelType },
+    interviewerId: { type: InterviewerType },
     userId: { type: UserType },
     dateTime: { type: GraphQLString },
     mode: { type: GraphQLString },

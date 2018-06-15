@@ -7,9 +7,9 @@ import ClientType from '../client/types'
 import { UserType } from '../user/types'
 
 // Type
-const PanelType = new GraphQLObjectType({
-  name: 'panel',
-  description: 'Panel Type',
+const InterviewerType = new GraphQLObjectType({
+  name: 'interviewer',
+  description: 'Interviewer Type',
 
   fields: () => ({
     _id: { type: GraphQLString },
@@ -24,4 +24,4 @@ const PanelType = new GraphQLObjectType({
   })
 })
 
-export default PanelType
+export default InterviewerType

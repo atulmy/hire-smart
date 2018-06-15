@@ -26,7 +26,7 @@ import styles from './styles'
 import params from '../../../../setup/config/params'
 import { nullToEmptyString } from '../../../../setup/helpers'
 import { getListByClient as getCandidateListByClient } from '../../../candidate/api/actions/query'
-import { getListByClient as getInterviewListByClient } from '../../../panel/api/actions/query'
+import { getListByClient as getInterviewListByClient } from '../../../interviewer/api/actions/query'
 import { createOrUpdate, editClose } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
@@ -40,7 +40,7 @@ class CreateOrEdit extends PureComponent {
       id: '',
       clientId: props.clientId,
       candidateId: '',
-      panelId: '',
+      interviewerId: '',
       dateTime: ''
     }
 
@@ -66,7 +66,7 @@ class CreateOrEdit extends PureComponent {
         id: interview._id,
         clientId: interview.clientId._id,
         candidateId: interview.candidateId._id,
-        panelId: interview.panelId._id,
+        interviewerId: interview.interviewerId._id,
         dateTime: interview.dateTime,
       })
     }
@@ -97,22 +97,22 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, candidateId, panelId, dateTime } = this.state
+    const { id, clientId, candidateId, interviewerId, dateTime } = this.state
 
     // Validate
-    if(!isEmpty(clientId) && !isEmpty(candidateId) && !isEmpty(panelId)) {
-      messageShow('Adding panel, please wait..')
+    if(!isEmpty(clientId) && !isEmpty(candidateId) && !isEmpty(interviewerId)) {
+      messageShow('Adding interviewer, please wait..')
 
       this.isLoadingToggle(true)
 
       // Create or Update
       try {
-        const { data } = await createOrUpdate({ id, clientId, candidateId, panelId, dateTime: dateTime.format() })
+        const { data } = await createOrUpdate({ id, clientId, candidateId, interviewerId, dateTime: dateTime.format() })
 
         if(data.errors && !isEmpty(data.errors)) {
           messageShow(data.errors[0].message)
         } else {
-          // Update panels list
+          // Update interviewers list
           successCallback(false)
 
           // Reset form data
@@ -141,8 +141,8 @@ class CreateOrEdit extends PureComponent {
   }
 
   render() {
-    const { classes, elevation, candidatesByClient, panelsByClient } = this.props
-    const { isLoading, id, candidateId, panelId, dateTime } = this.state
+    const { classes, elevation, candidatesByClient, interviewersByClient } = this.props
+    const { isLoading, id, candidateId, interviewerId, dateTime } = this.state
 
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
@@ -190,20 +190,20 @@ class CreateOrEdit extends PureComponent {
             </FormControl>
           </Grid>
 
-          {/* Input - panel */}
+          {/* Input - interviewer */}
           <Grid item xs={12}>
             <FormControl
               style={{ marginTop: 10 }}
               fullWidth
               required={true}
             >
-              <InputLabel htmlFor="panel-id">Panel</InputLabel>
+              <InputLabel htmlFor="interviewer-id">Interviewer</InputLabel>
               <Select
-                value={nullToEmptyString(panelId)}
+                value={nullToEmptyString(interviewerId)}
                 onChange={this.onType}
                 inputProps={{
-                  id: 'panel-id',
-                  name: 'panelId',
+                  id: 'interviewer-id',
+                  name: 'interviewerId',
                   required: 'required'
                 }}
               >
@@ -211,14 +211,14 @@ class CreateOrEdit extends PureComponent {
                   <em>Select client</em>
                 </MenuItem>
                 {
-                  panelsByClient.isLoading
+                  interviewersByClient.isLoading
                     ? <Loading />
-                    : panelsByClient.list && panelsByClient.list.length > 0
-                        ? panelsByClient.list.map(panel => (
-                            <MenuItem key={panel._id} value={panel._id}>{ panel.name }</MenuItem>
+                    : interviewersByClient.list && interviewersByClient.list.length > 0
+                        ? interviewersByClient.list.map(interviewer => (
+                            <MenuItem key={interviewer._id} value={interviewer._id}>{ interviewer.name }</MenuItem>
                           ))
                         : <MenuItem value="">
-                            <em>No panel added.</em>
+                            <em>No interviewer added.</em>
                           </MenuItem>
                 }
               </Select>
@@ -288,7 +288,7 @@ CreateOrEdit.propTypes = {
   classes: PropTypes.object.isRequired,
   interviewEdit: PropTypes.object.isRequired,
   candidatesByClient: PropTypes.object.isRequired,
-  panelsByClient: PropTypes.object.isRequired,
+  interviewersByClient: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   getCandidateListByClient: PropTypes.func.isRequired,
@@ -305,7 +305,7 @@ function createOrEditState(state) {
   return {
     interviewEdit: state.interviewEdit,
     candidatesByClient: state.candidatesByClient,
-    panelsByClient: state.panelsByClient
+    interviewersByClient: state.interviewersByClient
   }
 }
 

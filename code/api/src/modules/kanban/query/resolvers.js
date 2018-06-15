@@ -1,7 +1,7 @@
 // App Imports
 import Kanban from '../model'
 
-// Get panel by ID
+// Get interviewer by ID
 export async function get(parentValue, { id }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Kanban.findOne({
@@ -11,10 +11,10 @@ export async function get(parentValue, { id }, { auth }) {
       .populate('candidateId')
       .populate({
         path: 'interviews',
-        populate: { path: 'panelId' }
+        populate: { path: 'interviewerId' }
       })
   } else {
-    throw new Error('Please login to view your panels.')
+    throw new Error('Please login to view your interviewers.')
   }
 }
 
@@ -28,10 +28,10 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
       .populate('candidateId')
       .populate({
         path: 'interviews',
-        populate: { path: 'panelId' }
+        populate: { path: 'interviewerId' }
       })
   } else {
-    throw new Error('Please login to view your panels.')
+    throw new Error('Please login to view your interviewers.')
   }
 }
 

@@ -73,7 +73,7 @@ export function get(kanbanId, isLoading = true) {
         fields: [
           '_id',
           'candidateId { _id, name, email, mobile, experience, resume, salaryCurrent, salaryExpected }',
-          'interviews { _id, panelId { _id, name, email, mobile }, dateTime }',
+          'interviews { _id, interviewerId { _id, name, email, mobile }, dateTime }',
           'status',
           'highlight',
           'createdAt'
@@ -118,7 +118,7 @@ export function getListByClient({ clientId }, isLoading = true) {
         type: 'query',
         operation: 'kanbansByClient',
         data: { clientId },
-        fields: ['_id', 'candidateId { _id, name, mobile, experience }', 'interviews { _id, panelId { _id, name }, dateTime }', 'status', 'highlight', 'createdAt']
+        fields: ['_id', 'candidateId { _id, name, mobile, experience }', 'interviews { _id, interviewerId { _id, name }, dateTime }', 'status', 'highlight', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {

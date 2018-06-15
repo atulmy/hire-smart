@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 import { collection as Organization } from '../organization/model'
 import { collection as Client } from '../client/model'
 import { collection as Candidate } from '../candidate/model'
-import { collection as Panel } from '../panel/model'
+import { collection as Interviewer } from '../interviewer/model'
 import { collection as User } from '../user/model'
 
 // Collection name
@@ -28,10 +28,10 @@ const Schema = new mongoose.Schema({
     required: true,
     ref: Candidate
   },
-  panelId: {
+  interviewerId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: Panel
+    ref: Interviewer
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,

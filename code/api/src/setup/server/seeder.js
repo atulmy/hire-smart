@@ -7,7 +7,7 @@ import database from '../server/database'
 import organization from '../../modules/organization/seeds'
 import user from '../../modules/user/seeds'
 import client from '../../modules/client/seeds'
-import panel from '../../modules/panel/seeds'
+import interviewer from '../../modules/interviewer/seeds'
 import candidate from '../../modules/candidate/seeds'
 
 // Seeder
@@ -27,7 +27,7 @@ async function seeder() {
   await organization()
   await user()
   await client()
-  await panel()
+  await interviewer()
   await candidate()
 
   // Close connection

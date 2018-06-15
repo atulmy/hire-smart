@@ -66,13 +66,13 @@ class Item extends PureComponent {
                       />
                     </ListItem>
 
-                    <ListItem title={'Panel'} className={classes.infoItem}>
+                    <ListItem title={'Interviewer'} className={classes.infoItem}>
                       <ListItemIcon className={classes.infoItemIcon}>
                         <IconThumbsUpDown />
                       </ListItemIcon>
 
                       <ListItemText
-                        primary={interview.panelId.name}
+                        primary={interview.interviewerId.name}
                         className={classes.infoItemText}
                       />
                     </ListItem>

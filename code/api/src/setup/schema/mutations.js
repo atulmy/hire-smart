@@ -6,7 +6,7 @@ import * as user from '../../modules/user/mutation'
 import * as organization from '../../modules/organization/mutation'
 import * as client from '../../modules/client/mutation'
 import * as candidate from '../../modules/candidate/mutation'
-import * as panel from '../../modules/panel/mutation'
+import * as interviewer from '../../modules/interviewer/mutation'
 import * as interview from '../../modules/interview/mutation'
 import * as kanban from '../../modules/kanban/mutation'
 
@@ -20,7 +20,7 @@ const mutation = new GraphQLObjectType({
     ...organization,
     ...client,
     ...candidate,
-    ...panel,
+    ...interviewer,
     ...interview,
     ...kanban
   }

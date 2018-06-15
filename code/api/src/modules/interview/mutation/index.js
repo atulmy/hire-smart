@@ -17,8 +17,8 @@ const fields = {
     type: GraphQLString
   },
 
-  panelId: {
-    name: 'panelId',
+  interviewerId: {
+    name: 'interviewerId',
     type: GraphQLString
   },
 

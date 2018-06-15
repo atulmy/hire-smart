@@ -177,7 +177,7 @@ class Details extends PureComponent {
                           {
                             interviews && interviews.length > 0
                               ? <div>
-                                  { interviews.map(({ _id, dateTime, panelId }, i) => (
+                                  { interviews.map(({ _id, dateTime, interviewerId }, i) => (
                                     <div key={_id} className={classes.interview}>
                                       <Typography variant={'button'} className={classes.interviewTitle}>
                                         Interview #{ i+1 }
@@ -197,33 +197,33 @@ class Details extends PureComponent {
                                       {/* Name */}
                                       <div className={classes.item}>
                                         <Typography variant={'caption'} gutterBottom>
-                                          Panel Name
+                                          Interviewer Name
                                         </Typography>
 
                                         <Typography gutterBottom>
-                                          { panelId.name }
+                                          { interviewerId.name }
                                         </Typography>
                                       </div>
 
                                       {/* Email */}
                                       <div className={classes.item}>
                                         <Typography variant={'caption'} gutterBottom>
-                                          Panel Email
+                                          Interviewer Email
                                         </Typography>
 
                                         <Typography gutterBottom>
-                                          { panelId.email }
+                                          { interviewerId.email }
                                         </Typography>
                                       </div>
 
                                       {/* Mobile */}
                                       <div className={classes.item}>
                                         <Typography variant={'caption'} gutterBottom>
-                                          Panel Mobile
+                                          Interviewer Mobile
                                         </Typography>
 
                                         <Typography gutterBottom>
-                                          { panelId.mobile }
+                                          { interviewerId.mobile }
                                         </Typography>
                                       </div>
                                     </div>

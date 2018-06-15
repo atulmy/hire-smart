@@ -36,7 +36,7 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
       .populate('organizationId')
       .populate('clientId')
       .populate('candidateId')
-      .populate('panelId')
+      .populate('interviewerId')
       .populate('userId')
   } else {
     throw new Error('Please login to view interviews.')

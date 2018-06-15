@@ -2,12 +2,12 @@
 import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
-import Panel from '../model'
+import Interviewer from '../model'
 
 // Create
 export async function create(parentValue, { clientId, name, email, mobile }, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Panel.create({
+    return await Interviewer.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
       clientId,
@@ -16,14 +16,14 @@ export async function create(parentValue, { clientId, name, email, mobile }, { a
       mobile
     })
   } else {
-    throw new Error('Please login to create panel.')
+    throw new Error('Please login to create interviewer.')
   }
 }
 
 // Update
 export async function update(parentValue, { id, clientId, name, email, mobile }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
-    return await Panel.updateOne(
+    return await Interviewer.updateOne(
       { _id: id },
       {
         $set: {
@@ -35,18 +35,18 @@ export async function update(parentValue, { id, clientId, name, email, mobile },
       }
     )
   } else {
-    throw new Error('Please login to update panel.')
+    throw new Error('Please login to update interviewer.')
   }
 }
 
 // Delete
 export async function remove(parentValue, { id }, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Panel.remove({
+    return await Interviewer.remove({
       _id: _id,
       userId: auth.user.id
     })
   } else {
-    throw new Error('Please login to delete panel.')
+    throw new Error('Please login to delete interviewer.')
   }
 }

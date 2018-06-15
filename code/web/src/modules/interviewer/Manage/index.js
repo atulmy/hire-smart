@@ -27,7 +27,7 @@ class Manage extends PureComponent {
         <div>
           {/* Meta tags */}
           <Helmet>
-            <title>Manage Panel - HireSmart</title>
+            <title>Manage Interviewer - HireSmart</title>
           </Helmet>
 
           {/* Toolbar - Heading */}
@@ -37,7 +37,7 @@ class Manage extends PureComponent {
               color={'inherit'}
               className={classes.title}
             >
-              Manage Panel
+              Manage Interviewer
             </Typography>
           </Toolbar>
 

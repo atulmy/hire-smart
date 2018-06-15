@@ -33,7 +33,7 @@ class CreateOrEdit extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.panel = {
+    this.interviewer = {
       id: '',
       clientId: props.clientId,
       name: '',
@@ -44,7 +44,7 @@ class CreateOrEdit extends PureComponent {
     this.state = {
       isLoading: false,
 
-      ...this.panel
+      ...this.interviewer
     }
   }
 
@@ -55,15 +55,15 @@ class CreateOrEdit extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { panel } = nextProps.panelEdit
+    const { interviewer } = nextProps.interviewerEdit
 
-    if(panel && panel._id !== this.state.id) {
+    if(interviewer && interviewer._id !== this.state.id) {
       this.setState({
-        id: panel._id,
-        clientId: panel.clientId._id,
-        name: panel.name,
-        email: panel.email,
-        mobile: panel.mobile
+        id: interviewer._id,
+        clientId: interviewer.clientId._id,
+        name: interviewer.name,
+        email: interviewer.email,
+        mobile: interviewer.mobile
       })
     }
   }
@@ -82,7 +82,7 @@ class CreateOrEdit extends PureComponent {
 
   reset = () => {
     this.setState({
-      ...this.panel
+      ...this.interviewer
     })
 
     editClose()
@@ -97,7 +97,7 @@ class CreateOrEdit extends PureComponent {
 
     // Validate
     if(!isEmpty(name) && !isEmpty(email) && !isEmpty(mobile)) {
-      messageShow('Adding panel, please wait..')
+      messageShow('Adding interviewer, please wait..')
 
       this.isLoadingToggle(true)
 
@@ -108,16 +108,16 @@ class CreateOrEdit extends PureComponent {
         if(data.errors && !isEmpty(data.errors)) {
           messageShow(data.errors[0].message)
         } else {
-          // Update panels list
+          // Update interviewers list
           successCallback(false)
 
           // Reset form data
           this.reset()
 
           if(!isEmpty(id)) {
-            messageShow('Panel updated successfully.')
+            messageShow('Interviewer updated successfully.')
           } else {
-            messageShow('Panel added successfully.')
+            messageShow('Interviewer added successfully.')
           }
         }
       } catch(error) {
@@ -126,7 +126,7 @@ class CreateOrEdit extends PureComponent {
         this.isLoadingToggle(false)
       }
     } else {
-      messageShow('Please enter panel name.')
+      messageShow('Please enter interviewer name.')
     }
   }
 
@@ -140,7 +140,7 @@ class CreateOrEdit extends PureComponent {
           variant={'subheading'}
           color={'inherit'}
         >
-          { id === '' ? `Add new panel` : `Edit panel` }
+          { id === '' ? `Add new interviewer` : `Edit interviewer` }
         </Typography>
 
         <form onSubmit={this.save}>
@@ -151,7 +151,7 @@ class CreateOrEdit extends PureComponent {
               value={nullToEmptyString(name)}
               onChange={this.onType}
               label={'Name'}
-              placeholder={'Enter panel name'}
+              placeholder={'Enter interviewer name'}
               required={true}
               margin={'normal'}
               autoComplete={'off'}
@@ -205,7 +205,7 @@ class CreateOrEdit extends PureComponent {
               value={nullToEmptyString(email)}
               onChange={this.onType}
               label={'Email'}
-              placeholder={'Enter panel email'}
+              placeholder={'Enter interviewer email'}
               required={true}
               margin={'normal'}
               autoComplete={'off'}
@@ -220,7 +220,7 @@ class CreateOrEdit extends PureComponent {
               value={nullToEmptyString(mobile)}
               onChange={this.onType}
               label={'Mobile'}
-              placeholder={'Enter panel mobile'}
+              placeholder={'Enter interviewer mobile'}
               required={true}
               margin={'normal'}
               autoComplete={'off'}
@@ -265,7 +265,7 @@ CreateOrEdit.propTypes = {
   clientShowLoading: PropTypes.bool.isRequired,
   successCallback: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  panelEdit: PropTypes.object.isRequired,
+  interviewerEdit: PropTypes.object.isRequired,
   clients: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
@@ -282,7 +282,7 @@ CreateOrEdit.defaultProps = {
 // Component State
 function createOrEditState(state) {
   return {
-    panelEdit: state.panelEdit,
+    interviewerEdit: state.interviewerEdit,
     clients: state.clients
   }
 }

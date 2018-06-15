@@ -103,7 +103,7 @@ class Interviews extends PureComponent {
                   <TableHead>
                     <TableRow>
                       <TableCell>Candidate</TableCell>
-                      <TableCell>Panel</TableCell>
+                      <TableCell>Interviewer</TableCell>
                       <TableCell title={'Year-Month-Date Hour:Minute'}>Date and time</TableCell>
                     </TableRow>
                   </TableHead>
@@ -114,7 +114,7 @@ class Interviews extends PureComponent {
                         ? list.map(interview => (
                           <TableRow key={interview._id}>
                             <TableCell>{ interview.candidateId.name }</TableCell>
-                            <TableCell>{ interview.panelId.name }</TableCell>
+                            <TableCell>{ interview.interviewerId.name }</TableCell>
                             <TableCell>{ moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)  }</TableCell>
                           </TableRow>
                         ))

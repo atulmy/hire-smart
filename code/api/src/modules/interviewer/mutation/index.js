@@ -2,10 +2,10 @@
 import { GraphQLString } from 'graphql'
 
 // App Imports
-import PanelType from '../types'
+import InterviewerType from '../types'
 import { create, remove, update } from './resolvers'
 
-// Panel fields
+// Interviewer fields
 const fields = {
   clientId: {
     name: 'clientId',
@@ -28,16 +28,16 @@ const fields = {
   }
 }
 
-// Panel create
-export const panelCreate = {
-  type: PanelType,
+// Interviewer create
+export const interviewerCreate = {
+  type: InterviewerType,
   args: fields,
   resolve: create
 }
 
-// Panel update
-export const panelUpdate = {
-  type: PanelType,
+// Interviewer update
+export const interviewerUpdate = {
+  type: InterviewerType,
   args: {
     id: {
       name: 'id',
@@ -49,9 +49,9 @@ export const panelUpdate = {
   resolve: update
 }
 
-// Panel remove
-export const panelRemove = {
-  type: PanelType,
+// Interviewer remove
+export const interviewerRemove = {
+  type: InterviewerType,
   args: {
     id: {
       name: 'id',

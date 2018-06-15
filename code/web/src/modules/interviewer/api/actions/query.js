@@ -28,7 +28,7 @@ export function getList(isLoading = true) {
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
-        operation: 'panelsByOrganization',
+        operation: 'interviewersByOrganization',
         fields: ['_id', 'clientId { _id, name }', 'name', 'email', 'mobile', 'createdAt']
       }))
 
@@ -40,7 +40,7 @@ export function getList(isLoading = true) {
       } else {
         dispatch({
           type: LIST_RESPONSE,
-          list: data.data.panelsByOrganization
+          list: data.data.interviewersByOrganization
         })
       }
     } catch(error) {
@@ -58,7 +58,7 @@ export function getList(isLoading = true) {
 }
 
 // Get single
-export function get(panelId, isLoading = true) {
+export function get(interviewerId, isLoading = true) {
   return async dispatch => {
     dispatch({
       type: SINGLE_REQUEST,
@@ -68,8 +68,8 @@ export function get(panelId, isLoading = true) {
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
-        operation: 'panel',
-        data: { id: panelId },
+        operation: 'interviewer',
+        data: { id: interviewerId },
         fields: ['_id', 'name', 'email', 'mobile', 'createdAt']
       }))
 
@@ -81,7 +81,7 @@ export function get(panelId, isLoading = true) {
       } else {
         dispatch({
           type: SINGLE_RESPONSE,
-          item: data.data.panel
+          item: data.data.interviewer
         })
       }
     } catch(error) {
@@ -109,7 +109,7 @@ export function getListByClient({ clientId }, isLoading = true) {
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
-        operation: 'panelsByClient',
+        operation: 'interviewersByClient',
         data: { clientId },
         fields: ['_id', 'clientId { _id, name }', 'name', 'email', 'mobile', 'createdAt']
       }))
@@ -122,7 +122,7 @@ export function getListByClient({ clientId }, isLoading = true) {
       } else {
         dispatch({
           type: LIST_BY_CLIENT_RESPONSE,
-          list: data.data.panelsByClient
+          list: data.data.interviewersByClient
         })
       }
     } catch(error) {

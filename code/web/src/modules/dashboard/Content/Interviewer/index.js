@@ -20,14 +20,14 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getListByClient } from '../../../panel/api/actions/query'
-import { editClose } from '../../../panel/api/actions/mutation'
+import { getListByClient } from '../../../interviewer/api/actions/query'
+import { editClose } from '../../../interviewer/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
-import CreateOrEdit from '../../../panel/Manage/CreateOrEdit'
+import CreateOrEdit from '../../../interviewer/Manage/CreateOrEdit'
 
 // Component
-class Panels extends PureComponent {
+class Interviewers extends PureComponent {
 
   constructor() {
     super()
@@ -72,7 +72,7 @@ class Panels extends PureComponent {
   }
 
   render() {
-    const { classes, clientDashboard: { client }, panelsByClient: { isLoading, list } } = this.props
+    const { classes, clientDashboard: { client }, interviewersByClient: { isLoading, list } } = this.props
     const { drawerAdd } = this.state
 
     return (
@@ -109,16 +109,16 @@ class Panels extends PureComponent {
                   <TableBody>
                     {
                       list && list.length > 0
-                        ? list.map(panel => (
-                          <TableRow key={panel._id}>
-                            <TableCell>{ panel.name }</TableCell>
-                            <TableCell>{ panel.email }</TableCell>
-                            <TableCell>{ panel.mobile }</TableCell>
+                        ? list.map(interviewer => (
+                          <TableRow key={interviewer._id}>
+                            <TableCell>{ interviewer.name }</TableCell>
+                            <TableCell>{ interviewer.email }</TableCell>
+                            <TableCell>{ interviewer.mobile }</TableCell>
                           </TableRow>
                         ))
                         : <TableRow>
                           <TableCell colSpan={4}>
-                            <EmptyMessage message={'You have not added any panel yet.'} />
+                            <EmptyMessage message={'You have not added any interviewer yet.'} />
                           </TableCell>
                         </TableRow>
                     }
@@ -154,9 +154,9 @@ class Panels extends PureComponent {
 }
 
 // Component Properties
-Panels.propTypes = {
+Interviewers.propTypes = {
   classes: PropTypes.object.isRequired,
-  panelsByClient: PropTypes.object.isRequired,
+  interviewersByClient: PropTypes.object.isRequired,
   clientDashboard: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
@@ -164,11 +164,11 @@ Panels.propTypes = {
 }
 
 // Component State
-function panelsState(state) {
+function interviewersState(state) {
   return {
-    panelsByClient: state.panelsByClient,
+    interviewersByClient: state.interviewersByClient,
     clientDashboard: state.clientDashboard
   }
 }
 
-export default connect(panelsState, { getListByClient, editClose, messageShow })(withStyles(styles)(Panels))
+export default connect(interviewersState, { getListByClient, editClose, messageShow })(withStyles(styles)(Interviewers))
