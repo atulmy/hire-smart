@@ -159,16 +159,19 @@ class CreateOrEdit extends PureComponent {
 
           {/* Button -  Save */}
           <Grid item xs={12} className={classes.buttonsContainer}>
-            <Tooltip title={'Cancel'} placement={'bottom'} enterDelay={500}>
-              <Zoom in={id !== ''}>
-                <IconButton
-                  aria-label={'Cancel'}
-                  onClick={this.reset}
-                >
-                  <IconClose />
-                </IconButton>
-              </Zoom>
-            </Tooltip>
+            {
+              id !== '' &&
+              <Tooltip title={'Cancel'} placement={'bottom'} enterDelay={500}>
+                <Zoom in={true}>
+                  <IconButton
+                    aria-label={'Cancel'}
+                    onClick={this.reset}
+                  >
+                    <IconClose />
+                  </IconButton>
+                </Zoom>
+              </Tooltip>
+            }
 
             <Tooltip title={'Save'} placement={'bottom'} enterDelay={500}>
               <IconButton

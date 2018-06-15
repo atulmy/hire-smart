@@ -10,13 +10,21 @@ export default async function () {
 
   const user = await User.findOne({ email: 'user@hiresmart.app' })
   const organization = await Organization.findOne()
-  const client = await Client.findOne()
+  const clients = await Client.find()
 
   await Job.create({
     organizationId: organization._id,
-    clientId: client._id,
+    clientId: clients[0]._id,
     userId: user._id,
     role: 'Software Engineer',
     description: 'ReactJS and NodeJS'
+  })
+
+  await Job.create({
+    organizationId: organization._id,
+    clientId: clients[1]._id,
+    userId: user._id,
+    role: 'UI Designer',
+    description: 'Prototyping, InVision, Adobe'
   })
 }
