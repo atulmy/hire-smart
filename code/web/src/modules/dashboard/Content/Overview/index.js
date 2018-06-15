@@ -23,6 +23,7 @@ import { getListByClient as getKanbanListByClient } from '../../../kanban/api/ac
 import { updateStatus as updateKanbanStatus } from '../../../kanban/api/actions/mutation'
 import { messageShow, messageHide } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
+import CreateOrEdit from '../../../candidate/Manage/CreateOrEdit'
 import Column from './Column'
 import Item from './Item'
 import Details from './Details'
@@ -35,6 +36,7 @@ class Overview extends PureComponent {
 
     this.state = {
       detailsOpen: false,
+      drawerAdd: false,
       kanbanId: null
     }
   }
@@ -85,6 +87,12 @@ class Overview extends PureComponent {
     })
   }
 
+  toggleDrawerAdd = (drawerAdd) => () => {
+    this.setState({
+      drawerAdd
+    })
+  }
+
   columnCount = (key) => {
     const { kanbansByClient } = this.props
 
@@ -131,9 +139,15 @@ class Overview extends PureComponent {
     }
   }
 
+  successCallback = () => {
+    this.refresh(false)
+
+    this.toggleDrawerAdd(false)()
+  }
+
   render() {
-    const { classes, kanbansByClient: { isLoading, list } } = this.props
-    const { detailsOpen, kanbanId } = this.state
+    const { classes, clientDashboard: { client }, kanbansByClient: { isLoading, list } } = this.props
+    const { detailsOpen, drawerAdd, kanbanId } = this.state
     const { kanban: { columns } } = params
 
     return (
@@ -187,7 +201,7 @@ class Overview extends PureComponent {
                                 <Button
                                   fullWidth={true}
                                   className={classes.columnButtonAdd}
-                                  onClick={this.tabSwitch}
+                                  onClick={this.toggleDrawerAdd(true)}
                                 >
                                   Add Candidate
                                 </Button>
@@ -212,6 +226,26 @@ class Overview extends PureComponent {
                       <Details
                         kanbanId={kanbanId}
                         toggleDrawer={this.toggleDrawer}
+                      />
+                    </Drawer>
+
+                    {/* Candidate create or edit */}
+                    <Drawer
+                      anchor={'right'}
+                      open={drawerAdd}
+                      onClose={this.toggleDrawerAdd(false)}
+                      ModalProps={{
+                        BackdropProps: {
+                          classes: { root: classes.backdrop }
+                        }
+                      }}
+                    >
+                      <CreateOrEdit
+                        elevation={0}
+                        clientId={client._id}
+                        clientShowLoading={false}
+                        successCallback={this.successCallback}
+                        clientSelectionHide={true}
                       />
                     </Drawer>
                   </div>

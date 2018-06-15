@@ -27,13 +27,13 @@ export const overviewTabs = {
     key: 'candidates',
     label: 'Candidates'
   },
-  interviews: {
-    key: 'interviews',
-    label: 'Interviews'
-  },
   panel: {
     key: 'panel',
     label: 'Panel'
+  },
+  interviews: {
+    key: 'interviews',
+    label: 'Interviews'
   }
 }
 
@@ -78,9 +78,9 @@ class Content extends PureComponent {
 
                         candidates: <Candidates />,
 
-                        interviews: <Interviews />,
-
                         panel: <Panel />,
+
+                        interviews: <Interviews />
                       }[tab]
                     }
                   </div>

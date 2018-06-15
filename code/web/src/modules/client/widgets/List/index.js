@@ -63,7 +63,7 @@ class ClientList extends PureComponent {
                     >
                       <Avatar style={ this.selected(item._id) ? { backgroundColor: avatarColor(item.name) } : {}}>{ avatarLetter(item.name) }</Avatar>
 
-                      <ListItemText primary={item.name} secondary={'10 candidates'} />
+                      <ListItemText primary={item.name} secondary={''} />
                     </ListItem>
                   ))
                 : <EmptyMessage message={'You have not added any client yet.'} />

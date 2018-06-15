@@ -4,7 +4,7 @@ import grey from '@material-ui/core/colors/grey'
 // Component Styles
 const styles = theme => ({
   root: {
-    minWidth: 350
+    minWidth: 400
   },
 
   title: {

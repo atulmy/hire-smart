@@ -11,6 +11,7 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import IconButton from '@material-ui/core/IconButton'
 import IconClose from '@material-ui/icons/Close'
+import IconRadioButtonChecked from '@material-ui/icons/RadioButtonChecked'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
@@ -19,6 +20,7 @@ import params from '../../../../../setup/config/params'
 import { plural } from '../../../../../setup/helpers'
 import { get } from '../../../../kanban/api/actions/query'
 import Loading from '../../../../common/Loading'
+import EmptyMessage from '../../../../common/EmptyMessage'
 
 // Component
 class Details extends PureComponent {
@@ -45,11 +47,13 @@ class Details extends PureComponent {
     this.setState({ tab })
   }
 
+  status = (status) => {
+    return params.kanban.columns.filter(column => column.key === status)[0]
+  }
+
   render() {
     const { classes, kanbanId, kanban: { isLoading, item: { candidateId, interviews, status, highlight } }, toggleDrawer } = this.props
     const { tab } = this.state
-    console.log(kanbanId)
-    console.log(this.props.kanban)
 
     return (
       <div className={classes.root}>
@@ -75,6 +79,19 @@ class Details extends PureComponent {
                           {
                             candidateId &&
                             <div>
+                              {/* Status */}
+                              <div className={classes.item}>
+                                <Typography variant={'caption'} gutterBottom>
+                                  Status
+                                </Typography>
+
+                                <Typography gutterBottom>
+                                  { this.status(status).name }
+
+                                  <IconRadioButtonChecked style={{ color: this.status(status).color, float: 'right', paddingBottom: 4 }} />
+                                </Typography>
+                              </div>
+
                               {/* Name */}
                               <div className={classes.item}>
                                 <Typography variant={'caption'} gutterBottom>
@@ -82,7 +99,7 @@ class Details extends PureComponent {
                                 </Typography>
 
                                 <Typography gutterBottom>
-                                  {candidateId.name}
+                                  { candidateId.name }
                                 </Typography>
                               </div>
 
@@ -93,7 +110,7 @@ class Details extends PureComponent {
                                 </Typography>
 
                                 <Typography gutterBottom>
-                                  {candidateId.email}
+                                  { candidateId.email }
                                 </Typography>
                               </div>
 
@@ -104,7 +121,7 @@ class Details extends PureComponent {
                                 </Typography>
 
                                 <Typography gutterBottom>
-                                  {candidateId.mobile}
+                                  { candidateId.mobile }
                                 </Typography>
                               </div>
 
@@ -126,7 +143,7 @@ class Details extends PureComponent {
                                 </Typography>
 
                                 <Typography gutterBottom>
-                                  {candidateId.resume}
+                                  { candidateId.resume }
                                 </Typography>
                               </div>
 
@@ -137,7 +154,7 @@ class Details extends PureComponent {
                                 </Typography>
 
                                 <Typography gutterBottom>
-                                  {candidateId.salaryCurrent}
+                                  { candidateId.salaryCurrent }
                                 </Typography>
                               </div>
 
@@ -148,7 +165,7 @@ class Details extends PureComponent {
                                 </Typography>
 
                                 <Typography gutterBottom>
-                                  {candidateId.salaryExpected}
+                                  { candidateId.salaryExpected }
                                 </Typography>
                               </div>
                             </div>
@@ -158,60 +175,61 @@ class Details extends PureComponent {
                       interview:
                         <React.Fragment>
                           {
-                            interviews && interviews.length > 0 &&
-                            <div>
-                              { interviews.map(({ _id, dateTime, panelId }, i) => (
-                                <div key={_id} className={classes.interview}>
-                                  <Typography variant={'button'} className={classes.interviewTitle}>
-                                    Interview #{ i+1 }
-                                  </Typography>
+                            interviews && interviews.length > 0
+                              ? <div>
+                                  { interviews.map(({ _id, dateTime, panelId }, i) => (
+                                    <div key={_id} className={classes.interview}>
+                                      <Typography variant={'button'} className={classes.interviewTitle}>
+                                        Interview #{ i+1 }
+                                      </Typography>
 
-                                  {/* Name */}
-                                  <div className={classes.item}>
-                                    <Typography variant={'caption'} gutterBottom>
-                                      Date and time
-                                    </Typography>
+                                      {/* Name */}
+                                      <div className={classes.item}>
+                                        <Typography variant={'caption'} gutterBottom>
+                                          Date and time
+                                        </Typography>
 
-                                    <Typography gutterBottom>
-                                      { moment(dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }
-                                    </Typography>
-                                  </div>
+                                        <Typography gutterBottom>
+                                          { moment(dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }
+                                        </Typography>
+                                      </div>
 
-                                  {/* Name */}
-                                  <div className={classes.item}>
-                                    <Typography variant={'caption'} gutterBottom>
-                                      Panel Name
-                                    </Typography>
+                                      {/* Name */}
+                                      <div className={classes.item}>
+                                        <Typography variant={'caption'} gutterBottom>
+                                          Panel Name
+                                        </Typography>
 
-                                    <Typography gutterBottom>
-                                      { panelId.name }
-                                    </Typography>
-                                  </div>
+                                        <Typography gutterBottom>
+                                          { panelId.name }
+                                        </Typography>
+                                      </div>
 
-                                  {/* Email */}
-                                  <div className={classes.item}>
-                                    <Typography variant={'caption'} gutterBottom>
-                                      Panel Email
-                                    </Typography>
+                                      {/* Email */}
+                                      <div className={classes.item}>
+                                        <Typography variant={'caption'} gutterBottom>
+                                          Panel Email
+                                        </Typography>
 
-                                    <Typography gutterBottom>
-                                      { panelId.email }
-                                    </Typography>
-                                  </div>
+                                        <Typography gutterBottom>
+                                          { panelId.email }
+                                        </Typography>
+                                      </div>
 
-                                  {/* Mobile */}
-                                  <div className={classes.item}>
-                                    <Typography variant={'caption'} gutterBottom>
-                                      Panel Mobile
-                                    </Typography>
+                                      {/* Mobile */}
+                                      <div className={classes.item}>
+                                        <Typography variant={'caption'} gutterBottom>
+                                          Panel Mobile
+                                        </Typography>
 
-                                    <Typography gutterBottom>
-                                      { panelId.mobile }
-                                    </Typography>
-                                  </div>
+                                        <Typography gutterBottom>
+                                          { panelId.mobile }
+                                        </Typography>
+                                      </div>
+                                    </div>
+                                  )) }
                                 </div>
-                              )) }
-                            </div>
+                              : <EmptyMessage message={'No interview has been scheduled for this candidate.'} />
                           }
                         </React.Fragment>
                     }[tab]
