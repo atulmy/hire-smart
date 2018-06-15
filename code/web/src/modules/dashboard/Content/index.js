@@ -53,6 +53,14 @@ class Content extends PureComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { clientDashboard: { client } } = nextProps
+
+    if(client && this.props.clientDashboard.client && client._id !== this.props.clientDashboard.client._id) {
+      this.tabSwitch(null, overviewTabs.overview.key)
+    }
+  }
+
   tabSwitch = (event, tab) => {
     this.setState({ tab })
   }

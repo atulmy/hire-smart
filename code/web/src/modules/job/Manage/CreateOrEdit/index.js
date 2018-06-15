@@ -206,9 +206,6 @@ class CreateOrEdit extends PureComponent {
               placeholder={'Enter job description or skills (eg: Java)'}
               margin={'normal'}
               autoComplete={'off'}
-              rowsMax={3}
-              rows={1}
-              multiline
               fullWidth
             />
           </Grid>

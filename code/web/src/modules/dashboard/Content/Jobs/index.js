@@ -46,18 +46,10 @@ class Jobs extends PureComponent {
     this.refresh()
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { clientDashboard: { client } } = nextProps
-
-    if(client._id !== this.props.clientDashboard.client._id) {
-      this.refresh(false, client._id)
-    }
-  }
-
-  refresh = (isLoading = true, clientId = null) => {
+  refresh = (isLoading = true) => {
     const { getListByClient, clientDashboard: { client } } = this.props
 
-    getListByClient({ clientId: clientId || client._id }, isLoading)
+    getListByClient({ clientId: client._id }, isLoading)
   }
 
   toggleDrawer = (open) => () => {

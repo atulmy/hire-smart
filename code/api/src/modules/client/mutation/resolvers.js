@@ -2,16 +2,25 @@
 import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
+import Job from '../../job/model'
 import Client from '../model'
 
 // Create
 export async function create(parentValue, { name, description = '' }, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Client.create({
+    const client = await Client.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
       name,
       description
+    })
+
+    // Add a sample job
+    await Job.create({
+      organizationId: auth.user.organizationId,
+      userId: auth.user.id,
+      clientId: client._id,
+      role: 'Trainee'
     })
   } else {
     throw new Error('Please login to create client.')
