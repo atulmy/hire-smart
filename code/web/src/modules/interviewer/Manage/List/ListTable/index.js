@@ -55,7 +55,7 @@ const ListTable = (props) => {
                 </TableRow>
               ))
             : <TableRow>
-                <TableCell colSpan={4}>
+                <TableCell colSpan={5}>
                   <EmptyMessage message={'You have not added any interviewers yet.'} />
                 </TableCell>
               </TableRow>

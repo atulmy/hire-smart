@@ -10,6 +10,10 @@ const styles = theme => ({
 
   textCenter: {
     textAlign: 'center'
+  },
+
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.15)'
   }
 })
 

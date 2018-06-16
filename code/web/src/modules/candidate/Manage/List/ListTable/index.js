@@ -65,7 +65,7 @@ const ListTable = (props) => {
               </TableRow>
             ))
             : <TableRow>
-              <TableCell colSpan={7}>
+              <TableCell colSpan={5}>
                 <EmptyMessage message={'You have not added any candidates yet.'} />
               </TableCell>
             </TableRow>
