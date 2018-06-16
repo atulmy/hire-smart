@@ -30,11 +30,11 @@
     "js-cookie": "2.2.0",
     "moment": "2.22.2",
     "prop-types": "15.6.1",
-    "react": "16.4.0",
+    "react": "16.4.1",
     "react-datetime": "2.14.0",
     "react-dnd": "4.0.5",
     "react-dnd-html5-backend": "4.0.5",
-    "react-dom": "16.4.0",
+    "react-dom": "16.4.1",
     "react-helmet": "5.2.0",
     "react-jss": "8.5.1",
     "react-redux": "5.0.7",
@@ -54,6 +54,6 @@
     "dotenv-webpack": "1.5.7",
     "nodemon": "1.17.5",
     "webpack": "4.12.0",
-    "webpack-cli": "3.0.4"
+    "webpack-cli": "3.0.7"
   }
 }
