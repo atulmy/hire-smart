@@ -49,7 +49,7 @@ const ListTable = (props) => {
                       aria-label={'View all details'}
                       onClick={view(candidate)}
                     >
-                      <IconVisibility />
+                      <IconVisibility className={classes.icon} />
                     </IconButton>
                   </Tooltip>
 
@@ -58,7 +58,7 @@ const ListTable = (props) => {
                       aria-label={'Edit'}
                       onClick={edit(candidate)}
                     >
-                      <IconEdit />
+                      <IconEdit className={classes.icon} />
                     </IconButton>
                   </Tooltip>
                 </TableCell>

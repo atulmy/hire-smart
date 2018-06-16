@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 // UI Imports
 import Typography from '@material-ui/core/Typography'
@@ -102,54 +103,71 @@ class Details extends PureComponent {
                           {
                             interviews && interviews.length > 0
                               ? <div>
-                                  { interviews.map(({ _id, dateTime, interviewerId }, i) => (
+                                  { interviews.map(({ _id, dateTime, interviewerId, mode, note }, i) => (
                                     <div key={_id} className={classes.interview}>
-                                      <Typography variant={'button'} className={classes.interviewTitle}>
-                                        Interview #{ i+1 }
-                                      </Typography>
-
-                                      {/* Name */}
-                                      <div className={classes.item}>
-                                        <Typography variant={'caption'} gutterBottom>
-                                          Date and time
-                                        </Typography>
-
-                                        <Typography gutterBottom>
-                                          { moment(dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }
+                                      <div className={classes.interviewNumber}>
+                                        <Typography variant={'button'}>
+                                          Interview #{ i+1 }
                                         </Typography>
                                       </div>
 
-                                      {/* Name */}
-                                      <div className={classes.item}>
-                                        <Typography variant={'caption'} gutterBottom>
-                                          Interviewer Name
-                                        </Typography>
+                                      <div className={classes.interviewContent}>
+                                        {/* Date and time */}
+                                        <div className={classes.item}>
+                                          <Typography variant={'caption'} gutterBottom>
+                                            Date and time
+                                          </Typography>
 
-                                        <Typography gutterBottom>
-                                          { interviewerId.name }
-                                        </Typography>
-                                      </div>
+                                          <Typography gutterBottom>
+                                            { moment(dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }
+                                          </Typography>
+                                        </div>
 
-                                      {/* Email */}
-                                      <div className={classes.item}>
-                                        <Typography variant={'caption'} gutterBottom>
-                                          Interviewer Email
-                                        </Typography>
+                                        {/* Interviewer */}
+                                        <div className={classes.item}>
+                                          <Typography variant={'caption'} gutterBottom>
+                                            Interviewer
+                                          </Typography>
 
-                                        <Typography gutterBottom>
-                                          { interviewerId.email }
-                                        </Typography>
-                                      </div>
+                                          <Typography gutterBottom>
+                                            { interviewerId.name }
+                                          </Typography>
 
-                                      {/* Mobile */}
-                                      <div className={classes.item}>
-                                        <Typography variant={'caption'} gutterBottom>
-                                          Interviewer Mobile
-                                        </Typography>
+                                          {/* Interviewer Email / Mobile */}
+                                          <Typography gutterBottom>
+                                            <CopyToClipboard text={interviewerId.email}>
+                                              <span title={'Click to copy'} className={classes.clickToCopy}>{ interviewerId.email }</span>
+                                            </CopyToClipboard>
 
-                                        <Typography gutterBottom>
-                                          { interviewerId.mobile }
-                                        </Typography>
+                                            {' '}&bull;{' '}
+
+                                            <CopyToClipboard text={interviewerId.mobile}>
+                                              <span title={'Click to copy'} className={classes.clickToCopy}>{ interviewerId.mobile }</span>
+                                            </CopyToClipboard>
+                                          </Typography>
+                                        </div>
+
+                                        {/* Mode */}
+                                        <div className={classes.item}>
+                                          <Typography variant={'caption'} gutterBottom>
+                                            Mode
+                                          </Typography>
+
+                                          <Typography gutterBottom>
+                                            { mode }
+                                          </Typography>
+                                        </div>
+
+                                        {/* Notes */}
+                                        <div className={classes.item}>
+                                          <Typography variant={'caption'} gutterBottom>
+                                            Notes
+                                          </Typography>
+
+                                          <Typography gutterBottom>
+                                            { note }
+                                          </Typography>
+                                        </div>
                                       </div>
                                     </div>
                                   )) }

@@ -16,6 +16,10 @@ const styles = theme => ({
     borderBottom: `1px solid ${ grey[200] }`
   },
 
+  itemLast: {
+    marginBottom: theme.spacing.unit
+  },
+
   tabs: {
     backgroundColor: grey[50],
     borderBottom: `1px solid ${ grey[100] }`,
@@ -25,16 +29,24 @@ const styles = theme => ({
   },
 
   interview: {
-    paddingBottom: theme.spacing.unit * 2,
+    border: `1px solid ${ grey[200] }`
   },
-  interviewTitle: {
-    paddingBottom: theme.spacing.unit * 2,
+  interviewNumber: {
+    backgroundColor: grey[200],
+    padding: theme.spacing.unit
+  },
+  interviewContent: {
+    padding: theme.spacing.unit * 2
   },
 
   action: {
     textAlign: 'right',
     paddingRight: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2
+  },
+
+  clickToCopy: {
+    cursor: 'pointer'
   }
 })
 

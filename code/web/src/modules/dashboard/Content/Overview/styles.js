@@ -27,7 +27,7 @@ const styles = theme => ({
     overflowX: 'auto',
     overflowY: 'hidden',
     position: 'relative',
-    width: 'calc(100vw - 303px)'
+    width: 'calc(100vw - 250px)'
   },
 
   columnsContainer: {

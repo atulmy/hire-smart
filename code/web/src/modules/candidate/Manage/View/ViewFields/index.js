@@ -1,8 +1,10 @@
 // Imports
 import React from 'react'
 import PropTypes from 'prop-types'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 // UI Imports
+import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
@@ -27,6 +29,25 @@ const ViewFields = (props) => {
         </Typography>
       </div>
 
+      {/* Contact */}
+      <div className={classes.item}>
+        <Typography variant={'caption'} gutterBottom>
+          Contact
+        </Typography>
+
+        <Typography gutterBottom>
+          <CopyToClipboard text={candidate.email}>
+            <span title={'Click to copy'} className={classes.clickToCopy}>{ candidate.email }</span>
+          </CopyToClipboard>
+
+          {' '}&bull;{' '}
+
+          <CopyToClipboard text={candidate.mobile}>
+            <span title={'Click to copy'} className={classes.clickToCopy}>{ candidate.mobile }</span>
+          </CopyToClipboard>
+        </Typography>
+      </div>
+
       {/* Client */}
       <div className={classes.item}>
         <Typography variant={'caption'} gutterBottom>
@@ -38,98 +59,84 @@ const ViewFields = (props) => {
         </Typography>
       </div>
 
+      {/* Job Role */}
       {
         candidate.jobId && candidate.jobId.role &&
-        <React.Fragment>
-          {/* Job Role */}
-          <div className={classes.item}>
-            <Typography variant={'caption'} gutterBottom>
-              Job Role
-            </Typography>
+        <div className={classes.item}>
+          <Typography variant={'caption'} gutterBottom>
+            Job Role
+          </Typography>
 
-            <Typography gutterBottom>
-              { candidate.jobId.role }
-            </Typography>
-          </div>
+          <Typography gutterBottom>
+            { candidate.jobId.role }
+          </Typography>
 
-          {/* Job Description */}
-          <div className={classes.item}>
-            <Typography variant={'caption'} gutterBottom>
-              Job Description
-            </Typography>
-
-            <Typography gutterBottom>
-              { candidate.jobId.description }
-            </Typography>
-          </div>
-        </React.Fragment>
+          <Typography gutterBottom>
+            { candidate.jobId.description }
+          </Typography>
+        </div>
       }
 
-      {/* Email */}
-      <div className={classes.item}>
-        <Typography variant={'caption'} gutterBottom>
-          Email
-        </Typography>
+      <Grid item xs={12}>
+        <Grid container spacing={24}>
+          <Grid item md={6}>
+            {/* Experience */}
+            <div className={classes.item}>
+              <Typography variant={'caption'} gutterBottom>
+                Experience
+              </Typography>
 
-        <Typography gutterBottom>
-          { candidate.email }
-        </Typography>
-      </div>
+              <Typography gutterBottom>
+                { candidate.experience } year{ plural(candidate.experience) }
+              </Typography>
+            </div>
+          </Grid>
 
-      {/* Mobile */}
-      <div className={classes.item}>
-        <Typography variant={'caption'} gutterBottom>
-          Mobile
-        </Typography>
+          <Grid item md={6}>
+            {/* Resume */}
+            <div className={classes.item}>
+              <Typography variant={'caption'} gutterBottom>
+                Resume
+              </Typography>
 
-        <Typography gutterBottom>
-          { candidate.mobile }
-        </Typography>
-      </div>
+              <Typography gutterBottom>
+                { candidate.resume }
+              </Typography>
+            </div>
+          </Grid>
+        </Grid>
+      </Grid>
 
-      {/* Experience */}
-      <div className={classes.item}>
-        <Typography variant={'caption'} gutterBottom>
-          Experience
-        </Typography>
+      {/* Salary */}
+      <Grid item xs={12}>
+        <Grid container spacing={24}>
+          {/* Salary Current */}
+          <Grid item md={6}>
+            <div className={classes.item}>
+              <Typography variant={'caption'} gutterBottom>
+                Salary Current
+              </Typography>
 
-        <Typography gutterBottom>
-          { candidate.experience } year{ plural(candidate.experience) }
-        </Typography>
-      </div>
+              <Typography gutterBottom>
+                { candidate.salaryCurrent }
+              </Typography>
+            </div>
+          </Grid>
 
-      {/* Resume */}
-      <div className={classes.item}>
-        <Typography variant={'caption'} gutterBottom>
-          Resume
-        </Typography>
+          {/* Salary Expected */}
+          <Grid item md={6}>
+            <div className={classes.item}>
+              <Typography variant={'caption'} gutterBottom>
+                Salary Expected
+              </Typography>
 
-        <Typography gutterBottom>
-          { candidate.resume }
-        </Typography>
-      </div>
-
-      {/* Salary Current */}
-      <div className={classes.item}>
-        <Typography variant={'caption'} gutterBottom>
-          Salary Current
-        </Typography>
-
-        <Typography gutterBottom>
-          { candidate.salaryCurrent }
-        </Typography>
-      </div>
-
-      {/* Salary Expected */}
-      <div className={classes.item}>
-        <Typography variant={'caption'} gutterBottom>
-          Salary Expected
-        </Typography>
-
-        <Typography gutterBottom>
-          { candidate.salaryExpected }
-        </Typography>
-      </div>
+              <Typography gutterBottom>
+                { candidate.salaryExpected }
+              </Typography>
+            </div>
+          </Grid>
+        </Grid>
+      </Grid>
     </React.Fragment>
   )
 }

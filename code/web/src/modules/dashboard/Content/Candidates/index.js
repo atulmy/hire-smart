@@ -107,7 +107,16 @@ class Candidates extends PureComponent {
         }
 
         {/* Candidate view */}
-        <Drawer anchor={'right'} open={candidateView.open} onClose={viewHide}>
+        <Drawer
+          anchor={'right'}
+          open={candidateView.open}
+          onClose={viewHide}
+          ModalProps={{
+            BackdropProps: {
+              classes: { root: classes.backdrop }
+            }
+          }}
+        >
           { <View /> }
         </Drawer>
 
