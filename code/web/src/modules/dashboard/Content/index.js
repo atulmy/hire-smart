@@ -17,7 +17,7 @@ import Overview from './Overview'
 import Jobs from './Jobs'
 import Candidates from './Candidates'
 import Interviews from './Interviews'
-import Interviewer from './Interviewer'
+import Interviewer from './Interviewers'
 
 export const overviewTabs = {
   overview: {

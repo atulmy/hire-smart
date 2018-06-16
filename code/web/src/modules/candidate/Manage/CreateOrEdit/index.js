@@ -57,7 +57,10 @@ class CreateOrEdit extends PureComponent {
     const { getClientList, clientShowLoading, getJobListByClient, clientId } = this.props
 
     getClientList(clientShowLoading)
-    getJobListByClient({ clientId })
+
+    if(!isEmpty(clientId)) {
+      getJobListByClient({ clientId })
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,6 +79,11 @@ class CreateOrEdit extends PureComponent {
         salaryCurrent: candidate.salaryCurrent,
         salaryExpected: candidate.salaryExpected
       })
+
+
+      const { getJobListByClient } = this.props
+
+      getJobListByClient({ clientId: candidate.clientId._id })
     }
   }
 
@@ -89,6 +97,12 @@ class CreateOrEdit extends PureComponent {
     this.setState({
       [event.target.name]: event.target.value
     })
+
+    if(event.target.name === 'clientId') {
+      const { getJobListByClient } = this.props
+
+      getJobListByClient({ clientId: event.target.value })
+    }
   }
 
   reset = () => {
@@ -199,12 +213,12 @@ class CreateOrEdit extends PureComponent {
                     clients.isLoading
                       ? <Loading/>
                       : clients.list && clients.list.length > 0
-                      ? clients.list.map(client => (
-                        <MenuItem key={client._id} value={client._id}>{client.name}</MenuItem>
-                      ))
-                      : <MenuItem value="">
-                        <em>No client added.</em>
-                      </MenuItem>
+                        ? clients.list.map(client => (
+                            <MenuItem key={client._id} value={client._id}>{client.name}</MenuItem>
+                          ))
+                        : <MenuItem value="">
+                            <em>No client added.</em>
+                          </MenuItem>
                   }
                 </Select>
               </FormControl>
@@ -217,6 +231,7 @@ class CreateOrEdit extends PureComponent {
               style={{marginTop: 10}}
               fullWidth
               required={true}
+              disabled={jobsByClient.list.length === 0}
             >
               <InputLabel htmlFor="job-id">Job</InputLabel>
               <Select

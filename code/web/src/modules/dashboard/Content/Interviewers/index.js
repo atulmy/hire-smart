@@ -21,14 +21,13 @@ import styles from './styles'
 // App Imports
 import { messageShow } from '../../../common/api/actions'
 import { getListByClient } from '../../../interviewer/api/actions/query'
-import { editClose } from '../../../interviewer/api/actions/mutation'
+import { edit, editClose } from '../../../interviewer/api/actions/mutation'
 import Loading from '../../../common/Loading'
-import EmptyMessage from '../../../common/EmptyMessage'
 import CreateOrEdit from '../../../interviewer/Manage/CreateOrEdit'
+import ListTable from '../../../interviewer/Manage/List/ListTable'
 
 // Component
 class Interviewers extends PureComponent {
-
   constructor() {
     super()
 
@@ -38,10 +37,6 @@ class Interviewers extends PureComponent {
   }
 
   componentDidMount() {
-    const { editClose } = this.props
-
-    editClose()
-
     this.refresh()
   }
 
@@ -63,6 +58,22 @@ class Interviewers extends PureComponent {
     this.toggleDrawer(false)()
   }
 
+  add = () => {
+    const { editClose } = this.props
+
+    editClose()
+
+    this.toggleDrawer(true)()
+  }
+
+  edit = interviewer => () => {
+    const { edit } = this.props
+
+    edit(interviewer)
+
+    this.toggleDrawer(true)()
+  }
+
   render() {
     const { classes, clientDashboard: { client }, interviewersByClient: { isLoading, list } } = this.props
     const { drawerAdd } = this.state
@@ -71,7 +82,7 @@ class Interviewers extends PureComponent {
       <div className={classes.root}>
         {/* Actions */}
         <div className={classes.actions}>
-          <Button onClick={this.toggleDrawer(true)}>
+          <Button onClick={this.add}>
             <IconAdd className={classes.actionIcon} />
             Add
           </Button>
@@ -89,33 +100,7 @@ class Interviewers extends PureComponent {
           isLoading
             ? <Loading />
             : <Fade in={true}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Email</TableCell>
-                      <TableCell>Mobile</TableCell>
-                    </TableRow>
-                  </TableHead>
-  
-                  <TableBody>
-                    {
-                      list && list.length > 0
-                        ? list.map(interviewer => (
-                          <TableRow key={interviewer._id}>
-                            <TableCell>{ interviewer.name }</TableCell>
-                            <TableCell>{ interviewer.email }</TableCell>
-                            <TableCell>{ interviewer.mobile }</TableCell>
-                          </TableRow>
-                        ))
-                        : <TableRow>
-                          <TableCell colSpan={4}>
-                            <EmptyMessage message={'You have not added any interviewer yet.'} />
-                          </TableCell>
-                        </TableRow>
-                    }
-                  </TableBody>
-                </Table>
+                <ListTable list={list} edit={this.edit} />
               </Fade>
         }
 
@@ -151,6 +136,7 @@ Interviewers.propTypes = {
   interviewersByClient: PropTypes.object.isRequired,
   clientDashboard: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
@@ -163,4 +149,4 @@ function interviewersState(state) {
   }
 }
 
-export default connect(interviewersState, { getListByClient, editClose, messageShow })(withStyles(styles)(Interviewers))
+export default connect(interviewersState, { getListByClient, edit, editClose, messageShow })(withStyles(styles)(Interviewers))

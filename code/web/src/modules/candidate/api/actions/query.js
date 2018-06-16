@@ -70,7 +70,7 @@ export function get(candidateId, isLoading = true) {
         type: 'query',
         operation: 'candidate',
         data: { id: candidateId },
-        fields: ['_id', 'jobId { _id, role, description }', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+        fields: ['_id', 'clientId { _id, name }', 'jobId { _id, role, description }', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {
@@ -111,7 +111,7 @@ export function getListByClient({ clientId }, isLoading = true) {
         type: 'query',
         operation: 'candidatesByClient',
         data: { clientId },
-        fields: ['_id', 'jobId { _id, role, description }', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+        fields: ['_id', 'clientId { _id, name }', 'jobId { _id, role, description }', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {

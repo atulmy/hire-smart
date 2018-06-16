@@ -3,7 +3,9 @@ import Candidate from '../model'
 
 // Get candidate by ID
 export async function get(parentValue, { id }) {
-  return await Candidate.findOne({ _id: id }).populate('jobId')
+  return await Candidate.findOne({ _id: id })
+    .populate('clientId')
+    .populate('jobId')
 }
 
 // Get by client
@@ -12,7 +14,9 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
     return await Candidate.find({
       organizationId: auth.user.organizationId,
       clientId
-    }).populate('jobId')
+    })
+      .populate('clientId')
+      .populate('jobId')
   } else {
     throw new Error('Please login to view your candidates.')
   }
@@ -35,7 +39,9 @@ export async function getByOrganization(parentValue, {}, { auth }) {
 // Get by user
 export async function getByUser(parentValue, {}, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Candidate.find({ userId: auth.user.id }).populate('jobId')
+    return await Candidate.find({ userId: auth.user.id })
+      .populate('clientId')
+      .populate('jobId')
   } else {
     throw new Error('Please login to view your candidates.')
   }
