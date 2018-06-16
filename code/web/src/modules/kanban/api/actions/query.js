@@ -80,7 +80,7 @@ export function get(kanbanId, isLoading = true) {
         data: { id: kanbanId },
         fields: [
           '_id',
-          'candidateId { _id, name, email, mobile, experience, resume, salaryCurrent, salaryExpected, jobId { _id, role, description } }',
+          'candidateId { _id, clientId { _id, name }, jobId { _id, role, description }, name, email, mobile, experience, resume, salaryCurrent, salaryExpected }',
           'interviews { _id, interviewerId { _id, name, email, mobile }, dateTime }',
           'status',
           'highlight',

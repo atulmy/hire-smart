@@ -1,6 +1,16 @@
-export default ({ invitedTo, invitedBy }) =>
+export default ({ invitedTo, invitedBy, organizationName }) =>
 `<div>
   <p>Hi ${ invitedTo },</p>
-  <p>${ invitedBy } has sent you an invitation to join the organization.</p>
-  <a href="http://hiresmart.app"><h3>Accept Invitation</h3></a>
+  
+  <p>I'm inviting you to join ${ organizationName } on HIRESMART, an application to streamline your hiring process, scheduling interviews and tracking candidates.</p>
+  
+  <a href="http://hiresmart.app">Accept Invitation</a>
+  
+  <br/>
+  <br/>
+  
+  <p>
+    Thanks, <br/>
+    ${ invitedBy }
+  </p>
 </div>`

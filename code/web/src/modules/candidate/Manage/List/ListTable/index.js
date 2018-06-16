@@ -41,7 +41,7 @@ const ListTable = (props) => {
               <TableRow key={candidate._id}>
                 <TableCell>{ candidate.name }</TableCell>
                 <TableCell>{ candidate.clientId.name }</TableCell>
-                <TableCell>{ candidate.jobId.role }</TableCell>
+                <TableCell>{ candidate.jobId ? candidate.jobId.role : '-' }</TableCell>
                 <TableCell>{ candidate.mobile }</TableCell>
                 <TableCell className={classes.textCenter}>
                   <Tooltip title={'View all details'} placement={'top'} enterDelay={500}>

@@ -12,8 +12,8 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { plural } from '../../../../setup/helpers'
 import { viewHide } from '../../api/actions/mutation'
+import ViewFields from './ViewFields'
 
 // Component
 class View extends PureComponent {
@@ -30,115 +30,7 @@ class View extends PureComponent {
           Candidate Info
         </Typography>
 
-        {/* Name */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Name
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.name }
-          </Typography>
-        </div>
-
-        {/* Client */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Client
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.clientId.name }
-          </Typography>
-        </div>
-
-        {/* Job Role */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Job Role
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.jobId.role }
-          </Typography>
-        </div>
-
-        {/* Job Description */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Job Description
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.jobId.description }
-          </Typography>
-        </div>
-
-        {/* Email */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Email
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.email }
-          </Typography>
-        </div>
-
-        {/* Mobile */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Mobile
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.mobile }
-          </Typography>
-        </div>
-
-        {/* Experience */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Experience
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.experience } year{ plural(candidate.experience) }
-          </Typography>
-        </div>
-
-        {/* Resume */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Resume
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.resume }
-          </Typography>
-        </div>
-
-        {/* Salary Current */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Salary Current
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.salaryCurrent }
-          </Typography>
-        </div>
-
-        {/* Salary Expected */}
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Salary Expected
-          </Typography>
-
-          <Typography gutterBottom>
-            { candidate.salaryExpected }
-          </Typography>
-        </div>
+        <ViewFields candidate={candidate} />
 
         <div style={{ textAlign: 'right' }}>
           <Tooltip title={'Close'} placement={'top'} enterDelay={500}>

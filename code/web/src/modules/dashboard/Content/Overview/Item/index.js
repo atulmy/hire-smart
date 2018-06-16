@@ -38,9 +38,12 @@ class Item extends PureComponent {
             { candidateId.name }
           </Typography>
 
-          <Typography color="textSecondary" title={'Job role'}>
-            { candidateId.jobId.role }
-          </Typography>
+          {
+            candidateId.jobId && candidateId.jobId.role &&
+            <Typography color="textSecondary" title={'Job role'}>
+              { candidateId.jobId.role }
+            </Typography>
+          }
 
           <Typography color="textSecondary" title={'Experience'}>
             { candidateId.experience } year{ plural(candidateId.experience) }

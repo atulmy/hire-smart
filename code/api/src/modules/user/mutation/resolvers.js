@@ -94,13 +94,16 @@ export async function inviteToOrganization(parentValue, { name, email }, { auth 
 
       // Send invite email
       if(transport) {
+        const organization = await Organization.findOne({ _id: auth.user.organizationId })
+
         transport.sendMail({
           from: `"${ auth.user.name }" <${ auth.user.email }>`,
           to: `"${ name }" <${ NODE_ENV === 'development' ? EMAIL_TEST : email }>`,
           subject: `${ params.site.name } - You have been invited!`,
           html: invite({
             invitedTo: name,
-            invitedBy: auth.user.name
+            invitedBy: auth.user.name,
+            organizationName: organization.name
           })
         })
       }

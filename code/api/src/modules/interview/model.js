@@ -43,8 +43,12 @@ const Schema = new mongoose.Schema({
     default: new Date()
   },
   mode: {
-    type: String
+    type: String,
+    required: true
   },
+  note: {
+    type: String
+  }
 }, {timestamps: true})
 
 // Model

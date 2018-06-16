@@ -8,6 +8,17 @@
     "copyright_year": 2018
   },
 
+  "date": {
+    "format": {
+      "date": "YYYY-MM-DD",
+      "time": "hh:mm a",
+      "nice": {
+        "date": "Do MMMM",
+        "time": "h:mm a"
+      }
+    }
+  },
+
   "kanban": {
     "columns": [
       { "key": "shortlisted", "name": "Shortlisted", "color": "grey" },
@@ -18,14 +29,11 @@
     ]
   },
 
-  "date": {
-    "format": {
-      "date": "YYYY-MM-DD",
-      "time": "hh:mm a",
-      "nice": {
-        "date": "Do MMMM",
-        "time": "h:mm a"
-      }
-    }
+  "interview": {
+    "modes": [
+      { "key": "telephonic", "name": "Telephonic" },
+      { "key": "online", "name": "Online Video/Audio" },
+      { "key": "f2f", "name": "Face to face" }
+    ]
   }
 }

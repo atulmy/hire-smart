@@ -43,7 +43,7 @@ export default async function () {
       interviewerId: interviewer._id,
       userId: user._id,
       dateTime: '2018-06-01T00:00:00+05:30',
-      mode: ''
+      mode: params.interview.modes[0].key
     })
 
     await Kanban.create({

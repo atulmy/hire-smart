@@ -24,13 +24,13 @@ export const overviewTabs = {
     key: 'overview',
     label: 'Overview'
   },
-  jobs: {
-    key: 'jobs',
-    label: 'Jobs'
-  },
   candidates: {
     key: 'candidates',
     label: 'Candidates'
+  },
+  jobs: {
+    key: 'jobs',
+    label: 'Jobs'
   },
   interviewer: {
     key: 'interviewer',
@@ -89,9 +89,9 @@ class Content extends PureComponent {
                       {
                         overview: <Overview tabSwitch={this.tabSwitch} />,
 
-                        jobs: <Jobs />,
-
                         candidates: <Candidates />,
+
+                        jobs: <Jobs />,
 
                         interviewer: <Interviewer />,
 

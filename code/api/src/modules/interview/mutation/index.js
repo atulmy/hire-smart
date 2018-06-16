@@ -25,6 +25,16 @@ const fields = {
   dateTime: {
     name: 'dateTime',
     type: GraphQLString
+  },
+
+  mode: {
+    name: 'mode',
+    type: GraphQLString
+  },
+
+  note: {
+    name: 'note',
+    type: GraphQLString
   }
 }
 

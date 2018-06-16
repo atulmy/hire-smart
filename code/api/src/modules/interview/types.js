@@ -22,6 +22,7 @@ const InterviewType = new GraphQLObjectType({
     userId: { type: UserType },
     dateTime: { type: GraphQLString },
     mode: { type: GraphQLString },
+    note: { type: GraphQLString },
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString }
   })

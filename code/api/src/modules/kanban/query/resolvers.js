@@ -10,7 +10,7 @@ export async function get(parentValue, { id }, { auth }) {
     })
       .populate({
         path: 'candidateId',
-        populate: { path: 'jobId' }
+        populate: [{ path: 'clientId' }, { path: 'jobId' }]
       })
       .populate({
         path: 'interviews',

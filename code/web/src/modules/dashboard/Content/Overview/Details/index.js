@@ -17,10 +17,10 @@ import styles from './styles'
 
 // App Imports
 import params from '../../../../../setup/config/params'
-import { plural } from '../../../../../setup/helpers'
 import { get } from '../../../../kanban/api/actions/query'
 import Loading from '../../../../common/Loading'
 import EmptyMessage from '../../../../common/EmptyMessage'
+import ViewFields from '../../../../candidate/Manage/View/ViewFields'
 
 // Component
 class Details extends PureComponent {
@@ -77,7 +77,7 @@ class Details extends PureComponent {
                       candidate:
                         <React.Fragment>
                           {
-                            candidateId &&
+                            candidateId && candidateId._id &&
                             <div>
                               {/* Status */}
                               <div className={classes.item}>
@@ -92,104 +92,7 @@ class Details extends PureComponent {
                                 </Typography>
                               </div>
 
-                              {/* Name */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Name
-                                </Typography>
-
-                                <Typography gutterBottom>
-                                  { candidateId.name }
-                                </Typography>
-                              </div>
-
-                              {/* Job Role */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Job Role
-                                </Typography>
-
-                                <Typography gutterBottom>
-                                  { candidateId.jobId.role }
-                                </Typography>
-                              </div>
-
-                              {/* Job Description */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Job Description
-                                </Typography>
-
-                                <Typography gutterBottom>
-                                  { candidateId.jobId.description }
-                                </Typography>
-                              </div>
-
-                              {/* Email */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Email
-                                </Typography>
-
-                                <Typography gutterBottom>
-                                  { candidateId.email }
-                                </Typography>
-                              </div>
-
-                              {/* Mobile */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Mobile
-                                </Typography>
-
-                                <Typography gutterBottom>
-                                  { candidateId.mobile }
-                                </Typography>
-                              </div>
-
-                              {/* Experience */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Experience
-                                </Typography>
-
-                                <Typography gutterBottom>
-                                  { candidateId.experience } year{ plural(candidateId.experience) }
-                                </Typography>
-                              </div>
-
-                              {/* Resume */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Resume
-                                </Typography>
-
-                                <Typography gutterBottom>
-                                  { candidateId.resume }
-                                </Typography>
-                              </div>
-
-                              {/* Salary Current */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Salary Current
-                                </Typography>
-
-                                <Typography gutterBottom>
-                                  { candidateId.salaryCurrent }
-                                </Typography>
-                              </div>
-
-                              {/* Salary Expected */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Salary Expected
-                                </Typography>
-
-                                <Typography gutterBottom>
-                                  { candidateId.salaryExpected }
-                                </Typography>
-                              </div>
+                              <ViewFields candidate={candidateId} />
                             </div>
                           }
                         </React.Fragment>,

@@ -37,6 +37,7 @@ class CreateOrEdit extends PureComponent {
     this.client = {
       id: '',
       clientId: props.clientId,
+      jobId: '',
       name: '',
       email: '',
       mobile: '',
@@ -70,7 +71,7 @@ class CreateOrEdit extends PureComponent {
       this.setState({
         id: candidate._id,
         clientId: candidate.clientId._id,
-        jobId: candidate.jobId._id,
+        jobId: candidate.jobId ? candidate.jobId._id : '',
         name: candidate.name,
         email: candidate.email,
         mobile: candidate.mobile,
@@ -123,7 +124,7 @@ class CreateOrEdit extends PureComponent {
     const { id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
 
     // Validate
-    if(!isEmpty(clientId) && !isEmpty(jobId) && !isEmpty(name) && !isEmpty(email) && !isEmpty(mobile) && !isEmpty(experience) && !isEmpty(resume) && !isEmpty(salaryCurrent) && !isEmpty(salaryExpected)) {
+    if(!isEmpty(clientId) && !isEmpty(name) && !isEmpty(email) && !isEmpty(mobile) && !isEmpty(experience) && !isEmpty(resume) && !isEmpty(salaryCurrent) && !isEmpty(salaryExpected)) {
       messageShow('Adding candidate, please wait..')
 
       this.isLoadingToggle(true)
@@ -225,42 +226,6 @@ class CreateOrEdit extends PureComponent {
             </Grid>
           }
 
-          {/* Input - job */}
-          <Grid item xs={12}>
-            <FormControl
-              style={{marginTop: 10}}
-              fullWidth
-              required={true}
-              disabled={jobsByClient.list.length === 0}
-            >
-              <InputLabel htmlFor="job-id">Job</InputLabel>
-              <Select
-                value={nullToEmptyString(jobId)}
-                onChange={this.onType}
-                inputProps={{
-                  id: 'job-id',
-                  name: 'jobId',
-                  required: 'required'
-                }}
-              >
-                <MenuItem value="">
-                  <em>Select job role</em>
-                </MenuItem>
-                {
-                  jobsByClient.isLoading
-                    ? <Loading/>
-                    : jobsByClient.list && jobsByClient.list.length > 0
-                        ? jobsByClient.list.map(job => (
-                            <MenuItem key={job._id} value={job._id}>{job.role}</MenuItem>
-                          ))
-                        : <MenuItem value="">
-                            <em>No job added.</em>
-                          </MenuItem>
-                }
-              </Select>
-            </FormControl>
-          </Grid>
-
           {/* Input - email */}
           <Grid item xs={12}>
             <TextField
@@ -323,9 +288,45 @@ class CreateOrEdit extends PureComponent {
             />
           </Grid>
 
+          {/* Input - job */}
+          <Grid item xs={12}>
+            <FormControl
+              style={{marginTop: 10}}
+              fullWidth
+              disabled={jobsByClient.list.length === 0}
+            >
+              <InputLabel htmlFor="job-id">Job role</InputLabel>
+              <Select
+                value={nullToEmptyString(jobId)}
+                onChange={this.onType}
+                inputProps={{
+                  id: 'job-id',
+                  name: 'jobId',
+                  required: 'required'
+                }}
+              >
+                <MenuItem value="">
+                  <em>Select job role</em>
+                </MenuItem>
+                {
+                  jobsByClient.isLoading
+                    ? <Loading/>
+                    : jobsByClient.list && jobsByClient.list.length > 0
+                    ? jobsByClient.list.map(job => (
+                      <MenuItem key={job._id} value={job._id}>{job.role}</MenuItem>
+                    ))
+                    : <MenuItem value="">
+                      <em>No job added.</em>
+                    </MenuItem>
+                }
+              </Select>
+            </FormControl>
+          </Grid>
+
+          {/* Input - Salary */}
           <Grid item xs={12}>
             <Grid container spacing={24}>
-              {/* Input - salaryCurrent */}
+              {/* Input - Current */}
               <Grid item md={6}>
                 <TextField
                   name={'salaryCurrent'}
@@ -339,7 +340,7 @@ class CreateOrEdit extends PureComponent {
                 />
               </Grid>
 
-              {/* Input - salaryExpected */}
+              {/* Input - Expected */}
               <Grid item md={6}>
                 <TextField
                   name={'salaryExpected'}

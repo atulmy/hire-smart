@@ -173,7 +173,7 @@ class CreateOrEdit extends PureComponent {
                 }}
               >
                 <MenuItem value="">
-                  <em>Select client</em>
+                  <em>Select candidate</em>
                 </MenuItem>
                 {
                   candidatesByClient.isLoading
@@ -208,7 +208,7 @@ class CreateOrEdit extends PureComponent {
                 }}
               >
                 <MenuItem value="">
-                  <em>Select client</em>
+                  <em>Select interviewer</em>
                 </MenuItem>
                 {
                   interviewersByClient.isLoading

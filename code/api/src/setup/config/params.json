@@ -1,5 +1,6 @@
 {
   "site": {
+    "version": 0.1,
     "name": "HIRESMART",
     "domain": "hiresmart.app"
   },
@@ -24,6 +25,14 @@
       { "key": "hold", "name": "On Hold", "color": "orange" },
       { "key": "rejected", "name": "Rejected", "color": "red" },
       { "key": "selected", "name": "Selected", "color": "green" }
+    ]
+  },
+
+  "interview": {
+    "modes": [
+      { "key": "telephonic", "name": "Telephonic" },
+      { "key": "online", "name": "Online Video/Audio" },
+      { "key": "f2f", "name": "Face to face" }
     ]
   }
 }
