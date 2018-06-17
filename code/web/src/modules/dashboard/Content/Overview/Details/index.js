@@ -21,7 +21,8 @@ import params from '../../../../../setup/config/params'
 import { get } from '../../../../kanban/api/actions/query'
 import Loading from '../../../../common/Loading'
 import EmptyMessage from '../../../../common/EmptyMessage'
-import ViewFields from '../../../../candidate/Manage/View/ViewFields'
+import CandidateViewFields from '../../../../candidate/Manage/View/ViewFields'
+import InterviewViewFields from '../../../../interview/Manage/View/ViewFields'
 
 // Component
 class Details extends PureComponent {
@@ -57,7 +58,7 @@ class Details extends PureComponent {
   }
 
   render() {
-    const { classes, kanbanId, kanban: { isLoading, item: { candidateId, interviews, status, highlight } }, toggleDrawer } = this.props
+    const { classes, kanban: { isLoading, item: { candidateId, interviews, status, highlight } }, toggleDrawer } = this.props
     const { tab } = this.state
 
     return (
@@ -97,7 +98,7 @@ class Details extends PureComponent {
                                 </Typography>
                               </div>
 
-                              <ViewFields candidate={candidateId} />
+                              <CandidateViewFields candidate={candidateId} />
                             </div>
                           }
                         </React.Fragment>,
@@ -107,8 +108,8 @@ class Details extends PureComponent {
                           {
                             interviews && interviews.length > 0
                               ? <div>
-                                  { interviews.map(({ _id, dateTime, interviewerId, mode, note }, i) => (
-                                    <div key={_id} className={classes.interview}>
+                                  { interviews.map((interview, i) => (
+                                    <div key={interview._id} className={classes.interview}>
                                       <div className={classes.interviewNumber}>
                                         <Typography variant={'button'}>
                                           Interview #{ i+1 }
@@ -116,65 +117,7 @@ class Details extends PureComponent {
                                       </div>
 
                                       <div className={classes.interviewContent}>
-                                        {/* Date and time */}
-                                        <div className={classes.item}>
-                                          <Typography variant={'caption'} gutterBottom>
-                                            Date and time
-                                          </Typography>
-
-                                          <Typography gutterBottom>
-                                            { moment(dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }
-                                          </Typography>
-                                        </div>
-
-                                        {/* Interviewer */}
-                                        <div className={classes.item}>
-                                          <Typography variant={'caption'} gutterBottom>
-                                            Interviewer
-                                          </Typography>
-
-                                          <Typography gutterBottom>
-                                            { interviewerId.name }
-                                          </Typography>
-
-                                          {/* Interviewer Email / Mobile */}
-                                          <Typography gutterBottom>
-                                            <CopyToClipboard text={interviewerId.email}>
-                                              <span title={'Click to copy'} className={classes.clickToCopy}>{ interviewerId.email }</span>
-                                            </CopyToClipboard>
-
-                                            {' '}&bull;{' '}
-
-                                            <CopyToClipboard text={interviewerId.mobile}>
-                                              <span title={'Click to copy'} className={classes.clickToCopy}>{ interviewerId.mobile }</span>
-                                            </CopyToClipboard>
-                                          </Typography>
-                                        </div>
-
-                                        {/* Mode */}
-                                        <div className={classes.item}>
-                                          <Typography variant={'caption'} gutterBottom>
-                                            Mode
-                                          </Typography>
-
-                                          <Typography gutterBottom>
-                                            { this.modeName(mode) }
-                                          </Typography>
-                                        </div>
-
-                                        {/* Notes */}
-                                        {
-                                          note &&
-                                          <div className={classes.item}>
-                                            <Typography variant={'caption'} gutterBottom>
-                                              Notes
-                                            </Typography>
-
-                                            <Typography gutterBottom>
-                                              { note }
-                                            </Typography>
-                                          </div>
-                                        }
+                                        <InterviewViewFields interview={interview} />
                                       </div>
                                     </div>
                                   )) }

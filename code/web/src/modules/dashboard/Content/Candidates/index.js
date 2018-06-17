@@ -62,10 +62,10 @@ class Candidates extends PureComponent {
     this.toggleDrawer(true)()
   }
 
-  edit = interviewer => () => {
+  edit = candidate => () => {
     const { edit } = this.props
 
-    edit(interviewer)
+    edit(candidate)
 
     this.toggleDrawer(true)()
   }

@@ -47,8 +47,6 @@ class CreateOrEdit extends PureComponent {
       note: ''
     }
 
-    console.log(this.interview)
-
     this.state = {
       isLoading: false,
 
@@ -72,7 +70,7 @@ class CreateOrEdit extends PureComponent {
         clientId: interview.clientId._id,
         candidateId: interview.candidateId._id,
         interviewerId: interview.interviewerId._id,
-        dateTime: interview.dateTime,
+        dateTime: moment(interview.dateTime),
         mode: interview.mode,
         note: interview.note
       })

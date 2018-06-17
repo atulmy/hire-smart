@@ -2,14 +2,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import moment from 'moment'
 
 // UI Imports
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
 import Drawer from '@material-ui/core/Drawer'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
@@ -20,13 +14,13 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import params from '../../../../setup/config/params'
 import { messageShow } from '../../../common/api/actions'
 import { getListByClient } from '../../../interview/api/actions/query'
-import { editClose } from '../../../interview/api/actions/mutation'
+import { view, viewHide, edit, editClose } from '../../../interview/api/actions/mutation'
 import Loading from '../../../common/Loading'
-import EmptyMessage from '../../../common/EmptyMessage'
 import CreateOrEdit from '../../../interview/Manage/CreateOrEdit'
+import ListTable from '../../../interview/Manage/List/ListTable'
+import View from '../../../interview/Manage/View'
 
 // Component
 class Interviews extends PureComponent {
@@ -65,8 +59,30 @@ class Interviews extends PureComponent {
     this.toggleDrawer(false)()
   }
 
+  add = () => {
+    const { editClose } = this.props
+
+    editClose()
+
+    this.toggleDrawer(true)()
+  }
+
+  edit = interview => () => {
+    const { edit } = this.props
+
+    edit(interview)
+
+    this.toggleDrawer(true)()
+  }
+
+  view = interview => () => {
+    const { view } = this.props
+
+    view(interview)
+  }
+
   render() {
-    const { classes, clientDashboard: { client }, interviewsByClient: { isLoading, list } } = this.props
+    const { classes, clientDashboard: { client }, interviewsByClient: { isLoading, list }, interviewView, viewHide } = this.props
     const { drawerAdd } = this.state
 
     return (
@@ -91,35 +107,23 @@ class Interviews extends PureComponent {
           isLoading
             ? <Loading />
             : <Fade in={true}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Candidate</TableCell>
-                      <TableCell>Interviewer</TableCell>
-                      <TableCell title={'Year-Month-Date Hour:Minute'}>Date and time</TableCell>
-                    </TableRow>
-                  </TableHead>
-
-                  <TableBody>
-                    {
-                      list && list.length > 0
-                        ? list.map(interview => (
-                          <TableRow key={interview._id}>
-                            <TableCell>{ interview.candidateId.name }</TableCell>
-                            <TableCell>{ interview.interviewerId.name }</TableCell>
-                            <TableCell>{ moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)  }</TableCell>
-                          </TableRow>
-                        ))
-                        : <TableRow>
-                          <TableCell colSpan={3}>
-                            <EmptyMessage message={'You have not scheduled any interview yet.'} />
-                          </TableCell>
-                        </TableRow>
-                    }
-                  </TableBody>
-                </Table>
+                <ListTable list={list} view={this.view} edit={this.edit} />
               </Fade>
         }
+
+        {/* Candidate view */}
+        <Drawer
+          anchor={'right'}
+          open={interviewView.open}
+          onClose={viewHide}
+          ModalProps={{
+            BackdropProps: {
+              classes: { root: classes.backdrop }
+            }
+          }}
+        >
+          { <View /> }
+        </Drawer>
 
         {/* Candidate create or edit */}
         <Drawer
@@ -149,6 +153,7 @@ class Interviews extends PureComponent {
 Interviews.propTypes = {
   classes: PropTypes.object.isRequired,
   interviewsByClient: PropTypes.object.isRequired,
+  interviewView: PropTypes.object.isRequired,
   clientDashboard: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
@@ -159,8 +164,9 @@ Interviews.propTypes = {
 function interviewsState(state) {
   return {
     interviewsByClient: state.interviewsByClient,
+    interviewView: state.interviewView,
     clientDashboard: state.clientDashboard
   }
 }
 
-export default connect(interviewsState, { getListByClient, editClose, messageShow })(withStyles(styles)(Interviews))
+export default connect(interviewsState, { getListByClient, view, viewHide, edit, editClose, messageShow })(withStyles(styles)(Interviews))

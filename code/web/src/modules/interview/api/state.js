@@ -15,7 +15,10 @@ import {
   SINGLE_DONE,
   SINGLE_RESET,
   EDIT_SET,
-  EDIT_UNSET
+  EDIT_UNSET,
+  VIEW_HIDE,
+  VIEW_SET,
+  VIEW_UNSET
 } from './actions/types'
 
 // List
@@ -155,6 +158,41 @@ export const interviewEdit = (state = interviewEditState, action) => {
         ...state,
         interview: null,
         open: true
+      }
+
+    default:
+      return state
+  }
+}
+
+// View
+
+// Initial State
+const interviewViewState = {
+  interview: null,
+  open: false
+}
+
+// State
+export const interviewView = (state = interviewViewState, action) => {
+  switch (action.type) {
+    case VIEW_SET:
+      return {
+        ...state,
+        interview: action.interview,
+        open: true
+      }
+
+    case VIEW_UNSET:
+      return {
+        ...state,
+        ...interviewViewState
+      }
+
+    case VIEW_HIDE:
+      return {
+        ...state,
+        open: false
       }
 
     default:

@@ -5,7 +5,7 @@ import isEmpty from 'validator/lib/isEmpty'
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
 import { queryBuilder } from '../../../../setup/helpers'
-import { EDIT_SET, EDIT_UNSET } from './types'
+import { EDIT_SET, EDIT_UNSET, VIEW_HIDE, VIEW_SET, VIEW_UNSET } from './types'
 
 // Create or update
 export function createOrUpdate(interview) {
@@ -59,4 +59,15 @@ export function edit(interview) {
 }
 export function editClose() {
   return { type: EDIT_UNSET }
+}
+
+// View
+export function view(interview) {
+  return { type: VIEW_SET, interview }
+}
+export function viewClose() {
+  return { type: VIEW_UNSET }
+}
+export function viewHide() {
+  return { type: VIEW_HIDE }
 }

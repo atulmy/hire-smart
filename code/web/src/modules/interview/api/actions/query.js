@@ -29,7 +29,7 @@ export function getList(isLoading = true) {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
         operation: 'interviewsByOrganization',
-        fields: ['_id', 'organizationId { _id }', 'clientId { _id }', 'candidateId { _id }', 'interviewerId { _id }', 'userId { _id }', 'dateTime', 'mode', 'createdAt']
+        fields: ['_id', 'organizationId { _id }', 'clientId { _id }', 'candidateId { _id }', 'interviewerId { _id }', 'userId { _id }', 'dateTime', 'mode', 'note', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {
@@ -70,7 +70,7 @@ export function get(interviewId, isLoading = true) {
         type: 'query',
         operation: 'interview',
         data: { id: interviewId },
-        fields: ['_id', 'organizationId { _id }', 'clientId { _id }', 'candidateId { _id }', 'interviewerId { _id }', 'userId { _id }', 'dateTime', 'mode', 'createdAt']
+        fields: ['_id', 'organizationId { _id }', 'clientId { _id }', 'candidateId { _id }', 'interviewerId { _id }', 'userId { _id }', 'dateTime', 'mode', 'note', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {
@@ -111,7 +111,7 @@ export function getListByClient({ clientId }, isLoading = true) {
         type: 'query',
         operation: 'interviewsByClient',
         data: { clientId },
-        fields: ['_id', 'organizationId { _id, name }', 'clientId { _id, name }', 'candidateId { _id, name }', 'interviewerId { _id, name }', 'userId { _id, name }', 'dateTime', 'mode', 'createdAt']
+        fields: ['_id', 'organizationId { _id, name }', 'clientId { _id, name }', 'candidateId { _id, name }', 'interviewerId { _id, name, email, mobile }', 'userId { _id, name }', 'dateTime', 'mode', 'note', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {
