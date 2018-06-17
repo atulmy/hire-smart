@@ -1,16 +1,22 @@
 // Imports
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 
 // App Imports
 import serverConfig from '../../../setup/config/server'
 import { NODE_ENV, EMAIL_TEST } from '../../../setup/config/env'
 import params from '../../../setup/config/params'
 import transport from '../../../setup/server/email'
-import invite from '../../../setup/server/views/emails/invite'
 import DemoUser from '../../demo-user/model'
 import Organization from '../../organization/model'
 import User from '../model'
+
+// Email Imports
+import Layout from '../../email/templates/Layout'
+import Invite from '../../email/templates/Invite'
+import view from '../../email/view'
 
 // Create (Register)
 export async function create(parentValue, { name, email, password }) {
@@ -96,15 +102,21 @@ export async function inviteToOrganization(parentValue, { name, email }, { auth 
       if(transport) {
         const organization = await Organization.findOne({ _id: auth.user.organizationId })
 
+        const html = view(renderToStaticMarkup(
+          <Layout>
+            <Invite
+              invitedTo={name}
+              invitedBy={auth.user.name}
+              organizationName={organization.name}
+            />
+          </Layout>
+        ))
+
         transport.sendMail({
           from: `"${ auth.user.name }" <${ auth.user.email }>`,
           to: `"${ name }" <${ NODE_ENV === 'development' ? EMAIL_TEST : email }>`,
           subject: `${ params.site.name } - You have been invited!`,
-          html: invite({
-            invitedTo: name,
-            invitedBy: auth.user.name,
-            organizationName: organization.name
-          })
+          html: view(html)
         })
       }
 
