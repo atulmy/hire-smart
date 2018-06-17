@@ -97,13 +97,10 @@ export async function inviteToOrganization(parentValue, { name, email }, { auth 
       const organization = await Organization.findOne({ _id: auth.user.organizationId })
 
       sendEmail({
-        from: {
-          name: auth.user.name,
-          email: auth.user.email
-        },
+        from: auth.user,
         to: {
-          name: name,
-          email: email
+          name,
+          email
         },
         subject: 'You have been invited!',
         template:

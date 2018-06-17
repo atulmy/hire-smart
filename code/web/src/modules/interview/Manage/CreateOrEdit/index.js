@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import isEmpty from 'validator/lib/isEmpty'
 import Datetime from 'react-datetime'
+import moment from 'moment'
 
 // UI Imports
 import Grid from '@material-ui/core/Grid'
@@ -41,8 +42,12 @@ class CreateOrEdit extends PureComponent {
       clientId: props.clientId,
       candidateId: '',
       interviewerId: '',
-      dateTime: ''
+      dateTime: this.defaultDate(),
+      mode: '',
+      note: ''
     }
+
+    console.log(this.interview)
 
     this.state = {
       isLoading: false,
@@ -68,6 +73,8 @@ class CreateOrEdit extends PureComponent {
         candidateId: interview.candidateId._id,
         interviewerId: interview.interviewerId._id,
         dateTime: interview.dateTime,
+        mode: interview.mode,
+        note: interview.note
       })
     }
   }
@@ -97,7 +104,7 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, candidateId, interviewerId, dateTime } = this.state
+    const { id, clientId, candidateId, interviewerId, dateTime, mode, note } = this.state
 
     // Validate
     if(!isEmpty(clientId) && !isEmpty(candidateId) && !isEmpty(interviewerId)) {
@@ -107,9 +114,9 @@ class CreateOrEdit extends PureComponent {
 
       // Create or Update
       try {
-        const { data } = await createOrUpdate({ id, clientId, candidateId, interviewerId, dateTime: dateTime.format() })
+        const { data } = await createOrUpdate({ id, clientId, candidateId, interviewerId, dateTime: dateTime.format(), mode, note })
 
-        if(data.errors && !isEmpty(data.errors)) {
+        if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
         } else {
           // Update interviewers list
@@ -125,6 +132,7 @@ class CreateOrEdit extends PureComponent {
           }
         }
       } catch(error) {
+        console.log(error)
         messageShow('There was some error. Please try again.')
       } finally {
         this.isLoadingToggle(false)
@@ -140,9 +148,15 @@ class CreateOrEdit extends PureComponent {
     })
   }
 
+  defaultDate = () => {
+    return moment()
+      .hours(9).minutes(0).seconds(0)
+      .add(1, 'day')
+  }
+
   render() {
     const { classes, elevation, candidatesByClient, interviewersByClient } = this.props
-    const { isLoading, id, candidateId, interviewerId, dateTime } = this.state
+    const { isLoading, id, candidateId, interviewerId, dateTime, mode, note } = this.state
 
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
@@ -247,6 +261,52 @@ class CreateOrEdit extends PureComponent {
                   );
                 }
               }
+            />
+          </Grid>
+
+          {/* Input - mode */}
+          <Grid item xs={12}>
+            <FormControl
+              style={{ marginTop: 10 }}
+              fullWidth
+              required={true}
+            >
+              <InputLabel htmlFor="mode-id">Mode</InputLabel>
+              <Select
+                value={nullToEmptyString(mode)}
+                onChange={this.onType}
+                inputProps={{
+                  id: 'mode-id',
+                  name: 'mode',
+                  required: 'required'
+                }}
+              >
+                <MenuItem value="">
+                  <em>Select mode</em>
+                </MenuItem>
+                {
+                  params.interview.modes.map(mode => (
+                    <MenuItem key={mode.key} value={mode.key}>{ mode.name }</MenuItem>
+                  ))
+                }
+              </Select>
+            </FormControl>
+          </Grid>
+
+          {/* Input - note */}
+          <Grid item xs={12}>
+            <TextField
+              name={'note'}
+              value={nullToEmptyString(note)}
+              onChange={this.onType}
+              label={'Note'}
+              placeholder={'Enter note (eg: video/audio chat URL, address, directions, important points, etc.)'}
+              margin={'normal'}
+              autoComplete={'off'}
+              rowsMax={6}
+              rows={3}
+              multiline
+              fullWidth
             />
           </Grid>
 

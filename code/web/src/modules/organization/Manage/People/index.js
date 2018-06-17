@@ -97,7 +97,7 @@ class People extends PureComponent {
       try {
         const { data } = await inviteToOrganization({ name, email })
 
-        if(data.errors && !isEmpty(data.errors)) {
+        if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
         } else {
           // Reset form data

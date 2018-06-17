@@ -52,6 +52,10 @@ class Details extends PureComponent {
     return params.kanban.columns.filter(column => column.key === status)[0]
   }
 
+  modeName = (mode) => {
+    return params.interview.modes.filter(item => item.key === mode)[0].name
+  }
+
   render() {
     const { classes, kanbanId, kanban: { isLoading, item: { candidateId, interviews, status, highlight } }, toggleDrawer } = this.props
     const { tab } = this.state
@@ -154,20 +158,23 @@ class Details extends PureComponent {
                                           </Typography>
 
                                           <Typography gutterBottom>
-                                            { mode }
+                                            { this.modeName(mode) }
                                           </Typography>
                                         </div>
 
                                         {/* Notes */}
-                                        <div className={classes.item}>
-                                          <Typography variant={'caption'} gutterBottom>
-                                            Notes
-                                          </Typography>
+                                        {
+                                          note &&
+                                          <div className={classes.item}>
+                                            <Typography variant={'caption'} gutterBottom>
+                                              Notes
+                                            </Typography>
 
-                                          <Typography gutterBottom>
-                                            { note }
-                                          </Typography>
-                                        </div>
+                                            <Typography gutterBottom>
+                                              { note }
+                                            </Typography>
+                                          </div>
+                                        }
                                       </div>
                                     </div>
                                   )) }

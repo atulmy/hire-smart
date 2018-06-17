@@ -47,7 +47,7 @@ class Quick extends PureComponent {
       try {
         const { data } = await createClient({ name })
 
-        if(data.errors && !isEmpty(data.errors)) {
+        if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
         } else {
           // Refresh client list

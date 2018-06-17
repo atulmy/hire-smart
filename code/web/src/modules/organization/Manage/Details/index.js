@@ -95,7 +95,7 @@ class Details extends Component {
       try {
         const { data } = await updateOrganization({ name, description, domain })
 
-        if(data.errors && !isEmpty(data.errors)) {
+        if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
         } else {
           // Refresh details, silently

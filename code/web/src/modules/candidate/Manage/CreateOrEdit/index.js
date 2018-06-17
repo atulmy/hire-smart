@@ -133,7 +133,7 @@ class CreateOrEdit extends PureComponent {
       try {
         const { data } = await createOrUpdate({ id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
 
-        if(data.errors && !isEmpty(data.errors)) {
+        if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
         } else {
           // Update candidates list

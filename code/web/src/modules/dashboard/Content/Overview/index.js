@@ -129,7 +129,7 @@ class Overview extends PureComponent {
     try {
       const { data } = await updateKanbanStatus({ id: kanbanId, status: columnKey })
 
-      if(data.errors && !isEmpty(data.errors)) {
+      if(data.errors && data.errors.length > 0) {
         messageShow(data.errors[0].message)
       } else {
         // messageHide()

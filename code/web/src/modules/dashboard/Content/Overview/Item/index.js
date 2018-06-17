@@ -15,6 +15,8 @@ import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import IconCall from '@material-ui/icons/Call'
 import IconThumbsUpDown from '@material-ui/icons/ThumbsUpDown'
+import IconVoiceChat from '@material-ui/icons/VoiceChat'
+import IconGroup from '@material-ui/icons/Group'
 import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
@@ -58,9 +60,15 @@ class Item extends PureComponent {
               {
                 interviews.map(interview => (
                   <List key={interview._id} dense={true}>
-                    <ListItem title={'Interview date and time'} className={classes.infoItem}>
+                    <ListItem title={`Date and time of ${ interview.mode } interview`} className={classes.infoItem}>
                       <ListItemIcon className={classes.infoItemIcon}>
-                        <IconCall />
+                        {
+                          {
+                            telephonic: <IconCall />,
+                            online: <IconVoiceChat />,
+                            f2f: <IconGroup />
+                          }[interview.mode]
+                        }
                       </ListItemIcon>
 
                       <ListItemText
