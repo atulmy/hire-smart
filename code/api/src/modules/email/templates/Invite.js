@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 
 // Component
 const Invite = ({ invitedTo, invitedBy, organizationName }) => (
-  <div>
+  <React.Fragment>
     <p>Hi { invitedTo },</p>
 
     <p>I'm inviting you to join { organizationName } on HIRESMART, an application to streamline hiring process, scheduling interviews and tracking candidates.</p>
@@ -22,7 +22,7 @@ const Invite = ({ invitedTo, invitedBy, organizationName }) => (
       Thanks, <br/>
       { invitedBy }
     </p>
-  </div>
+  </React.Fragment>
 )
 
 // Component Properties
