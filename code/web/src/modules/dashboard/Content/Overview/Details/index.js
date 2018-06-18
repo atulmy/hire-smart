@@ -2,14 +2,13 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import moment from 'moment'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 // UI Imports
 import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import IconClose from '@material-ui/icons/Close'
 import IconRadioButtonChecked from '@material-ui/icons/RadioButtonChecked'
@@ -18,7 +17,9 @@ import styles from './styles'
 
 // App Imports
 import params from '../../../../../setup/config/params'
+import { messageShow } from '../../../../common/api/actions'
 import { get } from '../../../../kanban/api/actions/query'
+import { remind } from '../../../../interview/api/actions/mutation'
 import Loading from '../../../../common/Loading'
 import EmptyMessage from '../../../../common/EmptyMessage'
 import CandidateViewFields from '../../../../candidate/Manage/View/ViewFields'
@@ -55,6 +56,28 @@ class Details extends PureComponent {
 
   modeName = (mode) => {
     return params.interview.modes.filter(item => item.key === mode)[0].name
+  }
+
+  remind = interview => async () => {
+    let check = confirm('Are you sure you want to send reminder email to the candidate and interviewer?')
+
+    if(check) {
+      const { messageShow, remind } = this.props
+
+      messageShow('Sending reminder emails, please wait..')
+
+      try {
+        const { data } = await remind({ id: interview._id })
+
+        if(data.errors && data.errors.length > 0) {
+          messageShow(data.errors[0].message)
+        } else {
+          messageShow('Reminder emails sent successfully.')
+        }
+      } catch(error) {
+        messageShow('There was some error. Please try again.')
+      }
+    }
   }
 
   render() {
@@ -118,6 +141,10 @@ class Details extends PureComponent {
 
                                       <div className={classes.interviewContent}>
                                         <InterviewViewFields interview={interview} />
+
+                                        <div className={classes.interviewContentActions}>
+                                          <Button color={'primary'} onClick={this.remind(interview)}>Remind</Button>
+                                        </div>
                                       </div>
                                     </div>
                                   )) }
@@ -155,6 +182,8 @@ Details.propTypes = {
   toggleDrawer: PropTypes.func.isRequired,
   kanban: PropTypes.object.isRequired,
   get: PropTypes.func.isRequired,
+  remind: PropTypes.func.isRequired,
+  messageShow: PropTypes.func.isRequired
 }
 
 // Component State
@@ -164,4 +193,4 @@ function detailsState(state) {
   }
 }
 
-export default connect(detailsState, { get })(withStyles(styles)(Details))
+export default connect(detailsState, { get, remind, messageShow })(withStyles(styles)(Details))

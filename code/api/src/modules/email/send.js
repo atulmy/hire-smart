@@ -24,7 +24,7 @@ function transport() {
   }
 }
 
-export async function send({ to, from, subject, template, organizationId = '', userId = '' }) {
+export async function send({ to, from, subject, template, cc = null, organizationId = '', userId = '' }) {
   const transporter = transport()
 
   if(transporter) {
@@ -37,13 +37,18 @@ export async function send({ to, from, subject, template, organizationId = '', u
 
     subject = `${ params.site.name } - ${ subject }`
 
-    // Send email
-    transporter.sendMail({
+    let email = {
       to: `"${ to.name }" <${ NODE_ENV === 'development' ? EMAIL_TEST : to.email }>`,
       from: `"${ from.name }" <${ from.email }>`,
       subject,
       html: body
-    }, () => {
+    }
+    if(cc) {
+      email.cc = `"${ cc.name }" <${ NODE_ENV === 'development' ? EMAIL_TEST : cc.email }>`
+    }
+
+    // Send email
+    transporter.sendMail(email, () => {
       console.info('INFO - Email sent.')
     })
 

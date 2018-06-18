@@ -113,6 +113,7 @@ export async function remind(parentValue, { id }, { auth }) {
         email: interview.candidateId.email,
       },
       from: auth.user,
+      cc: auth.user,
       subject,
       template:
         <ReminderCandidate
@@ -134,6 +135,7 @@ export async function remind(parentValue, { id }, { auth }) {
         email: interview.candidateId.email,
       },
       from: auth.user,
+      cc: auth.user,
       subject,
       template:
         <ReminderInterviewer

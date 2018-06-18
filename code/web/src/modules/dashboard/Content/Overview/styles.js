@@ -1,5 +1,6 @@
 // UI Imports
 import grey from '@material-ui/core/colors/grey'
+import blue from '@material-ui/core/colors/blue'
 
 // Component Styles
 const styles = theme => ({
@@ -42,7 +43,11 @@ const styles = theme => ({
   },
   columnButtonAdd: {
     color: grey[500],
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing.unit
+  },
+  columnButtonAddPrimary: {
+    color: blue[500],
+    marginTop: theme.spacing.unit
   },
 
   itemContainer: {

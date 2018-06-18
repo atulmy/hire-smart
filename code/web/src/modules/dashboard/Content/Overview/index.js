@@ -213,7 +213,7 @@ class Overview extends PureComponent {
                                 i === 0 &&
                                 <Button
                                   fullWidth={true}
-                                  className={classes.columnButtonAdd}
+                                  className={list && list.length > 0 ? classes.columnButtonAdd : classes.columnButtonAddPrimary}
                                   onClick={this.toggleDrawerAdd(true)}
                                 >
                                   Add Candidate

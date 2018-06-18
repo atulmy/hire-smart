@@ -22,6 +22,12 @@ const Reminder = ({ interviewerName, candidateName, date, organizationName, mode
 
     <br/>
 
+    <p>When you are done with the interview, you can give feedback by using following link:</p>
+    <a href="http://hiresmart.app">Give Feedback</a>
+
+    <br/>
+    <br/>
+
     <p>
       Thanks, <br/>
       { userName }

@@ -95,7 +95,7 @@ class Quick extends PureComponent {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, clients } = this.props
     const { name, visible, isLoading } = this.state
 
     return (
@@ -141,7 +141,7 @@ class Quick extends PureComponent {
             : <Button
                 onClick={this.visibleToggle(true)}
                 fullWidth
-                className={classes.buttonAdd}
+                className={clients.list && clients.list.length > 0 ? classes.buttonAdd : classes.buttonAddPrimary}
               >
                 Add Client
               </Button>
@@ -154,9 +154,18 @@ class Quick extends PureComponent {
 // Component Properties
 Quick.propTypes = {
   classes: PropTypes.object.isRequired,
+  clients: PropTypes.object.isRequired,
   getClientsList: PropTypes.func.isRequired,
   createClient: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 
-export default connect(null, { getClientsList, createClient, messageShow })(withStyles(styles)(Quick))
+
+// Component State
+function quickState(state) {
+  return {
+    clients: state.clients,
+  }
+}
+
+export default connect(quickState, { getClientsList, createClient, messageShow })(withStyles(styles)(Quick))

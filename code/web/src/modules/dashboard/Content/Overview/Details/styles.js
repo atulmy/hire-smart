@@ -35,6 +35,9 @@ const styles = theme => ({
   interviewContent: {
     padding: theme.spacing.unit * 2
   },
+  interviewContentActions: {
+    textAlign: 'right'
+  },
 
   action: {
     textAlign: 'right',

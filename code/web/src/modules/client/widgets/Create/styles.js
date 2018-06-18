@@ -1,5 +1,6 @@
 // UI Imports
 import grey from '@material-ui/core/colors/grey'
+import blue from '@material-ui/core/colors/blue'
 
 // Component Styles
 const styles = theme => ({
@@ -18,7 +19,10 @@ const styles = theme => ({
 
   buttonAdd: {
     color: grey[500]
-  }
+  },
+  buttonAddPrimary: {
+    color: blue[500]
+  },
 })
 
 export default styles
