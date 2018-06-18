@@ -8,6 +8,10 @@ const styles = theme => ({
     borderBottom: `1px solid ${ grey[200] }`
   },
 
+  itemLast: {
+    marginBottom: theme.spacing.unit
+  },
+
   clickToCopy: {
     cursor: 'pointer'
   }

@@ -107,9 +107,9 @@ class Details extends PureComponent {
                         <React.Fragment>
                           {
                             interviews && interviews.length > 0
-                              ? <div>
+                              ? <React.Fragment>
                                   { interviews.map((interview, i) => (
-                                    <div key={interview._id} className={classes.interview}>
+                                    <div key={interview._id} className={classes.interview} style={ i === interviews.length - 1 ? { marginBottom: 0 } : {} }>
                                       <div className={classes.interviewNumber}>
                                         <Typography variant={'button'}>
                                           Interview #{ i+1 }
@@ -121,7 +121,7 @@ class Details extends PureComponent {
                                       </div>
                                     </div>
                                   )) }
-                                </div>
+                                </React.Fragment>
                               : <EmptyMessage message={'No interview has been scheduled for this candidate.'} />
                           }
                         </React.Fragment>

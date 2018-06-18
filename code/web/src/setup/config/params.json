@@ -33,7 +33,8 @@
     "modes": [
       { "key": "telephonic", "name": "Telephonic" },
       { "key": "online", "name": "Online Video/Audio" },
-      { "key": "f2f", "name": "Face to face" }
+      { "key": "f2f", "name": "Face to face" },
+      { "key": "assignment", "name": "Assignment" }
     ]
   }
 }

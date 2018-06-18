@@ -13,6 +13,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import IconButton from '@material-ui/core/IconButton'
 import IconEdit from '@material-ui/icons/Edit'
 import IconVisibility from '@material-ui/icons/Visibility'
+import IconEmail from '@material-ui/icons/Email'
 import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
@@ -22,7 +23,7 @@ import EmptyMessage from '../../../../common/EmptyMessage'
 
 // Component
 const ListTable = (props) => {
-  const { classes, list, view, edit } = props
+  const { classes, list, view, edit, email } = props
 
   return (
     <Table>
@@ -31,7 +32,7 @@ const ListTable = (props) => {
           <TableCell>Candidate</TableCell>
           <TableCell>Interviewer</TableCell>
           <TableCell title={'Year-Month-Date Hour:Minute'}>Date and time</TableCell>
-          <TableCell width={145} className={classes.textCenter}>Actions</TableCell>
+          <TableCell width={200} className={classes.textCenter}>Actions</TableCell>
         </TableRow>
       </TableHead>
 
@@ -44,6 +45,15 @@ const ListTable = (props) => {
                   <TableCell>{ interview.interviewerId.name }</TableCell>
                   <TableCell>{ moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)  }</TableCell>
                   <TableCell className={classes.textCenter}>
+                    <Tooltip title={'Send reminder'} placement={'top'} enterDelay={500}>
+                      <IconButton
+                        aria-label={'Send reminder'}
+                        onClick={email(interview)}
+                      >
+                        <IconEmail className={classes.icon} />
+                      </IconButton>
+                    </Tooltip>
+
                     <Tooltip title={'View all details'} placement={'top'} enterDelay={500}>
                       <IconButton
                         aria-label={'View all details'}
@@ -80,7 +90,8 @@ ListTable.propTypes = {
   classes: PropTypes.object.isRequired,
   list: PropTypes.array.isRequired,
   view: PropTypes.func.isRequired,
-  edit: PropTypes.func.isRequired
+  edit: PropTypes.func.isRequired,
+  email: PropTypes.func.isRequired
 }
 
 export default withStyles(styles)(ListTable)

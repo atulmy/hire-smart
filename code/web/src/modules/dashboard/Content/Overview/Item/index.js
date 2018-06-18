@@ -17,6 +17,7 @@ import IconCall from '@material-ui/icons/Call'
 import IconThumbsUpDown from '@material-ui/icons/ThumbsUpDown'
 import IconVoiceChat from '@material-ui/icons/VoiceChat'
 import IconGroup from '@material-ui/icons/Group'
+import IconAssignment from '@material-ui/icons/Assignment'
 import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
@@ -66,7 +67,8 @@ class Item extends PureComponent {
                           {
                             telephonic: <IconCall />,
                             online: <IconVoiceChat />,
-                            f2f: <IconGroup />
+                            f2f: <IconGroup />,
+                            assignment: <IconAssignment />,
                           }[interview.mode]
                         }
                       </ListItemIcon>

@@ -81,6 +81,10 @@ class Interviews extends PureComponent {
     view(interview)
   }
 
+  email = interview => () => {
+    console.log(interview)
+  }
+
   render() {
     const { classes, clientDashboard: { client }, interviewsByClient: { isLoading, list }, interviewView, viewHide } = this.props
     const { drawerAdd } = this.state
@@ -107,7 +111,12 @@ class Interviews extends PureComponent {
           isLoading
             ? <Loading />
             : <Fade in={true}>
-                <ListTable list={list} view={this.view} edit={this.edit} />
+                <ListTable
+                  list={list}
+                  view={this.view}
+                  edit={this.edit}
+                  email={this.email}
+                />
               </Fade>
         }
 

@@ -4,11 +4,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // UI Imports
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
 import Drawer from '@material-ui/core/Drawer'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
@@ -100,7 +95,11 @@ class Interviewers extends PureComponent {
           isLoading
             ? <Loading />
             : <Fade in={true}>
-                <ListTable list={list} edit={this.edit} />
+                <ListTable
+                  list={list}
+                  edit={this.edit}
+                  showClient={false}
+                />
               </Fade>
         }
 

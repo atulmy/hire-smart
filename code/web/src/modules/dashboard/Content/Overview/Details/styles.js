@@ -16,10 +16,6 @@ const styles = theme => ({
     borderBottom: `1px solid ${ grey[200] }`
   },
 
-  itemLast: {
-    marginBottom: theme.spacing.unit
-  },
-
   tabs: {
     backgroundColor: grey[50],
     borderBottom: `1px solid ${ grey[100] }`,
@@ -29,7 +25,8 @@ const styles = theme => ({
   },
 
   interview: {
-    border: `1px solid ${ grey[200] }`
+    border: `1px solid ${ grey[200] }`,
+    marginBottom: theme.spacing.unit * 2
   },
   interviewNumber: {
     backgroundColor: grey[200],

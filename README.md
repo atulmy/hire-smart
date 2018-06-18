@@ -75,7 +75,8 @@
 - Production
   - Run API `cd api` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
   - Run Webapp `cd web` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
-  
+- Deployment
+  - Coming soon
     
 ## Website
-[hiresmart.app](https://hiresmart.app/)
+[hiresmart.app](https://hiresmart.app/) [coming soon]

@@ -69,18 +69,15 @@ const ViewFields = (props) => {
       </div>
 
       {/* Notes */}
-      {
-        interview.note &&
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Notes
-          </Typography>
+      <div className={classes.itemLast}>
+        <Typography variant={'caption'} gutterBottom>
+          Notes
+        </Typography>
 
-          <Typography gutterBottom>
-            { interview.note }
-          </Typography>
-        </div>
-      }
+        <Typography gutterBottom>
+          { interview.note || '-' }
+        </Typography>
+      </div>
     </React.Fragment>
   )
 }

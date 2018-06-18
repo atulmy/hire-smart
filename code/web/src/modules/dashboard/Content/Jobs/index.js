@@ -2,14 +2,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import moment from 'moment'
 
 // UI Imports
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
 import Drawer from '@material-ui/core/Drawer'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
@@ -22,14 +16,13 @@ import styles from './styles'
 // App Imports
 import { messageShow } from '../../../common/api/actions'
 import { getListByClient } from '../../../job/api/actions/query'
-import { editClose } from '../../../job/api/actions/mutation'
+import { edit, editClose } from '../../../job/api/actions/mutation'
 import Loading from '../../../common/Loading'
-import EmptyMessage from '../../../common/EmptyMessage'
 import CreateOrEdit from '../../../job/Manage/CreateOrEdit'
+import ListTable from '../../../job/Manage/List/ListTable'
 
 // Component
 class Jobs extends PureComponent {
-
   constructor() {
     super()
 
@@ -39,10 +32,6 @@ class Jobs extends PureComponent {
   }
 
   componentDidMount() {
-    const { editClose } = this.props
-
-    editClose()
-
     this.refresh()
   }
 
@@ -64,6 +53,22 @@ class Jobs extends PureComponent {
     this.toggleDrawer(false)()
   }
 
+  add = () => {
+    const { editClose } = this.props
+
+    editClose()
+
+    this.toggleDrawer(true)()
+  }
+
+  edit = interviewer => () => {
+    const { edit } = this.props
+
+    edit(interviewer)
+
+    this.toggleDrawer(true)()
+  }
+
   render() {
     const { classes, clientDashboard: { client }, jobsByClient: { isLoading, list } } = this.props
     const { drawerAdd } = this.state
@@ -72,7 +77,7 @@ class Jobs extends PureComponent {
       <div className={classes.root}>
         {/* Actions */}
         <div className={classes.actions}>
-          <Button onClick={this.toggleDrawer(true)}>
+          <Button onClick={this.add}>
             <IconAdd className={classes.actionIcon} />
             Add
           </Button>
@@ -90,31 +95,7 @@ class Jobs extends PureComponent {
           isLoading
             ? <Loading />
             : <Fade in={true}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Role</TableCell>
-                      <TableCell>Description</TableCell>
-                    </TableRow>
-                  </TableHead>
-
-                  <TableBody>
-                    {
-                      list && list.length > 0
-                        ? list.map(job => (
-                          <TableRow key={job._id}>
-                            <TableCell>{ job.role }</TableCell>
-                            <TableCell>{ job.description }</TableCell>
-                          </TableRow>
-                        ))
-                        : <TableRow>
-                          <TableCell colSpan={3}>
-                            <EmptyMessage message={'You have not added any job yet.'} />
-                          </TableCell>
-                        </TableRow>
-                    }
-                  </TableBody>
-                </Table>
+                <ListTable list={list} edit={this.edit} />
               </Fade>
         }
 
@@ -150,6 +131,7 @@ Jobs.propTypes = {
   jobsByClient: PropTypes.object.isRequired,
   clientDashboard: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
@@ -162,4 +144,4 @@ function jobsState(state) {
   }
 }
 
-export default connect(jobsState, { getListByClient, editClose, messageShow })(withStyles(styles)(Jobs))
+export default connect(jobsState, { getListByClient, edit, editClose, messageShow })(withStyles(styles)(Jobs))

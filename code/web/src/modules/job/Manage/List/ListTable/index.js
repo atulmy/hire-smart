@@ -19,16 +19,14 @@ import EmptyMessage from '../../../../common/EmptyMessage'
 
 // Component
 const ListTable = (props) => {
-  const { classes, list, edit, showClient } = props
+  const { classes, list, edit } = props
 
   return (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Name</TableCell>
-          { showClient && <TableCell>Client</TableCell> }
-          <TableCell>Email</TableCell>
-          <TableCell>Mobile</TableCell>
+          <TableCell>Role</TableCell>
+          <TableCell>Description</TableCell>
           <TableCell width={120} className={classes.textCenter}>Actions</TableCell>
         </TableRow>
       </TableHead>
@@ -36,17 +34,15 @@ const ListTable = (props) => {
       <TableBody>
         {
           list && list.length > 0
-            ? list.map(interviewer => (
-                <TableRow key={interviewer._id}>
-                  <TableCell>{ interviewer.name }</TableCell>
-                  { showClient && <TableCell>{ interviewer.clientId.name }</TableCell> }
-                  <TableCell>{ interviewer.email }</TableCell>
-                  <TableCell>{ interviewer.mobile }</TableCell>
+            ? list.map(job => (
+                <TableRow key={job._id}>
+                  <TableCell>{ job.role }</TableCell>
+                  <TableCell>{ job.description }</TableCell>
                   <TableCell className={classes.textCenter}>
                     <Tooltip title={'Edit'} placement={'bottom'} enterDelay={500}>
                       <IconButton
                         aria-label={'Edit'}
-                        onClick={edit(interviewer)}
+                        onClick={edit(job)}
                       >
                         <IconEdit />
                       </IconButton>
@@ -55,8 +51,8 @@ const ListTable = (props) => {
                 </TableRow>
               ))
             : <TableRow>
-                <TableCell colSpan={5}>
-                  <EmptyMessage message={'You have not added any interviewers yet.'} />
+                <TableCell colSpan={3}>
+                  <EmptyMessage message={'You have not added any jobs yet.'} />
                 </TableCell>
               </TableRow>
         }
@@ -70,9 +66,6 @@ ListTable.propTypes = {
   classes: PropTypes.object.isRequired,
   list: PropTypes.array.isRequired,
   edit: PropTypes.func.isRequired
-}
-ListTable.defaultProps = {
-  showClient: true
 }
 
 export default withStyles(styles)(ListTable)

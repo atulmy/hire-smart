@@ -102,7 +102,12 @@ class Candidates extends PureComponent {
           isLoading
             ? <Loading />
             : <Fade in={true}>
-                <ListTable list={list} view={this.view} edit={this.edit} />
+                <ListTable
+                  list={list}
+                  view={this.view}
+                  edit={this.edit}
+                  showClient={false}
+                />
               </Fade>
         }
 
