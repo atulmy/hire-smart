@@ -2,10 +2,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-// UI Imports
-
-// App Imports
-
 // Component
 const Invite = ({ invitedTo, invitedBy, organizationName }) => (
   <React.Fragment>

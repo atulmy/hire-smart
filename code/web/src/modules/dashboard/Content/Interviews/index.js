@@ -16,7 +16,7 @@ import styles from './styles'
 // App Imports
 import { messageShow } from '../../../common/api/actions'
 import { getListByClient } from '../../../interview/api/actions/query'
-import { view, viewHide, edit, editClose } from '../../../interview/api/actions/mutation'
+import { view, viewHide, edit, editClose, remind } from '../../../interview/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import CreateOrEdit from '../../../interview/Manage/CreateOrEdit'
 import ListTable from '../../../interview/Manage/List/ListTable'
@@ -81,8 +81,26 @@ class Interviews extends PureComponent {
     view(interview)
   }
 
-  email = interview => () => {
-    console.log(interview)
+  remind = interview => async () => {
+    let check = confirm('Are you sure you want to send reminder email to the candidate and interviewer?')
+
+    if(check) {
+      const { messageShow, remind } = this.props
+
+      messageShow('Sending reminder emails, please wait..')
+
+      try {
+        const { data } = await remind({ id: interview._id })
+
+        if(data.errors && data.errors.length > 0) {
+          messageShow(data.errors[0].message)
+        } else {
+          messageShow('Reminder emails sent successfully.')
+        }
+      } catch(error) {
+        messageShow('There was some error. Please try again.')
+      }
+    }
   }
 
   render() {
@@ -115,7 +133,7 @@ class Interviews extends PureComponent {
                   list={list}
                   view={this.view}
                   edit={this.edit}
-                  email={this.email}
+                  remind={this.remind}
                 />
               </Fade>
         }
@@ -165,7 +183,11 @@ Interviews.propTypes = {
   interviewView: PropTypes.object.isRequired,
   clientDashboard: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
+  view: PropTypes.func.isRequired,
+  viewHide: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
+  remind: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 
@@ -178,4 +200,4 @@ function interviewsState(state) {
   }
 }
 
-export default connect(interviewsState, { getListByClient, view, viewHide, edit, editClose, messageShow })(withStyles(styles)(Interviews))
+export default connect(interviewsState, { getListByClient, view, viewHide, edit, editClose, remind, messageShow })(withStyles(styles)(Interviews))

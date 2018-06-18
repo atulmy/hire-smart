@@ -13,8 +13,8 @@
       "date": "YYYY-MM-DD",
       "time": "hh:mm a",
       "nice": {
-        "date": "Do MMMM",
-        "time": "h:mm a"
+        "date": "Do MMM",
+        "time": "h:mm A"
       }
     }
   },

@@ -18,6 +18,17 @@
     }
   },
 
+  "date": {
+    "format": {
+      "date": "YYYY-MM-DD",
+      "time": "hh:mm a",
+      "nice": {
+        "date": "Do MMM",
+        "time": "h:mm A"
+      }
+    }
+  },
+
   "kanban": {
     "columns": [
       { "key": "shortlisted", "name": "Shortlisted", "color": "grey" },

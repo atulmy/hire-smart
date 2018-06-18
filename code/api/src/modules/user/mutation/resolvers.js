@@ -7,11 +7,11 @@ import React from 'react'
 import { NODE_ENV } from '../../../setup/config/env'
 import serverConfig from '../../../setup/config/server'
 import params from '../../../setup/config/params'
-import { sendEmail } from '../../../setup/server/email'
 import DemoUser from '../../demo-user/model'
 import Organization from '../../organization/model'
 import User from '../model'
-import Invite from '../../email/templates/Invite'
+import { send as sendEmail } from '../../email/send'
+import Invite from '../email/Invite'
 
 // Create (Register)
 export async function create(parentValue, { name, email, password }) {
@@ -97,18 +97,20 @@ export async function inviteToOrganization(parentValue, { name, email }, { auth 
       const organization = await Organization.findOne({ _id: auth.user.organizationId })
 
       sendEmail({
-        from: auth.user,
         to: {
           name,
           email
         },
+        from: auth.user,
         subject: 'You have been invited!',
         template:
           <Invite
             invitedTo={name}
             invitedBy={auth.user.name}
             organizationName={organization.name}
-          />
+          />,
+        organizationId: auth.user.organizationId,
+        userId: auth.user.id
       })
 
       return await User.create({

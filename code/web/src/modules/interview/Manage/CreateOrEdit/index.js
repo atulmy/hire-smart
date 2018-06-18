@@ -148,8 +148,8 @@ class CreateOrEdit extends PureComponent {
 
   defaultDate = () => {
     return moment()
-      .hours(9).minutes(0).seconds(0)
       .add(1, 'day')
+      .hours(9).minutes(0).seconds(0)
   }
 
   render() {

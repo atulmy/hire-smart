@@ -14,6 +14,10 @@ const styles = theme => ({
 
   clickToCopy: {
     cursor: 'pointer'
+  },
+
+  multiLine: {
+    whiteSpace: 'pre-wrap'
   }
 })
 

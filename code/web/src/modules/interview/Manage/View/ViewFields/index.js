@@ -74,7 +74,7 @@ const ViewFields = (props) => {
           Notes
         </Typography>
 
-        <Typography gutterBottom>
+        <Typography gutterBottom className={classes.multiLine}>
           { interview.note || '-' }
         </Typography>
       </div>

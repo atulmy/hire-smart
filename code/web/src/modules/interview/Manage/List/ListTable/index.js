@@ -23,7 +23,7 @@ import EmptyMessage from '../../../../common/EmptyMessage'
 
 // Component
 const ListTable = (props) => {
-  const { classes, list, view, edit, email } = props
+  const { classes, list, view, edit, remind } = props
 
   return (
     <Table>
@@ -48,7 +48,7 @@ const ListTable = (props) => {
                     <Tooltip title={'Send reminder'} placement={'top'} enterDelay={500}>
                       <IconButton
                         aria-label={'Send reminder'}
-                        onClick={email(interview)}
+                        onClick={remind(interview)}
                       >
                         <IconEmail className={classes.icon} />
                       </IconButton>
@@ -91,7 +91,7 @@ ListTable.propTypes = {
   list: PropTypes.array.isRequired,
   view: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired,
-  email: PropTypes.func.isRequired
+  remind: PropTypes.func.isRequired
 }
 
 export default withStyles(styles)(ListTable)

@@ -53,6 +53,18 @@ export function remove(data) {
   }
 }
 
+// Remind
+export function remind(data) {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'interviewRemind',
+      data,
+      fields: ['_id']
+    }))
+  }
+}
+
 // Edit
 export function edit(interview) {
   return { type: EDIT_SET, interview }

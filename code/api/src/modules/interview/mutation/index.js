@@ -3,7 +3,7 @@ import { GraphQLString } from 'graphql'
 
 // App Imports
 import InterviewType from '../types'
-import { create, remove, update } from './resolvers'
+import { create, remove, update, remind } from './resolvers'
 
 // Interview fields
 const fields = {
@@ -69,4 +69,16 @@ export const interviewRemove = {
     }
   },
   resolve: remove
+}
+
+// Interview remind
+export const interviewRemind = {
+  type: InterviewType,
+  args: {
+    id: {
+      name: 'id',
+      type: GraphQLString
+    }
+  },
+  resolve: remind
 }
