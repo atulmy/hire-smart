@@ -111,7 +111,7 @@ class Interviews extends PureComponent {
       <div className={classes.root}>
         {/* Actions */}
         <div className={classes.actions}>
-          <Button onClick={this.toggleDrawer(true)}>
+          <Button onClick={this.add}>
             <IconAdd className={classes.actionIcon} />
             Add
           </Button>

@@ -18,7 +18,7 @@ const styles = theme => ({
   },
 
   drawer: {
-    width: 350
+    width: 400
   }
 })
 

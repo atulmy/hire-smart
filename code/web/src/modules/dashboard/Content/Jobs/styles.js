@@ -14,7 +14,7 @@ const styles = theme => ({
   },
 
   drawer: {
-    minWidth: 350
+    width: 400
   },
 
   backdrop: {
