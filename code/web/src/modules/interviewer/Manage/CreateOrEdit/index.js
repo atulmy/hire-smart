@@ -96,7 +96,7 @@ class CreateOrEdit extends PureComponent {
     const { id, clientId, name, email, mobile } = this.state
 
     // Validate
-    if(!isEmpty(name) && !isEmpty(email) && !isEmpty(mobile)) {
+    if(!isEmpty(name) && !isEmpty(clientId) && !isEmpty(email) && !isEmpty(mobile)) {
       messageShow('Adding interviewer, please wait..')
 
       this.isLoadingToggle(true)
@@ -126,7 +126,7 @@ class CreateOrEdit extends PureComponent {
         this.isLoadingToggle(false)
       }
     } else {
-      messageShow('Please enter interviewer name.')
+      messageShow('Please enter all the required information.')
     }
   }
 

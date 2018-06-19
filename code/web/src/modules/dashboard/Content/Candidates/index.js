@@ -122,7 +122,9 @@ class Candidates extends PureComponent {
             }
           }}
         >
-          { <View /> }
+          <div className={classes.drawer}>
+            { <View /> }
+          </div>
         </Drawer>
 
         {/* Candidate create or edit */}
@@ -136,13 +138,15 @@ class Candidates extends PureComponent {
             }
           }}
         >
-          <CreateOrEdit
-            elevation={0}
-            clientId={client._id}
-            clientShowLoading={false}
-            successCallback={this.successCallback}
-            clientSelectionHide={true}
-          />
+          <div className={classes.drawer}>
+            <CreateOrEdit
+              elevation={0}
+              clientId={client._id}
+              clientShowLoading={false}
+              successCallback={this.successCallback}
+              clientSelectionHide={true}
+            />
+          </div>
         </Drawer>
       </div>
     )

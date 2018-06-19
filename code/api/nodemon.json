@@ -1,5 +1,5 @@
 {
-  "delay": 3000,
+  "delay": 1000,
   "ignore": [
     "build/*",
     "node_modules/**/node_modules",

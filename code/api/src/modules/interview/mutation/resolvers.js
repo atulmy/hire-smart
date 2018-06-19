@@ -8,11 +8,13 @@ import params from '../../../setup/config/params'
 import Kanban from '../../kanban/model'
 import Interview from '../model'
 import { send as sendEmail } from '../../email/send'
-import ReminderCandidate from '../../candidate/email/Reminder'
-import ReminderInterviewer from '../../interviewer/email/Reminder'
+import InterviewInviteCandidate from '../../candidate/email/InterviewInvite'
+import InterviewInviteInterviewer from '../../interviewer/email/InterviewInvite'
+import InterviewReminderCandidate from '../../candidate/email/InterviewReminder'
+import InterviewReminderInterviewer from '../../interviewer/email/InterviewReminder'
 
 // Create
-export async function create(parentValue, { clientId, candidateId, interviewerId, dateTime, mode, note = '' }, { auth }) {
+export async function create(parentValue, { clientId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, { auth }) {
   if(auth.user && auth.user.id) {
     // Create interview
     const interview = await Interview.create({
@@ -49,6 +51,11 @@ export async function create(parentValue, { clientId, candidateId, interviewerId
       })
     }
 
+    // Send emails
+    if(invite) {
+      sentEmails(interview._id, auth, 'invite')
+    }
+
     return interview
   } else {
     throw new Error('Please login to create interview.')
@@ -56,9 +63,9 @@ export async function create(parentValue, { clientId, candidateId, interviewerId
 }
 
 // Update
-export async function update(parentValue, { id, clientId, candidateId, interviewerId, dateTime, mode, note = '' }, { auth }) {
+export async function update(parentValue, { id, clientId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
-    return await Interview.updateOne(
+    const interview = await Interview.updateOne(
       { _id: id },
       {
         $set: {
@@ -71,6 +78,13 @@ export async function update(parentValue, { id, clientId, candidateId, interview
         }
       }
     )
+
+    // Send emails
+    if(invite) {
+      sentEmails(id, auth, 'update')
+    }
+
+    return interview
   } else {
     throw new Error('Please login to update interview.')
   }
@@ -100,59 +114,92 @@ export async function remind(parentValue, { id }, { auth }) {
       .populate('interviewerId')
       .populate('userId')
 
-
     const date = moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)
-    const subject = `${ interview.organizationId.name } Interview - ${ date }`
+    const subject = `${ interview.organizationId.name } Interview Reminder - ${ date }`
 
     // Send emails
 
-    // 1. To Candidate
-    sendEmail({
-      to: {
-        name: interview.candidateId.name,
-        email: interview.candidateId.email,
-      },
-      from: auth.user,
-      cc: auth.user,
-      subject,
-      template:
-        <ReminderCandidate
-          candidateName={interview.candidateId.name}
-          date={date}
-          organizationName={interview.organizationId.name}
-          mode={params.interview.modes.filter(item => item.key === interview.mode)[0].name}
-          note={interview.note}
-          userName={interview.organizationId.name}
-        />,
-      organizationId: auth.user.organizationId,
-      userId: auth.user.id
-    })
-
-    // 2. To Interviewer
-    sendEmail({
-      to: {
-        name: interview.candidateId.name,
-        email: interview.candidateId.email,
-      },
-      from: auth.user,
-      cc: auth.user,
-      subject,
-      template:
-        <ReminderInterviewer
-          interviewerName={interview.interviewerId.name}
-          candidateName={interview.candidateId.name}
-          date={date}
-          organizationName={interview.organizationId.name}
-          mode={params.interview.modes.filter(item => item.key === interview.mode)[0].name}
-          note={interview.note}
-          userName={interview.organizationId.name}
-        />,
-      organizationId: auth.user.organizationId,
-      userId: auth.user.id
-    })
+    sentEmails(id, auth, 'remind')
 
     return interview
   } else {
     throw new Error('Please login to send interview reminders.')
   }
+}
+
+// Email to Candidate and Interviewer
+async function sentEmails(interviewId, auth, type = 'invite') {
+  const interviewDetails = await Interview.findOne({
+    _id: interviewId,
+    organizationId: auth.user.organizationId
+  })
+    .populate('organizationId')
+    .populate('candidateId')
+    .populate('interviewerId')
+    .populate('userId')
+
+  const date = moment(interviewDetails.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)
+  const subjectAction = {
+    invite: 'Invitation',
+    update: 'Updated',
+    remind: 'Reminder',
+  }[type]
+  const subject = `${ interviewDetails.organizationId.name } Interview ${ subjectAction } - ${ date }`
+
+  // Send emails
+
+  // 1. To Candidate
+
+  const candidateProps = {
+    candidateName: interviewDetails.candidateId.name,
+    date,
+    organizationName: interviewDetails.organizationId.name,
+    mode: params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name,
+    note: interviewDetails.note,
+    userName: interviewDetails.organizationId.name
+  }
+
+  const TemplateCandidate = {
+    invite: <InterviewInviteCandidate { ...candidateProps } />,
+    update: <InterviewInviteCandidate { ...candidateProps } />,
+    remind: <InterviewReminderCandidate { ...candidateProps } />,
+  }[type]
+
+  sendEmail({
+    to: { name: interviewDetails.candidateId.name, email: interviewDetails.candidateId.email },
+    from: auth.user,
+    cc: auth.user,
+    subject,
+    template: TemplateCandidate,
+    organizationId: auth.user.organizationId,
+    userId: auth.user.id
+  })
+
+  // 2. To Interviewer
+
+  const interviewerProps = {
+    interviewerName: interviewDetails.interviewerId.name,
+    candidateName: interviewDetails.candidateId.name,
+    date,
+    organizationName: interviewDetails.organizationId.name,
+    mode: params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name,
+    note: interviewDetails.note,
+    userName: interviewDetails.organizationId.name
+  }
+
+  const TemplateInterviewer = {
+    invite: <InterviewInviteInterviewer { ...interviewerProps } />,
+    update: <InterviewInviteInterviewer { ...interviewerProps } />,
+    remind: <InterviewReminderInterviewer  { ...interviewerProps } />,
+  }[type]
+
+  sendEmail({
+    to: { name: interviewDetails.interviewerId.name, email: interviewDetails.interviewerId.email },
+    from: auth.user,
+    cc: auth.user,
+    subject,
+    template: TemplateInterviewer,
+    organizationId: auth.user.organizationId,
+    userId: auth.user.id
+  })
 }

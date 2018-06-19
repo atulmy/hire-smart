@@ -16,6 +16,9 @@ import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
 import IconCheck from '@material-ui/icons/Check'
 import IconClose from '@material-ui/icons/Close'
@@ -44,7 +47,8 @@ class CreateOrEdit extends PureComponent {
       interviewerId: '',
       dateTime: this.defaultDate(),
       mode: '',
-      note: ''
+      note: '',
+      invite: true,
     }
 
     this.state = {
@@ -102,7 +106,7 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, candidateId, interviewerId, dateTime, mode, note } = this.state
+    const { id, clientId, candidateId, interviewerId, dateTime, mode, note, invite } = this.state
 
     // Validate
     if(!isEmpty(clientId) && !isEmpty(candidateId) && !isEmpty(interviewerId)) {
@@ -112,7 +116,7 @@ class CreateOrEdit extends PureComponent {
 
       // Create or Update
       try {
-        const { data } = await createOrUpdate({ id, clientId, candidateId, interviewerId, dateTime: dateTime.format(), mode, note })
+        const { data } = await createOrUpdate({ id, clientId, candidateId, interviewerId, dateTime: dateTime.format(), mode, note, invite })
 
         if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
@@ -152,9 +156,13 @@ class CreateOrEdit extends PureComponent {
       .hours(9).minutes(0).seconds(0)
   }
 
+  onCheck = name => event => {
+    this.setState({ [name]: event.target.checked })
+  }
+
   render() {
     const { classes, elevation, candidatesByClient, interviewersByClient } = this.props
-    const { isLoading, id, candidateId, interviewerId, dateTime, mode, note } = this.state
+    const { isLoading, id, candidateId, interviewerId, dateTime, mode, note, invite } = this.state
 
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
@@ -306,6 +314,22 @@ class CreateOrEdit extends PureComponent {
               multiline
               fullWidth
             />
+          </Grid>
+
+          {/* Input - send email invite */}
+          <Grid item xs={12}>
+            <FormGroup row title={'A calender invite will be sent to candidate and interviewer via email.'}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={invite}
+                    onChange={this.onCheck('invite')}
+                    color={'default'}
+                  />
+                }
+                label={'Send email invite'}
+              />
+            </FormGroup>
           </Grid>
 
           {/* Button -  Save */}

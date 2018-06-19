@@ -77,7 +77,9 @@ class List extends PureComponent {
             }
           }}
         >
-          { <View /> }
+          <div className={classes.drawer}>
+            { <View /> }
+          </div>
         </Drawer>
       </div>
     )

@@ -236,10 +236,12 @@ class Overview extends PureComponent {
                         }
                       }}
                     >
-                      <Details
-                        kanbanId={kanbanId}
-                        toggleDrawer={this.toggleDrawer}
-                      />
+                      <div className={classes.drawer}>
+                        <Details
+                          kanbanId={kanbanId}
+                          toggleDrawer={this.toggleDrawer}
+                        />
+                      </div>
                     </Drawer>
 
                     {/* Candidate create or edit */}
@@ -253,13 +255,15 @@ class Overview extends PureComponent {
                         }
                       }}
                     >
-                      <CreateOrEdit
-                        elevation={0}
-                        clientId={client._id}
-                        clientShowLoading={false}
-                        successCallback={this.successCallback}
-                        clientSelectionHide={true}
-                      />
+                      <div className={classes.drawer}>
+                        <CreateOrEdit
+                          elevation={0}
+                          clientId={client._id}
+                          clientShowLoading={false}
+                          successCallback={this.successCallback}
+                          clientSelectionHide={true}
+                        />
+                      </div>
                     </Drawer>
                   </div>
                 </Fade>

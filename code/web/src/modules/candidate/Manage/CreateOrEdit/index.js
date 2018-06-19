@@ -99,7 +99,7 @@ class CreateOrEdit extends PureComponent {
       [event.target.name]: event.target.value
     })
 
-    if(event.target.name === 'clientId') {
+    if(event.target.name === 'clientId' && event.target.value) {
       const { getJobListByClient } = this.props
 
       getJobListByClient({ clientId: event.target.value })

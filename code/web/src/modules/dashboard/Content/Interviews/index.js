@@ -149,7 +149,9 @@ class Interviews extends PureComponent {
             }
           }}
         >
-          { <View /> }
+          <div className={classes.drawer}>
+            { <View /> }
+          </div>
         </Drawer>
 
         {/* Candidate create or edit */}

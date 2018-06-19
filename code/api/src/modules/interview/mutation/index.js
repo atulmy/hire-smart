@@ -1,5 +1,5 @@
 // Imports
-import { GraphQLString } from 'graphql'
+import { GraphQLString, GraphQLBoolean } from 'graphql'
 
 // App Imports
 import InterviewType from '../types'
@@ -35,6 +35,11 @@ const fields = {
   note: {
     name: 'note',
     type: GraphQLString
+  },
+
+  invite: {
+    name: 'invite',
+    type: GraphQLBoolean
   }
 }
 
