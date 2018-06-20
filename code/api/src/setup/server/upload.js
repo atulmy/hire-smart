@@ -4,6 +4,7 @@ import multer from 'multer'
 
 // App Imports
 import serverConfig from '../config/server.json'
+import params from '../config/params'
 
 // File upload configurations and route
 export default function (server) {
@@ -11,7 +12,7 @@ export default function (server) {
 
   // Set destination
   const storage = multer.diskStorage({
-    destination: path.join(__dirname, '..', '..', '..', 'public', 'uploads'),
+    destination: path.join(__dirname, '..', '..', '..', 'public', params.candidate.resume.folder),
 
     filename: function (request, file, callback) {
       callback(null, Date.now() + path.extname(file.originalname))
@@ -28,13 +29,12 @@ export default function (server) {
       if (!error) {
         response.json({
           success: true,
-          file: request.file.filename
+          file: `/${ params.candidate.resume.folder }/${ request.file.filename }`
         })
       } else {
         response.json({
           success: false,
-          file: null,
-          fileOriginal: null
+          file: null
         })
       }
     })

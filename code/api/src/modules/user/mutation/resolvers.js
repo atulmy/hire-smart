@@ -22,10 +22,16 @@ export async function create(parentValue, { name, email, password }) {
     // User does not exists
     const passwordHashed = await bcrypt.hash(password, serverConfig.saltRounds)
 
+    const organization = await Organization.create({
+      name: 'Organization'
+    })
+
     return await User.create({
+      organizationId: organization._id,
       name,
       email,
-      password: passwordHashed
+      password: passwordHashed,
+      demo: false
     })
   } else {
     // User exists
@@ -40,11 +46,11 @@ export async function startNow(parentValue, {}, { auth }) {
     throw new Error(`You are already logged in. Please go to your dashboard to continue.`)
   } else {
     try {
-      let userDetails
+      let user
 
-      if(NODE_ENV === 'development') {
+      if(NODE_ENV === 'development1') {
         // Use already created user instead of creating new every time
-        userDetails = await User.findOne({email: 'user@hiresmart.app'})
+        user = await User.findOne({ email: 'user@hiresmart.app' })
       } else {
         // Create new Organization
         const organization = await Organization.create({
@@ -57,24 +63,25 @@ export async function startNow(parentValue, {}, { auth }) {
         // User does not exists
         const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), serverConfig.saltRounds)
 
-        userDetails = await User.create({
+        user = await User.create({
           organizationId: organization._id,
           name: 'Demo User',
           email: `demo.user+${ demoUser._id }@${ params.site.domain }`,
-          password: passwordHashed
+          password: passwordHashed,
+          demo: true
         })
       }
 
       const token = {
-        id: userDetails._id,
-        organizationId: userDetails.organizationId,
-        name: userDetails.name,
-        email: userDetails.email,
-        role: userDetails.role,
+        id: user._id,
+        organizationId: user.organizationId,
+        name: user.name,
+        email: user.email,
+        role: user.role,
       }
 
       return {
-        user: userDetails,
+        user,
         token: jwt.sign(token, serverConfig.secret)
       }
     } catch(error) {
@@ -117,7 +124,8 @@ export async function inviteToOrganization(parentValue, { name, email }, { auth 
         organizationId: auth.user.organizationId,
         name,
         email,
-        password: passwordHashed
+        password: passwordHashed,
+        demo: false
       })
     } else {
       // User exists

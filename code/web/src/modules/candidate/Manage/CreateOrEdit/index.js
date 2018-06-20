@@ -130,7 +130,7 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
+    const { id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected, isUploadingFile } = this.state
 
     // Validate
     if(!isEmpty(clientId) && !isEmpty(name) && !isEmpty(email) && !isEmpty(mobile) && !isEmpty(experience) && !isEmpty(resume) && !isEmpty(salaryCurrent) && !isEmpty(salaryExpected)) {
@@ -167,65 +167,39 @@ class CreateOrEdit extends PureComponent {
     }
   }
 
-  onUpload = (event) => {
+  onUpload = async event => {
     const { upload, messageShow } = this.props
 
     messageShow('Uploading file, please wait...')
 
     this.isUploadingFileToggle(true)
 
-    let data = new FormData()
-    data.append('file', event.target.files[0])
+    let file = new FormData()
+    file.append('file', event.target.files[0])
 
     // Upload image
-
     try {
-      const { data } = upload(data)
+      const { data } = await upload(file)
 
-      if(data.errors && data.errors.length > 0) {
-        messageShow(data.errors[0].message)
+      if(data.success) {
+        this.props.messageShow('File uploaded successfully.')
+
+        this.setState({
+          resume: data.file
+        })
       } else {
-
-
-        if(!isEmpty(id)) {
-          messageShow('Candidate updated successfully.')
-        } else {
-          messageShow('Candidate added successfully.')
-        }
+        messageShow('There was some error. Please try again.')
       }
     } catch(error) {
       messageShow('There was some error. Please try again.')
     } finally {
       this.isUploadingFileToggle(false)
     }
-
-
-    upload(data)
-      .then(response => {
-        if (response.status === 200) {
-          this.props.messageShow('File uploaded successfully.')
-
-          this.setState({
-            resume: `/uploads/${ response.data.file }`
-          })
-        } else {
-          this.props.messageShow('Please try again.')
-        }
-      })
-      .catch(error => {
-        this.props.messageShow('There was some error. Please try again.')
-
-      })
-      .then(() => {
-        this.setState({
-          isLoading: false
-        })
-      })
   }
 
   render() {
     const { classes, clients, elevation, clientSelectionHide, jobsByClient } = this.props
-    const { isLoading, id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
+    const { isLoading, id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected, isUploadingFile } = this.state
 
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
@@ -357,6 +331,7 @@ class CreateOrEdit extends PureComponent {
                 required={id === ''}
                 fullWidth
                 className={classes.buttonUpload}
+                disabled={isUploadingFile}
               >
                 { resume ? '✔️ Resume Uploaded' : 'Upload Resume' }
               </Button>

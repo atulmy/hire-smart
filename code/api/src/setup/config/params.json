@@ -46,5 +46,11 @@
       { "key": "f2f", "name": "Face to face" },
       { "key": "assignment", "name": "Assignment" }
     ]
+  },
+
+  "candidate": {
+    "resume": {
+      "folder": "uploads"
+    }
   }
 }
