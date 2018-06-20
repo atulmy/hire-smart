@@ -1,10 +1,12 @@
 // Imports
 import path from 'path'
 import multer from 'multer'
+import fs from 'fs'
 
 // App Imports
-import serverConfig from '../config/server.json'
 import params from '../config/params'
+import { slug } from '../helpers'
+import Candidate from '../../modules/candidate/model'
 
 // File upload configurations and route
 export default function (server) {
@@ -12,7 +14,7 @@ export default function (server) {
 
   // Set destination
   const storage = multer.diskStorage({
-    destination: path.join(__dirname, '..', '..', '..', 'public', params.candidate.resume.folder),
+    destination: path.join(__dirname, '..', '..', '..', 'public', params.candidate.resume.path),
 
     filename: function (request, file, callback) {
       callback(null, Date.now() + path.extname(file.originalname))
@@ -24,12 +26,12 @@ export default function (server) {
   }).single('file')
 
   // Upload route
-  server.post(serverConfig.upload.endpoint, (request, response) => {
+  server.post(`/upload`, (request, response) => {
     upload(request, response, function (error) {
       if (!error) {
         response.json({
           success: true,
-          file: `/${ params.candidate.resume.folder }/${ request.file.filename }`
+          file: request.file.filename
         })
       } else {
         response.json({
@@ -39,4 +41,31 @@ export default function (server) {
       }
     })
   })
+
+  // Download route
+  server.get('/download/:candidateId', async function (request, response) {
+    const errorMessage = 'Sorry, the file you are trying to download does not exists.'
+    const candidate = await Candidate.findOne({ _id: request.params.candidateId })
+
+    if(candidate) {
+      const filePath = path.join(__dirname, '..', '..', '..', params.candidate.resume.path, candidate.resume)
+
+      try {
+        const fileCheck = fs.existsSync(filePath)
+
+        if(fileCheck) {
+          const fileName = `${ slug(candidate.name) }.${ path.extname(candidate.resume) }`
+
+          response.download(filePath, fileName)
+        } else {
+          response.send(errorMessage)
+        }
+      } catch(error) {
+        response.send(errorMessage)
+      }
+    } else {
+      response.send(errorMessage)
+    }
+  })
+
 }

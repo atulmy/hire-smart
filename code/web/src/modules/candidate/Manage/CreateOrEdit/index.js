@@ -320,7 +320,6 @@ class CreateOrEdit extends PureComponent {
               id={'contained-button-file'}
               type={'file'}
               onChange={this.onUpload}
-              required={true}
             />
 
             <label htmlFor={'contained-button-file'}>

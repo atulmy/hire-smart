@@ -1,8 +1,8 @@
 {
-  "delay": 1000,
   "ignore": [
     "build/*",
     "node_modules/**/node_modules",
-    "public/*"
+    "public/*",
+    "uploads/*"
   ]
 }

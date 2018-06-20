@@ -10,8 +10,8 @@ import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
 // App Imports
-import { plural } from '../../../../../setup/helpers'
 import { API_URL } from '../../../../../setup/config/env'
+import { plural } from '../../../../../setup/helpers'
 
 // Component
 const ViewFields = (props) => {
@@ -101,7 +101,7 @@ const ViewFields = (props) => {
               </Typography>
 
               <Typography variant={'button'} gutterBottom>
-                { candidate.resume ? <a href={`${ API_URL}${ candidate.resume }`} target={'_blank'} rel={'noopener noreferrer'}>View</a> : '-' }
+                { candidate.resume ? <a href={`${ API_URL}/download/${ candidate._id }`} target={'_blank'} rel={'noopener noreferrer'}>Download</a> : '-' }
               </Typography>
             </div>
           </Grid>

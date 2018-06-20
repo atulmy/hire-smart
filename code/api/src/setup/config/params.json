@@ -50,7 +50,7 @@
 
   "candidate": {
     "resume": {
-      "folder": "uploads"
+      "path": "uploads"
     }
   }
 }
