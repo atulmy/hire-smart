@@ -10,6 +10,7 @@ import HTML5Backend from 'react-dnd-html5-backend'
 // UI Imports
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import Tooltip from '@material-ui/core/Tooltip'
 import Drawer from '@material-ui/core/Drawer'
 import Divider from '@material-ui/core/Divider'
 import IconCached from '@material-ui/icons/Cached'
@@ -190,9 +191,11 @@ class Overview extends PureComponent {
                               className={classes.columnTitle}
                               style={{ borderBottom: `2px solid ${ column.color }`,  }}
                             >
-                              <Typography variant="button" style={{ color: grey[800], textTransform: 'uppercase', fontWeight: 400, fontSize: '0.75rem' }}>
-                                { column.name } { this.columnCount(column.key) }
-                              </Typography>
+                              <Tooltip title={column.help} placement={'top'} enterDelay={100}>
+                                <Typography variant="button" style={{ color: grey[800], textTransform: 'uppercase', fontWeight: 400, fontSize: '0.75rem' }}>
+                                  { column.name } { this.columnCount(column.key) }
+                                </Typography>
+                              </Tooltip>
                             </div>
 
                             {/* Candidates */}

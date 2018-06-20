@@ -31,7 +31,7 @@ export default async function () {
       email: `candidate.${ i }@${ organization.domain }`,
       mobile: '9876543210',
       experience: '5.5',
-      resume: 'resume.pdf',
+      resume: '/uploads/resume.pdf',
       salaryCurrent: '10 LPA',
       salaryExpected: '15 LPA'
     })

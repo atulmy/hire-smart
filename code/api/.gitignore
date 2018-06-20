@@ -1,5 +1,5 @@
 node_modules/
 build/
 public/uploads/*
-!public/uploads/.gitkeep
+!public/uploads/resume.pdf
 .env

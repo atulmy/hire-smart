@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
 import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -23,6 +24,7 @@ import styles from './styles'
 
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
+import { upload } from '../../../common/api/actions'
 import { getList as getClientList } from '../../../client/api/actions/query'
 import { getListByClient as getJobListByClient } from '../../../job/api/actions/query'
 import { createOrUpdate, editClose } from '../../api/actions/mutation'
@@ -49,6 +51,7 @@ class CreateOrEdit extends PureComponent {
 
     this.state = {
       isLoading: false,
+      isUploadingFile: false,
 
       ...this.client
     }
@@ -91,6 +94,12 @@ class CreateOrEdit extends PureComponent {
   isLoadingToggle = isLoading => {
     this.setState({
       isLoading
+    })
+  }
+
+  isUploadingFileToggle = isUploadingFile => {
+    this.setState({
+      isUploadingFile
     })
   }
 
@@ -156,6 +165,62 @@ class CreateOrEdit extends PureComponent {
     } else {
       messageShow('Please enter all the required information.')
     }
+  }
+
+  onUpload = (event) => {
+    const { upload, messageShow } = this.props
+
+    messageShow('Uploading file, please wait...')
+
+    this.isUploadingFileToggle(true)
+
+    let data = new FormData()
+    data.append('file', event.target.files[0])
+
+    // Upload image
+
+    try {
+      const { data } = upload(data)
+
+      if(data.errors && data.errors.length > 0) {
+        messageShow(data.errors[0].message)
+      } else {
+
+
+        if(!isEmpty(id)) {
+          messageShow('Candidate updated successfully.')
+        } else {
+          messageShow('Candidate added successfully.')
+        }
+      }
+    } catch(error) {
+      messageShow('There was some error. Please try again.')
+    } finally {
+      this.isUploadingFileToggle(false)
+    }
+
+
+    upload(data)
+      .then(response => {
+        if (response.status === 200) {
+          this.props.messageShow('File uploaded successfully.')
+
+          this.setState({
+            resume: `/uploads/${ response.data.file }`
+          })
+        } else {
+          this.props.messageShow('Please try again.')
+        }
+      })
+      .catch(error => {
+        this.props.messageShow('There was some error. Please try again.')
+
+      })
+      .then(() => {
+        this.setState({
+          isLoading: false
+        })
+      })
   }
 
   render() {
@@ -275,17 +340,27 @@ class CreateOrEdit extends PureComponent {
 
           {/* Input - resume */}
           <Grid item xs={12}>
-            <TextField
-              name={'resume'}
-              value={nullToEmptyString(resume)}
-              onChange={this.onType}
-              label={'Resume'}
-              placeholder={'Upload candidate resume'}
+            <input
+              accept={'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document'}
+              style={{ display: 'none' }}
+              id={'contained-button-file'}
+              type={'file'}
+              onChange={this.onUpload}
               required={true}
-              margin={'normal'}
-              autoComplete={'off'}
-              fullWidth
             />
+
+            <label htmlFor={'contained-button-file'}>
+              <Button
+                variant="outlined"
+                component={'span'}
+                type={'file'}
+                required={id === ''}
+                fullWidth
+                className={classes.buttonUpload}
+              >
+                { resume ? '✔️ Resume Uploaded' : 'Upload Resume' }
+              </Button>
+            </label>
           </Grid>
 
           {/* Input - job */}
@@ -401,6 +476,7 @@ CreateOrEdit.propTypes = {
   editClose: PropTypes.func.isRequired,
   getClientList: PropTypes.func.isRequired,
   getJobListByClient: PropTypes.func.isRequired,
+  upload: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 CreateOrEdit.defaultProps = {
@@ -419,4 +495,4 @@ function createOrEditState(state) {
   }
 }
 
-export default connect(createOrEditState, { createOrUpdate, editClose, getClientList, getJobListByClient, messageShow })(withStyles(styles)(CreateOrEdit))
+export default connect(createOrEditState, { createOrUpdate, editClose, getClientList, getJobListByClient, upload, messageShow })(withStyles(styles)(CreateOrEdit))

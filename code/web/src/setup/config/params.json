@@ -21,11 +21,11 @@
 
   "kanban": {
     "columns": [
-      { "key": "shortlisted", "name": "Shortlisted", "color": "grey" },
-      { "key": "progress", "name": "In Progress", "color": "blue" },
-      { "key": "hold", "name": "On Hold", "color": "orange" },
-      { "key": "rejected", "name": "Rejected", "color": "red" },
-      { "key": "selected", "name": "Selected", "color": "green" }
+      { "key": "shortlisted", "name": "Shortlisted", "color": "grey", "help": "The candidate is considered for interview." },
+      { "key": "progress", "name": "In Progress", "color": "blue", "help": "The candidate is currently under interview process." },
+      { "key": "hold", "name": "On Hold", "color": "orange", "help": "On basis of interview feedback, the candidate is not yet rejected or selected." },
+      { "key": "rejected", "name": "Rejected", "color": "red", "help": "The candidate profile was not suitable for the job opening." },
+      { "key": "selected", "name": "Selected", "color": "green", "help": "THe candidate has successfully cleared the interview and is selected for the job opening." }
     ]
   },
 

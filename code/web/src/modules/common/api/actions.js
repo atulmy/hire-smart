@@ -1,6 +1,6 @@
 // Actions Types
 import axios from 'axios/index'
-import API_URL from '../../../setup/config/env'
+import { API_URL } from '../../../setup/config/env'
 
 export const DRAWER_SHOW = 'COMMON/DRAWER_SHOW'
 export const DRAWER_HIDE = 'COMMON/DRAWER_HIDE'

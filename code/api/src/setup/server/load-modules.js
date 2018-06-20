@@ -24,7 +24,7 @@ export default function (server) {
   server.use(cookieParser())
 
   // Static files folder
-  server.use(express.static(path.join(__dirname, '..', '..', 'public')))
+  server.use(express.static(path.join(__dirname, '..', '..', '..', 'public')))
 
   // HTTP logger
   if(NODE_ENV === 'development') {

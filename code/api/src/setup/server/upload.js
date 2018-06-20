@@ -14,7 +14,7 @@ export default function (server) {
     destination: path.join(__dirname, '..', '..', '..', 'public', 'uploads'),
 
     filename: function (request, file, callback) {
-      callback(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+      callback(null, Date.now() + path.extname(file.originalname))
     }
   })
 
@@ -33,7 +33,8 @@ export default function (server) {
       } else {
         response.json({
           success: false,
-          file: null
+          file: null,
+          fileOriginal: null
         })
       }
     })

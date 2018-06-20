@@ -11,6 +11,7 @@ import styles from './styles'
 
 // App Imports
 import { plural } from '../../../../../setup/helpers'
+import { API_URL } from '../../../../../setup/config/env'
 
 // Component
 const ViewFields = (props) => {
@@ -99,8 +100,8 @@ const ViewFields = (props) => {
                 Resume
               </Typography>
 
-              <Typography gutterBottom>
-                { candidate.resume }
+              <Typography variant={'button'} gutterBottom>
+                { candidate.resume ? <a href={`${ API_URL}${ candidate.resume }`} target={'_blank'} rel={'noopener noreferrer'}>View</a> : '-' }
               </Typography>
             </div>
           </Grid>

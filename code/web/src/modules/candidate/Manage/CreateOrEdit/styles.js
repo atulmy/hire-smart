@@ -15,6 +15,10 @@ const styles = theme => ({
 
   formContainer: {
     padding: theme.spacing.unit * 2
+  },
+
+  buttonUpload: {
+    marginTop: theme.spacing.unit * 2.5
   }
 })
 

@@ -76,7 +76,7 @@ const ListTable = (props) => {
               ))
             : <TableRow>
                 <TableCell colSpan={4}>
-                  <EmptyMessage message={'You have not scheduled any interview yet.'} />
+                  <EmptyMessage message={'You have not scheduled any interviews yet.'} />
                 </TableCell>
               </TableRow>
         }

@@ -39,7 +39,8 @@ const styles = theme => ({
     textAlign: 'center',
     margin: `0 ${ theme.spacing.unit * 2.5 }px`,
     paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit
+    paddingBottom: theme.spacing.unit,
+    cursor: 'default'
   },
   columnButtonAdd: {
     color: grey[500],
