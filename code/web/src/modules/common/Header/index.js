@@ -77,7 +77,7 @@ class Header extends PureComponent {
             {/* Demo Message */}
             {
               user.isAuthenticated && user.details.demo &&
-              <Link to={routes.account.path}>
+              <Link to={routes.account.child.demo.path}>
                 <Tooltip title={'You are using a demo account. Certain features are disabled. Click here to enable all features.'} placement={'bottom'}>
                   <Button
                     variant={'raised'}

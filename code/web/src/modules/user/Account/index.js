@@ -1,56 +1,36 @@
 // Imports
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
 // UI Imports
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
 import Fade from '@material-ui/core/Fade'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { messageShow } from '../../common/api/actions'
-import { logout } from '../api/actions/mutation'
+import params from '../../../setup/config/params'
+import Sidebar from './Sidebar'
+import Content from './Content'
 
 // Component
 class Account extends PureComponent {
-  onLogout = () => {
-    const { logout, messageShow } = this.props
-    logout()
-
-    messageShow('You have been logged out successfully.')
-  }
-
   render() {
     const { classes } = this.props
 
     return(
       <Fade in={true}>
-        <div>
+        <div className={classes.root}>
           {/* Meta tags */}
           <Helmet>
-            <title>Account - HireSmart</title>
+            <title>Account - { params.site.name }</title>
           </Helmet>
 
-          <Grid container>
-            <Grid item xs={12}>
-              <Typography variant={'display1'}>
-                Account
-              </Typography>
+          {/* Sidebar */}
+          <Sidebar />
 
-              <Button
-                variant={'raised'}
-                color={'primary'}
-                onClick={this.onLogout}
-              >
-                Logout
-              </Button>
-            </Grid>
-          </Grid>
+          {/* Content */}
+          <Content />
         </div>
       </Fade>
     )
@@ -59,9 +39,7 @@ class Account extends PureComponent {
 
 // Component Properties
 Account.propTypes = {
-  classes: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
-  messageShow: PropTypes.func.isRequired
+  classes: PropTypes.object.isRequired
 }
 
-export default connect(null, { logout, messageShow })(withStyles(styles)(Account))
+export default withStyles(styles)(Account)

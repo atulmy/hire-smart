@@ -10,6 +10,14 @@ export default {
   account: {
     path: '/account',
     component: Account,
-    auth: true
-  }
+    auth: true,
+    child: {
+      demo: {
+        path: '/account/demo'
+      },
+      subscriptions: {
+        path: '/account/subscriptions'
+      }
+    }
+  },
 }

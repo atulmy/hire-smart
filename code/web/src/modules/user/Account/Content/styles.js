@@ -1,10 +1,11 @@
 // UI Imports
+import grey from '@material-ui/core/colors/grey'
 
 // Component Styles
 const styles = theme => ({
   root: {
     minHeight: 'calc(100vh - 100px)',
-    display: 'flex'
+    flex: 1
   }
 })
 
