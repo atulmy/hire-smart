@@ -10,15 +10,17 @@ import ListItem from '@material-ui/core/ListItem'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
-import IconErrorOutline from '@material-ui/icons/ErrorOutline'
+import IconError from '@material-ui/icons/Error'
 import InboxPerson from '@material-ui/icons/Person'
 import InboxExitToApp from '@material-ui/icons/ExitToApp'
+import grey from '@material-ui/core/colors/grey'
 import red from '@material-ui/core/colors/red'
 import green from '@material-ui/core/colors/green'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
+import params from '../../../../setup/config/params'
 import routes from '../../../../setup/routes'
 import { messageShow } from '../../../common/api/actions'
 import { logout } from '../../api/actions/mutation'
@@ -32,15 +34,17 @@ class Sidebar extends PureComponent {
   }
 
   onLogout = () => {
-    let check = confirm('Are you sure you want to log out?')
+    window.setTimeout(() => {
+      let check = confirm(`Are you sure you want to log out of ${ params.site.name }?`)
 
-    if(check) {
-      const {logout, messageShow} = this.props
+      if(check) {
+        const {logout, messageShow} = this.props
 
-      logout()
+        logout()
 
-      messageShow('You have been logged out successfully.')
-    }
+        messageShow('You have been logged out successfully.')
+      }
+    }, 300)
   }
 
   render() {
@@ -53,9 +57,9 @@ class Sidebar extends PureComponent {
           subheader={<ListSubheader component={'div'} className={classes.title}>Account</ListSubheader>}
         >
           <Link to={routes.account.child.demo.path}>
-            <ListItem button style={ this.isActiveMenu(routes.account.child.demo.path)  ? { backgroundColor: '#ddd' } : {}}>
+            <ListItem button style={ this.isActiveMenu(routes.account.child.demo.path)  ? { backgroundColor: grey[300] } : {}}>
               <Avatar style={ this.isActiveMenu(routes.account.child.demo.path) ? { backgroundColor: red[500] } : {}}>
-                <IconErrorOutline />
+                <IconError />
               </Avatar>
 
               <ListItemText primary={'Demo Account'} />
@@ -63,7 +67,7 @@ class Sidebar extends PureComponent {
           </Link>
 
           <Link to={routes.account.path}>
-            <ListItem button style={ this.isActiveMenu(routes.account.path)  ? { backgroundColor: '#ddd' } : {}}>
+            <ListItem button style={ this.isActiveMenu(routes.account.path)  ? { backgroundColor: grey[300] } : {}}>
               <Avatar style={ this.isActiveMenu(routes.account.path) ? { backgroundColor: green[500] } : {}}>
                 <InboxPerson />
               </Avatar>
