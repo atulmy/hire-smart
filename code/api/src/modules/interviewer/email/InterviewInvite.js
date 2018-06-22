@@ -18,16 +18,14 @@ const InterviewInvite = ({ interviewerName, candidateName, date, organizationNam
           <br />
 
           <span style={{ whiteSpace: 'pre-wrap' }}>
-            <strong>Note</strong> <br />
-
-            { note }
+            <strong>Note:</strong> { note }
           </span>
         </React.Fragment>
       }
     </p>
 
     <p>
-      When you are done with the interview, you can give feedback by using following link: <br />
+      After conducting the interview, please provide the feedback for { candidateName } by using following link: <br />
 
       <a href="http://hiresmart.app">Give Feedback</a>
     </p>

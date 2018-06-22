@@ -18,9 +18,7 @@ const InterviewReminder = ({ candidateName, date, organizationName, mode, note, 
           <br />
 
           <span style={{ whiteSpace: 'pre-wrap' }}>
-            <strong>Note</strong> <br />
-
-              { note }
+            <strong>Note:</strong> { note }
           </span>
         </React.Fragment>
       }

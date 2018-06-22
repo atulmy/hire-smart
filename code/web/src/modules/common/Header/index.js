@@ -15,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Drawer from '@material-ui/core/Drawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import IconMenu from '@material-ui/icons/Menu'
 import IconAccountCircle from '@material-ui/icons/AccountCircle'
@@ -27,6 +28,7 @@ import IconDomain from '@material-ui/icons/Domain'
 import IconPerson from '@material-ui/icons/Person'
 import IconPersonAdd from '@material-ui/icons/PersonAdd'
 import IconThumbsUpDown from '@material-ui/icons/ThumbsUpDown'
+import IconErrorOutline from '@material-ui/icons/ErrorOutline'
 import blue from '@material-ui/core/colors/blue'
 import pink from '@material-ui/core/colors/pink'
 import green from '@material-ui/core/colors/green'
@@ -71,6 +73,22 @@ class Header extends PureComponent {
                 { this.isNotHomePage() && <span>Hire<span className={classes.titleHighlight}>Smart</span></span> }
               </Link>
             </Typography>
+
+            {/* Demo Message */}
+            {
+              user.isAuthenticated && user.details.demo &&
+              <Link to={routes.account.path}>
+                <Tooltip title={'You are using a demo account. Certain features are disabled. Click here to enable all features.'} placement={'bottom'}>
+                  <Button
+                    variant={'raised'}
+                    className={classes.button}
+                  >
+                    <IconErrorOutline className={classes.buttonIcon} />
+                    Demo Account
+                  </Button>
+                </Tooltip>
+              </Link>
+            }
 
             {/* Call */}
             <Link to={routes.contact.path}>
@@ -172,6 +190,9 @@ class Header extends PureComponent {
             }
           </div>
         </Drawer>
+
+        {/* Drawer activator */}
+        <div onMouseOver={drawerShow} style={{ position: 'fixed', width: 3, top: 0, left: 0, bottom: 0, zIndex: 1, backgroundColor: 'transparent' }} />
       </div>
     )
   }

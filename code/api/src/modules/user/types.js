@@ -1,5 +1,5 @@
 // Imports
-import { GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLObjectType, GraphQLString, GraphQLBoolean } from 'graphql'
 
 // App Imports
 import OrganizationType from '../organization/types'
@@ -16,6 +16,7 @@ const UserType = new GraphQLObjectType({
     email: { type: GraphQLString },
     password: { type: GraphQLString },
     role: { type: GraphQLString },
+    demo: { type: GraphQLBoolean },
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString }
   })

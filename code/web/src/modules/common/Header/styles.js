@@ -1,8 +1,9 @@
 // UI Imports
 import yellow from '@material-ui/core/colors/yellow'
+import red from '@material-ui/core/colors/red'
 
 // Component Styles
-const styles = {
+const styles = theme => ({
   title: {
     flex: 1,
     textTransform: 'uppercase'
@@ -22,7 +23,20 @@ const styles = {
 
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.15)'
+  },
+
+  button: {
+    marginRight: theme.spacing.unit * 2,
+    backgroundColor: 'white',
+    color: red[500]
+  },
+
+  buttonIcon: {
+    width: 18,
+    height: 18,
+    marginRight: 5,
+    color: red[500]
   }
-}
+})
 
 export default styles

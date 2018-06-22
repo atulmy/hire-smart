@@ -18,9 +18,7 @@ const InterviewInvite = ({ candidateName, date, organizationName, mode, note, us
           <br />
 
           <span style={{ whiteSpace: 'pre-wrap' }}>
-            <strong>Note</strong> <br />
-
-              { note }
+            <strong>Note:</strong> { note }
           </span>
         </React.Fragment>
       }

@@ -78,6 +78,7 @@ export async function startNow(parentValue, {}, { auth }) {
         name: user.name,
         email: user.email,
         role: user.role,
+        demo: true
       }
 
       return {

@@ -14,7 +14,7 @@ export default function (server) {
 
   // Set destination
   const storage = multer.diskStorage({
-    destination: path.join(__dirname, '..', '..', '..', 'public', params.candidate.resume.path),
+    destination: path.join(__dirname, '..', '..', '..', params.candidate.resume.path),
 
     filename: function (request, file, callback) {
       callback(null, Date.now() + path.extname(file.originalname))

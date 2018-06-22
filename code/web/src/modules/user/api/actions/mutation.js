@@ -78,7 +78,7 @@ export function startNow(isLoading = true) {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'mutation',
         operation: 'userStartNow',
-        fields: ['user {name, email, role}', 'token']
+        fields: ['user {name, email, role, demo}', 'token']
       }))
 
       let message = ''
