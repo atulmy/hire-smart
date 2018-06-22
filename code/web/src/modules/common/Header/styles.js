@@ -36,6 +36,11 @@ const styles = theme => ({
     height: 18,
     marginRight: 5,
     color: red[500]
+  },
+
+  tooltip: {
+    fontSize: 14,
+    width: 400
   }
 })
 

@@ -11,7 +11,6 @@ const styles = theme => ({
 
   title: {
     flex: 1,
-    textTransform: 'uppercase',
     color: grey[700]
   },
 
