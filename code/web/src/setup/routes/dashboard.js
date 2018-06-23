@@ -1,5 +1,5 @@
 // App Imports
-import Dashboard from '../../modules/Dashboard'
+import Dashboard from '../../modules/dashboard'
 
 // Pages routes
 export default {
