@@ -61,22 +61,25 @@ const ViewFields = (props) => {
       </div>
 
       {/* Job Role */}
-      {
-        candidate.jobId && candidate.jobId.role &&
-        <div className={classes.item}>
-          <Typography variant={'caption'} gutterBottom>
-            Job Role
-          </Typography>
+      <div className={classes.item}>
+        <Typography variant={'caption'} gutterBottom>
+          Job Role
+        </Typography>
 
-          <Typography gutterBottom>
-            { candidate.jobId.role }
-          </Typography>
+        {
+          candidate.jobId && candidate.jobId.role
+            ? <React.Fragment>
+                <Typography gutterBottom>
+                  { candidate.jobId.role }
+                </Typography>
 
-          <Typography gutterBottom>
-            { candidate.jobId.description }
-          </Typography>
-        </div>
-      }
+                <Typography gutterBottom>
+                  { candidate.jobId.description }
+                </Typography>
+              </React.Fragment>
+            : <Typography gutterBottom>-</Typography>
+        }
+      </div>
 
       <Grid item xs={12}>
         <Grid container spacing={24}>
@@ -119,7 +122,7 @@ const ViewFields = (props) => {
               </Typography>
 
               <Typography gutterBottom>
-                { candidate.salaryCurrent }
+                { candidate.salaryCurrent || '-' }
               </Typography>
             </div>
           </Grid>
@@ -132,7 +135,7 @@ const ViewFields = (props) => {
               </Typography>
 
               <Typography gutterBottom>
-                { candidate.salaryExpected }
+                { candidate.salaryExpected || '-' }
               </Typography>
             </div>
           </Grid>

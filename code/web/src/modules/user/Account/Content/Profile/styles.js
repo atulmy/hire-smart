@@ -3,9 +3,19 @@ import grey from '@material-ui/core/colors/grey'
 
 // Component Styles
 const styles = theme => ({
-  root: {
-    padding: theme.spacing.unit,
-    backgroundColor: grey[500]
+  toolbar: {
+    backgroundColor: grey[50],
+    borderBottom: `1px solid ${ grey[100] }`,
+    minHeight: 50
+  },
+
+  title: {
+    flex: 1,
+    color: grey[700]
+  },
+
+  content: {
+    padding: theme.spacing.unit * 3
   },
 })
 

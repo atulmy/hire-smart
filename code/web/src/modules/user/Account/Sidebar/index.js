@@ -79,12 +79,10 @@ class Sidebar extends PureComponent {
             </ListItem>
           </Link>
 
-          <Link to={routes.account.path}>
-            <ListItem button onClick={this.onLogout}>
-              <Avatar><InboxExitToApp /></Avatar>
-              <ListItemText primary={'Logout'} />
-            </ListItem>
-          </Link>
+          <ListItem button onClick={this.onLogout}>
+            <Avatar><InboxExitToApp /></Avatar>
+            <ListItemText primary={'Logout'} />
+          </ListItem>
         </List>
       </div>
     )

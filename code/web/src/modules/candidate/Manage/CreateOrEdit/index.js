@@ -15,6 +15,7 @@ import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import IconButton from '@material-ui/core/IconButton'
 import IconCheck from '@material-ui/icons/Check'
 import IconClose from '@material-ui/icons/Close'
@@ -130,37 +131,41 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected, isUploadingFile } = this.state
+    const { id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
 
     // Validate
-    if(!isEmpty(clientId) && !isEmpty(name) && !isEmpty(email) && !isEmpty(mobile) && !isEmpty(experience) && !isEmpty(resume) && !isEmpty(salaryCurrent) && !isEmpty(salaryExpected)) {
-      messageShow('Adding candidate, please wait..')
+    if(!isEmpty(clientId) && !isEmpty(name) && !isEmpty(email) && !isEmpty(mobile) && !isEmpty(experience)) {
+      if(!isEmpty(resume)) {
+        messageShow('Adding candidate, please wait..')
 
-      this.isLoadingToggle(true)
+        this.isLoadingToggle(true)
 
-      // Create or Update
-      try {
-        const { data } = await createOrUpdate({ id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
+        // Create or Update
+        try {
+          const { data } = await createOrUpdate({ id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
 
-        if(data.errors && data.errors.length > 0) {
-          messageShow(data.errors[0].message)
-        } else {
-          // Update candidates list
-          successCallback(false)
-
-          // Reset form data
-          this.reset()
-
-          if(!isEmpty(id)) {
-            messageShow('Candidate updated successfully.')
+          if(data.errors && data.errors.length > 0) {
+            messageShow(data.errors[0].message)
           } else {
-            messageShow('Candidate added successfully.')
+            // Update candidates list
+            successCallback(false)
+
+            // Reset form data
+            this.reset()
+
+            if(!isEmpty(id)) {
+              messageShow('Candidate updated successfully.')
+            } else {
+              messageShow('Candidate added successfully.')
+            }
           }
+        } catch(error) {
+          messageShow('There was some error. Please try again.')
+        } finally {
+          this.isLoadingToggle(false)
         }
-      } catch(error) {
-        messageShow('There was some error. Please try again.')
-      } finally {
-        this.isLoadingToggle(false)
+      } else {
+        messageShow('Please upload resume.')
       }
     } else {
       messageShow('Please enter all the required information.')
@@ -324,7 +329,7 @@ class CreateOrEdit extends PureComponent {
 
             <label htmlFor={'contained-button-file'}>
               <Button
-                variant="outlined"
+                variant={'outlined'}
                 component={'span'}
                 type={'file'}
                 required={id === ''}
@@ -342,31 +347,35 @@ class CreateOrEdit extends PureComponent {
             <FormControl
               style={{marginTop: 10}}
               fullWidth
-              disabled={jobsByClient.list.length === 0}
             >
-              <InputLabel htmlFor="job-id">Job role</InputLabel>
+              <InputLabel htmlFor={'job-id'}>Job role</InputLabel>
               <Select
                 value={nullToEmptyString(jobId)}
                 onChange={this.onType}
                 inputProps={{
                   id: 'job-id',
-                  name: 'jobId',
-                  required: 'required'
+                  name: 'jobId'
                 }}
               >
-                <MenuItem value="">
-                  <em>Select job role</em>
-                </MenuItem>
                 {
                   jobsByClient.isLoading
-                    ? <Loading/>
+                    ? <MenuItem value="">
+                        <Loading/>
+                      </MenuItem>
                     : jobsByClient.list && jobsByClient.list.length > 0
-                    ? jobsByClient.list.map(job => (
-                      <MenuItem key={job._id} value={job._id}>{job.role}</MenuItem>
-                    ))
-                    : <MenuItem value="">
-                      <em>No job added.</em>
-                    </MenuItem>
+                        ? <React.Fragment>
+                            <MenuItem value="">
+                              <em>Select job role</em>
+                            </MenuItem>
+                            {
+                              jobsByClient.list.map(job => (
+                                <MenuItem key={job._id} value={job._id}>{job.role}</MenuItem>
+                              ))
+                            }
+                          </React.Fragment>
+                        : <MenuItem value="">
+                            <em>No job added.</em>
+                          </MenuItem>
                 }
               </Select>
             </FormControl>

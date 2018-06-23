@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import isEmpty from 'validator/lib/isEmpty'
 
 // UI Imports
+import Fade from '@material-ui/core/Fade'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
@@ -179,240 +180,242 @@ class Demo extends PureComponent {
     const { enableStep1, expandStep1, enableStep2, expandStep2, enableStep3, expandStep3  } = this.state
 
     return (
-      <div>
-        {/* Toolbar - Heading */}
-        <Toolbar className={classes.toolbar}>
-          <Typography
-            variant={'body2'}
-            color={'inherit'}
-            className={classes.title}
-          >
-            Verify Your Account
-          </Typography>
-        </Toolbar>
+      <Fade in={true}>
+        <div>
+          {/* Toolbar - Heading */}
+          <Toolbar className={classes.toolbar}>
+            <Typography
+              variant={'body2'}
+              color={'inherit'}
+              className={classes.title}
+            >
+              Verify Your Account
+            </Typography>
+          </Toolbar>
 
-        {/* Content */}
-        <div className={classes.content}>
-          {
-            details.demo
-              ? <React.Fragment>
-                  <Typography gutterBottom>
-                    You are using a demo account. Verify your account by completing below steps to enable all features and avoid losing your data.
-                  </Typography>
+          {/* Content */}
+          <div className={classes.content}>
+            {
+              details.demo
+                ? <React.Fragment>
+                    <Typography gutterBottom>
+                      You are using a demo account. Complete below steps to enable all features and avoid losing your data.
+                    </Typography>
 
-                  <Grid container style={{ marginTop: 16 }}>
-                    <Grid item xs={12} md={6}>
-                      {/* STEP 1: Provide your official email */}
-                      <ExpansionPanel className={classes.panel} disabled={!enableStep1} expanded={expandStep1}>>
-                        <ExpansionPanelSummary>
-                          <Typography variant={'body2'}>STEP 1: Provide your official email address</Typography>
-                        </ExpansionPanelSummary>
+                    <Grid container style={{ marginTop: 16 }}>
+                      <Grid item xs={12} md={6}>
+                        {/* STEP 1: Provide your official email */}
+                        <ExpansionPanel className={classes.panel} disabled={!enableStep1} expanded={expandStep1}>>
+                          <ExpansionPanelSummary>
+                            <Typography variant={'body2'}>STEP 1: Provide your official email address</Typography>
+                          </ExpansionPanelSummary>
 
-                        <ExpansionPanelDetails style={{ display: 'block' }}>
-                          <form onSubmit={this.step1}>
-                            {/* Input - email */}
-                            <Grid item xs={12}>
-                              <TextField
-                                name={'email'}
-                                type={'email'}
-                                value={nullToEmptyString(email)}
-                                onChange={this.onType}
-                                label={'Your email'}
-                                placeholder={'Enter official email'}
-                                required={true}
-                                margin={'normal'}
-                                autoComplete={'off'}
-                                style={{ marginTop: 0 }}
-                                fullWidth
-                                autoFocus
-                              />
-                            </Grid>
+                          <ExpansionPanelDetails style={{ display: 'block' }}>
+                            <form onSubmit={this.step1}>
+                              {/* Input - email */}
+                              <Grid item xs={12}>
+                                <TextField
+                                  name={'email'}
+                                  type={'email'}
+                                  value={nullToEmptyString(email)}
+                                  onChange={this.onType}
+                                  label={'Your email'}
+                                  placeholder={'Enter official email'}
+                                  required={true}
+                                  margin={'normal'}
+                                  autoComplete={'off'}
+                                  style={{ marginTop: 0 }}
+                                  fullWidth
+                                  autoFocus
+                                />
+                              </Grid>
 
-                            {/* Button -  Save */}
-                            <Grid item xs={12} className={classes.buttonsContainer}>
-                              <IconButton
-                                type={'submit'}
-                                aria-label={'Save'}
-                                color={'primary'}
-                                disabled={isLoadingSubmit}
-                              >
-                                <IconCheck />
-                              </IconButton>
-                            </Grid>
-                          </form>
-                        </ExpansionPanelDetails>
-                      </ExpansionPanel>
+                              {/* Button -  Save */}
+                              <Grid item xs={12} className={classes.buttonsContainer}>
+                                <IconButton
+                                  type={'submit'}
+                                  aria-label={'Save'}
+                                  color={'primary'}
+                                  disabled={isLoadingSubmit}
+                                >
+                                  <IconCheck />
+                                </IconButton>
+                              </Grid>
+                            </form>
+                          </ExpansionPanelDetails>
+                        </ExpansionPanel>
 
-                      {/* STEP 2: Verify your email */}
-                      <ExpansionPanel className={classes.panel} disabled={!enableStep2} expanded={expandStep2}>
-                        <ExpansionPanelSummary>
-                          <Typography variant={'body2'}>STEP 2: Verify your email address</Typography>
-                        </ExpansionPanelSummary>
+                        {/* STEP 2: Verify your email */}
+                        <ExpansionPanel className={classes.panel} disabled={!enableStep2} expanded={expandStep2}>
+                          <ExpansionPanelSummary>
+                            <Typography variant={'body2'}>STEP 2: Verify your email address</Typography>
+                          </ExpansionPanelSummary>
 
-                        <ExpansionPanelDetails style={{ display: 'block' }}>
-                          <form onSubmit={this.step2}>
-                            {/* Input - verification code */}
-                            <Grid item xs={12}>
-                              <TextField
-                                name={'verification'}
-                                value={nullToEmptyString(verification)}
-                                onChange={this.onType}
-                                label={'Verification code'}
-                                placeholder={'Enter verification code'}
-                                required={true}
-                                margin={'normal'}
-                                autoComplete={'off'}
-                                style={{ marginTop: 0 }}
-                                helperText={`Please check your email ${ email } for verification code`}
-                                fullWidth
-                                inputProps={{
-                                  maxLength: 4
-                                }}
-                              />
-                            </Grid>
+                          <ExpansionPanelDetails style={{ display: 'block' }}>
+                            <form onSubmit={this.step2}>
+                              {/* Input - verification code */}
+                              <Grid item xs={12}>
+                                <TextField
+                                  name={'verification'}
+                                  value={nullToEmptyString(verification)}
+                                  onChange={this.onType}
+                                  label={'Verification code'}
+                                  placeholder={'Enter verification code'}
+                                  required={true}
+                                  margin={'normal'}
+                                  autoComplete={'off'}
+                                  style={{ marginTop: 0 }}
+                                  helperText={`Please check your email ${ email } for verification code`}
+                                  fullWidth
+                                  inputProps={{
+                                    maxLength: 4
+                                  }}
+                                />
+                              </Grid>
 
-                            {/* Button -  Save */}
-                            <Grid item xs={12} className={classes.buttonsContainer}>
-                              <IconButton
-                                aria-label={'Previous step'}
-                                color={'default'}
-                                onClick={this.backToStep1}
-                              >
-                                <IconArrowBack />
-                              </IconButton>
+                              {/* Button -  Save */}
+                              <Grid item xs={12} className={classes.buttonsContainer}>
+                                <IconButton
+                                  aria-label={'Previous step'}
+                                  color={'default'}
+                                  onClick={this.backToStep1}
+                                >
+                                  <IconArrowBack />
+                                </IconButton>
 
-                              <IconButton
-                                type={'submit'}
-                                aria-label={'Save'}
-                                color={'primary'}
-                                disabled={isLoadingSubmit}
-                              >
-                                <IconCheck />
-                              </IconButton>
-                            </Grid>
-                          </form>
-                        </ExpansionPanelDetails>
-                      </ExpansionPanel>
+                                <IconButton
+                                  type={'submit'}
+                                  aria-label={'Save'}
+                                  color={'primary'}
+                                  disabled={isLoadingSubmit}
+                                >
+                                  <IconCheck />
+                                </IconButton>
+                              </Grid>
+                            </form>
+                          </ExpansionPanelDetails>
+                        </ExpansionPanel>
 
-                      {/* STEP 3: Account info */}
-                      <ExpansionPanel className={classes.panel} disabled={!enableStep3} expanded={expandStep3}>
-                        <ExpansionPanelSummary>
-                          <Typography variant={'body2'}>STEP 3: Account info</Typography>
-                        </ExpansionPanelSummary>
+                        {/* STEP 3: Account info */}
+                        <ExpansionPanel className={classes.panel} disabled={!enableStep3} expanded={expandStep3}>
+                          <ExpansionPanelSummary>
+                            <Typography variant={'body2'}>STEP 3: Account info</Typography>
+                          </ExpansionPanelSummary>
 
-                        <ExpansionPanelDetails style={{ display: 'block' }}>
-                          <form onSubmit={this.step3}>
-                            {/* Input - email */}
-                            <Grid item xs={12}>
-                              <TextField
-                                type={'email'}
-                                value={nullToEmptyString(email)}
-                                label={'Your email'}
-                                margin={'normal'}
-                                helperText={'verified'}
-                                fullWidth
-                                readOnly={true}
-                                disabled={true}
-                                style={{ marginTop: 0 }}
-                              />
-                            </Grid>
+                          <ExpansionPanelDetails style={{ display: 'block' }}>
+                            <form onSubmit={this.step3}>
+                              {/* Input - email */}
+                              <Grid item xs={12}>
+                                <TextField
+                                  type={'email'}
+                                  value={nullToEmptyString(email)}
+                                  label={'Your email'}
+                                  margin={'normal'}
+                                  helperText={'verified'}
+                                  fullWidth
+                                  readOnly={true}
+                                  disabled={true}
+                                  style={{ marginTop: 0 }}
+                                />
+                              </Grid>
 
-                            {/* Input - password */}
-                            <Grid item xs={12}>
-                              <TextField
-                                name={'password'}
-                                type={'password'}
-                                value={nullToEmptyString(password)}
-                                onChange={this.onType}
-                                label={'Your password'}
-                                placeholder={'Enter new password'}
-                                helperText={'Use this password to login'}
-                                required={true}
-                                margin={'normal'}
-                                autoComplete={'off'}
-                                fullWidth
-                              />
-                            </Grid>
+                              {/* Input - password */}
+                              <Grid item xs={12}>
+                                <TextField
+                                  name={'password'}
+                                  type={'password'}
+                                  value={nullToEmptyString(password)}
+                                  onChange={this.onType}
+                                  label={'Your password'}
+                                  placeholder={'Enter new password'}
+                                  helperText={'Use this password to login'}
+                                  required={true}
+                                  margin={'normal'}
+                                  autoComplete={'off'}
+                                  fullWidth
+                                />
+                              </Grid>
 
-                            {/* Input - name */}
-                            <Grid item xs={12}>
-                              <TextField
-                                name={'name'}
-                                value={nullToEmptyString(name)}
-                                onChange={this.onType}
-                                label={'Your name'}
-                                placeholder={'Enter name'}
-                                required={true}
-                                margin={'normal'}
-                                autoComplete={'off'}
-                                fullWidth
-                              />
-                            </Grid>
+                              {/* Input - name */}
+                              <Grid item xs={12}>
+                                <TextField
+                                  name={'name'}
+                                  value={nullToEmptyString(name)}
+                                  onChange={this.onType}
+                                  label={'Your name'}
+                                  placeholder={'Enter name'}
+                                  required={true}
+                                  margin={'normal'}
+                                  autoComplete={'off'}
+                                  fullWidth
+                                />
+                              </Grid>
 
-                            {/* Input - Organization name */}
-                            <Grid item xs={12}>
-                              <TextField
-                                name={'organizationName'}
-                                value={nullToEmptyString(organizationName)}
-                                onChange={this.onType}
-                                label={'Organization name'}
-                                placeholder={'Enter name (eg: Hiresmart)'}
-                                required={true}
-                                margin={'normal'}
-                                autoComplete={'off'}
-                                fullWidth
-                              />
-                            </Grid>
+                              {/* Input - Organization name */}
+                              <Grid item xs={12}>
+                                <TextField
+                                  name={'organizationName'}
+                                  value={nullToEmptyString(organizationName)}
+                                  onChange={this.onType}
+                                  label={'Organization name'}
+                                  placeholder={'Enter name (eg: Hiresmart)'}
+                                  required={true}
+                                  margin={'normal'}
+                                  autoComplete={'off'}
+                                  fullWidth
+                                />
+                              </Grid>
 
-                            {/* Button -  Save */}
-                            <Grid item xs={12} className={classes.buttonsContainer}>
-                              <IconButton
-                                aria-label={'Previous step'}
-                                color={'default'}
-                                onClick={this.backToStep2}
-                              >
-                                <IconArrowBack />
-                              </IconButton>
+                              {/* Button -  Save */}
+                              <Grid item xs={12} className={classes.buttonsContainer}>
+                                <IconButton
+                                  aria-label={'Previous step'}
+                                  color={'default'}
+                                  onClick={this.backToStep2}
+                                >
+                                  <IconArrowBack />
+                                </IconButton>
 
-                              <IconButton
-                                type={'submit'}
-                                aria-label={'Save'}
-                                color={'primary'}
-                                disabled={isLoading}
-                              >
-                                <IconCheck />
-                              </IconButton>
-                            </Grid>
-                          </form>
-                        </ExpansionPanelDetails>
-                      </ExpansionPanel>
+                                <IconButton
+                                  type={'submit'}
+                                  aria-label={'Save'}
+                                  color={'primary'}
+                                  disabled={isLoading}
+                                >
+                                  <IconCheck />
+                                </IconButton>
+                              </Grid>
+                            </form>
+                          </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </React.Fragment>
-              : <React.Fragment>
-                  <Grid container>
-                    <Grid item xs={12} md={6}>
-                      <ListItem>
-                        <Avatar style={{ backgroundColor: green[500] }}>
-                          <IconCheck />
-                        </Avatar>
-                        <ListItemText primary={'Account verified'} secondary={'You can now access all the features.'} />
-                      </ListItem>
+                  </React.Fragment>
+                : <React.Fragment>
+                    <Grid container>
+                      <Grid item xs={12} md={6}>
+                        <ListItem>
+                          <Avatar style={{ backgroundColor: green[500] }}>
+                            <IconCheck />
+                          </Avatar>
+                          <ListItemText primary={'Account verified'} secondary={'You can now access all the features.'} />
+                        </ListItem>
 
-                      <Button
-                        variant={'contained'}
-                        color={'primary'}
-                        style={{ marginTop: 16, marginLeft: 26 }}
-                        onClick={this.stepFinish}
-                      >
-                        View My Profile
-                      </Button>
+                        <Button
+                          variant={'contained'}
+                          color={'primary'}
+                          style={{ marginTop: 16, marginLeft: 26 }}
+                          onClick={this.stepFinish}
+                        >
+                          View My Profile
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </React.Fragment>
-          }
+                  </React.Fragment>
+            }
+          </div>
         </div>
-      </div>
+      </Fade>
     )
   }
 }
