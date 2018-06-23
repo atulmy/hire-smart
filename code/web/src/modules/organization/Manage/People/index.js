@@ -203,8 +203,10 @@ class People extends PureComponent {
                           <TableRow>
                             <TableCell>Name</TableCell>
                             <TableCell>Email</TableCell>
+                            {/*
                             <TableCell width={120} className={classes.textCenter}>Joined</TableCell>
                             <TableCell width={120} className={classes.textCenter}>Actions</TableCell>
+                            */}
                           </TableRow>
                         </TableHead>
 
@@ -215,8 +217,10 @@ class People extends PureComponent {
                                   <TableRow key={user._id}>
                                     <TableCell>{ user.name }</TableCell>
                                     <TableCell>{ user.email }</TableCell>
+                                    {/*
                                     <TableCell className={classes.textCenter}>-</TableCell>
                                     <TableCell className={classes.textCenter}>-</TableCell>
+                                    */}
                                   </TableRow>
                                 ))
                               : <TableRow>

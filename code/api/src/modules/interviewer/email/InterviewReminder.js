@@ -8,7 +8,7 @@ const InterviewReminder = ({ interviewerName, candidateName, date, organizationN
     <p>Hi { interviewerName },</p>
 
     <p>
-      This is a reminder for { candidateName }'s interview on { date } for { organizationName } <br />
+      This is an invitation to conduct { candidateName } interview on { date } for { organizationName } <br />
 
       <strong>Interview Mode:</strong> { mode }
 
@@ -25,7 +25,7 @@ const InterviewReminder = ({ interviewerName, candidateName, date, organizationN
     </p>
 
     <p>
-      After conducting the interview, please provide the feedback for { candidateName } by using following link: <br />
+      After conducting the interview, please provide your feedback for { candidateName } by using following link: <br />
 
       <a href="http://hiresmart.app">Give Feedback</a>
     </p>

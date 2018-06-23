@@ -31,9 +31,9 @@ class Item extends PureComponent {
     const { classes, item: { candidateId, interviews, highlight }, detailsOpen, isDragging, connectDragSource } = this.props
 
     return connectDragSource(
-      <div>
+      <div className={classes.root}>
         <Paper
-          className={classes.root}
+          className={classes.paper}
           onClick={detailsOpen}
         >
           {/* Item details */}

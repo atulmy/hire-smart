@@ -12,9 +12,14 @@ import TextField from '@material-ui/core/TextField'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import IconCheck from '@material-ui/icons/Check'
 import IconArrowBack from '@material-ui/icons/ArrowBack'
+import green from '@material-ui/core/colors/green'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
@@ -22,13 +27,7 @@ import styles from './styles'
 import { nullToEmptyString } from '../../../../../setup/helpers'
 import routes from '../../../../../setup/routes'
 import { messageShow } from '../../../../common/api/actions'
-import {
-  verifySendCode,
-  verifyCode,
-  verifyUpdateAccount,
-  loginSetUserLocalStorageAndCookie, setUser
-} from '../../../api/actions/mutation'
-import { store } from '../../../../../setup/store'
+import { verifySendCode, verifyCode, verifyUpdateAccount } from '../../../api/actions/mutation'
 
 // Component
 class Demo extends PureComponent {
@@ -159,48 +158,23 @@ class Demo extends PureComponent {
   step3 = async event => {
     event.preventDefault()
 
-    const { history } = this.props
     const { name, password, organizationName } = this.state
 
     if(!isEmpty(name) && !isEmpty(password) && !isEmpty(organizationName)) {
-      const { verifyUpdateAccount, messageShow } = this.props
+      const { verifyUpdateAccount } = this.props
 
-      this.isLoadingSubmitToggle(true)
-
-      try {
-        const { data } = await verifyUpdateAccount({ name, password, organizationName })
-
-        if(data.errors && data.errors.length > 0) {
-          messageShow(data.errors[0].message)
-        } else {
-          const token = data.data.userVerifyUpdateAccount.token
-          const user = data.data.userVerifyUpdateAccount.user
-
-          store.dispatch(setUser(token, user))
-
-          loginSetUserLocalStorageAndCookie(token, user)
-
-          // Hide step
-          this.setState({
-            expandStep3: false
-          })
-
-          messageShow('Your account has been verified and updated successfully.')
-
-          window.setTimeout(() => {
-            history.push(routes.account.path)
-          }, 1000)
-        }
-      } catch(error) {
-        messageShow('There was some error. Please try again.')
-      } finally {
-        this.isLoadingSubmitToggle(false)
-      }
+      verifyUpdateAccount({ name, password, organizationName })
     }
   }
 
+  stepFinish = () => {
+    const { history } = this.props
+
+    history.push(routes.account.path)
+  }
+
   render() {
-    const { classes } = this.props
+    const { classes, user: { isLoading, details } } = this.props
     const { isLoadingSubmit, name, email, verification, password, organizationName } = this.state
     const { enableStep1, expandStep1, enableStep2, expandStep2, enableStep3, expandStep3  } = this.state
 
@@ -213,200 +187,230 @@ class Demo extends PureComponent {
             color={'inherit'}
             className={classes.title}
           >
-            You are using a demo account. To enable all features and avoid loss of data, please complete the following steps
+            Verify Your Account
           </Typography>
         </Toolbar>
 
         {/* Content */}
         <div className={classes.content}>
-          <Grid container>
-            <Grid item xs={12} md={6}>
-              {/* STEP 1: Provide your official email */}
-              <ExpansionPanel className={classes.panel} disabled={!enableStep1} expanded={expandStep1}>>
-                <ExpansionPanelSummary>
-                  <Typography variant={'body2'}>STEP 1: Provide your official email address</Typography>
-                </ExpansionPanelSummary>
+          {
+            details.demo
+              ? <React.Fragment>
+                  <Typography gutterBottom>
+                    You are using a demo account. Verify your account by completing below steps to enable all features and avoid losing your data.
+                  </Typography>
 
-                <ExpansionPanelDetails style={{ display: 'block' }}>
-                  <form onSubmit={this.step1}>
-                    {/* Input - email */}
-                    <Grid item xs={12}>
-                      <TextField
-                        name={'email'}
-                        type={'email'}
-                        value={nullToEmptyString(email)}
-                        onChange={this.onType}
-                        label={'Your email'}
-                        placeholder={'Enter official email'}
-                        required={true}
-                        margin={'normal'}
-                        autoComplete={'off'}
-                        style={{ marginTop: 0 }}
-                        fullWidth
-                        autoFocus
-                      />
+                  <Grid container style={{ marginTop: 16 }}>
+                    <Grid item xs={12} md={6}>
+                      {/* STEP 1: Provide your official email */}
+                      <ExpansionPanel className={classes.panel} disabled={!enableStep1} expanded={expandStep1}>>
+                        <ExpansionPanelSummary>
+                          <Typography variant={'body2'}>STEP 1: Provide your official email address</Typography>
+                        </ExpansionPanelSummary>
+
+                        <ExpansionPanelDetails style={{ display: 'block' }}>
+                          <form onSubmit={this.step1}>
+                            {/* Input - email */}
+                            <Grid item xs={12}>
+                              <TextField
+                                name={'email'}
+                                type={'email'}
+                                value={nullToEmptyString(email)}
+                                onChange={this.onType}
+                                label={'Your email'}
+                                placeholder={'Enter official email'}
+                                required={true}
+                                margin={'normal'}
+                                autoComplete={'off'}
+                                style={{ marginTop: 0 }}
+                                fullWidth
+                                autoFocus
+                              />
+                            </Grid>
+
+                            {/* Button -  Save */}
+                            <Grid item xs={12} className={classes.buttonsContainer}>
+                              <IconButton
+                                type={'submit'}
+                                aria-label={'Save'}
+                                color={'primary'}
+                                disabled={isLoadingSubmit}
+                              >
+                                <IconCheck />
+                              </IconButton>
+                            </Grid>
+                          </form>
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+
+                      {/* STEP 2: Verify your email */}
+                      <ExpansionPanel className={classes.panel} disabled={!enableStep2} expanded={expandStep2}>
+                        <ExpansionPanelSummary>
+                          <Typography variant={'body2'}>STEP 2: Verify your email address</Typography>
+                        </ExpansionPanelSummary>
+
+                        <ExpansionPanelDetails style={{ display: 'block' }}>
+                          <form onSubmit={this.step2}>
+                            {/* Input - verification code */}
+                            <Grid item xs={12}>
+                              <TextField
+                                name={'verification'}
+                                value={nullToEmptyString(verification)}
+                                onChange={this.onType}
+                                label={'Verification code'}
+                                placeholder={'Enter verification code'}
+                                required={true}
+                                margin={'normal'}
+                                autoComplete={'off'}
+                                style={{ marginTop: 0 }}
+                                helperText={`Please check your email ${ email } for verification code`}
+                                fullWidth
+                                inputProps={{
+                                  maxLength: 4
+                                }}
+                              />
+                            </Grid>
+
+                            {/* Button -  Save */}
+                            <Grid item xs={12} className={classes.buttonsContainer}>
+                              <IconButton
+                                aria-label={'Previous step'}
+                                color={'default'}
+                                onClick={this.backToStep1}
+                              >
+                                <IconArrowBack />
+                              </IconButton>
+
+                              <IconButton
+                                type={'submit'}
+                                aria-label={'Save'}
+                                color={'primary'}
+                                disabled={isLoadingSubmit}
+                              >
+                                <IconCheck />
+                              </IconButton>
+                            </Grid>
+                          </form>
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+
+                      {/* STEP 3: Account info */}
+                      <ExpansionPanel className={classes.panel} disabled={!enableStep3} expanded={expandStep3}>
+                        <ExpansionPanelSummary>
+                          <Typography variant={'body2'}>STEP 3: Account info</Typography>
+                        </ExpansionPanelSummary>
+
+                        <ExpansionPanelDetails style={{ display: 'block' }}>
+                          <form onSubmit={this.step3}>
+                            {/* Input - email */}
+                            <Grid item xs={12}>
+                              <TextField
+                                type={'email'}
+                                value={nullToEmptyString(email)}
+                                label={'Your email'}
+                                margin={'normal'}
+                                helperText={'verified'}
+                                fullWidth
+                                readOnly={true}
+                                disabled={true}
+                                style={{ marginTop: 0 }}
+                              />
+                            </Grid>
+
+                            {/* Input - password */}
+                            <Grid item xs={12}>
+                              <TextField
+                                name={'password'}
+                                type={'password'}
+                                value={nullToEmptyString(password)}
+                                onChange={this.onType}
+                                label={'Your password'}
+                                placeholder={'Enter new password'}
+                                helperText={'Use this password to login'}
+                                required={true}
+                                margin={'normal'}
+                                autoComplete={'off'}
+                                fullWidth
+                              />
+                            </Grid>
+
+                            {/* Input - name */}
+                            <Grid item xs={12}>
+                              <TextField
+                                name={'name'}
+                                value={nullToEmptyString(name)}
+                                onChange={this.onType}
+                                label={'Your name'}
+                                placeholder={'Enter name'}
+                                required={true}
+                                margin={'normal'}
+                                autoComplete={'off'}
+                                fullWidth
+                              />
+                            </Grid>
+
+                            {/* Input - Organization name */}
+                            <Grid item xs={12}>
+                              <TextField
+                                name={'organizationName'}
+                                value={nullToEmptyString(organizationName)}
+                                onChange={this.onType}
+                                label={'Organization name'}
+                                placeholder={'Enter name (eg: Hiresmart)'}
+                                required={true}
+                                margin={'normal'}
+                                autoComplete={'off'}
+                                fullWidth
+                              />
+                            </Grid>
+
+                            {/* Button -  Save */}
+                            <Grid item xs={12} className={classes.buttonsContainer}>
+                              <IconButton
+                                aria-label={'Previous step'}
+                                color={'default'}
+                                onClick={this.backToStep2}
+                              >
+                                <IconArrowBack />
+                              </IconButton>
+
+                              <IconButton
+                                type={'submit'}
+                                aria-label={'Save'}
+                                color={'primary'}
+                                disabled={isLoading}
+                              >
+                                <IconCheck />
+                              </IconButton>
+                            </Grid>
+                          </form>
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
                     </Grid>
+                  </Grid>
+                </React.Fragment>
+              : <React.Fragment>
+                  <Grid container>
+                    <Grid item xs={12} md={6}>
+                      <ListItem>
+                        <Avatar style={{ backgroundColor: green[500] }}>
+                          <IconCheck />
+                        </Avatar>
+                        <ListItemText primary={'Account verified'} secondary={'You can now access all the features.'} />
+                      </ListItem>
 
-                    {/* Button -  Save */}
-                    <Grid item xs={12} className={classes.buttonsContainer}>
-                      <IconButton
-                        type={'submit'}
-                        aria-label={'Save'}
+                      <Button
+                        variant={'contained'}
                         color={'primary'}
-                        disabled={isLoadingSubmit}
+                        style={{ marginTop: 16, marginLeft: 26 }}
+                        onClick={this.stepFinish}
                       >
-                        <IconCheck />
-                      </IconButton>
+                        View My Profile
+                      </Button>
                     </Grid>
-                  </form>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-
-              {/* STEP 2: Verify your email */}
-              <ExpansionPanel className={classes.panel} disabled={!enableStep2} expanded={expandStep2}>
-                <ExpansionPanelSummary>
-                  <Typography variant={'body2'}>STEP 2: Verify your email address</Typography>
-                </ExpansionPanelSummary>
-
-                <ExpansionPanelDetails style={{ display: 'block' }}>
-                  <form onSubmit={this.step2}>
-                    {/* Input - verification code */}
-                    <Grid item xs={12}>
-                      <TextField
-                        name={'verification'}
-                        value={nullToEmptyString(verification)}
-                        onChange={this.onType}
-                        label={'Verification code'}
-                        placeholder={'Enter verification code'}
-                        required={true}
-                        margin={'normal'}
-                        autoComplete={'off'}
-                        style={{ marginTop: 0 }}
-                        helperText={`Please check your email ${ email } for verification code`}
-                        fullWidth
-                        inputProps={{
-                          maxLength: 4
-                        }}
-                      />
-                    </Grid>
-
-                    {/* Button -  Save */}
-                    <Grid item xs={12} className={classes.buttonsContainer}>
-                      <IconButton
-                        aria-label={'Previous step'}
-                        color={'default'}
-                        onClick={this.backToStep1}
-                      >
-                        <IconArrowBack />
-                      </IconButton>
-
-                      <IconButton
-                        type={'submit'}
-                        aria-label={'Save'}
-                        color={'primary'}
-                        disabled={isLoadingSubmit}
-                      >
-                        <IconCheck />
-                      </IconButton>
-                    </Grid>
-                  </form>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-
-              {/* STEP 3: Account info */}
-              <ExpansionPanel className={classes.panel} disabled={!enableStep3} expanded={expandStep3}>
-                <ExpansionPanelSummary>
-                  <Typography variant={'body2'}>STEP 3: Account info</Typography>
-                </ExpansionPanelSummary>
-
-                <ExpansionPanelDetails style={{ display: 'block' }}>
-                  <form onSubmit={this.step3}>
-                    {/* Input - email */}
-                    <Grid item xs={12}>
-                      <TextField
-                        type={'email'}
-                        value={nullToEmptyString(email)}
-                        label={'Your email'}
-                        margin={'normal'}
-                        helperText={'verified'}
-                        fullWidth
-                        readOnly={true}
-                        disabled={true}
-                        style={{ marginTop: 0 }}
-                      />
-                    </Grid>
-
-                    {/* Input - password */}
-                    <Grid item xs={12}>
-                      <TextField
-                        name={'password'}
-                        type={'password'}
-                        value={nullToEmptyString(password)}
-                        onChange={this.onType}
-                        label={'Your password'}
-                        placeholder={'Enter new password'}
-                        helperText={'Use this password to login'}
-                        required={true}
-                        margin={'normal'}
-                        autoComplete={'off'}
-                        fullWidth
-                      />
-                    </Grid>
-
-                    {/* Input - name */}
-                    <Grid item xs={12}>
-                      <TextField
-                        name={'name'}
-                        value={nullToEmptyString(name)}
-                        onChange={this.onType}
-                        label={'Your name'}
-                        placeholder={'Enter name'}
-                        required={true}
-                        margin={'normal'}
-                        autoComplete={'off'}
-                        fullWidth
-                      />
-                    </Grid>
-
-                    {/* Input - Organization name */}
-                    <Grid item xs={12}>
-                      <TextField
-                        name={'organizationName'}
-                        value={nullToEmptyString(organizationName)}
-                        onChange={this.onType}
-                        label={'Organization name'}
-                        placeholder={'Enter name (eg: Hiresmart)'}
-                        required={true}
-                        margin={'normal'}
-                        autoComplete={'off'}
-                        fullWidth
-                      />
-                    </Grid>
-
-                    {/* Button -  Save */}
-                    <Grid item xs={12} className={classes.buttonsContainer}>
-                      <IconButton
-                        aria-label={'Previous step'}
-                        color={'default'}
-                        onClick={this.backToStep2}
-                      >
-                        <IconArrowBack />
-                      </IconButton>
-
-                      <IconButton
-                        type={'submit'}
-                        aria-label={'Save'}
-                        color={'primary'}
-                        disabled={isLoadingSubmit}
-                      >
-                        <IconCheck />
-                      </IconButton>
-                    </Grid>
-                  </form>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            </Grid>
-          </Grid>
+                  </Grid>
+                </React.Fragment>
+          }
         </div>
       </div>
     )
@@ -425,7 +429,7 @@ Demo.propTypes = {
 // Component State
 function demoState(state) {
   return {
-    common: state.common
+    user: state.user
   }
 }
 

@@ -150,14 +150,55 @@ export function verifyCode(code) {
 }
 
 // Verify update account details
-export function verifyUpdateAccount(details) {
-  return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
-      operation: 'userVerifyUpdateAccount',
-      data: details,
-      fields: ['user {name, email, role, demo}', 'token']
-    }))
+export function verifyUpdateAccount(details, isLoading = true) {
+  return async dispatch => {
+    dispatch({
+      type: LOGIN_REQUEST,
+      isLoading
+    })
+
+    dispatch({
+      type: MESSAGE_SHOW,
+      message: 'Please wait..'
+    })
+
+    try {
+      const { data } = await axios.post(API_URL, queryBuilder({
+        type: 'mutation',
+        operation: 'userVerifyUpdateAccount',
+        data: details,
+        fields: ['user {name, email, role, demo}', 'token']
+      }))
+
+      let message = ''
+
+      if (data.errors && data.errors.length > 0) {
+        message = data.errors[0].message
+      } else if (data.data.userVerifyUpdateAccount.token !== '') {
+        const token = data.data.userVerifyUpdateAccount.token
+        const user = data.data.userVerifyUpdateAccount.user
+
+        dispatch(setUser(token, user))
+
+        loginSetUserLocalStorageAndCookie(token, user)
+
+        message = 'Your account has been verified and updated successfully.'
+      }
+
+      dispatch({
+        type: MESSAGE_SHOW,
+        message
+      })
+    } catch(error) {
+      dispatch({
+        type: MESSAGE_SHOW,
+        message: 'There was some server error. Please try again.'
+      })
+    } finally {
+      dispatch({
+        type: LOGIN_RESPONSE
+      })
+    }
   }
 }
 

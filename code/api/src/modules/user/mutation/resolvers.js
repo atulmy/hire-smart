@@ -149,46 +149,52 @@ export async function remove(parentValue, { id }) {
 export async function verifySendCode(parentValue, { email }, { auth }) {
   if(auth.user && auth.user.id && auth.user.demo) {
 
-    let code
+    const user = await User.findOne({ email })
 
-    const verification = await Verification.findOne({ userId: auth.user.id, email })
+    if(!user) {
+      let code
 
-    if (verification) {
-      // Use already generated code
-      code = verification.code
-    } else {
-      // Generate new code
-      code = randomNumber(1000, 9999)
+      const verification = await Verification.findOne({userId: auth.user.id, email})
 
-      Verification.create({
-        userId: auth.user.id,
-        email,
-        code,
-        verified: false
+      if (verification) {
+        // Use already generated code
+        code = verification.code
+      } else {
+        // Generate new code
+        code = randomNumber(1000, 9999)
+
+        Verification.create({
+          userId: auth.user.id,
+          email,
+          code,
+          verified: false
+        })
+      }
+
+      sendEmail({
+        to: {
+          name: auth.user.name,
+          email
+        },
+        from: {
+          name: params.site.emails.help.name,
+          email: params.site.emails.help.email
+        },
+        subject: `Verification Code: ${ code }`,
+        template:
+          <Verify
+            code={code}
+            sender={params.site.name}
+          />,
+        organizationId: auth.user.organizationId,
+        userId: auth.user.id
       })
-    }
 
-    sendEmail({
-      to: {
-        name: auth.user.name,
-        email
-      },
-      from: {
-        name: params.site.emails.help.name,
-        email: params.site.emails.help.email
-      },
-      subject: `Verification Code: ${ code }`,
-      template:
-        <Verify
-          code={code}
-          sender={params.site.name}
-        />,
-      organizationId: auth.user.organizationId,
-      userId: auth.user.id
-    })
-
-    return {
-      _id: auth.user.id
+      return {
+        _id: auth.user.id
+      }
+    } else {
+      throw new Error(`The email ${ email } is already registered. Please try to login.`)
     }
   } else {
     throw new Error('You are not authorized to do this operation.')
@@ -227,49 +233,55 @@ export async function verifyUpdateAccount(parentValue, { name, password, organiz
 
     const verification = await Verification.findOne({ userId: auth.user.id })
 
-    if(verification && verification.verified) {
-      // Update user details
-      const passwordHashed = await bcrypt.hash(password, serverConfig.saltRounds)
+    const userCheck = await User.findOne({ email: verification.email })
 
-      await User.updateOne(
-        { _id: auth.user.id },
-        {
-          $set: {
-            email: verification.email,
-            password: passwordHashed,
-            name,
-            demo: false
+    if(!userCheck) {
+      if (verification && verification.verified) {
+        // Update user details
+        const passwordHashed = await bcrypt.hash(password, serverConfig.saltRounds)
+
+        await User.updateOne(
+          {_id: auth.user.id},
+          {
+            $set: {
+              email: verification.email,
+              password: passwordHashed,
+              name,
+              demo: false
+            }
           }
-        }
-      )
+        )
 
-      // Update organization name
-      await Organization.updateOne(
-        { _id: auth.user.organizationId },
-        {
-          $set: {
-            name: organizationName
+        // Update organization name
+        await Organization.updateOne(
+          {_id: auth.user.organizationId},
+          {
+            $set: {
+              name: organizationName
+            }
           }
+        )
+
+        const user = await User.findOne({ _id: auth.user.id })
+
+        const token = {
+          id: user._id,
+          organizationId: user.organizationId,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          demo: user.demo
         }
-      )
 
-      const user = await User.findOne({ _id: auth.user.id })
-
-      const token = {
-        id: user._id,
-        organizationId: user.organizationId,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        demo: user.demo
-      }
-
-      return {
-        user: user,
-        token: jwt.sign(token, serverConfig.secret)
+        return {
+          user: user,
+          token: jwt.sign(token, serverConfig.secret)
+        }
+      } else {
+        throw new Error('The code you entered is invalid. Please try again with valid code.')
       }
     } else {
-      throw new Error('The code you entered is invalid. Please try again with valid code.')
+      throw new Error(`The email ${ verification.email } is already registered. Please try to login.`)
     }
   } else {
     throw new Error('You are not authorized to do this operation.')
