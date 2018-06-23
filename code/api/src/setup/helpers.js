@@ -7,3 +7,7 @@ export function slug(text) {
     .replace(/^-+/, '')             // Trim - from start of text
     .replace(/-+$/, '')            // Trim - from end of text
 }
+
+export function randomNumber(low, high) {
+  return Math.floor(Math.random() * (high - low) + low);
+}

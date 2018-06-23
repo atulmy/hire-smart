@@ -38,6 +38,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
+import { NODE_ENV } from '../../../setup/config/env'
 import routes from '../../../setup/routes'
 import { drawerShow, drawerHide } from '../api/actions'
 
@@ -198,7 +199,13 @@ class Header extends PureComponent {
         </Drawer>
 
         {/* Drawer activator */}
-        <div onMouseOver={drawerShow} style={{ position: 'fixed', width: 3, top: 0, left: 0, bottom: 0, zIndex: 1, backgroundColor: 'transparent' }} />
+        {
+          NODE_ENV !== 'development' &&
+          <div
+            onMouseOver={drawerShow}
+            className={classes.drawerActivator}
+          />
+        }
       </div>
     )
   }

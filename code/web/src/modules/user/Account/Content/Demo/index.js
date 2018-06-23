@@ -21,7 +21,14 @@ import styles from './styles'
 // App Imports
 import { nullToEmptyString } from '../../../../../setup/helpers'
 import routes from '../../../../../setup/routes'
-// import { someAction } from './api/actions'
+import { messageShow } from '../../../../common/api/actions'
+import {
+  verifySendCode,
+  verifyCode,
+  verifyUpdateAccount,
+  loginSetUserLocalStorageAndCookie, setUser
+} from '../../../api/actions/mutation'
+import { store } from '../../../../../setup/store'
 
 // Component
 class Demo extends PureComponent {
@@ -53,17 +60,15 @@ class Demo extends PureComponent {
     }
   }
 
-  componentDidMount() {
-    // const { someAction } = this.props
-  }
-
-  demoSubmit = () => {
-    console.log(this.state)
-  }
-
   onType = event => {
     this.setState({
       [event.target.name]: event.target.value
+    })
+  }
+
+  isLoadingSubmitToggle = isLoadingSubmit => {
+    this.setState({
+      isLoadingSubmit
     })
   }
 
@@ -73,15 +78,30 @@ class Demo extends PureComponent {
     const { email } = this.state
 
     if(!isEmpty(email)) {
-      console.log(email)
+      const { verifySendCode, messageShow } = this.props
 
-      // @todo send verification code to this email
+      this.isLoadingSubmitToggle(true)
 
-      this.setState({
-        enableStep2: true,
-        expandStep2: true,
-        expandStep1: false
-      })
+      try {
+        const { data } = await verifySendCode({ email })
+
+        if(data.errors && data.errors.length > 0) {
+          messageShow(data.errors[0].message)
+        } else {
+          // Show step 2
+          this.setState({
+            enableStep2: true,
+            expandStep2: true,
+            expandStep1: false
+          })
+
+          messageShow('An email has been sent with verification code.')
+        }
+      } catch(error) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.isLoadingSubmitToggle(false)
+      }
     }
   }
 
@@ -100,15 +120,30 @@ class Demo extends PureComponent {
     const { verification } = this.state
 
     if(!isEmpty(verification)) {
-      console.log(verification)
+      const { verifyCode, messageShow } = this.props
 
-      // @todo send data
+      this.isLoadingSubmitToggle(true)
 
-      this.setState({
-        enableStep3: true,
-        expandStep3: true,
-        expandStep2: false
-      })
+      try {
+        const { data } = await verifyCode({ code: verification })
+
+        if(data.errors && data.errors.length > 0) {
+          messageShow(data.errors[0].message)
+        } else {
+          // Show step 3
+          this.setState({
+            enableStep3: true,
+            expandStep3: true,
+            expandStep2: false
+          })
+
+          messageShow('Email verified successfully.')
+        }
+      } catch(error) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.isLoadingSubmitToggle(false)
+      }
     }
   }
 
@@ -125,20 +160,42 @@ class Demo extends PureComponent {
     event.preventDefault()
 
     const { history } = this.props
-    const { name, email, verification, password, organizationName } = this.state
+    const { name, password, organizationName } = this.state
 
     if(!isEmpty(name) && !isEmpty(password) && !isEmpty(organizationName)) {
-      console.log(name)
-      console.log(password)
-      console.log(organizationName)
+      const { verifyUpdateAccount, messageShow } = this.props
 
-      // @todo send data
+      this.isLoadingSubmitToggle(true)
 
-      this.setState({
-        expandStep3: false
-      })
+      try {
+        const { data } = await verifyUpdateAccount({ name, password, organizationName })
 
-      history.push(routes.account.path)
+        if(data.errors && data.errors.length > 0) {
+          messageShow(data.errors[0].message)
+        } else {
+          const token = data.data.userVerifyUpdateAccount.token
+          const user = data.data.userVerifyUpdateAccount.user
+
+          store.dispatch(setUser(token, user))
+
+          loginSetUserLocalStorageAndCookie(token, user)
+
+          // Hide step
+          this.setState({
+            expandStep3: false
+          })
+
+          messageShow('Your account has been verified and updated successfully.')
+
+          window.setTimeout(() => {
+            history.push(routes.account.path)
+          }, 1000)
+        }
+      } catch(error) {
+        messageShow('There was some error. Please try again.')
+      } finally {
+        this.isLoadingSubmitToggle(false)
+      }
     }
   }
 
@@ -227,6 +284,9 @@ class Demo extends PureComponent {
                         style={{ marginTop: 0 }}
                         helperText={`Please check your email ${ email } for verification code`}
                         fullWidth
+                        inputProps={{
+                          maxLength: 4
+                        }}
                       />
                     </Grid>
 
@@ -315,7 +375,7 @@ class Demo extends PureComponent {
                         value={nullToEmptyString(organizationName)}
                         onChange={this.onType}
                         label={'Organization name'}
-                        placeholder={'Enter name (eg: HireSmart)'}
+                        placeholder={'Enter name (eg: Hiresmart)'}
                         required={true}
                         margin={'normal'}
                         autoComplete={'off'}
@@ -356,7 +416,10 @@ class Demo extends PureComponent {
 // Component Properties
 Demo.propTypes = {
   classes: PropTypes.object.isRequired,
-  // someAction: PropTypes.func.isRequired,
+  verifySendCode: PropTypes.func.isRequired,
+  verifyCode: PropTypes.func.isRequired,
+  verifyUpdateAccount: PropTypes.func.isRequired,
+  messageShow: PropTypes.func.isRequired,
 }
 
 // Component State
@@ -366,4 +429,4 @@ function demoState(state) {
   }
 }
 
-export default connect(demoState, { /* someAction */ })(withStyles(styles)(Demo))
+export default connect(demoState, { verifySendCode, verifyCode, verifyUpdateAccount, messageShow })(withStyles(styles)(Demo))

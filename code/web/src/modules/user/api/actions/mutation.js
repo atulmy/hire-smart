@@ -125,7 +125,43 @@ export function inviteToOrganization(userDetails) {
   }
 }
 
-// Set a user after login or using localStorage token
+// Verify send email code
+export function verifySendCode(user) {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'userVerifySendCode',
+      data: user,
+      fields: ['_id']
+    }))
+  }
+}
+
+// Verify email code
+export function verifyCode(code) {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'userVerifyCode',
+      data: code,
+      fields: ['_id']
+    }))
+  }
+}
+
+// Verify update account details
+export function verifyUpdateAccount(details) {
+  return dispatch => {
+    return axios.post(API_URL, queryBuilder({
+      type: 'mutation',
+      operation: 'userVerifyUpdateAccount',
+      data: details,
+      fields: ['user {name, email, role, demo}', 'token']
+    }))
+  }
+}
+
+// Set a user auth header after login
 export function setUser(token, user) {
   if (token) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`

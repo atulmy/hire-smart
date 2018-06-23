@@ -48,7 +48,7 @@ class Sidebar extends PureComponent {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, user } = this.props
 
     return (
       <div className={classes.sidebar}>
@@ -56,15 +56,18 @@ class Sidebar extends PureComponent {
           component={'nav'}
           subheader={<ListSubheader component={'div'} className={classes.title}>Account</ListSubheader>}
         >
-          <Link to={routes.account.child.demo.path}>
-            <ListItem button style={ this.isActiveMenu(routes.account.child.demo.path)  ? { backgroundColor: grey[300] } : {}}>
-              <Avatar style={ this.isActiveMenu(routes.account.child.demo.path) ? { backgroundColor: red[500] } : {}}>
-                <IconError />
-              </Avatar>
+          {
+            user.isAuthenticated && user.details.demo &&
+            <Link to={routes.account.child.demo.path}>
+              <ListItem button style={ this.isActiveMenu(routes.account.child.demo.path)  ? { backgroundColor: grey[300] } : {}}>
+                <Avatar style={ this.isActiveMenu(routes.account.child.demo.path) ? { backgroundColor: red[500] } : {}}>
+                  <IconError />
+                </Avatar>
 
-              <ListItemText primary={'Demo Account'} />
-            </ListItem>
-          </Link>
+                <ListItemText primary={'Demo Account'} />
+              </ListItem>
+            </Link>
+          }
 
           <Link to={routes.account.path}>
             <ListItem button style={ this.isActiveMenu(routes.account.path)  ? { backgroundColor: grey[300] } : {}}>
@@ -91,8 +94,16 @@ class Sidebar extends PureComponent {
 // Component Properties
 Sidebar.propTypes = {
   classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 
-export default withRouter(connect(null, { logout, messageShow })(withStyles(styles)(Sidebar)))
+// Component State
+function sidebarState(state) {
+  return {
+    user: state.user
+  }
+}
+
+export default withRouter(connect(sidebarState, { logout, messageShow })(withStyles(styles)(Sidebar)))

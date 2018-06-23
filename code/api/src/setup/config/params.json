@@ -2,7 +2,13 @@
   "site": {
     "version": 0.1,
     "name": "HIRESMART",
-    "domain": "hiresmart.app"
+    "domain": "hiresmart.app",
+    "emails": {
+      "help": {
+        "name": "Help",
+        "email": "help@hiresmart.app"
+      }
+    }
   },
 
   "user": {

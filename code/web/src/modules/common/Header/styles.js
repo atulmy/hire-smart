@@ -41,6 +41,16 @@ const styles = theme => ({
   tooltip: {
     fontSize: 14,
     width: 400
+  },
+
+  drawerActivator: {
+    position: 'fixed',
+    width: 3,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    zIndex: 1,
+    backgroundColor: 'transparent'
   }
 })
 

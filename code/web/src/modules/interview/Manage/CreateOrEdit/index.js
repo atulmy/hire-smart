@@ -134,7 +134,6 @@ class CreateOrEdit extends PureComponent {
           }
         }
       } catch(error) {
-        console.log(error)
         messageShow('There was some error. Please try again.')
       } finally {
         this.isLoadingToggle(false)
