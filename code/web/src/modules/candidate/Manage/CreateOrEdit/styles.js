@@ -19,7 +19,11 @@ const styles = theme => ({
 
   buttonUpload: {
     marginTop: theme.spacing.unit * 2.5
-  }
+  },
+
+  buttonIcon: {
+    width: 20, height: 20, marginRight: 5
+  },
 })
 
 export default styles

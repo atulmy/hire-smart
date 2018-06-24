@@ -7,9 +7,10 @@ const Invite = ({ code, sender }) => (
   <React.Fragment>
     <p>Hi there,</p>
 
-    <p>Please use the following verification code:</p>
-
-    <p>Code: <strong>{ code }</strong></p>
+    <p>
+      Please use the following verification code: <br />
+      Code: <strong>{ code }</strong>
+    </p>
 
     <p>Feel free to reply to this email for any assistance.</p>
 

@@ -85,39 +85,44 @@ class People extends PureComponent {
   invite = async event => {
     event.preventDefault()
 
-    const { inviteToOrganization, messageShow } = this.props
-    const { name, email } = this.state
+    const { user, inviteToOrganization, messageShow } = this.props
 
-    // Validate
-    if(!isEmpty(name) && !isEmpty(email)) {
-      messageShow('Inviting user, please wait..')
-
-      this.isLoadingSubmitToggle(true)
-
-      try {
-        const { data } = await inviteToOrganization({ name, email })
-
-        if(data.errors && data.errors.length > 0) {
-          messageShow(data.errors[0].message)
-        } else {
-          // Reset form data
-          this.setState({
-            name: '',
-            email: ''
-          })
-
-          messageShow(`${ name } has been invited successfully.`)
-
-          // Refresh people list, silently
-          this.refresh(false)
-        }
-      } catch(error) {
-        messageShow('There was some error. Please try again.')
-      } finally {
-        this.isLoadingSubmitToggle(false)
-      }
+    if(user.isAuthenticated && user.details.demo) {
+      messageShow('Sorry, to perform this action you need to verify your account.')
     } else {
-      messageShow('Please enter name and email.')
+      const { name, email } = this.state
+
+      // Validate
+      if (!isEmpty(name) && !isEmpty(email)) {
+        messageShow('Inviting user, please wait..')
+
+        this.isLoadingSubmitToggle(true)
+
+        try {
+          const {data} = await inviteToOrganization({ name, email })
+
+          if (data.errors && data.errors.length > 0) {
+            messageShow(data.errors[0].message)
+          } else {
+            // Reset form data
+            this.setState({
+              name: '',
+              email: ''
+            })
+
+            messageShow(`${ name } has been invited successfully.`)
+
+            // Refresh people list, silently
+            this.refresh(false)
+          }
+        } catch (error) {
+          messageShow('There was some error. Please try again.')
+        } finally {
+          this.isLoadingSubmitToggle(false)
+        }
+      } else {
+        messageShow('Please enter name and email.')
+      }
     }
   }
 
@@ -128,7 +133,7 @@ class People extends PureComponent {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, user } = this.props
     const { isLoading, users, isLoadingSubmit, name, email } = this.state
 
     return (
@@ -212,22 +217,28 @@ class People extends PureComponent {
 
                         <TableBody>
                           {
-                            users.length > 0
-                              ? users.map(user => (
-                                  <TableRow key={user._id}>
-                                    <TableCell>{ user.name }</TableCell>
-                                    <TableCell>{ user.email }</TableCell>
-                                    {/*
-                                    <TableCell className={classes.textCenter}>-</TableCell>
-                                    <TableCell className={classes.textCenter}>-</TableCell>
-                                    */}
-                                  </TableRow>
-                                ))
-                              : <TableRow>
+                            user.isAuthenticated && user.details.demo
+                              ? <TableRow>
                                   <TableCell colSpan={4}>
-                                    <EmptyMessage message={'You have not invited anyone yet.'}/>
+                                    <EmptyMessage message={'Please verify your account to see this list.'}/>
                                   </TableCell>
                                 </TableRow>
+                              : users.length > 0
+                                  ? users.map(user => (
+                                      <TableRow key={user._id}>
+                                          <TableCell>{ user.name }</TableCell>
+                                          <TableCell>{ user.email }</TableCell>
+                                          {/*
+                                          <TableCell className={classes.textCenter}>-</TableCell>
+                                          <TableCell className={classes.textCenter}>-</TableCell>
+                                          */}
+                                      </TableRow>
+                                    ))
+                                  : <TableRow>
+                                      <TableCell colSpan={4}>
+                                        <EmptyMessage message={'You have not invited anyone yet.'}/>
+                                      </TableCell>
+                                    </TableRow>
                           }
                         </TableBody>
                       </Table>
@@ -244,9 +255,17 @@ class People extends PureComponent {
 // Component Properties
 People.propTypes = {
   classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   getListByOrganization: PropTypes.func.isRequired,
   inviteToOrganization: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 
-export default connect(null, { getListByOrganization, inviteToOrganization, messageShow })(withStyles(styles)(People))
+// Component State
+function peopleState(state) {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(peopleState, { getListByOrganization, inviteToOrganization, messageShow })(withStyles(styles)(People))

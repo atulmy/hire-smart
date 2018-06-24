@@ -15,7 +15,6 @@ import Select from '@material-ui/core/Select'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import IconButton from '@material-ui/core/IconButton'
 import IconCheck from '@material-ui/icons/Check'
 import IconClose from '@material-ui/icons/Close'
@@ -337,7 +336,7 @@ class CreateOrEdit extends PureComponent {
                 className={classes.buttonUpload}
                 disabled={isUploadingFile}
               >
-                { resume ? '✔️ Resume Uploaded' : 'Upload Resume' }
+                { resume ? <React.Fragment><IconCheck className={classes.buttonIcon} /> Resume Uploaded</React.Fragment> : 'Upload Resume' }
               </Button>
             </label>
           </Grid>

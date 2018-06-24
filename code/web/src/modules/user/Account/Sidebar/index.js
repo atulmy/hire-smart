@@ -57,32 +57,33 @@ class Sidebar extends PureComponent {
           subheader={<ListSubheader component={'div'} className={classes.title}>Account</ListSubheader>}
         >
           {
-            user.isAuthenticated && user.details.demo &&
-            <Link to={routes.account.child.demo.path}>
-              <ListItem button style={ this.isActiveMenu(routes.account.child.demo.path)  ? { backgroundColor: grey[300] } : {}}>
-                <Avatar style={ this.isActiveMenu(routes.account.child.demo.path) ? { backgroundColor: red[500] } : {}}>
-                  <IconError />
-                </Avatar>
+            user.isAuthenticated && user.details.demo
+              ? <Link to={routes.account.child.demo.path}>
+                  <ListItem button style={ this.isActiveMenu(routes.account.child.demo.path)  ? { backgroundColor: grey[300] } : {}}>
+                    <Avatar style={ this.isActiveMenu(routes.account.child.demo.path) ? { backgroundColor: red[500] } : {}}>
+                      <IconError />
+                    </Avatar>
 
-                <ListItemText primary={'Demo Account'} />
-              </ListItem>
-            </Link>
+                    <ListItemText primary={'Demo Account'} />
+                  </ListItem>
+                </Link>
+              : <React.Fragment>
+                  <Link to={routes.account.path}>
+                    <ListItem button style={ this.isActiveMenu(routes.account.path)  ? { backgroundColor: grey[300] } : {}}>
+                      <Avatar style={ this.isActiveMenu(routes.account.path) ? { backgroundColor: green[500] } : {}}>
+                        <InboxPerson />
+                      </Avatar>
+
+                      <ListItemText primary={'My Profile'} />
+                    </ListItem>
+                  </Link>
+
+                  <ListItem button onClick={this.onLogout}>
+                    <Avatar><InboxExitToApp /></Avatar>
+                    <ListItemText primary={'Logout'} />
+                  </ListItem>
+                </React.Fragment>
           }
-
-          <Link to={routes.account.path}>
-            <ListItem button style={ this.isActiveMenu(routes.account.path)  ? { backgroundColor: grey[300] } : {}}>
-              <Avatar style={ this.isActiveMenu(routes.account.path) ? { backgroundColor: green[500] } : {}}>
-                <InboxPerson />
-              </Avatar>
-
-              <ListItemText primary={'My Profile'} />
-            </ListItem>
-          </Link>
-
-          <ListItem button onClick={this.onLogout}>
-            <Avatar><InboxExitToApp /></Avatar>
-            <ListItemText primary={'Logout'} />
-          </ListItem>
         </List>
       </div>
     )

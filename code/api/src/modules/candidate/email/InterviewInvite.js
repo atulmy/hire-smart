@@ -8,7 +8,7 @@ const InterviewInvite = ({ candidateName, date, organizationName, mode, note, us
     <p>Hi { candidateName },</p>
 
     <p>
-      Your interview for { organizationName } has been scheduled on { date }.<br/>
+      Your interview for { organizationName } has been scheduled on <u>{ date }</u>.<br/>
 
       <strong>Interview Mode:</strong> { mode }
 

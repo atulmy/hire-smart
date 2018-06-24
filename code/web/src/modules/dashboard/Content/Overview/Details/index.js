@@ -59,29 +59,33 @@ class Details extends PureComponent {
   }
 
   remind = interview => async () => {
-    let check = confirm('Are you sure you want to send reminder email to the candidate and interviewer?')
+    const { user, messageShow, remind } = this.props
 
-    if(check) {
-      const { messageShow, remind } = this.props
+    if(user.isAuthenticated && user.details.demo) {
+      messageShow('Sorry, to perform this action you need to verify your account.')
+    } else {
+      let check = confirm('Are you sure you want to send reminder email to the candidate and interviewer?')
 
-      messageShow('Sending reminder emails, please wait..')
+      if (check) {
+        messageShow('Sending reminder emails, please wait..')
 
-      try {
-        const { data } = await remind({ id: interview._id })
+        try {
+          const {data} = await remind({id: interview._id})
 
-        if(data.errors && data.errors.length > 0) {
-          messageShow(data.errors[0].message)
-        } else {
-          messageShow('Reminder emails sent successfully.')
+          if (data.errors && data.errors.length > 0) {
+            messageShow(data.errors[0].message)
+          } else {
+            messageShow('Reminder emails sent successfully.')
+          }
+        } catch (error) {
+          messageShow('There was some error. Please try again.')
         }
-      } catch(error) {
-        messageShow('There was some error. Please try again.')
       }
     }
   }
 
   render() {
-    const { classes, kanban: { isLoading, item: { candidateId, interviews, status, highlight } }, toggleDrawer } = this.props
+    const { classes, user, kanban: { isLoading, item: { candidateId, interviews, status, highlight } }, toggleDrawer } = this.props
     const { tab } = this.state
 
     return (
@@ -143,7 +147,12 @@ class Details extends PureComponent {
                                         <InterviewViewFields interview={interview} />
 
                                         <div className={classes.interviewContentActions}>
-                                          <Button color={'primary'} onClick={this.remind(interview)}>Remind</Button>
+                                          <Button
+                                            color={'primary'}
+                                            onClick={this.remind(interview)}
+                                          >
+                                            Remind
+                                          </Button>
                                         </div>
                                       </div>
                                     </div>
@@ -181,6 +190,7 @@ Details.propTypes = {
   kanbanId: PropTypes.string,
   toggleDrawer: PropTypes.func.isRequired,
   kanban: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   get: PropTypes.func.isRequired,
   remind: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
@@ -189,7 +199,8 @@ Details.propTypes = {
 // Component State
 function detailsState(state) {
   return {
-    kanban: state.kanban
+    kanban: state.kanban,
+    user: state.user
   }
 }
 

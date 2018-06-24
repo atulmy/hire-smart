@@ -82,23 +82,27 @@ class Interviews extends PureComponent {
   }
 
   remind = interview => async () => {
-    let check = confirm('Are you sure you want to send reminder email to the candidate and interviewer?')
+    const { user, messageShow, remind } = this.props
 
-    if(check) {
-      const { messageShow, remind } = this.props
+    if(user.isAuthenticated && user.details.demo) {
+      messageShow('Sorry, to perform this action you need to verify your account.')
+    } else {
+      let check = confirm('Are you sure you want to send reminder email to the candidate and interviewer?')
 
-      messageShow('Sending reminder emails, please wait..')
+      if (check) {
+        messageShow('Sending reminder emails, please wait..')
 
-      try {
-        const { data } = await remind({ id: interview._id })
+        try {
+          const {data} = await remind({id: interview._id})
 
-        if(data.errors && data.errors.length > 0) {
-          messageShow(data.errors[0].message)
-        } else {
-          messageShow('Reminder emails sent successfully.')
+          if (data.errors && data.errors.length > 0) {
+            messageShow(data.errors[0].message)
+          } else {
+            messageShow('Reminder emails sent successfully.')
+          }
+        } catch (error) {
+          messageShow('There was some error. Please try again.')
         }
-      } catch(error) {
-        messageShow('There was some error. Please try again.')
       }
     }
   }
@@ -184,6 +188,7 @@ Interviews.propTypes = {
   interviewsByClient: PropTypes.object.isRequired,
   interviewView: PropTypes.object.isRequired,
   clientDashboard: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   getListByClient: PropTypes.func.isRequired,
   view: PropTypes.func.isRequired,
   viewHide: PropTypes.func.isRequired,
@@ -198,7 +203,8 @@ function interviewsState(state) {
   return {
     interviewsByClient: state.interviewsByClient,
     interviewView: state.interviewView,
-    clientDashboard: state.clientDashboard
+    clientDashboard: state.clientDashboard,
+    user: state.user
   }
 }
 

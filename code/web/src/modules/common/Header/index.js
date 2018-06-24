@@ -91,7 +91,7 @@ class Header extends PureComponent {
                     className={classes.button}
                   >
                     <IconErrorOutline className={classes.buttonIcon} />
-                    Demo Account
+                    Verify Your Account
                   </Button>
                 </Tooltip>
               </Link>
@@ -116,7 +116,7 @@ class Header extends PureComponent {
             </Link>
 
             {/* Account */}
-            <Link to={routes.account.path}>
+            <Link to={user.isAuthenticated && user.details.demo ? routes.account.child.demo.path : routes.account.path}>
               <Tooltip title={'Account'} placement={'bottom'}>
                 <IconButton color={'inherit'} className={classes.account}>
                   <IconAccountCircle />
