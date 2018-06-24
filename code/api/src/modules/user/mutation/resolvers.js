@@ -51,7 +51,7 @@ export async function startNow(parentValue, {}, { auth }) {
     try {
       let user
 
-      if(NODE_ENV === 'development1') {
+      if(NODE_ENV === 'development') {
         // Use already created user instead of creating new every time
         user = await User.findOne({ email: 'user@hiresmart.app' })
       } else {

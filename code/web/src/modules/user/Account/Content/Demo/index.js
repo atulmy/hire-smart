@@ -423,6 +423,7 @@ class Demo extends PureComponent {
 // Component Properties
 Demo.propTypes = {
   classes: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   verifySendCode: PropTypes.func.isRequired,
   verifyCode: PropTypes.func.isRequired,
   verifyUpdateAccount: PropTypes.func.isRequired,

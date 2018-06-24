@@ -17,6 +17,11 @@ const styles = theme => ({
   content: {
     padding: theme.spacing.unit * 3
   },
+
+  item: {
+    marginBottom: theme.spacing.unit * 2.5,
+    borderBottom: `1px solid ${ grey[200] }`
+  },
 })
 
 export default styles
