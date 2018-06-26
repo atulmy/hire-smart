@@ -3,46 +3,12 @@ import { GraphQLString } from 'graphql'
 
 // App Imports
 import { UserType, UserLoginType } from '../types'
-import { create, remove, startNow, inviteToOrganization, verifySendCode, verifyCode, verifyUpdateAccount } from './resolvers'
+import { startNow, inviteToOrganization, verifySendCode, verifyCode, verifyUpdateAccount } from './resolvers'
 
 // Create a demo user and login
 export const userStartNow = {
   type: UserLoginType,
   resolve: startNow
-}
-
-// Create
-export const userSignup = {
-  type: UserType,
-  args: {
-    name: {
-      name: 'name',
-      type: GraphQLString
-    },
-
-    email: {
-      name: 'email',
-      type: GraphQLString
-    },
-
-    password: {
-      name: 'password',
-      type: GraphQLString
-    }
-  },
-  resolve: create
-}
-
-// Remove
-export const userRemove = {
-  type: UserType,
-  args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    }
-  },
-  resolve: remove
 }
 
 // Invite to Organization
@@ -77,6 +43,10 @@ export const userVerifySendCode = {
 export const userVerifyCode = {
   type: UserType,
   args: {
+    email: {
+      name: 'email',
+      type: GraphQLString
+    },
     code: {
       name: 'code',
       type: GraphQLString
@@ -89,6 +59,10 @@ export const userVerifyCode = {
 export const userVerifyUpdateAccount = {
   type: UserLoginType,
   args: {
+    email: {
+      name: 'email',
+      type: GraphQLString
+    },
     name: {
       name: 'name',
       type: GraphQLString

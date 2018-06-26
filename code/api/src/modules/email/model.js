@@ -19,8 +19,7 @@ const Schema = new mongoose.Schema({
     ref: User
   },
   toName: {
-    type: String,
-    required: true
+    type: String
   },
   toEmail: {
     type: String,

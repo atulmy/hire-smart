@@ -37,8 +37,11 @@ export async function send({ to, from, subject, template, cc = null, organizatio
 
     subject = `${ params.site.name } - ${ subject }`
 
+    const toEmail = NODE_ENV === 'development' ? EMAIL_TEST : to.email
+    const toAddress = to.name && to.name.length > 0 ? `"${ to.name }" <${ toEmail }>` : toEmail
+
     let email = {
-      to: `"${ to.name }" <${ NODE_ENV === 'development' ? EMAIL_TEST : to.email }>`,
+      to: toAddress,
       from: `"${ from.name }" <${ from.email }>`,
       subject,
       html: body
@@ -53,16 +56,24 @@ export async function send({ to, from, subject, template, cc = null, organizatio
     })
 
     // Save into database
-    return await Email.create({
-      organizationId,
-      userId,
-      toName: to.name,
+    let emailSave = {
       toEmail: to.email,
       fromName: from.name,
       fromEmail: from.email,
       subject,
       body
-    })
+    }
+    if(to.name && to.name.length > 0) {
+      emailSave.toName = to.name
+    }
+    if(organizationId) {
+      emailSave.organizationId = organizationId
+    }
+    if(userId) {
+      emailSave.userId = userId
+    }
+
+    return await Email.create(emailSave)
   } else {
     console.warn('WARN - Email not sent. Please check `.env` to set email configurations.')
   }

@@ -18,10 +18,17 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
+import routes from '../../../../../setup/routes'
 import Verify from '../../../Verify'
 
 // Component
 class Demo extends PureComponent {
+  stepFinish = () => {
+    const { history } = this.props
+
+    history.push(routes.account.path)
+  }
+
   render() {
     const { classes, user: { details } } = this.props
 

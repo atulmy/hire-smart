@@ -109,15 +109,16 @@ class Verify extends PureComponent {
   step2 = async event => {
     event.preventDefault()
 
-    const { verification } = this.state
+    const { verifyCode, messageShow } = this.props
+
+    const { email, verification } = this.state
 
     if(!isEmpty(verification)) {
-      const { verifyCode, messageShow } = this.props
 
       this.isLoadingSubmitToggle(true)
 
       try {
-        const { data } = await verifyCode({ code: verification })
+        const { data } = await verifyCode({ email, code: verification })
 
         if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
@@ -136,6 +137,8 @@ class Verify extends PureComponent {
       } finally {
         this.isLoadingSubmitToggle(false)
       }
+    } else {
+      messageShow('Please enter verification code sent to your email.')
     }
   }
 
@@ -151,19 +154,16 @@ class Verify extends PureComponent {
   step3 = async event => {
     event.preventDefault()
 
-    const { name, password, organizationName } = this.state
+    const { verifyUpdateAccount, messageShow } = this.props
 
-    if(!isEmpty(name) && !isEmpty(password) && !isEmpty(organizationName)) {
-      const { verifyUpdateAccount } = this.props
+    const { email, name, password, organizationName } = this.state
 
-      verifyUpdateAccount({ name, password, organizationName })
+    if(!isEmpty(email) && !isEmpty(name) && !isEmpty(password) && !isEmpty(organizationName)) {
+
+      verifyUpdateAccount({ email, name, password, organizationName })
+    } else {
+      messageShow('Please provide all the details.')
     }
-  }
-
-  stepFinish = () => {
-    const { history } = this.props
-
-    history.push(routes.account.path)
   }
 
   render() {

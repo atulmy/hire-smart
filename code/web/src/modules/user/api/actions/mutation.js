@@ -61,18 +61,6 @@ export function login(userCredentials, isLoading = true) {
   }
 }
 
-// Register a user
-export function register(userDetails) {
-  return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
-      operation: 'userSignup',
-      data: userDetails,
-      fields: ['_id', 'name', 'email']
-    }))
-  }
-}
-
 // Create a demo user and login
 export function startNow(isLoading = true) {
   return async dispatch => {
@@ -150,12 +138,12 @@ export function verifySendCode(user) {
 }
 
 // Verify email code
-export function verifyCode(code) {
+export function verifyCode(data) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
       operation: 'userVerifyCode',
-      data: code,
+      data,
       fields: ['_id']
     }))
   }
@@ -179,7 +167,7 @@ export function verifyUpdateAccount(details, isLoading = true) {
         type: 'mutation',
         operation: 'userVerifyUpdateAccount',
         data: details,
-        fields: ['user {name, email, role, demo}', 'token']
+        fields: ['user {name, email, role, demo}', 'token', 'message']
       }))
 
       let message = ''
@@ -194,7 +182,7 @@ export function verifyUpdateAccount(details, isLoading = true) {
 
         loginSetUserLocalStorageAndCookie(token, user)
 
-        message = 'Your account has been verified and updated successfully.'
+        message = data.data.userVerifyUpdateAccount.message
       }
 
       dispatch({

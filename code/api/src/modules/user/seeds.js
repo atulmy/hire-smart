@@ -32,13 +32,4 @@ export default async function () {
     role: params.user.roles.user.key,
     demo: false
   })
-
-  await User.create({
-    organizationId: organization._id,
-    name: 'Demo User',
-    email: 'demo@hiresmart.app',
-    password: passwordHashed,
-    role: params.user.roles.user.key,
-    demo: true
-  })
 }

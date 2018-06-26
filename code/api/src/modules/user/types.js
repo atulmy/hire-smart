@@ -29,7 +29,8 @@ const UserLoginType = new GraphQLObjectType({
 
   fields: () => ({
     user: { type: UserType },
-    token: { type: GraphQLString }
+    token: { type: GraphQLString },
+    message: { type: GraphQLString }
   })
 })
 
