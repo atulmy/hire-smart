@@ -15,6 +15,11 @@ export function login(userCredentials, isLoading = true) {
       isLoading
     })
 
+    dispatch({
+      type: MESSAGE_SHOW,
+      message: 'Please wait..'
+    })
+
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
@@ -23,10 +28,10 @@ export function login(userCredentials, isLoading = true) {
         fields: ['user {name, email, role}', 'token']
       }))
 
-      let error = ''
+      let message = ''
 
       if (data.errors && data.errors.length > 0) {
-        error = data.errors[0].message
+        message = data.errors[0].message
       } else if (data.data.userLogin.token !== '') {
         const token = data.data.userLogin.token
         const user = data.data.userLogin.user
@@ -34,7 +39,14 @@ export function login(userCredentials, isLoading = true) {
         dispatch(setUser(token, user))
 
         loginSetUserLocalStorageAndCookie(token, user)
+
+        message = `Login successful. Welcome back, ${ data.data.userLogin.user.name }.`
       }
+
+      dispatch({
+        type: MESSAGE_SHOW,
+        message
+      })
 
       dispatch({
         type: LOGIN_RESPONSE,

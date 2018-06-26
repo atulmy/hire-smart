@@ -14,25 +14,23 @@ export async function login(parentValue, { email, password }) {
     // User does not exists
     throw new Error(`We do not have any user registered with ${ email } email address. Please signup.`)
   } else {
-    const userDetails = user.get()
-
     // User exists
-    const passwordMatch = await bcrypt.compare(password, userDetails.password)
+    const passwordMatch = await bcrypt.compare(password, user.password)
 
     if (!passwordMatch) {
       // Incorrect password
       throw new Error(`Sorry, the password you entered is incorrect. Please try again.`)
     } else {
       const token = {
-        id: userDetails._id,
-        organizationId: userDetails.organizationId,
-        name: userDetails.name,
-        email: userDetails.email,
-        role: userDetails.role
+        id: user._id,
+        organizationId: user.organizationId,
+        name: user.name,
+        email: user.email,
+        role: user.role
       }
 
       return {
-        user: userDetails,
+        user: user,
         token: jwt.sign(token, serverConfig.secret)
       }
     }

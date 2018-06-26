@@ -11,8 +11,6 @@ import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
-// App Imports
-
 // Component
 class Profile extends PureComponent {
   render() {

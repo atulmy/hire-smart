@@ -1,11 +1,12 @@
 // App Imports
+import Access from '../../modules/user/Access'
 import Account from '../../modules/user/Account'
 
 // Pages routes
 export default {
   login: {
     path: '/login',
-    component: Account
+    component: Access
   },
   account: {
     path: '/account',

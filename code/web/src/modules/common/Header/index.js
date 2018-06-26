@@ -50,6 +50,20 @@ class Header extends PureComponent {
     return location.pathname !== routes.home.path
   }
 
+  account = () => {
+    const { user } = this.props
+
+    if(user.isAuthenticated) {
+      if(user.details.demo) {
+        return routes.account.child.demo.path
+      }
+
+      return routes.account.path
+    }
+
+    return routes.login.path
+  }
+
   render() {
     const { classes, common: { drawerVisible }, user, drawerShow, drawerHide } = this.props
 
@@ -116,8 +130,8 @@ class Header extends PureComponent {
             </Link>
 
             {/* Account */}
-            <Link to={user.isAuthenticated && user.details.demo ? routes.account.child.demo.path : routes.account.path}>
-              <Tooltip title={'Account'} placement={'bottom'}>
+            <Link to={this.account()}>
+              <Tooltip title={user.isAuthenticated ? 'Your Account' : 'Login or signup'} placement={'bottom'}>
                 <IconButton color={'inherit'} className={classes.account}>
                   <IconAccountCircle />
                 </IconButton>

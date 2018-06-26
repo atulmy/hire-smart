@@ -53,7 +53,7 @@ export async function startNow(parentValue, {}, { auth }) {
 
       if(NODE_ENV === 'development') {
         // Use already created user instead of creating new every time
-        user = await User.findOne({ email: 'user@hiresmart.app' })
+        user = await User.findOne({ email: 'demo@hiresmart.app' })
       } else {
         // Create new Organization
         const organization = await Organization.create({

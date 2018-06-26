@@ -38,11 +38,6 @@ export const userLogin = {
     password: {
       name: 'password',
       type: GraphQLString
-    },
-
-    role: {
-      name: 'role',
-      type: GraphQLString
     }
   },
   resolve: login

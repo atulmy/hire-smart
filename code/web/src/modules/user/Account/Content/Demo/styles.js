@@ -16,19 +16,6 @@ const styles = theme => ({
 
   content: {
     padding: theme.spacing.unit * 3
-  },
-
-  divider: {
-    padding: `${ theme.spacing.unit }px 0`
-  },
-
-  buttonsContainer: {
-    textAlign: 'right',
-    marginTop: theme.spacing.unit
-  },
-
-  panel: {
-    backgroundColor: grey[50],
   }
 })
 

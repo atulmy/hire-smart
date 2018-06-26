@@ -34,8 +34,16 @@ class Sidebar extends PureComponent {
   }
 
   onLogout = () => {
+    const { user } = this.props
+
     window.setTimeout(() => {
-      let check = confirm(`Are you sure you want to log out of ${ params.site.name }?`)
+      let message = `Are you sure you want to log out of ${ params.site.name }?`
+
+      if(user.isAuthenticated && user.details.demo) {
+        message = `Since you are using a demo account, all your data will be lost. Are you sure you want to log out?`
+      }
+
+      let check = confirm(message)
 
       if(check) {
         const {logout, messageShow} = this.props
@@ -67,23 +75,21 @@ class Sidebar extends PureComponent {
                     <ListItemText primary={'Demo Account'} />
                   </ListItem>
                 </Link>
-              : <React.Fragment>
-                  <Link to={routes.account.path}>
-                    <ListItem button style={ this.isActiveMenu(routes.account.path)  ? { backgroundColor: grey[300] } : {}}>
-                      <Avatar style={ this.isActiveMenu(routes.account.path) ? { backgroundColor: green[500] } : {}}>
-                        <InboxPerson />
-                      </Avatar>
+              : <Link to={routes.account.path}>
+                  <ListItem button style={ this.isActiveMenu(routes.account.path)  ? { backgroundColor: grey[300] } : {}}>
+                    <Avatar style={ this.isActiveMenu(routes.account.path) ? { backgroundColor: green[500] } : {}}>
+                      <InboxPerson />
+                    </Avatar>
 
-                      <ListItemText primary={'My Profile'} />
-                    </ListItem>
-                  </Link>
-
-                  <ListItem button onClick={this.onLogout}>
-                    <Avatar><InboxExitToApp /></Avatar>
-                    <ListItemText primary={'Logout'} />
+                    <ListItemText primary={'My Profile'} />
                   </ListItem>
-                </React.Fragment>
+                </Link>
           }
+
+          <ListItem button onClick={this.onLogout}>
+            <Avatar><InboxExitToApp /></Avatar>
+            <ListItemText primary={'Logout'} />
+          </ListItem>
         </List>
       </div>
     )
