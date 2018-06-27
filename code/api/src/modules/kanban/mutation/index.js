@@ -7,30 +7,15 @@ import { create, remove, update, updateStatus } from './resolvers'
 
 // Kanban fields
 const fields = {
-  clientId: {
-    name: 'clientId',
-    type: GraphQLString
-  },
+  clientId: { type: GraphQLString },
 
-  candidateId: {
-    name: 'candidateId',
-    type: GraphQLString
-  },
+  candidateId: { type: GraphQLString },
 
-  interviews: {
-    name: 'interviews',
-    type: GraphQLList(GraphQLString)
-  },
+  interviews: { type: GraphQLList(GraphQLString) },
 
-  status: {
-    name: 'status',
-    type: GraphQLString
-  },
+  status: { type: GraphQLString },
 
-  highlight: {
-    name: 'highlight',
-    type: GraphQLString
-  }
+  highlight: { type: GraphQLString }
 }
 
 // Kanban create
@@ -44,10 +29,7 @@ export const kanbanCreate = {
 export const kanbanUpdate = {
   type: KanbanType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    },
+    id: { type: GraphQLString },
 
     ...fields
   },
@@ -58,10 +40,7 @@ export const kanbanUpdate = {
 export const kanbanUpdateStatus = {
   type: KanbanType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    },
+    id: { type: GraphQLString },
 
     ...fields
   },
@@ -72,10 +51,7 @@ export const kanbanUpdateStatus = {
 export const kanbanRemove = {
   type: KanbanType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    }
+    id: { type: GraphQLString }
   },
   resolve: remove
 }

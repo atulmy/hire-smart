@@ -6,15 +6,6 @@ export async function get(parentValue, { id }) {
   return await Interview.findOne({ _id: id })
 }
 
-// Get by user
-export async function getByUser(parentValue, {}, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Interview.find({ userId: auth.user.id })
-  } else {
-    throw new Error('Please login to view interviews.')
-  }
-}
-
 // Get by organization
 export async function getByOrganization(parentValue, {}, { auth }) {
   if(auth.user && auth.user.id) {

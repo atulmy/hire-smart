@@ -15,14 +15,8 @@ export const userStartNow = {
 export const userInviteToOrganization = {
   type: UserType,
   args: {
-    name: {
-      name: 'name',
-      type: GraphQLString
-    },
-    email: {
-      name: 'email',
-      type: GraphQLString
-    }
+    name: { type: GraphQLString },
+    email: { type: GraphQLString }
   },
   resolve: inviteToOrganization
 }
@@ -31,10 +25,7 @@ export const userInviteToOrganization = {
 export const userVerifySendCode = {
   type: UserType,
   args: {
-    email: {
-      name: 'email',
-      type: GraphQLString
-    }
+    email: { type: GraphQLString }
   },
   resolve: verifySendCode
 }
@@ -43,14 +34,8 @@ export const userVerifySendCode = {
 export const userVerifyCode = {
   type: UserType,
   args: {
-    email: {
-      name: 'email',
-      type: GraphQLString
-    },
-    code: {
-      name: 'code',
-      type: GraphQLString
-    }
+    email: { type: GraphQLString },
+    code: { type: GraphQLString }
   },
   resolve: verifyCode
 }
@@ -59,22 +44,10 @@ export const userVerifyCode = {
 export const userVerifyUpdateAccount = {
   type: UserLoginType,
   args: {
-    email: {
-      name: 'email',
-      type: GraphQLString
-    },
-    name: {
-      name: 'name',
-      type: GraphQLString
-    },
-    password: {
-      name: 'password',
-      type: GraphQLString
-    },
-    organizationName: {
-      name: 'organizationName',
-      type: GraphQLString
-    }
+    email: { type: GraphQLString },
+    name: { type: GraphQLString },
+    password: { type: GraphQLString },
+    organizationName: { type: GraphQLString }
   },
   resolve: verifyUpdateAccount
 }

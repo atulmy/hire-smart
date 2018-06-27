@@ -7,40 +7,19 @@ import { create, remove, update, remind } from './resolvers'
 
 // Interview fields
 const fields = {
-  clientId: {
-    name: 'candidateId',
-    type: GraphQLString
-  },
+  clientId: { type: GraphQLString },
 
-  candidateId: {
-    name: 'candidateId',
-    type: GraphQLString
-  },
+  candidateId: { type: GraphQLString },
 
-  interviewerId: {
-    name: 'interviewerId',
-    type: GraphQLString
-  },
+  interviewerId: { type: GraphQLString },
 
-  dateTime: {
-    name: 'dateTime',
-    type: GraphQLString
-  },
+  dateTime: { type: GraphQLString },
 
-  mode: {
-    name: 'mode',
-    type: GraphQLString
-  },
+  mode: { type: GraphQLString },
 
-  note: {
-    name: 'note',
-    type: GraphQLString
-  },
+  note: { type: GraphQLString },
 
-  invite: {
-    name: 'invite',
-    type: GraphQLBoolean
-  }
+  invite: { type: GraphQLBoolean }
 }
 
 // Interview create
@@ -54,10 +33,7 @@ export const interviewCreate = {
 export const interviewUpdate = {
   type: InterviewType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    },
+    id: { type: GraphQLString },
 
     ...fields
   },
@@ -68,10 +44,7 @@ export const interviewUpdate = {
 export const interviewRemove = {
   type: InterviewType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    }
+    id: { type: GraphQLString }
   },
   resolve: remove
 }
@@ -80,10 +53,7 @@ export const interviewRemove = {
 export const interviewRemind = {
   type: InterviewType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    }
+    id: { type: GraphQLString }
   },
   resolve: remind
 }

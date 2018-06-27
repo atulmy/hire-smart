@@ -7,20 +7,11 @@ import { create, remove, update } from './resolvers'
 
 // Job fields
 const fields = {
-  clientId: {
-    name: 'clientId',
-    type: GraphQLString
-  },
+  clientId: { type: GraphQLString },
 
-  role: {
-    name: 'role',
-    type: GraphQLString
-  },
+  role: { type: GraphQLString },
 
-  description: {
-    name: 'description',
-    type: GraphQLString
-  }
+  description: { type: GraphQLString }
 }
 
 // Job create
@@ -34,10 +25,7 @@ export const jobCreate = {
 export const jobUpdate = {
   type: JobType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    },
+    id: { type: GraphQLString },
 
     ...fields
   },
@@ -48,10 +36,7 @@ export const jobUpdate = {
 export const jobRemove = {
   type: JobType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    }
+    id: { type: GraphQLString }
   },
   resolve: remove
 }

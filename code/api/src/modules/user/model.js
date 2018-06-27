@@ -32,6 +32,11 @@ const Schema = new mongoose.Schema({
     required: true,
     default: params.user.roles.user.key
   },
+  admin: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   demo: {
     type: Boolean,
     required: true,

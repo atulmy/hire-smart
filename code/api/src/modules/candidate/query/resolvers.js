@@ -36,17 +36,6 @@ export async function getByOrganization(parentValue, {}, { auth }) {
   }
 }
 
-// Get by user
-export async function getByUser(parentValue, {}, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Candidate.find({ userId: auth.user.id })
-      .populate('clientId')
-      .populate('jobId')
-  } else {
-    throw new Error('Please login to view your candidates.')
-  }
-}
-
 // Get all
 export async function getAll() {
   return await Candidate.find()

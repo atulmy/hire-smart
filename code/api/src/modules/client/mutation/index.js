@@ -7,15 +7,9 @@ import { create, remove, update } from './resolvers'
 
 // Client fields
 const fields = {
-  name: {
-    name: 'name',
-    type: GraphQLString
-  },
+  name: { type: GraphQLString },
 
-  description: {
-    name: 'description',
-    type: GraphQLString
-  }
+  description: { type: GraphQLString }
 }
 
 // Client create
@@ -29,10 +23,7 @@ export const clientCreate = {
 export const clientUpdate = {
   type: ClientType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    },
+    id: { type: GraphQLString },
 
     ...fields
   },
@@ -43,10 +34,7 @@ export const clientUpdate = {
 export const clientRemove = {
   type: ClientType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    }
+    id: { type: GraphQLString }
   },
   resolve: remove
 }

@@ -24,6 +24,7 @@ import params from '../../../../setup/config/params'
 import { overviewTabs } from '../index'
 import { getListByClient as getKanbanListByClient } from '../../../kanban/api/actions/query'
 import { updateStatus as updateKanbanStatus } from '../../../kanban/api/actions/mutation'
+import { editClose } from '../../../candidate/api/actions/mutation'
 import { messageShow, messageHide } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
 import CreateOrEdit from '../../../candidate/Manage/CreateOrEdit'
@@ -148,6 +149,14 @@ class Overview extends PureComponent {
     this.toggleDrawerAdd(false)()
   }
 
+  add = () => {
+    const { editClose } = this.props
+
+    editClose()
+
+    this.toggleDrawerAdd(true)()
+  }
+
   render() {
     const { classes, clientDashboard: { client }, kanbansByClient: { isLoading, list } } = this.props
     const { detailsOpen, drawerAdd, kanbanId } = this.state
@@ -217,7 +226,7 @@ class Overview extends PureComponent {
                                 <Button
                                   fullWidth={true}
                                   className={list && list.length > 0 ? classes.columnButtonAdd : classes.columnButtonAddPrimary}
-                                  onClick={this.toggleDrawerAdd(true)}
+                                  onClick={this.add}
                                 >
                                   Add Candidate
                                 </Button>
@@ -284,6 +293,7 @@ Overview.propTypes = {
   clientDashboard: PropTypes.object.isRequired,
   getKanbanListByClient: PropTypes.func.isRequired,
   updateKanbanStatus: PropTypes.func.isRequired,
+  editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired,
   messageHide: PropTypes.func.isRequired
 }
@@ -298,6 +308,6 @@ function overviewState(state) {
 
 export default compose(
   DragDropContext(HTML5Backend),
-  connect(overviewState, { getKanbanListByClient, updateKanbanStatus, messageShow, messageHide }),
+  connect(overviewState, { getKanbanListByClient, updateKanbanStatus, editClose, messageShow, messageHide }),
   withStyles(styles)
 )(Overview)

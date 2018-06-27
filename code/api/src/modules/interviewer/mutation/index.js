@@ -7,25 +7,13 @@ import { create, remove, update } from './resolvers'
 
 // Interviewer fields
 const fields = {
-  clientId: {
-    name: 'clientId',
-    type: GraphQLString
-  },
+  clientId: { type: GraphQLString },
 
-  name: {
-    name: 'name',
-    type: GraphQLString
-  },
+  name: { type: GraphQLString },
 
-  email: {
-    name: 'email',
-    type: GraphQLString
-  },
+  email: { type: GraphQLString },
 
-  mobile: {
-    name: 'mobile',
-    type: GraphQLString
-  }
+  mobile: { type: GraphQLString }
 }
 
 // Interviewer create
@@ -39,10 +27,7 @@ export const interviewerCreate = {
 export const interviewerUpdate = {
   type: InterviewerType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    },
+    id: { type: GraphQLString },
 
     ...fields
   },
@@ -53,10 +38,7 @@ export const interviewerUpdate = {
 export const interviewerRemove = {
   type: InterviewerType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    }
+    id: { type: GraphQLString }
   },
   resolve: remove
 }

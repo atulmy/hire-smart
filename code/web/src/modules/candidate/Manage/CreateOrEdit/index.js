@@ -104,6 +104,8 @@ class CreateOrEdit extends PureComponent {
   }
 
   onType = event => {
+    console.log(event.target.name)
+    console.log(event.target.value)
     this.setState({
       [event.target.name]: event.target.value
     })
@@ -356,22 +358,16 @@ class CreateOrEdit extends PureComponent {
                   name: 'jobId'
                 }}
               >
+                <MenuItem value="">
+                  <em>Select job role</em>
+                </MenuItem>
                 {
                   jobsByClient.isLoading
-                    ? <MenuItem value="">
-                        <Loading/>
-                      </MenuItem>
+                    ? <Loading/>
                     : jobsByClient.list && jobsByClient.list.length > 0
-                        ? <React.Fragment>
-                            <MenuItem value="">
-                              <em>Select job role</em>
-                            </MenuItem>
-                            {
-                              jobsByClient.list.map(job => (
-                                <MenuItem key={job._id} value={job._id}>{job.role}</MenuItem>
-                              ))
-                            }
-                          </React.Fragment>
+                        ? jobsByClient.list.map(job => (
+                            <MenuItem key={job._id} value={job._id}>{job.role}</MenuItem>
+                          ))
                         : <MenuItem value="">
                             <em>No job added.</em>
                           </MenuItem>

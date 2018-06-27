@@ -3,7 +3,7 @@ import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
 import InterviewerType from '../types'
-import { getAll, get, getByUser, getByOrganization, getByClient } from './resolvers'
+import { getAll, get, getByOrganization, getByClient } from './resolvers'
 
 // Get all
 export const interviewers = {
@@ -18,12 +18,6 @@ export const interviewer = {
     id: { type: GraphQLString }
   },
   resolve: get
-}
-
-// Get by user
-export const interviewersByUser = {
-  type: new GraphQLList(InterviewerType),
-  resolve: getByUser
 }
 
 // Get by organization

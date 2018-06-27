@@ -17,15 +17,6 @@ export async function getByOrganization(parentValue, {}, { auth }) {
   }
 }
 
-// Get by user
-export async function getByUser(parentValue, {}, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Client.find({ userId: auth.user.id })
-  } else {
-    throw new Error('Please login to view your clients.')
-  }
-}
-
 // Get all
 export async function getAll() {
   return await Client.find()

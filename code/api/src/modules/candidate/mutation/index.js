@@ -7,50 +7,23 @@ import { create, remove, update } from './resolvers'
 
 // Candidate fields
 const fields = {
-  clientId: {
-    name: 'clientId',
-    type: GraphQLString
-  },
+  clientId: { type: GraphQLString },
 
-  jobId: {
-    name: 'jobId',
-    type: GraphQLString
-  },
+  jobId: { type: GraphQLString },
 
-  name: {
-    name: 'name',
-    type: GraphQLString
-  },
+  name: { type: GraphQLString },
 
-  email: {
-    name: 'email',
-    type: GraphQLString
-  },
+  email: { type: GraphQLString },
 
-  mobile: {
-    name: 'mobile',
-    type: GraphQLString
-  },
+  mobile: { type: GraphQLString },
 
-  experience: {
-    name: 'email',
-    type: GraphQLString
-  },
+  experience: { type: GraphQLString },
 
-  resume: {
-    name: 'resume',
-    type: GraphQLString
-  },
+  resume: { type: GraphQLString },
 
-  salaryCurrent: {
-    name: 'salaryCurrent',
-    type: GraphQLString
-  },
+  salaryCurrent: { type: GraphQLString },
 
-  salaryExpected: {
-    name: 'salaryExpected',
-    type: GraphQLString
-  }
+  salaryExpected: { type: GraphQLString }
 }
 
 // Candidate create
@@ -64,10 +37,7 @@ export const candidateCreate = {
 export const candidateUpdate = {
   type: CandidateType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    },
+    id: { type: GraphQLString },
 
     ...fields
   },
@@ -78,10 +48,7 @@ export const candidateUpdate = {
 export const candidateRemove = {
   type: CandidateType,
   args: {
-    id: {
-      name: 'id',
-      type: GraphQLString
-    }
+    id: { type: GraphQLString }
   },
   resolve: remove
 }
