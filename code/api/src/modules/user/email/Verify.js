@@ -2,8 +2,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// App Imports
+import params from '../../../setup/config/params'
+
 // Component
-const Invite = ({ code, sender }) => (
+const Invite = ({ code }) => (
   <React.Fragment>
     <p>Hi there,</p>
 
@@ -16,15 +19,14 @@ const Invite = ({ code, sender }) => (
 
     <p>
       Thanks, <br/>
-      { sender }
+      { params.site.name }
     </p>
   </React.Fragment>
 )
 
 // Component Properties
 Invite.propTypes = {
-  code: PropTypes.number.isRequired,
-  sender: PropTypes.string.isRequired
+  code: PropTypes.number.isRequired
 }
 
 export default Invite

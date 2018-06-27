@@ -3,6 +3,7 @@
     "version": 0.1,
     "name": "HIRESMART",
     "domain": "hiresmart.app",
+    "url": "https://hiresmart.app",
     "emails": {
       "help": {
         "name": "Help",
@@ -57,6 +58,13 @@
   "candidate": {
     "resume": {
       "path": "uploads"
+    }
+  },
+
+  "web": {
+    "routes": {
+      "home": "/",
+      "dashboard": "/dashboard"
     }
   }
 }

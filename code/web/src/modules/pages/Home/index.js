@@ -47,8 +47,14 @@ class Home extends PureComponent {
     }
   }
 
+  startNowText = () => {
+    const { user: { isAuthenticated, isLoading } } = this.props
+
+    return isLoading ? `Please Wait..` : (isAuthenticated ? `Open Dashboard` : `Start Now`)
+  }
+
   render() {
-    const { classes, user: { isLoading } } = this.props
+    const { classes, user: { isAuthenticated, isLoading } } = this.props
     const { redirect } = this.state
 
     return(
@@ -78,18 +84,21 @@ class Home extends PureComponent {
             onClick={this.startNow}
             disabled={isLoading}
           >
-            { !isLoading ? `Start Now` : `Please Wait..` }
+            { this.startNowText() }
           </Button>
 
           { redirect && <AuthCheck /> }
 
-          <Typography
-            variant={'caption'}
-            gutterBottom
-            className={classes.buttonCaption}
-          >
-            login not required
-          </Typography>
+          {
+            !isAuthenticated &&
+            <Typography
+              variant={'caption'}
+              gutterBottom
+              className={classes.buttonCaption}
+            >
+              login not required
+            </Typography>
+          }
         </div>
 
         {/* Features */}
@@ -188,16 +197,19 @@ class Home extends PureComponent {
             onClick={this.startNow}
             disabled={isLoading}
           >
-            { !isLoading ? `Start Now` : `Please Wait..` }
+            { this.startNowText() }
           </Button>
 
-          <Typography
-            variant={'caption'}
-            gutterBottom
-            className={classes.bottomCtaButtonCaption}
-          >
-            login not required
-          </Typography>
+          {
+            !isAuthenticated &&
+            <Typography
+              variant={'caption'}
+              gutterBottom
+              className={classes.buttonCaption}
+            >
+              login not required
+            </Typography>
+          }
         </div>
       </div>
     )

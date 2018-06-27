@@ -25,7 +25,6 @@ import IconDashboard from '@material-ui/icons/Dashboard'
 import IconSupervisorAccount from '@material-ui/icons/SupervisorAccount'
 import IconAccountBalance from '@material-ui/icons/AccountBalance'
 import IconDomain from '@material-ui/icons/Domain'
-import IconPerson from '@material-ui/icons/Person'
 import IconPersonAdd from '@material-ui/icons/PersonAdd'
 import IconThumbsUpDown from '@material-ui/icons/ThumbsUpDown'
 import IconErrorOutline from '@material-ui/icons/ErrorOutline'
@@ -39,6 +38,7 @@ import styles from './styles'
 
 // App Imports
 import { NODE_ENV } from '../../../setup/config/env'
+import params from '../../../setup/config/params'
 import routes from '../../../setup/routes'
 import { drawerShow, drawerHide } from '../api/actions'
 
@@ -160,7 +160,7 @@ class Header extends PureComponent {
               user.isAuthenticated
                 ? <List
                     component={'nav'}
-                    subheader={<ListSubheader component="div">{ user.details.name }</ListSubheader>}
+                    subheader={<ListSubheader component={'div'}>{ user.details.name }</ListSubheader>}
                   >
                     <Link to={routes.dashboard.path}>
                       <ListItem button>
@@ -197,16 +197,16 @@ class Header extends PureComponent {
                       </ListItem>
                     </Link>
                   </List>
-                : <List component={'nav'}>
-                    <ListItem button>
-                      <Avatar style={{ backgroundColor: pink[500] }}><IconPerson /></Avatar>
-                      <ListItemText primary={'Login'} />
-                    </ListItem>
-
-                    <ListItem button>
-                      <Avatar style={{ backgroundColor: green[500] }}><IconPersonAdd /></Avatar>
-                      <ListItemText primary={'Signup'} />
-                    </ListItem>
+                : <List
+                    component={'nav'}
+                    subheader={<ListSubheader component={'div'}>{ params.site.name }</ListSubheader>}
+                  >
+                    <Link to={routes.login.path}>
+                      <ListItem button>
+                        <Avatar style={{ backgroundColor: green[500] }}><IconPersonAdd /></Avatar>
+                        <ListItemText primary={'Login or Signup'} />
+                      </ListItem>
+                    </Link>
                   </List>
             }
           </div>

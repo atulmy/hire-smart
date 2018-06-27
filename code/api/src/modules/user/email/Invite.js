@@ -9,10 +9,7 @@ const Invite = ({ invitedTo, invitedBy, organizationName }) => (
 
     <p>I'm inviting you to join { organizationName } on HIRESMART, an application to streamline hiring process, scheduling interviews and tracking candidates.</p>
 
-    <a href="http://hiresmart.app">Accept Invitation</a>
-
-    <br/>
-    <br/>
+    <p><a href="http://hiresmart.app">Accept Invitation</a></p>
 
     <p>
       Thanks, <br/>

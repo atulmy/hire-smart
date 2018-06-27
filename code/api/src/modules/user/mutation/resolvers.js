@@ -14,6 +14,7 @@ import User from '../model'
 import { send as sendEmail } from '../../email/send'
 import Invite from '../email/Invite'
 import Verify from '../email/Verify'
+import AccountCreatedOrVerified from '../email/AccountCreatedOrVerified'
 
 // Create a demo user and login
 export async function startNow(parentValue, {}, { auth }) {
@@ -146,7 +147,6 @@ export async function verifySendCode(parentValue, { email }, { auth }) {
       template:
         <Verify
           code={code}
-          sender={params.site.name}
         />
     })
 
@@ -177,7 +177,7 @@ export async function verifyCode(parentValue, { email, code }, { auth }) {
   }
 }
 
-// Verify update accountd details
+// Verify create/update user account
 export async function verifyUpdateAccount(parentValue, { email, name, password, organizationName }, { auth }) {
   const verification = await Verification.findOne({ email, verified: true })
 
@@ -233,6 +233,23 @@ export async function verifyUpdateAccount(parentValue, { email, name, password, 
 
         message = 'Your account has been created successfully.'
       }
+
+      sendEmail({
+        to: {
+          name,
+          email: email
+        },
+        from: {
+          name: params.site.emails.help.name,
+          email: params.site.emails.help.email
+        },
+        subject: message,
+        template:
+          <AccountCreatedOrVerified
+            to={name}
+            message={message}
+          />
+      })
 
       const token = {
         id: user._id,
