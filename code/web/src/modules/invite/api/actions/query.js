@@ -7,13 +7,14 @@ import { queryBuilder } from '../../../../setup/helpers'
 
 // Actions
 
-// Get list by organization
-export function getListByOrganization() {
+// Get by id
+export function get(id) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'query',
-      operation: 'usersByOrganization',
-      fields: ['_id', 'name', 'email', 'admin', 'createdAt']
+      operation: 'invite',
+      data: { id },
+      fields: ['_id', 'organizationId { _id, name }', 'email', 'name', 'createdAt']
     }))
   }
 }

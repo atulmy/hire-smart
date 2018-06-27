@@ -6,6 +6,7 @@ import organization from './organization'
 import client from './client'
 import candidate from './candidate'
 import interviewer from './interviewer'
+import invite from './invite'
 
 // Combined routes
 const routes = {
@@ -15,7 +16,8 @@ const routes = {
   ...organization,
   ...client,
   ...candidate,
-  ...interviewer
+  ...interviewer,
+  ...invite
 }
 
 export default routes

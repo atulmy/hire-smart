@@ -205,7 +205,7 @@ class Home extends PureComponent {
             <Typography
               variant={'caption'}
               gutterBottom
-              className={classes.buttonCaption}
+              className={classes.bottomCtaButtonCaption}
             >
               login not required
             </Typography>

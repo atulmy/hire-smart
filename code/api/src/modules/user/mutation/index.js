@@ -3,7 +3,7 @@ import { GraphQLString } from 'graphql'
 
 // App Imports
 import { UserType, UserLoginType } from '../types'
-import { startNow, inviteToOrganization, verifySendCode, verifyCode, verifyUpdateAccount } from './resolvers'
+import { startNow, verifySendCode, verifyCode, verifyUpdateAccount } from './resolvers'
 
 // Create a demo user and login
 export const userStartNow = {
@@ -11,15 +11,6 @@ export const userStartNow = {
   resolve: startNow
 }
 
-// Invite to Organization
-export const userInviteToOrganization = {
-  type: UserType,
-  args: {
-    name: { type: GraphQLString },
-    email: { type: GraphQLString }
-  },
-  resolve: inviteToOrganization
-}
 
 // Verify email send code
 export const userVerifySendCode = {

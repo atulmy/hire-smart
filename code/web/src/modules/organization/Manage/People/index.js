@@ -22,7 +22,7 @@ import styles from './styles'
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
 import { getListByOrganization } from '../../../user/api/actions/query'
-import { inviteToOrganization } from '../../../user/api/actions/mutation'
+import { inviteToOrganization } from '../../../invite/api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
 import isEmpty from 'validator/lib/isEmpty'
@@ -99,7 +99,7 @@ class People extends PureComponent {
         this.isLoadingSubmitToggle(true)
 
         try {
-          const {data} = await inviteToOrganization({ name, email })
+          const { data } = await inviteToOrganization({ name, email })
 
           if (data.errors && data.errors.length > 0) {
             messageShow(data.errors[0].message)
@@ -226,7 +226,7 @@ class People extends PureComponent {
                               : users.length > 0
                                   ? users.map(user => (
                                       <TableRow key={user._id}>
-                                          <TableCell>{ user.name }</TableCell>
+                                          <TableCell>{ user.name } { user.admin && '(admin)' }</TableCell>
                                           <TableCell>{ user.email }</TableCell>
                                           {/*
                                           <TableCell className={classes.textCenter}>-</TableCell>

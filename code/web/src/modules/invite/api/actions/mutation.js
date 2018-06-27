@@ -5,15 +5,14 @@ import axios from 'axios'
 import { API_URL } from '../../../../setup/config/env'
 import { queryBuilder } from '../../../../setup/helpers'
 
-// Actions
-
-// Get list by organization
-export function getListByOrganization() {
+// Invite user to organization (create)
+export function inviteToOrganization(invite) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
-      type: 'query',
-      operation: 'usersByOrganization',
-      fields: ['_id', 'name', 'email', 'admin', 'createdAt']
+      type: 'mutation',
+      operation: 'inviteToOrganization',
+      data: invite,
+      fields: ['_id']
     }))
   }
 }

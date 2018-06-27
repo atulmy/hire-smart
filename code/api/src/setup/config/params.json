@@ -64,7 +64,8 @@
   "web": {
     "routes": {
       "home": "/",
-      "dashboard": "/dashboard"
+      "dashboard": "/dashboard",
+      "invite": "/invite"
     }
   }
 }

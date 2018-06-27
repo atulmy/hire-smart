@@ -17,19 +17,11 @@ export default async function () {
 
   await User.create({
     organizationId: organization._id,
-    name: 'The Admin',
-    email: 'admin@hiresmart.app',
-    password: passwordHashed,
-    role: params.user.roles.admin.key,
-    demo: false
-  })
-
-  await User.create({
-    organizationId: organization._id,
     name: 'The User',
     email: 'user@hiresmart.app',
     password: passwordHashed,
     role: params.user.roles.user.key,
+    admin: true,
     demo: false
   })
 }

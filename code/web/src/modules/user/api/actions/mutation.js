@@ -113,18 +113,6 @@ export function startNow(isLoading = true) {
   }
 }
 
-// Invite user to organization (create)
-export function inviteToOrganization(userDetails) {
-  return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
-      operation: 'userInviteToOrganization',
-      data: userDetails,
-      fields: ['_id']
-    }))
-  }
-}
-
 // Verify send email code
 export function verifySendCode(user) {
   return dispatch => {

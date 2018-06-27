@@ -165,20 +165,6 @@ class Details extends Component {
                         />
                       </Grid>
 
-                      {/* Input - Organization domain */}
-                      <Grid item xs={12}>
-                        <TextField
-                          name={'domain'}
-                          value={nullToEmptyString(domain)}
-                          onChange={this.onType}
-                          label={'Organization website domain'}
-                          placeholder={'Enter website domain (eg: hiresmart.com)'}
-                          margin={'normal'}
-                          autoComplete={'off'}
-                          fullWidth
-                        />
-                      </Grid>
-
                       {/* Button -  Save */}
                       <Grid item xs={12} className={classes.buttonsContainer}>
                         <IconButton
