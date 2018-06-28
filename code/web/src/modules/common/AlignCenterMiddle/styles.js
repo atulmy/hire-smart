@@ -6,7 +6,8 @@ const styles = {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
-    height: '100%'
+    height: '100%',
+    minHeight: 'inherit'
   }
 }
 

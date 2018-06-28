@@ -36,6 +36,13 @@
   },
 
   "kanban": {
+    "status": {
+      "shortlisted": "shortlisted",
+      "progress": "progress",
+      "hold": "hold",
+      "rejected": "rejected",
+      "selected": "selected"
+    },
     "columns": [
       { "key": "shortlisted", "name": "Shortlisted", "color": "grey", "help": "The candidate is considered for interview." },
       { "key": "progress", "name": "In Progress", "color": "blue", "help": "The candidate is currently under interview process." },

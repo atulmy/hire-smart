@@ -36,6 +36,7 @@ export async function create(parentValue, { clientId, candidateId, interviewerId
     })
     if(kanban) {
       // Update kanban
+      kanban.status = params.kanban.status.progress
       kanban.interviews.push(interview);
       kanban.save()
     } else {
@@ -46,7 +47,7 @@ export async function create(parentValue, { clientId, candidateId, interviewerId
         candidateId: candidateId,
         interviews: [interview._id],
         userId: auth.user.id,
-        status: params.kanban.columns[0].key,
+        status: params.kanban.status.shortlisted,
         highlight: false
       })
     }
@@ -156,7 +157,7 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     organizationName: interviewDetails.organizationId.name,
     mode: params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name,
     note: interviewDetails.note,
-    userName: interviewDetails.organizationId.name
+    userName: auth.user.name
   }
 
   const TemplateCandidate = {
@@ -185,7 +186,7 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     organizationName: interviewDetails.organizationId.name,
     mode: params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name,
     note: interviewDetails.note,
-    userName: interviewDetails.organizationId.name
+    userName: auth.user.name
   }
 
   const TemplateInterviewer = {
