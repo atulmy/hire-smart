@@ -14,12 +14,14 @@ const Schema = new mongoose.Schema({
   organizationId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: Organization
+    ref: Organization,
+    index: true
   },
   clientId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: Client
+    ref: Client,
+    index: true
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,

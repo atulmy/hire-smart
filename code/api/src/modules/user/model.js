@@ -13,13 +13,16 @@ const Schema = new mongoose.Schema({
   organizationId: {
     type: String,
     required: true,
-    ref: Organization
-  },
-  name: {
-    type: String,
-    required: true
+    ref: Organization,
+    index: true
   },
   email: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  },
+  name: {
     type: String,
     required: true
   },

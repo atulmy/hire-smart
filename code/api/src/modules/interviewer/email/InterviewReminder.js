@@ -2,8 +2,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// App Imports
+import { APP_URL } from '../../../setup/config/env'
+import params from '../../../setup/config/params'
+
 // Component
-const InterviewReminder = ({ interviewerName, candidateName, date, organizationName, mode, note, userName }) => (
+const InterviewReminder = ({ interviewId, interviewerName, candidateName, date, organizationName, mode, note, userName }) => (
   <div>
     <p>Hi { interviewerName },</p>
 
@@ -27,7 +31,7 @@ const InterviewReminder = ({ interviewerName, candidateName, date, organizationN
     <p>
       After conducting the interview, please provide your feedback for { candidateName } by using following link: <br />
 
-      <a href="http://hiresmart.app">Give Feedback</a>
+      <a href={`${ APP_URL + params.web.routes.feedback  }/${ interviewId }`}><button>GIVE FEEDBACK</button></a>
     </p>
 
     <p>Feel free to reply to this email for any assistance.</p>

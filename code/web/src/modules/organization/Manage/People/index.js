@@ -22,6 +22,7 @@ import styles from './styles'
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
 import { getListByOrganization } from '../../../user/api/actions/query'
+import { getList as getListInvites } from '../../../invite/api/actions/query'
 import { inviteToOrganization } from '../../../invite/api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
@@ -48,7 +49,9 @@ class People extends PureComponent {
   }
 
   refresh = async (isLoading = true) => {
-    const { getListByOrganization, messageShow } = this.props
+    const { getListInvites, getListByOrganization, messageShow } = this.props
+
+    getListInvites(isLoading)
 
     this.isLoadingToggle(isLoading)
 
@@ -133,8 +136,10 @@ class People extends PureComponent {
   }
 
   render() {
-    const { classes, user } = this.props
+    const { classes, user, invites } = this.props
     const { isLoading, users, isLoadingSubmit, name, email } = this.state
+
+    console.log(invites)
 
     return (
       <div>
@@ -200,7 +205,7 @@ class People extends PureComponent {
           <Grid item xs={12} md={9}>
             <div className={classes.list}>
               {
-                isLoading
+                isLoading || invites.isLoading
                   ? <Loading />
                   : <Fade in={true}>
                       <Table>
@@ -209,7 +214,6 @@ class People extends PureComponent {
                             <TableCell>Name</TableCell>
                             <TableCell>Email</TableCell>
                             {/*
-                            <TableCell width={120} className={classes.textCenter}>Joined</TableCell>
                             <TableCell width={120} className={classes.textCenter}>Actions</TableCell>
                             */}
                           </TableRow>
@@ -223,22 +227,25 @@ class People extends PureComponent {
                                     <EmptyMessage message={'Please verify your account to see this list.'}/>
                                   </TableCell>
                                 </TableRow>
-                              : users.length > 0
-                                  ? users.map(user => (
-                                      <TableRow key={user._id}>
-                                          <TableCell>{ user.name } { user.admin && '(admin)' }</TableCell>
-                                          <TableCell>{ user.email }</TableCell>
-                                          {/*
-                                          <TableCell className={classes.textCenter}>-</TableCell>
-                                          <TableCell className={classes.textCenter}>-</TableCell>
-                                          */}
-                                      </TableRow>
-                                    ))
-                                  : <TableRow>
-                                      <TableCell colSpan={4}>
-                                        <EmptyMessage message={'You have not invited anyone yet.'}/>
-                                      </TableCell>
-                                    </TableRow>
+                              : users.map(user => (
+                                  <TableRow key={user._id}>
+                                    <TableCell>{ user.name } { user.admin && '(admin)' }</TableCell>
+                                    <TableCell>{ user.email }</TableCell>
+                                    {/*
+                                      <TableCell className={classes.textCenter}>-</TableCell>
+                                    */}
+                                  </TableRow>
+                                ))
+                          }
+
+                          {
+                            invites.list && invites.list.length > 0 &&
+                              invites.list.map(invitee => (
+                                <TableRow key={invitee._id}>
+                                  <TableCell>{ invitee.name } (invited)</TableCell>
+                                  <TableCell>{ invitee.email }</TableCell>
+                                </TableRow>
+                              ))
                           }
                         </TableBody>
                       </Table>
@@ -256,16 +263,19 @@ class People extends PureComponent {
 People.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  invites: PropTypes.object.isRequired,
   getListByOrganization: PropTypes.func.isRequired,
   inviteToOrganization: PropTypes.func.isRequired,
+  getListInvites: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 
 // Component State
 function peopleState(state) {
   return {
-    user: state.user
+    user: state.user,
+    invites: state.invites
   }
 }
 
-export default connect(peopleState, { getListByOrganization, inviteToOrganization, messageShow })(withStyles(styles)(People))
+export default connect(peopleState, { getListByOrganization, inviteToOrganization, getListInvites, messageShow })(withStyles(styles)(People))

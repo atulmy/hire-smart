@@ -3,7 +3,7 @@ import { GraphQLString } from 'graphql'
 
 // App Imports
 import InviteType from '../types'
-import { invite } from './resolvers'
+import { invite, accept } from './resolvers'
 
 // Invite to Organization
 export const inviteToOrganization = {

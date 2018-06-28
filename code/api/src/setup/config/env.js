@@ -13,6 +13,9 @@ export const PORT = process.env.PORT
 // Mongo URL
 export const MONGO_URL = process.env.MONGO_URL
 
+// APP URL
+export const APP_URL = process.env.APP_URL
+
 // Email
 export const EMAIL_TEST = process.env.EMAIL_TEST
 export const EMAIL_HOST = process.env.EMAIL_HOST

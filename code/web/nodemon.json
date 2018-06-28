@@ -1,5 +1,5 @@
 {
-  "delay": 1500,
+  "delay": 3000,
   "events": {
     "restart": "npm run notify:pre && npm run build:client && npm run notify:post"
   },

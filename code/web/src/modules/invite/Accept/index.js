@@ -2,16 +2,25 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import isEmpty from 'validator/lib/isEmpty'
 
 // UI Imports
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField'
+import Fade from '@material-ui/core/Fade'
+import Zoom from '@material-ui/core/Zoom'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton'
+import IconCheck from '@material-ui/icons/Check'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
 import routes from '../../../setup/routes'
+import { nullToEmptyString } from '../../../setup/helpers'
 import { get } from '../api/actions/query'
+import { acceptInvite } from '../../user/api/actions/mutation'
 import { messageShow } from '../../common/api/actions'
 import AuthCheckAccess from '../../auth/AuthCheckAccess'
 import Loading from '../../common/Loading'
@@ -24,18 +33,23 @@ class Invite extends PureComponent {
 
     this.state = {
       isLoading: true,
-      invite: null
+
+      invite: null,
+
+      name: '',
+      email: '',
+      password: ''
     }
+  }
+
+  componentDidMount() {
+    this.refresh()
   }
 
   isLoadingToggle = (isLoading) => {
     this.setState({
       isLoading
     })
-  }
-
-  componentDidMount() {
-    this.refresh()
   }
 
   refresh = async () => {
@@ -51,7 +65,9 @@ class Invite extends PureComponent {
       } else {
         if(data.data.invite && data.data.invite._id) {
           this.setState({
-            invite: data.data.invite
+            invite: data.data.invite,
+            name: data.data.invite.name,
+            email: data.data.invite.email
           })
         } else {
           messageShow('Invalid invite link.')
@@ -66,28 +82,116 @@ class Invite extends PureComponent {
     }
   }
 
-  render() {
-    const { classes } = this.props
-    const { isLoading, invite } = this.state
+  onType = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
 
-    console.log(invite)
+  accept = event => {
+    event.preventDefault()
+
+    const { acceptInvite, messageShow } = this.props
+    const { invite: { _id }, name, password } = this.state
+
+    // Validate
+    if(!isEmpty(_id) && !isEmpty(name) && !isEmpty(password)) {
+      acceptInvite({ id: _id, name, password })
+    } else {
+      messageShow('Please enter all the required information.')
+    }
+  }
+
+  render() {
+    const { classes, user } = this.props
+    const { isLoading, invite, name, email, password } = this.state
 
     return (
-      <div className={classes.root}>
-        {
-          isLoading
-            ? <Loading />
-            : <Paper className={classes.container}>
-                <Typography variant={'title'} gutterBottom>
-                  Invitation to join { invite.organizationId.name }
-                </Typography>
+      <Fade in={true}>
+        <div className={classes.root}>
+          {
+            isLoading
+              ? <Loading />
+              : <Zoom in={true}>
+                  <Paper className={classes.container}>
+                    <Typography variant={'title'} gutterBottom style={{ textAlign: 'center' }}>
+                      Invitation to join { invite.organizationId.name }
+                    </Typography>
 
-                <p>Invited</p>
-              </Paper>
-        }
+                    <Typography variant={'caption'} gutterBottom style={{ textAlign: 'center' }}>
+                      To accept this invitation, please complete following form:
+                    </Typography>
 
-        <AuthCheckAccess />
-      </div>
+                    <form onSubmit={this.accept}>
+                      <Grid container style={{ marginTop: 8 }}>
+                        {/* Input - email */}
+                        <Grid item xs={12}>
+                          <TextField
+                            type={'email'}
+                            value={nullToEmptyString(email)}
+                            label={'Your email'}
+                            placeholder={'Enter your email'}
+                            margin={'normal'}
+                            fullWidth
+                            inputProps={{
+                              readOnly: true
+                            }}
+                            disabled
+                          />
+                        </Grid>
+
+                        {/* Input - name */}
+                        <Grid item xs={12}>
+                          <TextField
+                            name={'name'}
+                            value={nullToEmptyString(name)}
+                            onChange={this.onType}
+                            label={'Your full name'}
+                            placeholder={'Enter your full name'}
+                            required={true}
+                            margin={'normal'}
+                            autoComplete={'off'}
+                            fullWidth
+                          />
+                        </Grid>
+
+                        {/* Input - password */}
+                        <Grid item xs={12}>
+                          <TextField
+                            name={'password'}
+                            type={'password'}
+                            value={nullToEmptyString(password)}
+                            onChange={this.onType}
+                            label={'Password'}
+                            placeholder={'Enter new password'}
+                            required={true}
+                            margin={'normal'}
+                            autoComplete={'off'}
+                            fullWidth
+                            autoFocus
+                          />
+                        </Grid>
+
+                        {/* Button -  Save */}
+                        <Grid item xs={12} className={classes.buttonsContainer}>
+                          <IconButton
+                            type={'submit'}
+                            aria-label={'Save'}
+                            color={'primary'}
+                            disabled={user.isLoading}
+                          >
+                            <IconCheck />
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    </form>
+                  </Paper>
+                </Zoom>
+          }
+
+          <AuthCheckAccess />
+        </div>
+      </Fade>
     )
   }
 }
@@ -96,14 +200,15 @@ class Invite extends PureComponent {
 Invite.propTypes = {
   classes: PropTypes.object.isRequired,
   get: PropTypes.func.isRequired,
+  acceptInvite: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 
 // Component State
 function dummyComponentReduxState(state) {
   return {
-    common: state.common
+    user: state.user
   }
 }
 
-export default connect(dummyComponentReduxState, { get, messageShow })(withStyles(styles)(Invite))
+export default connect(dummyComponentReduxState, { get, acceptInvite, messageShow })(withStyles(styles)(Invite))

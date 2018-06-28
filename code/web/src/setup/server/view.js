@@ -5,7 +5,7 @@ const view = (APP_URL, NODE_ENV, params, helmet = {}, appHtml = '', appCss = '',
   <!-- Meta -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#2196f3">
   ${ helmet.title.toString() }
   ${ helmet.meta.toString() }
   

@@ -3,10 +3,9 @@
     "version": 0.1,
     "name": "HIRESMART",
     "domain": "hiresmart.app",
-    "url": "https://hiresmart.app",
     "emails": {
       "help": {
-        "name": "Help",
+        "name": "HIRESMART",
         "email": "help@hiresmart.app"
       }
     }
@@ -65,7 +64,8 @@
     "routes": {
       "home": "/",
       "dashboard": "/dashboard",
-      "invite": "/invite"
+      "invite": "/invite",
+      "feedback": "/feedback"
     }
   }
 }

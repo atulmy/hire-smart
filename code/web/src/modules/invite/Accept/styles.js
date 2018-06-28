@@ -5,6 +5,7 @@ import grey from '@material-ui/core/colors/grey'
 const styles = theme => ({
   root: {
     paddingTop: '10vh',
+    paddingBottom: '10vh'
   },
 
   container: {
@@ -13,6 +14,10 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2,
   },
 
+  buttonsContainer: {
+    textAlign: 'right',
+    marginTop: theme.spacing.unit
+  },
 })
 
 export default styles

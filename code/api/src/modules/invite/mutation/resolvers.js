@@ -43,14 +43,12 @@ export async function invite(parentValue, { name, email }, { auth }) {
         userId: auth.user.id
       })
 
-      return {
-        _id: null
-      }
+      return invite
     } else {
       // User exists
       throw new Error(`The email ${ email } is already invited. Please ask the user to accept the invitation.`)
     }
   } else {
-    throw new Error('Please login to view invite team mate to your organization.')
+    throw new Error('Please login to invite team mate to your organization.')
   }
 }

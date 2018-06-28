@@ -3,6 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // App Imports
+import { APP_URL } from '../../../setup/config/env'
 import params from '../../../setup/config/params'
 
 // Component
@@ -12,7 +13,7 @@ const AccountCreatedOrVerified = ({ to, message  }) => (
 
     <p>{ message }</p>
 
-    <p><a href={params.site.url+params.web.routes.dashboard}>Open Dashboard</a></p>
+    <p><a href={APP_URL + params.web.routes.dashboard}><button>OPEN DASHBOARD</button></a></p>
 
     <p>
       What's next? <br />
@@ -23,6 +24,8 @@ const AccountCreatedOrVerified = ({ to, message  }) => (
         <li>Receive feedback from interviewers</li>
       </ol>
     </p>
+
+    <p>Feel free to reply to this email for any assistance.</p>
 
     <p>
       Thanks, <br/>

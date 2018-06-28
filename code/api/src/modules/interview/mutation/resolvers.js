@@ -178,6 +178,7 @@ async function sentEmails(interviewId, auth, type = 'invite') {
   // 2. To Interviewer
 
   const interviewerProps = {
+    interviewId,
     interviewerName: interviewDetails.interviewerId.name,
     candidateName: interviewDetails.candidateId.name,
     date,

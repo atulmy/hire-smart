@@ -375,7 +375,6 @@ Verify.propTypes = {
 // Component State
 function dummyComponentReduxState(state) {
   return {
-    common: state.common,
     user: state.user
   }
 }

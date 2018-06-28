@@ -5,7 +5,7 @@ import axios from 'axios'
 import { API_URL } from '../../../../setup/config/env'
 import { queryBuilder } from '../../../../setup/helpers'
 
-// Invite user to organization (create)
+// Invite user to organization
 export function inviteToOrganization(invite) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({

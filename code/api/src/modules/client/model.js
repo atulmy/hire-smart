@@ -13,7 +13,8 @@ const Schema = new mongoose.Schema({
   organizationId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: Organization
+    ref: Organization,
+    index: true
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
