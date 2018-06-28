@@ -7,6 +7,7 @@ import client from './client'
 import candidate from './candidate'
 import interviewer from './interviewer'
 import invite from './invite'
+import feedback from './feedback'
 
 // Combined routes
 const routes = {
@@ -17,7 +18,8 @@ const routes = {
   ...client,
   ...candidate,
   ...interviewer,
-  ...invite
+  ...invite,
+  ...feedback
 }
 
 export default routes

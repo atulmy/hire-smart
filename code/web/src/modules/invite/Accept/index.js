@@ -205,10 +205,10 @@ Invite.propTypes = {
 }
 
 // Component State
-function dummyComponentReduxState(state) {
+function acceptState(state) {
   return {
     user: state.user
   }
 }
 
-export default connect(dummyComponentReduxState, { get, acceptInvite, messageShow })(withStyles(styles)(Invite))
+export default connect(acceptState, { get, acceptInvite, messageShow })(withStyles(styles)(Invite))

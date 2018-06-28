@@ -11,6 +11,7 @@ import * as interviewer from '../../modules/interviewer/query'
 import * as interview from '../../modules/interview/query'
 import * as kanban from '../../modules/kanban/query'
 import * as invite from '../../modules/invite/query'
+import * as feedback from '../../modules/feedback/query'
 
 // Query
 const query = new GraphQLObjectType({
@@ -26,7 +27,8 @@ const query = new GraphQLObjectType({
     ...interviewer,
     ...interview,
     ...kanban,
-    ...invite
+    ...invite,
+    ...feedback
   })
 })
 

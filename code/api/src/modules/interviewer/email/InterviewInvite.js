@@ -3,11 +3,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // App Imports
-import { APP_URL } from '../../../setup/config/env'
+import { APP_URL, API_URL } from '../../../setup/config/env'
 import params from '../../../setup/config/params'
 
 // Component
-const InterviewInvite = ({ interviewId, interviewerName, candidateName, date, organizationName, mode, note, userName }) => (
+const InterviewInvite = ({ interviewId, interviewerName, candidateId, candidateName, date, organizationName, mode, note, userName }) => (
   <div>
     <p>Hi { interviewerName },</p>
 
@@ -26,6 +26,10 @@ const InterviewInvite = ({ interviewId, interviewerName, candidateName, date, or
           </span>
         </React.Fragment>
       }
+    </p>
+
+    <p>
+      Candidate's resume: <a href={`${ API_URL }/download/${ candidateId }`}><button>DOWNLOAD</button></a>
     </p>
 
     <p>

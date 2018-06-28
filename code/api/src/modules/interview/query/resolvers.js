@@ -4,6 +4,7 @@ import Interview from '../model'
 // Get interview by ID
 export async function get(parentValue, { id }) {
   return await Interview.findOne({ _id: id })
+    .populate('candidateId')
 }
 
 // Get by organization
@@ -32,9 +33,4 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
   } else {
     throw new Error('Please login to view interviews.')
   }
-}
-
-// Get all
-export async function getAll() {
-  return await Interview.find()
 }

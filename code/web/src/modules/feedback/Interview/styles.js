@@ -6,7 +6,7 @@ const styles = theme => ({
   },
 
   container: {
-    width: '30vw',
+    maxWidth: 360,
     margin: '0 auto',
     padding: theme.spacing.unit * 2,
   },
@@ -15,6 +15,19 @@ const styles = theme => ({
     textAlign: 'right',
     marginTop: theme.spacing.unit
   },
+
+  radioContainer: {
+    marginTop: theme.spacing.unit * 2
+  },
+
+  radio: {
+    width: 30,
+    marginLeft: 0
+  },
+
+  radioLabel: {
+    marginLeft: -5
+  }
 })
 
 export default styles

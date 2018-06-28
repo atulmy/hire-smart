@@ -70,7 +70,7 @@ export function get(interviewId, isLoading = true) {
         type: 'query',
         operation: 'interview',
         data: { id: interviewId },
-        fields: ['_id', 'organizationId { _id }', 'clientId { _id }', 'candidateId { _id }', 'interviewerId { _id }', 'userId { _id }', 'dateTime', 'mode', 'note', 'createdAt']
+        fields: ['_id', 'organizationId { _id }', 'clientId { _id }', 'candidateId { _id, name }', 'interviewerId { _id }', 'userId { _id }', 'dateTime', 'mode', 'note', 'createdAt']
       }))
 
       if(data.errors && data.errors.length > 0) {

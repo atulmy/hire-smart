@@ -11,7 +11,7 @@ import styles from './styles'
 // import { someAction } from './api/actions'
 
 // Component
-class DummyComponentRedux extends PureComponent {
+class IndexRedux extends PureComponent {
 
   constructor(props) {
     super(props)
@@ -35,7 +35,7 @@ class DummyComponentRedux extends PureComponent {
 }
 
 // Component Properties
-DummyComponentRedux.propTypes = {
+IndexRedux.propTypes = {
   classes: PropTypes.object.isRequired,
   dummyId: PropTypes.number.isRequired,
   // someAction: PropTypes.func.isRequired,
@@ -48,4 +48,4 @@ function dummyComponentReduxState(state) {
   }
 }
 
-export default connect(dummyComponentReduxState, { /* someAction */ })(withStyles(styles)(DummyComponentRedux))
+export default connect(dummyComponentReduxState, { /* someAction */ })(withStyles(styles)(IndexRedux))
