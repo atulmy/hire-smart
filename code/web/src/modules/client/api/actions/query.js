@@ -5,6 +5,7 @@ import axios from 'axios'
 import { API_URL } from '../../../../setup/config/env'
 import { queryBuilder } from '../../../../setup/helpers'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
+import { CLIENT_LIST_CACHE, CLIENT_SINGLE_CACHE } from './cache-keys'
 import {
   LIST_REQUEST,
   LIST_RESPONSE,
@@ -19,11 +20,29 @@ import {
 // Get list
 export function getList(isLoading = true) {
   return async dispatch => {
-    dispatch({
-      type: LIST_REQUEST,
-      isLoading
-    })
+    // Caching
+    try {
+      const list = JSON.parse(window.localStorage.getItem(CLIENT_LIST_CACHE))
 
+      if(list && list.length > 0) {
+        dispatch({
+          type: LIST_RESPONSE,
+          list
+        })
+      } else {
+        dispatch({
+          type: LIST_REQUEST,
+          isLoading
+        })
+      }
+    } catch(e) {
+      dispatch({
+        type: LIST_REQUEST,
+        isLoading
+      })
+    }
+
+    // Get data
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
@@ -37,10 +56,21 @@ export function getList(isLoading = true) {
           message: data.errors[0].message
         })
       } else {
+        const list = data.data.clientsByOrganization
+
         dispatch({
           type: LIST_RESPONSE,
-          list: data.data.clientsByOrganization
+          list
         })
+
+        /*
+        dispatch({
+          type: DASHBOARD_SET,
+          client: list[0]
+        })
+        */
+
+        window.localStorage.setItem(CLIENT_LIST_CACHE, JSON.stringify(list))
       }
     } catch(error) {
       dispatch({
@@ -59,10 +89,29 @@ export function getList(isLoading = true) {
 // Get single
 export function get(clientId, isLoading = true) {
   return async dispatch => {
-    dispatch({
-      type: SINGLE_REQUEST,
-      isLoading
-    })
+    // Caching
+    const CACHE_KEY = `${ CLIENT_SINGLE_CACHE }.${ clientId }`
+
+    try {
+      const item = JSON.parse(window.localStorage.getItem(CACHE_KEY))
+
+      if(item) {
+        dispatch({
+          type: SINGLE_RESPONSE,
+          item
+        })
+      } else {
+        dispatch({
+          type: SINGLE_REQUEST,
+          isLoading
+        })
+      }
+    } catch(e) {
+      dispatch({
+        type: SINGLE_REQUEST,
+        isLoading
+      })
+    }
 
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
@@ -78,10 +127,14 @@ export function get(clientId, isLoading = true) {
           message: data.errors[0].message
         })
       } else {
+        const item = data.data.client
+
         dispatch({
           type: SINGLE_RESPONSE,
-          item: data.data.client
+          item
         })
+
+        window.localStorage.setItem(CACHE_KEY, JSON.stringify(item))
       }
     } catch(error) {
       dispatch({

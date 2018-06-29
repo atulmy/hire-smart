@@ -8,6 +8,7 @@ import { API_URL } from '../../../../setup/config/env'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
 import { LOGIN_REQUEST, LOGIN_RESPONSE, SET_USER, LOGOUT } from './types'
 
+// Login
 export function login(userCredentials, isLoading = true) {
   return async dispatch => {
     dispatch({
@@ -57,6 +58,28 @@ export function login(userCredentials, isLoading = true) {
         type: LOGIN_RESPONSE,
         error: 'Please try again'
       })
+    }
+  }
+}
+
+// Log out user and remove token from localStorage
+export function logout() {
+  return dispatch => {
+    logoutUnsetUserLocalStorageAndCookie()
+
+    dispatch({
+      type: LOGOUT
+    })
+
+    dispatch({
+      type: 'RESET'
+    })
+
+    // Clear cache
+    for(let key in localStorage) {
+      if(key.indexOf('CACHE.KEY.') !== -1) {
+        window.localStorage.removeItem(key)
+      }
     }
   }
 }
@@ -262,21 +285,6 @@ export function loginSetUserLocalStorageAndCookie(token, user) {
 
   // Set cookie for SSR
   cookie.set('auth', { token, user }, { path: '/' })
-}
-
-// Log out user and remove token from localStorage
-export function logout() {
-  return dispatch => {
-    logoutUnsetUserLocalStorageAndCookie()
-
-    dispatch({
-      type: LOGOUT
-    })
-
-    dispatch({
-      type: 'RESET'
-    })
-  }
 }
 
 // Unset user token and info in localStorage and cookie
