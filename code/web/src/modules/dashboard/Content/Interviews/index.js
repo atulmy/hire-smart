@@ -41,10 +41,10 @@ class Interviews extends PureComponent {
     this.refresh()
   }
 
-  refresh = (isLoading = true) => {
+  refresh = (isLoading = true, forceRefresh = false) => {
     const { getListByClient, clientDashboard: { client } } = this.props
 
-    getListByClient({ clientId: client._id }, isLoading)
+    getListByClient({ clientId: client._id }, isLoading, forceRefresh)
   }
 
   toggleDrawer = (open) => () => {
@@ -120,7 +120,7 @@ class Interviews extends PureComponent {
             Add
           </Button>
 
-          <Button onClick={this.refresh}>
+          <Button onClick={() => this.refresh(true, true)}>
             <IconCached className={classes.actionIcon} />
             Refresh
           </Button>

@@ -159,7 +159,7 @@ export function get(kanbanId, isLoading = true) {
 }
 
 // Get by Client
-export function getListByClient({ clientId }, isLoading = true) {
+export function getListByClient({ clientId }, isLoading = true, forceRefresh = false) {
   return async dispatch => {
     // Caching
     const CACHE_KEY = `${ KANBAN_LIST_BY_CLIENT_CACHE }.${ clientId }`
@@ -167,7 +167,7 @@ export function getListByClient({ clientId }, isLoading = true) {
     try {
       const list = JSON.parse(window.localStorage.getItem(CACHE_KEY))
 
-      if(list) {
+      if(list && !forceRefresh) {
         dispatch({
           type: LIST_BY_CLIENT_RESPONSE,
           list

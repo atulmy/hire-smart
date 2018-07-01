@@ -53,14 +53,14 @@ class Overview extends PureComponent {
     const { clientDashboard: { client } } = nextProps
 
     if(client._id !== this.props.clientDashboard.client._id) {
-      this.refresh(true, client._id)
+      this.refresh(true, false, client._id)
     }
   }
 
-  refresh = (isLoading = true, clientId) => {
+  refresh = (isLoading = true, forceRefresh = false, clientId) => {
     const { getKanbanListByClient, clientDashboard: { client } } = this.props
 
-    getKanbanListByClient({ clientId: clientId ? clientId : client._id }, isLoading)
+    getKanbanListByClient({ clientId: clientId ? clientId : client._id }, isLoading, forceRefresh)
   }
 
   columnWidth = () => {
@@ -124,7 +124,7 @@ class Overview extends PureComponent {
   }
 
   itemDropped = async (kanbanId, columnKey) => {
-    const { updateKanbanStatus, messageShow, messageHide } = this.props
+    const { updateKanbanStatus, messageShow } = this.props
 
     // messageShow('Please wait..')
 
@@ -166,7 +166,7 @@ class Overview extends PureComponent {
       <div className={classes.root}>
         {/* Actions */}
         <div className={classes.actions}>
-          <Button onClick={this.refresh}>
+          <Button onClick={() => this.refresh(true, true, client._id)}>
             <IconCached className={classes.actionIcon} />
             Refresh
           </Button>

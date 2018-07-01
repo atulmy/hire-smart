@@ -36,10 +36,10 @@ class Candidates extends PureComponent {
     this.refresh()
   }
 
-  refresh = (isLoading = true) => {
+  refresh = (isLoading = true, forceRefresh = false) => {
     const { getListByClient, clientDashboard: { client } } = this.props
 
-    getListByClient({ clientId: client._id }, isLoading)
+    getListByClient({ clientId: client._id }, isLoading, forceRefresh)
   }
 
   toggleDrawer = (open) => () => {
@@ -49,7 +49,7 @@ class Candidates extends PureComponent {
   }
 
   successCallback = () => {
-    this.refresh(false)
+    this.refresh(false, false)
 
     this.toggleDrawer(false)()
   }
@@ -89,7 +89,7 @@ class Candidates extends PureComponent {
             Add
           </Button>
 
-          <Button onClick={this.refresh}>
+          <Button onClick={() => this.refresh(true, true)}>
             <IconCached className={classes.actionIcon} />
             Refresh
           </Button>
