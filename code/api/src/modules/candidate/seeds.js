@@ -21,14 +21,19 @@ export default async function () {
   const job = await Job.findOne()
   const interviewer = await Interviewer.findOne()
 
-  for (let i of [1, 2]) {
+  const candidates = [
+    { name: 'Arun Kumar', email: 'arun@hiresmart.app' },
+    { name: 'Rajesh Kumar', email: 'rajesh@hiresmart.app' }
+  ]
+
+  for (let i of [0, 1]) {
     const candidate = await Candidate.create({
       organizationId: organization._id,
       clientId: client._id,
       jobId: job._id,
       userId: user._id,
-      name: `Candidate ${ i }`,
-      email: `candidate.${ i }@${ organization.domain }`,
+      name: candidates[i].name,
+      email: candidates[i].email,
       mobile: '9876543210',
       experience: '5.5',
       resume: 'resume.pdf',

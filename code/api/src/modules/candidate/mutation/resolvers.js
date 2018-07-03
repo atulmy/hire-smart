@@ -59,7 +59,19 @@ export async function update(parentValue, { id, clientId, jobId = '', name, emai
       item.jobId = jobId
     }
 
-    return await Candidate.updateOne({ _id: id }, { $set: item })
+    const candidate = await Candidate.updateOne({ _id: id }, { $set: item })
+
+    if(candidate) {
+      await Kanban.updateOne(
+        {
+          organizationId: auth.user.organizationId,
+          candidateId: id
+        },
+        { clientId }
+      )
+    }
+
+    return candidate
   } else {
     throw new Error('Please login to update candidate.')
   }

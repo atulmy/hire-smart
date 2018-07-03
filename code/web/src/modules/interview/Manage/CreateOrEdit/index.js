@@ -40,15 +40,17 @@ class CreateOrEdit extends PureComponent {
   constructor(props) {
     super(props)
 
+    const { clientId, user } = props
+
     this.interview = {
       id: '',
-      clientId: props.clientId,
+      clientId: clientId,
       candidateId: '',
       interviewerId: '',
       dateTime: this.defaultDate(),
       mode: '',
       note: '',
-      invite: true,
+      invite: !user.details.demo,
     }
 
     this.state = {
@@ -160,7 +162,7 @@ class CreateOrEdit extends PureComponent {
   }
 
   render() {
-    const { classes, elevation, candidatesByClient, interviewersByClient } = this.props
+    const { classes, elevation, candidatesByClient, interviewersByClient, user } = this.props
     const { isLoading, id, candidateId, interviewerId, dateTime, mode, note, invite } = this.state
 
     return (
@@ -317,7 +319,7 @@ class CreateOrEdit extends PureComponent {
 
           {/* Input - send email invite */}
           <Grid item xs={12}>
-            <FormGroup row title={'A calender invite will be sent to candidate and interviewer via email.'}>
+            <FormGroup row title={!user.details.demo ? 'A calender invite will be sent to candidate and interviewer via email.' : 'This feature is not available for demo users.'}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -327,6 +329,7 @@ class CreateOrEdit extends PureComponent {
                   />
                 }
                 label={'Send email invite'}
+                disabled={user.isAuthenticated && user.details.demo}
               />
             </FormGroup>
           </Grid>
@@ -373,6 +376,7 @@ CreateOrEdit.propTypes = {
   interviewEdit: PropTypes.object.isRequired,
   candidatesByClient: PropTypes.object.isRequired,
   interviewersByClient: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   getCandidateListByClient: PropTypes.func.isRequired,
@@ -389,7 +393,8 @@ function createOrEditState(state) {
   return {
     interviewEdit: state.interviewEdit,
     candidatesByClient: state.candidatesByClient,
-    interviewersByClient: state.interviewersByClient
+    interviewersByClient: state.interviewersByClient,
+    user: state.user
   }
 }
 

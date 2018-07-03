@@ -17,7 +17,7 @@ export default async function () {
 
   await User.create({
     organizationId: organization._id,
-    name: 'The User',
+    name: 'Priyanka Kumari',
     email: 'user@hiresmart.app',
     password: passwordHashed,
     role: params.user.roles.user.key,
