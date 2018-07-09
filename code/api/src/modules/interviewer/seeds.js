@@ -16,8 +16,8 @@ export default async function () {
     organizationId: organization._id,
     userId: user._id,
     clientId: client._id,
-    name: 'Ned Stark',
-    email: 'ned@stark.com',
+    name: 'Rohan Josh',
+    email: 'rohan@hiresmart.app',
     mobile: '9876543210'
   })
 }

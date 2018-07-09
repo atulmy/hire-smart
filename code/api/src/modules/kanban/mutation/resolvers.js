@@ -2,6 +2,8 @@
 import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
+import params from '../../../setup/config/params'
+import Activity from '../../activity/model'
 import Kanban from '../model'
 
 // Create
@@ -43,7 +45,7 @@ export async function update(parentValue, { id, interviews, status, highlight },
 // Update status
 export async function updateStatus(parentValue, { id, status }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
-    return await Kanban.updateOne(
+    const updated = await Kanban.updateOne(
       { _id: id },
       {
         $set: {
@@ -51,6 +53,22 @@ export async function updateStatus(parentValue, { id, status }, { auth }) {
         }
       }
     )
+
+    // Log activity
+    if(updated) {
+      const kanban = await Kanban.findOne({ _id: id }).populate('candidateId')
+
+      await Activity.create({
+        organizationId: auth.user.organizationId,
+        userId: auth.user.id,
+        clientId: kanban.clientId,
+        candidateId: kanban.candidateId._id,
+        action: params.activity.types.update,
+        message: `${ auth.user.name } updated ${ kanban.candidateId.name }'s status to ${ status }.`
+      })
+    }
+
+    return updated
   } else {
     throw new Error('Please login to update interviewer.')
   }

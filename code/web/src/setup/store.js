@@ -14,6 +14,7 @@ import * as interviewer from '../modules/interviewer/api/state'
 import * as interview from '../modules/interview/api/state'
 import * as kanban from '../modules/kanban/api/state'
 import * as invite from '../modules/invite/api/state'
+import * as activity from '../modules/activity/api/state'
 
 // App Reducer
 const appReducer = combineReducers({
@@ -26,7 +27,8 @@ const appReducer = combineReducers({
   ...interviewer,
   ...interview,
   ...kanban,
-  ...invite
+  ...invite,
+  ...activity
 })
 
 // Root Reducer

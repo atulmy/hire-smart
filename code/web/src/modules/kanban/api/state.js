@@ -121,7 +121,7 @@ export const kanbansByClient = (state = kanbanByClientInitialState, action) => {
       }
 
     case LIST_BY_CLIENT_RESET:
-      return { ...kanbansInitialState }
+      return { ...kanbanByClientInitialState }
 
     default:
       return state

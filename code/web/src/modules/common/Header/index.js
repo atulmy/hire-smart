@@ -28,7 +28,9 @@ import IconDomain from '@material-ui/icons/Domain'
 import IconPersonAdd from '@material-ui/icons/PersonAdd'
 import IconThumbsUpDown from '@material-ui/icons/ThumbsUpDown'
 import IconErrorOutline from '@material-ui/icons/ErrorOutline'
+import IconUpdate from '@material-ui/icons/Update'
 import blue from '@material-ui/core/colors/blue'
+import orange from '@material-ui/core/colors/orange'
 import pink from '@material-ui/core/colors/pink'
 import green from '@material-ui/core/colors/green'
 import purple from '@material-ui/core/colors/purple'
@@ -169,6 +171,16 @@ class Header extends PureComponent {
                       </ListItem>
                     </Link>
 
+                    {
+                      !user.details.demo &&
+                      <Link to={routes.activity.path}>
+                        <ListItem button>
+                          <Avatar style={{ backgroundColor: orange[500] }}><IconUpdate /></Avatar>
+                          <ListItemText primary={'Activities'} secondary={'View all activities'} />
+                        </ListItem>
+                      </Link>
+                    }
+
                     <Link to={routes.candidate.path}>
                       <ListItem button>
                         <Avatar style={{ backgroundColor: pink[500] }}><IconSupervisorAccount /></Avatar>
@@ -214,7 +226,7 @@ class Header extends PureComponent {
 
         {/* Drawer activator */}
         {
-          NODE_ENV !== 'development' &&
+          NODE_ENV !== 'development1' &&
           <div
             onMouseOver={drawerShow}
             className={classes.drawerActivator}

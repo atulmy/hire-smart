@@ -2,7 +2,9 @@
 import React from 'react'
 
 // App Imports
+import params from '../../../setup/config/params'
 import Organization from '../../organization/model'
+import Activity from '../../activity/model'
 import Invite from '../../invite/model'
 import { send as sendEmail } from '../../email/send'
 import InviteTemplate from '../email/Invite'
@@ -42,6 +44,17 @@ export async function invite(parentValue, { name, email }, { auth }) {
         organizationId: auth.user.organizationId,
         userId: auth.user.id
       })
+
+      // Log activity
+      if(invite) {
+        await Activity.create({
+          organizationId: auth.user.organizationId,
+          userId: auth.user.id,
+          inviteId: invite._id,
+          action: params.activity.types.create,
+          message: `${ auth.user.name } invited ${ name } (${ email }) to the organization.`
+        })
+      }
 
       return invite
     } else {

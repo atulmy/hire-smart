@@ -1,6 +1,7 @@
 // Imports
 import path from 'path'
 import Dotenv from 'dotenv-webpack'
+import HardSourceWebpackPlugin from 'hard-source-webpack-plugin'
 
 // Config
 const config = {
@@ -25,6 +26,8 @@ const config = {
     ]
   },
 
+  cache: true,
+
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -34,7 +37,8 @@ const config = {
   },
 
   plugins: [
-    new Dotenv()
+    new Dotenv(),
+    new HardSourceWebpackPlugin()
   ],
 
   node: {

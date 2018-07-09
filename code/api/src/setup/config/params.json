@@ -74,5 +74,13 @@
       "invite": "/invite",
       "feedback": "/feedback"
     }
+  },
+
+  "activity": {
+    "types": {
+      "create": "create",
+      "update": "update",
+      "delete": "delete"
+    }
   }
 }

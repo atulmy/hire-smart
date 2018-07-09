@@ -15,6 +15,7 @@ import { send as sendEmail } from '../../email/send'
 import Verify from '../email/Verify'
 import AccountCreatedOrVerified from '../email/AccountCreatedOrVerified'
 import Invite from '../../invite/model'
+import Activity from '../../activity/model'
 
 // Create a demo user and login
 export async function startNow(parentValue, {}, { auth }) {
@@ -42,6 +43,16 @@ export async function startNow(parentValue, {}, { auth }) {
         admin: true,
         demo: true
       })
+
+      // Log activity - Organization Created
+      if(user) {
+        await Activity.create({
+          organizationId: organization._id,
+          userId: user._id,
+          action: params.activity.types.create,
+          message: `Your organization was created.`
+        })
+      }
 
       const token = {
         id: user._id,
@@ -171,6 +182,14 @@ export async function verifyUpdateAccount(parentValue, { email, name, password, 
           }
         )
 
+        // Log activity - User joined organization
+        await Activity.create({
+          organizationId: auth.user.organizationId,
+          userId: auth.user.id,
+          action: params.activity.types.create,
+          message: `${ name } (${ email }) joined the organization.`
+        })
+
         user = await User.findOne({ _id: auth.user.id })
 
         message = 'Your account has been verified and updated successfully.'
@@ -279,6 +298,17 @@ export async function acceptInvite(parentValue, { id, name, password }) {
           message={subject}
         />
     })
+
+    // Log activity
+    if(invite) {
+      await Activity.create({
+        organizationId: invite.organizationId,
+        userId: user._id,
+        inviteId: invite._id,
+        action: params.activity.types.create,
+        message: `${ name } (${ invite.email }) joined the organization.`
+      })
+    }
 
     const token = {
       id: user._id,

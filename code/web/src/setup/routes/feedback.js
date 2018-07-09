@@ -6,5 +6,5 @@ export default {
   feedback: {
     path: '/feedback/:interviewId',
     component: Interview
-  },
+  }
 }

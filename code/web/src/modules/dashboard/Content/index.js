@@ -18,6 +18,7 @@ import Jobs from './Jobs'
 import Candidates from './Candidates'
 import Interviews from './Interviews'
 import Interviewer from './Interviewers'
+import Activities from './Activities'
 
 export const overviewTabs = {
   overview: {
@@ -39,6 +40,10 @@ export const overviewTabs = {
   interviews: {
     key: 'interviews',
     label: 'Interviews'
+  },
+  activities: {
+    key: 'activities',
+    label: 'Activities'
   }
 }
 
@@ -95,7 +100,9 @@ class Content extends PureComponent {
 
                         interviewer: <Interviewer />,
 
-                        interviews: <Interviews />
+                        interviews: <Interviews />,
+
+                        activities: <Activities />
                       }[tab]
                     }
                   </div>
