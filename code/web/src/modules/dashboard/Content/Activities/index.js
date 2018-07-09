@@ -38,7 +38,7 @@ class Activities extends PureComponent {
   }
 
   render() {
-    const { classes, activitiesByClient: { isLoading, list }, user: { details: { demo }} } = this.props
+    const { classes, activitiesByClient: { isLoading, list }, user } = this.props
 
     return (
       <div className={classes.root}>
@@ -54,14 +54,13 @@ class Activities extends PureComponent {
 
         {/* Activities list */}
         {
-          !demo
-            ? isLoading
+          user.details.demo
+            ? <p><EmptyMessage message={'Sorry, to view activities you need to verify your account.'} /></p>
+            : isLoading
                 ? <Loading />
                 : <Fade in={true}>
                     <ListTable list={list} />
                   </Fade>
-            : <p><EmptyMessage message={'Sorry, to view activities you need to verify your account.'} /></p>
-
         }
       </div>
     )

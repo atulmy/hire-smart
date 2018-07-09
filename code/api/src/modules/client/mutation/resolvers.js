@@ -2,18 +2,32 @@
 import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
-import Job from '../../job/model'
+import params from '../../../setup/config/params'
+import Activity from '../../activity/model'
 import Client from '../model'
 
 // Create
 export async function create(parentValue, { name, description = '' }, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Client.create({
+    const client = await Client.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
       name,
       description
     })
+
+    // Log activity
+    if(client) {
+      await Activity.create({
+        organizationId: auth.user.organizationId,
+        userId: auth.user.id,
+        clientId: client._id,
+        action: params.activity.types.create,
+        message: `${ auth.user.name } created ${ name } client.`
+      })
+    }
+
+    return client
   } else {
     throw new Error('Please login to create client.')
   }

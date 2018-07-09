@@ -5,6 +5,7 @@ import isEmpty from 'validator/lib/isEmpty'
 import params from '../../../setup/config/params'
 import Kanban from '../../kanban/model'
 import Candidate from '../model'
+import Activity from '../../activity/model'
 
 // Create
 export async function create(parentValue, { clientId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
@@ -27,14 +28,27 @@ export async function create(parentValue, { clientId, jobId = '', name, email, m
 
     const candidate = await Candidate.create(item)
 
-    await Kanban.create({
-      organizationId: auth.user.organizationId,
-      clientId,
-      candidateId: candidate._id,
-      userId: auth.user.id,
-      status: params.kanban.columns[0].key,
-      highlight: false
-    })
+    if(candidate) {
+      const kanban = await Kanban.create({
+        organizationId: auth.user.organizationId,
+        clientId,
+        candidateId: candidate._id,
+        userId: auth.user.id,
+        status: params.kanban.columns[0].key,
+        highlight: false
+      })
+
+      // Log activity
+      await Activity.create({
+        organizationId: auth.user.organizationId,
+        userId: auth.user.id,
+        clientId,
+        candidateId: candidate._id,
+        kanbanId: kanban._id,
+        action: params.activity.types.create,
+        message: `${ auth.user.name } added a new candidate ${ name } (${ email }).`
+      })
+    }
 
     return candidate
   } else {

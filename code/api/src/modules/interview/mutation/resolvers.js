@@ -5,6 +5,7 @@ import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
 import params from '../../../setup/config/params'
+import Activity from '../../activity/model'
 import Kanban from '../../kanban/model'
 import Interview from '../model'
 import { send as sendEmail } from '../../email/send'
@@ -28,33 +29,48 @@ export async function create(parentValue, { clientId, candidateId, interviewerId
       note
     })
 
-    // Add to kanban
-    const kanban = await Kanban.findOne({
-      organizationId: auth.user.organizationId,
-      clientId: clientId,
-      candidateId: candidateId
-    })
-    if(kanban) {
-      // Update kanban
-      kanban.status = params.kanban.status.progress
-      kanban.interviews.push(interview);
-      kanban.save()
-    } else {
-      // Create new kanban
-      await Kanban.create({
+    if(interview) {
+      // Add to kanban
+      const kanban = await Kanban.findOne({
         organizationId: auth.user.organizationId,
         clientId: clientId,
-        candidateId: candidateId,
-        interviews: [interview._id],
-        userId: auth.user.id,
-        status: params.kanban.status.shortlisted,
-        highlight: false
+        candidateId: candidateId
       })
-    }
+      if (kanban) {
+        // Update kanban
+        kanban.status = params.kanban.status.progress
+        kanban.interviews.push(interview);
+        kanban.save()
+      } else {
+        // Create new kanban
+        await Kanban.create({
+          organizationId: auth.user.organizationId,
+          clientId: clientId,
+          candidateId: candidateId,
+          interviews: [interview._id],
+          userId: auth.user.id,
+          status: params.kanban.status.shortlisted,
+          highlight: false
+        })
+      }
 
-    // Send emails
-    if(invite) {
-      sentEmails(interview._id, auth, 'invite')
+      // Send emails
+      if (invite) {
+        sentEmails(interview._id, auth, 'invite')
+      }
+
+      // Log activity
+      const interviewInfo = await Interview.findOne({ _id: interview._id }).populate('candidateId').populate('interviewerId')
+      const date = moment(interviewInfo.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)
+
+      await Activity.create({
+        organizationId: auth.user.organizationId,
+        userId: auth.user.id,
+        clientId,
+        interviewId: interview._id,
+        action: params.activity.types.create,
+        message: `${ auth.user.name } scheduled an interview for ${ interviewInfo.candidateId.name } to be conducted by ${ interviewInfo.interviewerId.name } on ${ date }.`
+      })
     }
 
     return interview

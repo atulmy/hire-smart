@@ -26,7 +26,7 @@ export function login(userCredentials, isLoading = true) {
         type: 'query',
         operation: 'userLogin',
         data: userCredentials,
-        fields: ['user {name, email, role}', 'token']
+        fields: ['user {name, email, role, demo}', 'token']
       }))
 
       let message = ''

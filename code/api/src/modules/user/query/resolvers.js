@@ -26,7 +26,8 @@ export async function login(parentValue, { email, password }) {
         organizationId: user.organizationId,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        demo: user.demo
       }
 
       return {
