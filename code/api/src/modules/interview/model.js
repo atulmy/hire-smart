@@ -6,6 +6,7 @@ import { collection as Organization } from '../organization/model'
 import { collection as Client } from '../client/model'
 import { collection as Candidate } from '../candidate/model'
 import { collection as Interviewer } from '../interviewer/model'
+import { collection as Feedback } from '../feedback/model'
 import { collection as User } from '../user/model'
 
 // Collection name
@@ -34,6 +35,10 @@ const Schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: Interviewer
+  },
+  feedbackId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Feedback
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,

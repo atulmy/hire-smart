@@ -57,25 +57,42 @@ const ViewFields = (props) => {
         </Typography>
       </div>
 
+      {/* Feedback */}
+      {
+        interview.feedbackId &&
+        <div className={classes.item}>
+          <Typography variant={'caption'} gutterBottom>
+            Feedback
+          </Typography>
+
+          <Typography gutterBottom>
+            <span style={{ textTransform: 'capitalize' }}>{ interview.feedbackId.status }</span>. { interview.feedbackId.text }
+          </Typography>
+        </div>
+      }
+
+      {/* Notes */}
+      {
+        interview.note &&
+        <div className={classes.itemLast}>
+          <Typography variant={'caption'} gutterBottom>
+            Notes
+          </Typography>
+
+          <Typography gutterBottom className={classes.multiLine}>
+            { interview.note }
+          </Typography>
+        </div>
+      }
+
       {/* Mode */}
-      <div className={classes.item}>
+      <div className={classes.itemLast}>
         <Typography variant={'caption'} gutterBottom>
           Mode
         </Typography>
 
         <Typography gutterBottom>
           { modeName(interview.mode) }
-        </Typography>
-      </div>
-
-      {/* Notes */}
-      <div className={classes.itemLast}>
-        <Typography variant={'caption'} gutterBottom>
-          Notes
-        </Typography>
-
-        <Typography gutterBottom className={classes.multiLine}>
-          { interview.note || '-' }
         </Typography>
       </div>
     </React.Fragment>

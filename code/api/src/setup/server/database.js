@@ -8,5 +8,5 @@ import { MONGO_URL } from '../config/env'
 export default function () {
   console.info('SETUP - Connecting database..')
 
-  mongoose.connect(MONGO_URL)
+  mongoose.connect(MONGO_URL, { useNewUrlParser: true })
 }

@@ -3,10 +3,6 @@ import grey from '@material-ui/core/colors/grey'
 
 // Component Styles
 const styles = theme => ({
-  root: {
-
-  },
-
   title: {
     marginBottom: theme.spacing.unit * 3,
   },

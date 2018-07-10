@@ -89,7 +89,7 @@ class Details extends PureComponent {
     const { tab } = this.state
 
     return (
-      <div className={classes.root}>
+      <div>
         {
           isLoading
             ? <Loading />
@@ -146,14 +146,17 @@ class Details extends PureComponent {
                                       <div className={classes.interviewContent}>
                                         <InterviewViewFields interview={interview} />
 
-                                        <div className={classes.interviewContentActions}>
-                                          <Button
-                                            color={'primary'}
-                                            onClick={this.remind(interview)}
-                                          >
-                                            Remind
-                                          </Button>
-                                        </div>
+                                        {
+                                          !interview.feedbackId &&
+                                          <div className={classes.interviewContentActions}>
+                                            <Button
+                                              color={'primary'}
+                                              onClick={this.remind(interview)}
+                                            >
+                                              Remind
+                                            </Button>
+                                          </div>
+                                        }
                                       </div>
                                     </div>
                                   )) }

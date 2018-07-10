@@ -14,7 +14,7 @@ export async function get(parentValue, { id }, { auth }) {
       })
       .populate({
         path: 'interviews',
-        populate: { path: 'interviewerId' }
+        populate: [{ path: 'interviewerId' }, { path: 'feedbackId' }]
       })
   } else {
     throw new Error('Please login to view your interviewers.')

@@ -58,19 +58,6 @@ export async function create(parentValue, { clientId, candidateId, interviewerId
       if (invite) {
         sentEmails(interview._id, auth, 'invite')
       }
-
-      // Log activity
-      const interviewInfo = await Interview.findOne({ _id: interview._id }).populate('candidateId').populate('interviewerId')
-      const date = moment(interviewInfo.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)
-
-      await Activity.create({
-        organizationId: auth.user.organizationId,
-        userId: auth.user.id,
-        clientId,
-        interviewId: interview._id,
-        action: params.activity.types.create,
-        message: `${ auth.user.name } scheduled an interview for ${ interviewInfo.candidateId.name } to be conducted by ${ interviewInfo.interviewerId.name } on ${ date }.`
-      })
     }
 
     return interview
@@ -130,9 +117,6 @@ export async function remind(parentValue, { id }, { auth }) {
       .populate('candidateId')
       .populate('interviewerId')
       .populate('userId')
-
-    const date = moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)
-    const subject = `${ interview.organizationId.name } Interview Reminder - ${ date }`
 
     // Send emails
 
@@ -220,5 +204,21 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     template: TemplateInterviewer,
     organizationId: auth.user.organizationId,
     userId: auth.user.id
+  })
+
+  // Log activity
+  const activityAction = {
+    invite: 'scheduled an',
+    update: 'updated the ',
+    remind: 'sent a reminder for the'
+  }[type]
+
+  await Activity.create({
+    organizationId: auth.user.organizationId,
+    userId: auth.user.id,
+    clientId: interviewDetails.clientId,
+    interviewId: interviewDetails._id,
+    action: params.activity.types.create,
+    message: `${ auth.user.name } ${ activityAction } interview for ${ interviewDetails.candidateId.name } to be conducted by ${ interviewDetails.interviewerId.name } on ${ date }.`
   })
 }

@@ -8,7 +8,7 @@ const InterviewReminder = ({ candidateName, date, organizationName, mode, note, 
     <p>Hi { candidateName },</p>
 
     <p>
-      This is a reminder for your interview on <u>{ date }</u> for { organizationName }. <br/>
+      This is a reminder for your interview on <u>{ date }</u>. <br/>
 
       <strong>Interview Mode:</strong> { mode }
 

@@ -122,7 +122,7 @@ export function get(kanbanId, isLoading = true) {
         fields: [
           '_id',
           'candidateId { _id, clientId { _id, name }, jobId { _id, role, description }, name, email, mobile, experience, resume, salaryCurrent, salaryExpected }',
-          'interviews { _id, interviewerId { _id, name, email, mobile }, dateTime, mode, note }',
+          'interviews { _id, interviewerId { _id, name, email, mobile }, feedbackId { _id, text, status } dateTime, mode, note }',
           'status',
           'highlight',
           'createdAt'

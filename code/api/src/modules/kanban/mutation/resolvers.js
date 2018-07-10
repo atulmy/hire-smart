@@ -64,7 +64,7 @@ export async function updateStatus(parentValue, { id, status }, { auth }) {
         clientId: kanban.clientId,
         candidateId: kanban.candidateId._id,
         action: params.activity.types.update,
-        message: `${ auth.user.name } updated ${ kanban.candidateId.name }'s status to ${ status }.`
+        message: `${ auth.user.name } updated ${ kanban.candidateId.name }'s status to ${ status.toUpperCase() }.`
       })
     }
 

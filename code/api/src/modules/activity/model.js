@@ -25,13 +25,12 @@ const Schema = new mongoose.Schema({
   },
   clientId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: Client
+    ref: Client,
+    index: true
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: User,
-    index: true
+    ref: User
   },
   candidateId: {
     type: mongoose.Schema.Types.ObjectId,

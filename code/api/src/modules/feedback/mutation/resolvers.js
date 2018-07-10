@@ -4,6 +4,7 @@ import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
 import params from '../../../setup/config/params'
+import Activity from '../../activity/model'
 import Interview from '../../interview/model'
 import Kanban from '../../kanban/model'
 import Feedback from '../model'
@@ -19,7 +20,7 @@ export async function createOrUpdate(parentValue, { interviewId, text, status })
 
   if(!isEmpty(interviewId) && !isEmpty(text) && !isEmpty(status)) {
     if (interview) {
-      let feedback = Feedback.findOne({ interviewId })
+      let feedback = await Feedback.findOne({ interviewId })
 
       // Update kanban status
       await Kanban.updateOne(
@@ -53,7 +54,25 @@ export async function createOrUpdate(parentValue, { interviewId, text, status })
           text,
           status
         })
+
+        // Log activity
+        await Activity.create({
+          organizationId: interview.organizationId,
+          userId: interview.userId._id,
+          clientId: interview.clientId,
+          interviewId,
+          action: params.activity.types.create,
+          message: `${ interview.interviewerId.name } submitted feedback for ${ interview.candidateId.name }.`
+        })
       }
+
+      // Update feedback id in interview
+      await Interview.updateOne(
+        { _id: interview._id },
+        {
+          feedbackId: feedback._id
+        }
+      )
 
       // Send email
       sendEmail({
