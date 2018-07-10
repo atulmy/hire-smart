@@ -1,7 +1,7 @@
 // App Imports
 import Organization from '../organization/model'
 import User from '../user/model'
-import Client from '../client/model'
+import Project from '../project/model'
 import Job from './model'
 
 // Seeds
@@ -10,11 +10,11 @@ export default async function () {
 
   const user = await User.findOne({ email: 'user@hiresmart.app' })
   const organization = await Organization.findOne()
-  const clients = await Client.find()
+  const projects = await Project.find()
 
   await Job.create({
     organizationId: organization._id,
-    clientId: clients[0]._id,
+    projectId: projects[0]._id,
     userId: user._id,
     role: 'Software Engineer',
     description: 'ReactJS and NodeJS'
@@ -22,7 +22,7 @@ export default async function () {
 
   await Job.create({
     organizationId: organization._id,
-    clientId: clients[1]._id,
+    projectId: projects[1]._id,
     userId: user._id,
     role: 'UI Designer',
     description: 'Prototyping, InVision, Adobe'

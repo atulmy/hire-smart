@@ -1,8 +1,8 @@
 // App Imports
 import Activity from '../model'
 
-// Get by client
-export async function getByOrganization(parentValue, { clientId }, { auth }) {
+// Get by project
+export async function getByOrganization(parentValue, { projectId }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Activity.find({
       organizationId: auth.user.organizationId
@@ -14,12 +14,12 @@ export async function getByOrganization(parentValue, { clientId }, { auth }) {
   }
 }
 
-// Get by client
-export async function getByClient(parentValue, { clientId }, { auth }) {
+// Get by project
+export async function getByProject(parentValue, { projectId }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Activity.find({
       organizationId: auth.user.organizationId,
-      clientId
+      projectId
     })
       .sort({ createdAt: -1 })
       .populate('userId')

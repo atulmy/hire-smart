@@ -13,51 +13,51 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { getList as getClientsList, dashboardSet } from '../../../client/api/actions/query'
+import { getList as getProjectsList, dashboardSet } from '../../../project/api/actions/query'
 import { avatarColor, avatarLetter } from '../../../../setup/helpers'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
 
 // Component
-class ClientList extends PureComponent {
+class ProjectList extends PureComponent {
   componentDidMount() {
-    this.refreshClientsList()
+    this.refreshProjectsList()
   }
 
-  refreshClientsList = (isLoading = true) => {
-    const { getClientsList } = this.props
+  refreshProjectsList = (isLoading = true) => {
+    const { getProjectsList } = this.props
 
-    getClientsList(isLoading)
+    getProjectsList(isLoading)
   }
 
-  onSelectClient = client => () => {
+  onSelectProject = project => () => {
     const { dashboardSet } = this.props
 
-    dashboardSet(client)
+    dashboardSet(project)
   }
 
   selected = (id) => {
-    const { clientDashboard: { client } } = this.props
+    const { projectDashboard: { project } } = this.props
 
-    return client && client._id === id
+    return project && project._id === id
   }
 
   render() {
-    const { classes, clients } = this.props
+    const { classes, projects } = this.props
 
     return (
       <List
         component={'nav'}
-        subheader={<ListSubheader component={'div'} className={classes.title}>Clients</ListSubheader>}
+        subheader={<ListSubheader component={'div'} className={classes.title}>Projects</ListSubheader>}
       >
         {
-          clients.isLoading
-            ? <Loading message={'loading clients..'} />
-            : clients.list && clients.list.length > 0
-                ? clients.list.map(item => (
+          projects.isLoading
+            ? <Loading message={'loading projects..'} />
+            : projects.list && projects.list.length > 0
+                ? projects.list.map(item => (
                     <ListItem
                       key={item._id}
-                      onClick={this.onSelectClient(item)}
+                      onClick={this.onSelectProject(item)}
                       button
                       style={ this.selected(item._id)  ? { backgroundColor: '#ddd' } : {}}
                     >
@@ -66,7 +66,7 @@ class ClientList extends PureComponent {
                       <ListItemText primary={item.name} secondary={''} />
                     </ListItem>
                   ))
-                : <EmptyMessage message={'You have not added any client yet.'} />
+                : <EmptyMessage message={'You have not added any project yet.'} />
         }
       </List>
     )
@@ -74,19 +74,19 @@ class ClientList extends PureComponent {
 }
 
 // Component Properties
-ClientList.propTypes = {
+ProjectList.propTypes = {
   classes: PropTypes.object.isRequired,
-  clients: PropTypes.object.isRequired,
-  getClientsList: PropTypes.func.isRequired,
+  projects: PropTypes.object.isRequired,
+  getProjectsList: PropTypes.func.isRequired,
   dashboardSet: PropTypes.func.isRequired
 }
 
 // Component State
-function clientListState(state) {
+function projectListState(state) {
   return {
-    clients: state.clients,
-    clientDashboard: state.clientDashboard
+    projects: state.projects,
+    projectDashboard: state.projectDashboard
   }
 }
 
-export default connect(clientListState, { getClientsList, dashboardSet })(withStyles(styles)(ClientList))
+export default connect(projectListState, { getProjectsList, dashboardSet })(withStyles(styles)(ProjectList))

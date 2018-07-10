@@ -3,7 +3,7 @@ import { GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
 import OrganizationType from '../organization/types'
-import ClientType from '../client/types'
+import ProjectType from '../project/types'
 import CandidateType from '../candidate/types'
 import InterviewType from '../interview/types'
 import { UserType } from '../user/types'
@@ -16,7 +16,7 @@ const KanbanType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLString },
     organizationId: { type: OrganizationType },
-    clientId: { type: ClientType },
+    projectId: { type: ProjectType },
     candidateId: { type: CandidateType },
     interviews: { type: GraphQLList(InterviewType) },
     userId: { type: UserType },

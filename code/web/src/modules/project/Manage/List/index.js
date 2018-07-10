@@ -34,15 +34,15 @@ class List extends PureComponent {
     getList(isLoading)
   }
 
-  edit = client => () => {
+  edit = project => () => {
     const { edit } = this.props
 
-    edit(client)
+    edit(project)
   }
 
   render() {
-    const { classes, clients } = this.props
-    const { isLoading, list } = clients
+    const { classes, projects } = this.props
+    const { isLoading, list } = projects
 
     return (
       <div className={classes.root}>
@@ -62,15 +62,15 @@ class List extends PureComponent {
                   <TableBody>
                     {
                       list && list.length > 0
-                        ? list.map(client => (
-                            <TableRow key={client._id}>
-                              <TableCell>{ client.name }</TableCell>
-                              <TableCell>{ client.description }</TableCell>
+                        ? list.map(project => (
+                            <TableRow key={project._id}>
+                              <TableCell>{ project.name }</TableCell>
+                              <TableCell>{ project.description }</TableCell>
                               <TableCell className={classes.textCenter}>
                                 <Tooltip title={'Edit'} placement={'bottom'} enterDelay={500}>
                                   <IconButton
                                     aria-label={'Edit'}
-                                    onClick={this.edit(client)}
+                                    onClick={this.edit(project)}
                                   >
                                     <IconEdit />
                                   </IconButton>
@@ -80,7 +80,7 @@ class List extends PureComponent {
                           ))
                         : <TableRow>
                             <TableCell colSpan={3}>
-                              <EmptyMessage message={'You have not added any clients yet.'} />
+                              <EmptyMessage message={'You have not added any projects yet.'} />
                             </TableCell>
                           </TableRow>
                     }
@@ -103,7 +103,7 @@ List.propTypes = {
 // Component State
 function listState(state) {
   return {
-    clients: state.clients
+    projects: state.projects
   }
 }
 

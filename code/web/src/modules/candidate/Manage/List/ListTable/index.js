@@ -20,14 +20,14 @@ import EmptyMessage from '../../../../common/EmptyMessage'
 
 // Component
 const ListTable = (props) => {
-  const { classes, list, view, edit, showClient } = props
+  const { classes, list, view, edit, showProject } = props
 
   return (
     <Table>
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
-          { showClient && <TableCell>Client</TableCell> }
+          { showProject && <TableCell>Project</TableCell> }
           <TableCell>Job</TableCell>
           <TableCell>Mobile</TableCell>
           <TableCell width={145} className={classes.textCenter}>Actions</TableCell>
@@ -40,7 +40,7 @@ const ListTable = (props) => {
             ? list.map(candidate => (
               <TableRow key={candidate._id}>
                 <TableCell>{ candidate.name }</TableCell>
-                { showClient && <TableCell>{ candidate.clientId.name }</TableCell> }
+                { showProject && <TableCell>{ candidate.projectId.name }</TableCell> }
                 <TableCell>{ candidate.jobId ? candidate.jobId.role : '-' }</TableCell>
                 <TableCell>{ candidate.mobile }</TableCell>
                 <TableCell className={classes.textCenter}>
@@ -81,10 +81,10 @@ ListTable.propTypes = {
   list: PropTypes.array.isRequired,
   view: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired,
-  showClient: PropTypes.bool.isRequired,
+  showProject: PropTypes.bool.isRequired,
 }
 ListTable.defaultProps = {
-  showClient: true
+  showProject: true
 }
 
 export default withStyles(styles)(ListTable)

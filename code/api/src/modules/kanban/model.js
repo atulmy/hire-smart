@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 // App Imports
 import { collection as Organization } from '../organization/model'
-import { collection as Client } from '../client/model'
+import { collection as Project } from '../project/model'
 import { collection as Candidate } from '../candidate/model'
 import { collection as Interview } from '../interview/model'
 import { collection as User } from '../user/model'
@@ -19,10 +19,10 @@ const Schema = new mongoose.Schema({
     ref: Organization,
     index: true
   },
-  clientId: {
+  projectId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: Client,
+    ref: Project,
     index: true
   },
   candidateId: {

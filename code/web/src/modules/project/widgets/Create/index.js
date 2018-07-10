@@ -16,8 +16,8 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getList as getClientsList } from '../../../client/api/actions/query'
-import { create as createClient } from '../../../client/api/actions/mutation'
+import { getList as getProjectsList } from '../../../project/api/actions/query'
+import { create as createProject } from '../../../project/api/actions/mutation'
 
 // Component
 class Quick extends PureComponent {
@@ -34,29 +34,29 @@ class Quick extends PureComponent {
   create = async event => {
     event.preventDefault()
 
-    const { createClient, getClientsList, messageShow } = this.props
+    const { createProject, getProjectsList, messageShow } = this.props
     const { name } = this.state
 
     // Validate
     if(!isEmpty(name)) {
-      messageShow('Adding client, please wait..')
+      messageShow('Adding project, please wait..')
 
       this.isLoadingToggle(true)
 
       // Create
       try {
-        const { data } = await createClient({ name })
+        const { data } = await createProject({ name })
 
         if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
         } else {
-          // Refresh client list
-          getClientsList(false)
+          // Refresh project list
+          getProjectsList(false)
 
-          // Hide create client form
+          // Hide create project form
           this.visibleToggle(false)()
 
-          messageShow('Client added successfully.')
+          messageShow('Project added successfully.')
         }
       } catch(error) {
         messageShow('There was some error. Please try again.')
@@ -64,7 +64,7 @@ class Quick extends PureComponent {
         this.isLoadingToggle(false)
       }
     } else {
-      messageShow('Please enter client name.')
+      messageShow('Please enter project name.')
     }
   }
 
@@ -88,14 +88,14 @@ class Quick extends PureComponent {
     })
   }
 
-  setClientName = (event) => {
+  setProjectName = (event) => {
     this.setState({
       name: event.target.value
     })
   }
 
   render() {
-    const { classes, clients } = this.props
+    const { classes, projects } = this.props
     const { name, visible, isLoading } = this.state
 
     return (
@@ -105,11 +105,11 @@ class Quick extends PureComponent {
             ? <form onSubmit={this.create}>
                 <Grid container>
                   <Grid item xs={12}>
-                    {/* Input - Client Name */}
+                    {/* Input - Project Name */}
                     <TextField
                       value={name}
-                      onChange={this.setClientName}
-                      placeholder={'Enter client name'}
+                      onChange={this.setProjectName}
+                      placeholder={'Enter project name'}
                       margin={'none'}
                       required={true}
                       fullWidth
@@ -141,9 +141,9 @@ class Quick extends PureComponent {
             : <Button
                 onClick={this.visibleToggle(true)}
                 fullWidth
-                className={clients.list && clients.list.length > 0 ? classes.buttonAdd : classes.buttonAddPrimary}
+                className={projects.list && projects.list.length > 0 ? classes.buttonAdd : classes.buttonAddPrimary}
               >
-                Add Client
+                Add Project
               </Button>
         }
       </div>
@@ -154,9 +154,9 @@ class Quick extends PureComponent {
 // Component Properties
 Quick.propTypes = {
   classes: PropTypes.object.isRequired,
-  clients: PropTypes.object.isRequired,
-  getClientsList: PropTypes.func.isRequired,
-  createClient: PropTypes.func.isRequired,
+  projects: PropTypes.object.isRequired,
+  getProjectsList: PropTypes.func.isRequired,
+  createProject: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 
@@ -164,8 +164,8 @@ Quick.propTypes = {
 // Component State
 function quickState(state) {
   return {
-    clients: state.clients,
+    projects: state.projects,
   }
 }
 
-export default connect(quickState, { getClientsList, createClient, messageShow })(withStyles(styles)(Quick))
+export default connect(quickState, { getProjectsList, createProject, messageShow })(withStyles(styles)(Quick))

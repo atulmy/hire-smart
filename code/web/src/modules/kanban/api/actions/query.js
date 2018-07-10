@@ -5,7 +5,7 @@ import axios from 'axios'
 import { API_URL } from '../../../../setup/config/env'
 import { queryBuilder } from '../../../../setup/helpers'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
-import { KANBAN_LIST_CACHE, KANBAN_SINGLE_CACHE, KANBAN_LIST_BY_CLIENT_CACHE } from './cache-keys'
+import { KANBAN_LIST_CACHE, KANBAN_SINGLE_CACHE, KANBAN_LIST_BY_PROJECT_CACHE } from './cache-keys'
 import {
   LIST_REQUEST,
   LIST_RESPONSE,
@@ -13,9 +13,9 @@ import {
   SINGLE_REQUEST,
   SINGLE_RESPONSE,
   SINGLE_DONE,
-  LIST_BY_CLIENT_REQUEST,
-  LIST_BY_CLIENT_RESPONSE,
-  LIST_BY_CLIENT_DONE
+  LIST_BY_PROJECT_REQUEST,
+  LIST_BY_PROJECT_RESPONSE,
+  LIST_BY_PROJECT_DONE
 } from './types'
 
 // Get list
@@ -49,7 +49,7 @@ export function getList(isLoading = true) {
         operation: 'kanbansByOrganization',
         fields: [
           '_id',
-          'clientId { _id, name }',
+          'projectId { _id, name }',
           'candidateId { _id, name, jobId { _id, role, description } }',
           'interviews { _id, dateTime, mode, note }',
           'status',
@@ -121,8 +121,8 @@ export function get(kanbanId, isLoading = true) {
         data: { id: kanbanId },
         fields: [
           '_id',
-          'candidateId { _id, clientId { _id, name }, jobId { _id, role, description }, name, email, mobile, experience, resume, salaryCurrent, salaryExpected }',
-          'interviews { _id, interviewerId { _id, name, email, mobile }, feedbackId { _id, text, status } dateTime, mode, note }',
+          'candidateId { _id, projectId { _id, name }, jobId { _id, role, description }, name, email, mobile, experience, resume, salaryCurrent, salaryExpected }',
+          'interviews { _id, interviewerId { _id, name, email, mobile }, feedbackId { _id, text, status }, dateTime, mode, note }',
           'status',
           'highlight',
           'createdAt'
@@ -158,29 +158,29 @@ export function get(kanbanId, isLoading = true) {
   }
 }
 
-// Get by Client
-export function getListByClient({ clientId }, isLoading = true, forceRefresh = false) {
+// Get by Project
+export function getListByProject({ projectId }, isLoading = true, forceRefresh = false) {
   return async dispatch => {
     // Caching
-    const CACHE_KEY = `${ KANBAN_LIST_BY_CLIENT_CACHE }.${ clientId }`
+    const CACHE_KEY = `${ KANBAN_LIST_BY_PROJECT_CACHE }.${ projectId }`
 
     try {
       const list = JSON.parse(window.localStorage.getItem(CACHE_KEY))
 
       if(list && !forceRefresh) {
         dispatch({
-          type: LIST_BY_CLIENT_RESPONSE,
+          type: LIST_BY_PROJECT_RESPONSE,
           list
         })
       } else {
         dispatch({
-          type: LIST_BY_CLIENT_REQUEST,
+          type: LIST_BY_PROJECT_REQUEST,
           isLoading
         })
       }
     } catch(e) {
       dispatch({
-        type: LIST_BY_CLIENT_REQUEST,
+        type: LIST_BY_PROJECT_REQUEST,
         isLoading
       })
     }
@@ -188,12 +188,12 @@ export function getListByClient({ clientId }, isLoading = true, forceRefresh = f
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
-        operation: 'kanbansByClient',
-        data: { clientId },
+        operation: 'kanbansByProject',
+        data: { projectId },
         fields: [
           '_id',
           'candidateId { _id, name, mobile, experience, jobId { _id, role, description } }',
-          'interviews { _id, interviewerId { _id, name }, dateTime, mode, note }',
+          'interviews { _id, interviewerId { _id, name }, feedbackId { _id, text, status }, dateTime, mode, note }',
           'status',
           'highlight',
           'createdAt'
@@ -206,10 +206,10 @@ export function getListByClient({ clientId }, isLoading = true, forceRefresh = f
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.kanbansByClient
+        const list = data.data.kanbansByProject
 
         dispatch({
-          type: LIST_BY_CLIENT_RESPONSE,
+          type: LIST_BY_PROJECT_RESPONSE,
           list
         })
 
@@ -222,7 +222,7 @@ export function getListByClient({ clientId }, isLoading = true, forceRefresh = f
       })
     } finally {
       dispatch({
-        type: LIST_BY_CLIENT_DONE,
+        type: LIST_BY_PROJECT_DONE,
         isLoading: false
       })
     }

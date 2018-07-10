@@ -195,10 +195,10 @@ class Header extends PureComponent {
                       </ListItem>
                     </Link>
 
-                    <Link to={routes.client.path}>
+                    <Link to={routes.project.path}>
                       <ListItem button>
                         <Avatar style={{ backgroundColor: purple[500] }}><IconDomain /></Avatar>
-                        <ListItemText primary={'Clients'} secondary={'Manage all clients'} />
+                        <ListItemText primary={'Projects'} secondary={'Manage all projects'} />
                       </ListItem>
                     </Link>
 

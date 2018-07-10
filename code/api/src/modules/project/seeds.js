@@ -1,26 +1,26 @@
 // App Imports
 import Organization from '../organization/model'
 import User from '../user/model'
-import Client from './model'
+import Project from './model'
 
 // Seeds
 export default async function () {
-  console.log('SEED - Client..')
+  console.log('SEED - Project..')
 
   const user = await User.findOne({ email: 'user@hiresmart.app' })
   const organization = await Organization.findOne()
 
-  await Client.create({
+  await Project.create({
     organizationId: organization._id,
     userId: user._id,
-    name: 'Wolf Limited',
+    name: 'Wolf',
     description: 'IT Software and Services',
   })
 
-  await Client.create({
+  await Project.create({
     organizationId: organization._id,
     userId: user._id,
-    name: 'Stark Industries',
+    name: 'Stark',
     description: 'Financial Support and Services'
   })
 }

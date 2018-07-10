@@ -1,7 +1,7 @@
 // App Imports
 import Feedback from '../model'
 
-// Get client by ID
+// Get project by ID
 export async function get(parentValue, { id }) {
   return await Feedback.findOne({ _id: id })
 }

@@ -22,7 +22,7 @@ import styles from './styles'
 // App Imports
 import params from '../../../../setup/config/params'
 import { overviewTabs } from '../index'
-import { getListByClient as getKanbanListByClient } from '../../../kanban/api/actions/query'
+import { getListByProject as getKanbanListByProject } from '../../../kanban/api/actions/query'
 import { updateStatus as updateKanbanStatus } from '../../../kanban/api/actions/mutation'
 import { editClose } from '../../../candidate/api/actions/mutation'
 import { messageShow, messageHide } from '../../../common/api/actions'
@@ -50,17 +50,17 @@ class Overview extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { clientDashboard: { client } } = nextProps
+    const { projectDashboard: { project } } = nextProps
 
-    if(client._id !== this.props.clientDashboard.client._id) {
-      this.refresh(true, false, client._id)
+    if(project._id !== this.props.projectDashboard.project._id) {
+      this.refresh(true, false, project._id)
     }
   }
 
-  refresh = (isLoading = true, forceRefresh = false, clientId) => {
-    const { getKanbanListByClient, clientDashboard: { client } } = this.props
+  refresh = (isLoading = true, forceRefresh = false, projectId) => {
+    const { getKanbanListByProject, projectDashboard: { project } } = this.props
 
-    getKanbanListByClient({ clientId: clientId ? clientId : client._id }, isLoading, forceRefresh)
+    getKanbanListByProject({ projectId: projectId ? projectId : project._id }, isLoading, forceRefresh)
   }
 
   columnWidth = () => {
@@ -98,9 +98,9 @@ class Overview extends PureComponent {
   }
 
   columnCount = (key) => {
-    const { kanbansByClient } = this.props
+    const { kanbansByProject } = this.props
 
-    const count =  kanbansByClient.list && kanbansByClient.list.length > 0 && kanbansByClient.list.filter(item => item.status === key).length
+    const count =  kanbansByProject.list && kanbansByProject.list.length > 0 && kanbansByProject.list.filter(item => item.status === key).length
 
     return count > 0 ? `(${ count })` : ''
   }
@@ -158,7 +158,7 @@ class Overview extends PureComponent {
   }
 
   render() {
-    const { classes, clientDashboard: { client }, kanbansByClient: { isLoading, list } } = this.props
+    const { classes, projectDashboard: { project }, kanbansByProject: { isLoading, list } } = this.props
     const { detailsOpen, drawerAdd, kanbanId } = this.state
     const { kanban: { columns } } = params
 
@@ -166,7 +166,7 @@ class Overview extends PureComponent {
       <div className={classes.root}>
         {/* Actions */}
         <div className={classes.actions}>
-          <Button onClick={() => this.refresh(true, true, client._id)}>
+          <Button onClick={() => this.refresh(true, true, project._id)}>
             <IconCached className={classes.actionIcon} />
             Refresh
           </Button>
@@ -270,10 +270,10 @@ class Overview extends PureComponent {
                       <div className={classes.drawer}>
                         <CreateOrEdit
                           elevation={0}
-                          clientId={client._id}
-                          clientShowLoading={false}
+                          projectId={project._id}
+                          projectShowLoading={false}
                           successCallback={this.successCallback}
-                          clientSelectionHide={true}
+                          projectSelectionHide={true}
                         />
                       </div>
                     </Drawer>
@@ -290,8 +290,8 @@ class Overview extends PureComponent {
 Overview.propTypes = {
   classes: PropTypes.object.isRequired,
   tabSwitch: PropTypes.func.isRequired,
-  clientDashboard: PropTypes.object.isRequired,
-  getKanbanListByClient: PropTypes.func.isRequired,
+  projectDashboard: PropTypes.object.isRequired,
+  getKanbanListByProject: PropTypes.func.isRequired,
   updateKanbanStatus: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired,
@@ -301,13 +301,13 @@ Overview.propTypes = {
 // Component State
 function overviewState(state) {
   return {
-    kanbansByClient: state.kanbansByClient,
-    clientDashboard: state.clientDashboard
+    kanbansByProject: state.kanbansByProject,
+    projectDashboard: state.projectDashboard
   }
 }
 
 export default compose(
   DragDropContext(HTML5Backend),
-  connect(overviewState, { getKanbanListByClient, updateKanbanStatus, editClose, messageShow, messageHide }),
+  connect(overviewState, { getKanbanListByProject, updateKanbanStatus, editClose, messageShow, messageHide }),
   withStyles(styles)
 )(Overview)

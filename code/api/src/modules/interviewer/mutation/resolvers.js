@@ -7,12 +7,12 @@ import Activity from '../../activity/model'
 import Interviewer from '../model'
 
 // Create
-export async function create(parentValue, { clientId, name, email, mobile }, { auth }) {
+export async function create(parentValue, { projectId, name, email, mobile }, { auth }) {
   if(auth.user && auth.user.id) {
     const interviewer = await Interviewer.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
-      clientId,
+      projectId,
       name,
       email,
       mobile
@@ -23,7 +23,7 @@ export async function create(parentValue, { clientId, name, email, mobile }, { a
       await Activity.create({
         organizationId: auth.user.organizationId,
         userId: auth.user.id,
-        clientId,
+        projectId,
         interviewerId: interviewer._id,
         action: params.activity.types.create,
         message: `${ auth.user.name } added a new interviewer ${ name } (${ email }).`
@@ -37,13 +37,13 @@ export async function create(parentValue, { clientId, name, email, mobile }, { a
 }
 
 // Update
-export async function update(parentValue, { id, clientId, name, email, mobile }, { auth }) {
+export async function update(parentValue, { id, projectId, name, email, mobile }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     return await Interviewer.updateOne(
       { _id: id },
       {
         $set: {
-          clientId,
+          projectId,
           name,
           email,
           mobile

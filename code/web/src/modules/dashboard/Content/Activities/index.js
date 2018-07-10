@@ -12,7 +12,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { getListByClient } from '../../../activity/api/actions/query'
+import { getListByProject } from '../../../activity/api/actions/query'
 import Loading from '../../../common/Loading'
 import EmptyMessage from '../../../common/EmptyMessage'
 import ListTable from '../../../activity/Manage/List/ListTable'
@@ -32,13 +32,13 @@ class Activities extends PureComponent {
   }
 
   refresh = (isLoading = true, forceRefresh = false) => {
-    const { getListByClient, clientDashboard: { client } } = this.props
+    const { getListByProject, projectDashboard: { project } } = this.props
 
-    getListByClient({ clientId: client._id }, isLoading, forceRefresh)
+    getListByProject({ projectId: project._id }, isLoading, forceRefresh)
   }
 
   render() {
-    const { classes, activitiesByClient: { isLoading, list }, user } = this.props
+    const { classes, activitiesByProject: { isLoading, list }, user } = this.props
 
     return (
       <div className={classes.root}>
@@ -70,19 +70,19 @@ class Activities extends PureComponent {
 // Component Properties
 Activities.propTypes = {
   classes: PropTypes.object.isRequired,
-  activitiesByClient: PropTypes.object.isRequired,
-  clientDashboard: PropTypes.object.isRequired,
+  activitiesByProject: PropTypes.object.isRequired,
+  projectDashboard: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  getListByClient: PropTypes.func.isRequired
+  getListByProject: PropTypes.func.isRequired
 }
 
 // Component State
 function jobsState(state) {
   return {
-    activitiesByClient: state.activitiesByClient,
-    clientDashboard: state.clientDashboard,
+    activitiesByProject: state.activitiesByProject,
+    projectDashboard: state.projectDashboard,
     user: state.user
   }
 }
 
-export default connect(jobsState, { getListByClient })(withStyles(styles)(Activities))
+export default connect(jobsState, { getListByProject })(withStyles(styles)(Activities))

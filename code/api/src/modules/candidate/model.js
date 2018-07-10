@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 // App Imports
 import { collection as Organization } from '../organization/model'
-import { collection as Client } from '../client/model'
+import { collection as Project } from '../project/model'
 import { collection as User } from '../user/model'
 import { collection as Job } from '../job/model'
 
@@ -18,9 +18,9 @@ const Schema = new mongoose.Schema({
     ref: Organization,
     index: true
   },
-  clientId: {
+  projectId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: Client,
+    ref: Project,
     index: true
   },
   jobId: {

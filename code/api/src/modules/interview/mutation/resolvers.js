@@ -15,13 +15,13 @@ import InterviewReminderCandidate from '../../candidate/email/InterviewReminder'
 import InterviewReminderInterviewer from '../../interviewer/email/InterviewReminder'
 
 // Create
-export async function create(parentValue, { clientId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, { auth }) {
+export async function create(parentValue, { projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, { auth }) {
   if(auth.user && auth.user.id) {
     // Create interview
     const interview = await Interview.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
-      clientId,
+      projectId,
       candidateId,
       interviewerId,
       dateTime,
@@ -33,7 +33,7 @@ export async function create(parentValue, { clientId, candidateId, interviewerId
       // Add to kanban
       const kanban = await Kanban.findOne({
         organizationId: auth.user.organizationId,
-        clientId: clientId,
+        projectId: projectId,
         candidateId: candidateId
       })
       if (kanban) {
@@ -45,7 +45,7 @@ export async function create(parentValue, { clientId, candidateId, interviewerId
         // Create new kanban
         await Kanban.create({
           organizationId: auth.user.organizationId,
-          clientId: clientId,
+          projectId: projectId,
           candidateId: candidateId,
           interviews: [interview._id],
           userId: auth.user.id,
@@ -67,13 +67,13 @@ export async function create(parentValue, { clientId, candidateId, interviewerId
 }
 
 // Update
-export async function update(parentValue, { id, clientId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, { auth }) {
+export async function update(parentValue, { id, projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     const interview = await Interview.updateOne(
       { _id: id },
       {
         $set: {
-          clientId,
+          projectId,
           candidateId,
           interviewerId,
           dateTime,
@@ -216,7 +216,7 @@ async function sentEmails(interviewId, auth, type = 'invite') {
   await Activity.create({
     organizationId: auth.user.organizationId,
     userId: auth.user.id,
-    clientId: interviewDetails.clientId,
+    projectId: interviewDetails.projectId,
     interviewId: interviewDetails._id,
     action: params.activity.types.create,
     message: `${ auth.user.name } ${ activityAction } interview for ${ interviewDetails.candidateId.name } to be conducted by ${ interviewDetails.interviewerId.name } on ${ date }.`

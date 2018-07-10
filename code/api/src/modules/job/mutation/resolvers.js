@@ -7,11 +7,11 @@ import Activity from '../../activity/model'
 import Job from '../model'
 
 // Create
-export async function create(parentValue, { clientId, role, description = '' }, { auth }) {
+export async function create(parentValue, { projectId, role, description = '' }, { auth }) {
   if(auth.user && auth.user.id) {
     const job = await Job.create({
       organizationId: auth.user.organizationId,
-      clientId,
+      projectId,
       userId: auth.user.id,
       role,
       description
@@ -22,7 +22,7 @@ export async function create(parentValue, { clientId, role, description = '' }, 
       await Activity.create({
         organizationId: auth.user.organizationId,
         userId: auth.user.id,
-        clientId,
+        projectId,
         jobId: job._id,
         action: params.activity.types.create,
         message: `${ auth.user.name } added a new job ${ role }.`
@@ -36,13 +36,13 @@ export async function create(parentValue, { clientId, role, description = '' }, 
 }
 
 // Update
-export async function update(parentValue, { id, clientId, role, description = '' }, { auth }) {
+export async function update(parentValue, { id, projectId, role, description = '' }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     return await Job.updateOne(
       { _id: id },
       {
         $set: {
-          clientId,
+          projectId,
           role,
           description
         }

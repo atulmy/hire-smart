@@ -38,13 +38,13 @@ class CreateOrEdit extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { client } = nextProps.clientEdit
+    const { project } = nextProps.projectEdit
 
-    if(client._id !== this.state.id) {
+    if(project._id !== this.state.id) {
       this.setState({
-        id: client._id,
-        name: client.name,
-        description: client.description
+        id: project._id,
+        name: project.name,
+        description: project.description
       })
     }
   }
@@ -78,7 +78,7 @@ class CreateOrEdit extends PureComponent {
 
     // Validate
     if(!isEmpty(name)) {
-      messageShow('Adding client, please wait..')
+      messageShow('Adding project, please wait..')
 
       this.isLoadingToggle(true)
 
@@ -89,16 +89,16 @@ class CreateOrEdit extends PureComponent {
         if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
         } else {
-          // Update clients list
+          // Update projects list
           getList(false)
 
           // Reset form data
           this.reset()
 
           if(!isEmpty(id)) {
-            messageShow('Client updated successfully.')
+            messageShow('Project updated successfully.')
           } else {
-            messageShow('Client added successfully.')
+            messageShow('Project added successfully.')
           }
         }
       } catch(error) {
@@ -107,7 +107,7 @@ class CreateOrEdit extends PureComponent {
         this.isLoadingToggle(false)
       }
     } else {
-      messageShow('Please enter client name.')
+      messageShow('Please enter project name.')
     }
   }
 
@@ -121,7 +121,7 @@ class CreateOrEdit extends PureComponent {
           variant={'subheading'}
           color={'inherit'}
         >
-          { id === '' ? `Add new client` : `Edit client` }
+          { id === '' ? `Add new project` : `Edit project` }
         </Typography>
 
         <form onSubmit={this.save}>
@@ -131,7 +131,7 @@ class CreateOrEdit extends PureComponent {
               name={'name'}
               value={nullToEmptyString(name)}
               onChange={this.onType}
-              label={'Client Name'}
+              label={'Project Name'}
               placeholder={'Enter name'}
               required={true}
               margin={'normal'}
@@ -146,7 +146,7 @@ class CreateOrEdit extends PureComponent {
               name={'description'}
               value={nullToEmptyString(description)}
               onChange={this.onType}
-              label={'Client description'}
+              label={'Project description'}
               placeholder={'Enter description'}
               margin={'normal'}
               autoComplete={'off'}
@@ -193,7 +193,7 @@ class CreateOrEdit extends PureComponent {
 // Component Properties
 CreateOrEdit.propTypes = {
   classes: PropTypes.object.isRequired,
-  clientEdit: PropTypes.object.isRequired,
+  projectEdit: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
   getList: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
@@ -202,7 +202,7 @@ CreateOrEdit.propTypes = {
 // Component State
 function createOrEditState(state) {
   return {
-    clientEdit: state.clientEdit
+    projectEdit: state.projectEdit
   }
 }
 

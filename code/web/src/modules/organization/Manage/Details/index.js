@@ -87,7 +87,7 @@ class Details extends Component {
 
     // Validate
     if(!isEmpty(name)) {
-      messageShow('Adding client, please wait..')
+      messageShow('Adding project, please wait..')
 
       this.isLoadingSubmitToggle(true)
 

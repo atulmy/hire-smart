@@ -6,9 +6,9 @@ import OrganizationType from '../organization/types'
 import { UserType } from '../user/types'
 
 // Type
-const ClientType = new GraphQLObjectType({
-  name: 'client',
-  description: 'Client Type',
+const ProjectType = new GraphQLObjectType({
+  name: 'project',
+  description: 'Project Type',
 
   fields: () => ({
     _id: { type: GraphQLString },
@@ -21,4 +21,4 @@ const ClientType = new GraphQLObjectType({
   })
 })
 
-export default ClientType
+export default ProjectType

@@ -6,15 +6,15 @@ export async function get(parentValue, { id }) {
   return await Interviewer.findOne({ _id: id })
 }
 
-// Get by client
-export async function getByClient(parentValue, { clientId }, { auth }) {
+// Get by project
+export async function getByProject(parentValue, { projectId }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Interviewer.find({
       organizationId: auth.user.organizationId,
-      clientId
+      projectId
     })
       .populate('organizationId')
-      .populate('clientId')
+      .populate('projectId')
   } else {
     throw new Error('Please login to view your interviewers.')
   }
@@ -27,7 +27,7 @@ export async function getByOrganization(parentValue, {}, { auth }) {
       organizationId: auth.user.organizationId
     })
       .populate('organizationId')
-      .populate('clientId')
+      .populate('projectId')
   } else {
     throw new Error('Please login to view your interviewers.')
   }

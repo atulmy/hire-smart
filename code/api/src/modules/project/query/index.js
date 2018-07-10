@@ -2,18 +2,18 @@
 import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
-import ClientType from '../types'
+import ProjectType from '../types'
 import { getAll, get, getByOrganization } from './resolvers'
 
 // Get all
-export const clients = {
-  type: new GraphQLList(ClientType),
+export const projects = {
+  type: new GraphQLList(ProjectType),
   resolve: getAll
 }
 
 // Get by id
-export const client = {
-  type: ClientType,
+export const project = {
+  type: ProjectType,
   args: {
     id: { type: GraphQLString }
   },
@@ -21,7 +21,7 @@ export const client = {
 }
 
 // Get by organization
-export const clientsByOrganization = {
-  type: new GraphQLList(ClientType),
+export const projectsByOrganization = {
+  type: new GraphQLList(ProjectType),
   resolve: getByOrganization
 }

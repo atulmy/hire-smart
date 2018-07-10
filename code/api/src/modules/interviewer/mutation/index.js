@@ -7,7 +7,7 @@ import { create, remove, update } from './resolvers'
 
 // Interviewer fields
 const fields = {
-  clientId: { type: GraphQLString },
+  projectId: { type: GraphQLString },
 
   name: { type: GraphQLString },
 

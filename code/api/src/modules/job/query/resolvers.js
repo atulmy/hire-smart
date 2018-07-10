@@ -6,12 +6,12 @@ export async function get(parentValue, { id }) {
   return await Job.findOne({ _id: id })
 }
 
-// Get by client
-export async function getByClient(parentValue, { clientId }, { auth }) {
+// Get by project
+export async function getByProject(parentValue, { projectId }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Job.find({
       organizationId: auth.user.organizationId,
-      clientId
+      projectId
     })
   } else {
     throw new Error('Please login to view your jobs.')

@@ -6,7 +6,7 @@ import { collection as Organization } from '../organization/model'
 import { collection as User } from '../user/model'
 
 // Collection name
-export const collection = 'Client'
+export const collection = 'Project'
 
 // Schema
 const Schema = new mongoose.Schema({

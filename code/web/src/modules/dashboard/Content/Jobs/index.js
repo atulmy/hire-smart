@@ -15,7 +15,7 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getListByClient } from '../../../job/api/actions/query'
+import { getListByProject } from '../../../job/api/actions/query'
 import { edit, editClose } from '../../../job/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import CreateOrEdit from '../../../job/Manage/CreateOrEdit'
@@ -36,9 +36,9 @@ class Jobs extends PureComponent {
   }
 
   refresh = (isLoading = true, forceRefresh = false) => {
-    const { getListByClient, clientDashboard: { client } } = this.props
+    const { getListByProject, projectDashboard: { project } } = this.props
 
-    getListByClient({ clientId: client._id }, isLoading, forceRefresh)
+    getListByProject({ projectId: project._id }, isLoading, forceRefresh)
   }
 
   toggleDrawer = (open) => () => {
@@ -70,7 +70,7 @@ class Jobs extends PureComponent {
   }
 
   render() {
-    const { classes, clientDashboard: { client }, jobsByClient: { isLoading, list } } = this.props
+    const { classes, projectDashboard: { project }, jobsByProject: { isLoading, list } } = this.props
     const { drawerAdd } = this.state
 
     return (
@@ -113,10 +113,10 @@ class Jobs extends PureComponent {
           <div className={classes.drawer}>
             <CreateOrEdit
               elevation={0}
-              clientId={client._id}
-              clientShowLoading={false}
+              projectId={project._id}
+              projectShowLoading={false}
               successCallback={this.successCallback}
-              clientSelectionHide={true}
+              projectSelectionHide={true}
             />
           </div>
         </Drawer>
@@ -128,9 +128,9 @@ class Jobs extends PureComponent {
 // Component Properties
 Jobs.propTypes = {
   classes: PropTypes.object.isRequired,
-  jobsByClient: PropTypes.object.isRequired,
-  clientDashboard: PropTypes.object.isRequired,
-  getListByClient: PropTypes.func.isRequired,
+  jobsByProject: PropTypes.object.isRequired,
+  projectDashboard: PropTypes.object.isRequired,
+  getListByProject: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
@@ -139,9 +139,9 @@ Jobs.propTypes = {
 // Component State
 function jobsState(state) {
   return {
-    jobsByClient: state.jobsByClient,
-    clientDashboard: state.clientDashboard
+    jobsByProject: state.jobsByProject,
+    projectDashboard: state.projectDashboard
   }
 }
 
-export default connect(jobsState, { getListByClient, edit, editClose, messageShow })(withStyles(styles)(Jobs))
+export default connect(jobsState, { getListByProject, edit, editClose, messageShow })(withStyles(styles)(Jobs))

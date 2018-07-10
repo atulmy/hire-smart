@@ -4,18 +4,18 @@ import Candidate from '../model'
 // Get candidate by ID
 export async function get(parentValue, { id }) {
   return await Candidate.findOne({ _id: id })
-    .populate('clientId')
+    .populate('projectId')
     .populate('jobId')
 }
 
-// Get by client
-export async function getByClient(parentValue, { clientId }, { auth }) {
+// Get by project
+export async function getByProject(parentValue, { projectId }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Candidate.find({
       organizationId: auth.user.organizationId,
-      clientId
+      projectId
     })
-      .populate('clientId')
+      .populate('projectId')
       .populate('jobId')
   } else {
     throw new Error('Please login to view your candidates.')
@@ -29,7 +29,7 @@ export async function getByOrganization(parentValue, {}, { auth }) {
       organizationId: auth.user.organizationId
     })
       .populate('organizationId')
-      .populate('clientId')
+      .populate('projectId')
       .populate('jobId')
   } else {
     throw new Error('Please login to view your candidates.')

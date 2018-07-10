@@ -7,12 +7,12 @@ import Activity from '../../activity/model'
 import Kanban from '../model'
 
 // Create
-export async function create(parentValue, { clientId, candidateId, interviews, status, highlight }, { auth }) {
+export async function create(parentValue, { projectId, candidateId, interviews, status, highlight }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Kanban.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
-      clientId,
+      projectId,
       candidateId,
       interviews,
       status,
@@ -30,7 +30,7 @@ export async function update(parentValue, { id, interviews, status, highlight },
       { _id: id },
       {
         $set: {
-          clientId,
+          projectId,
           interviews,
           status,
           highlight
@@ -61,7 +61,7 @@ export async function updateStatus(parentValue, { id, status }, { auth }) {
       await Activity.create({
         organizationId: auth.user.organizationId,
         userId: auth.user.id,
-        clientId: kanban.clientId,
+        projectId: kanban.projectId,
         candidateId: kanban.candidateId._id,
         action: params.activity.types.update,
         message: `${ auth.user.name } updated ${ kanban.candidateId.name }'s status to ${ status.toUpperCase() }.`

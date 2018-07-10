@@ -18,15 +18,15 @@ export async function getByOrganization(parentValue, {}, { auth }) {
   }
 }
 
-// Get by client
-export async function getByClient(parentValue, { clientId }, { auth }) {
+// Get by project
+export async function getByProject(parentValue, { projectId }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Interview.find({
       organizationId: auth.user.organizationId,
-      clientId
+      projectId
     })
       .populate('organizationId')
-      .populate('clientId')
+      .populate('projectId')
       .populate('candidateId')
       .populate('interviewerId')
       .populate('userId')

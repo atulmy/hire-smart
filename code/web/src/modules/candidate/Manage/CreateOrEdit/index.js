@@ -25,8 +25,8 @@ import styles from './styles'
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
 import { upload } from '../../../common/api/actions'
-import { getList as getClientList } from '../../../client/api/actions/query'
-import { getListByClient as getJobListByClient } from '../../../job/api/actions/query'
+import { getList as getProjectList } from '../../../project/api/actions/query'
+import { getListByProject as getJobListByProject } from '../../../job/api/actions/query'
 import { createOrUpdate, editClose } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
@@ -36,9 +36,9 @@ class CreateOrEdit extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.client = {
+    this.project = {
       id: '',
-      clientId: props.clientId,
+      projectId: props.projectId,
       jobId: '',
       name: '',
       email: '',
@@ -53,17 +53,17 @@ class CreateOrEdit extends PureComponent {
       isLoading: false,
       isUploadingFile: false,
 
-      ...this.client
+      ...this.project
     }
   }
 
   componentDidMount() {
-    const { getClientList, clientShowLoading, getJobListByClient, clientId } = this.props
+    const { getProjectList, projectShowLoading, getJobListByProject, projectId } = this.props
 
-    getClientList(clientShowLoading)
+    getProjectList(projectShowLoading)
 
-    if(!isEmpty(clientId)) {
-      getJobListByClient({ clientId })
+    if(!isEmpty(projectId)) {
+      getJobListByProject({ projectId })
     }
   }
 
@@ -73,7 +73,7 @@ class CreateOrEdit extends PureComponent {
     if(candidate && candidate._id !== this.state.id) {
       this.setState({
         id: candidate._id,
-        clientId: candidate.clientId._id,
+        projectId: candidate.projectId._id,
         jobId: candidate.jobId ? candidate.jobId._id : '',
         name: candidate.name,
         email: candidate.email,
@@ -85,9 +85,9 @@ class CreateOrEdit extends PureComponent {
       })
 
 
-      const { getJobListByClient } = this.props
+      const { getJobListByProject } = this.props
 
-      getJobListByClient({ clientId: candidate.clientId._id })
+      getJobListByProject({ projectId: candidate.projectId._id })
     }
   }
 
@@ -110,10 +110,10 @@ class CreateOrEdit extends PureComponent {
       [event.target.name]: event.target.value
     })
 
-    if(event.target.name === 'clientId' && event.target.value) {
-      const { getJobListByClient } = this.props
+    if(event.target.name === 'projectId' && event.target.value) {
+      const { getJobListByProject } = this.props
 
-      getJobListByClient({ clientId: event.target.value })
+      getJobListByProject({ projectId: event.target.value })
     }
   }
 
@@ -121,7 +121,7 @@ class CreateOrEdit extends PureComponent {
     const { editClose } = this.props
 
     this.setState({
-      ...this.client
+      ...this.project
     })
 
     editClose()
@@ -132,10 +132,10 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
+    const { id, projectId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected } = this.state
 
     // Validate
-    if(!isEmpty(clientId) && !isEmpty(name) && !isEmpty(email) && !isEmpty(mobile) && !isEmpty(experience)) {
+    if(!isEmpty(projectId) && !isEmpty(name) && !isEmpty(email) && !isEmpty(mobile) && !isEmpty(experience)) {
       if(!isEmpty(resume)) {
         messageShow('Adding candidate, please wait..')
 
@@ -143,7 +143,7 @@ class CreateOrEdit extends PureComponent {
 
         // Create or Update
         try {
-          const { data } = await createOrUpdate({ id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
+          const { data } = await createOrUpdate({ id, projectId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected })
 
           if(data.errors && data.errors.length > 0) {
             messageShow(data.errors[0].message)
@@ -204,8 +204,8 @@ class CreateOrEdit extends PureComponent {
   }
 
   render() {
-    const { classes, clients, elevation, clientSelectionHide, jobsByClient } = this.props
-    const { isLoading, id, clientId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected, isUploadingFile } = this.state
+    const { classes, projects, elevation, projectSelectionHide, jobsByProject } = this.props
+    const { isLoading, id, projectId, jobId, name, email, mobile, experience, resume, salaryCurrent, salaryExpected, isUploadingFile } = this.state
 
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
@@ -233,37 +233,37 @@ class CreateOrEdit extends PureComponent {
             />
           </Grid>
 
-          {/* Input - client */}
+          {/* Input - project */}
           {
-            !clientSelectionHide &&
+            !projectSelectionHide &&
             <Grid item xs={12}>
               <FormControl
                 style={{marginTop: 10}}
                 fullWidth
                 required={true}
               >
-                <InputLabel htmlFor="client-id">Client</InputLabel>
+                <InputLabel htmlFor="project-id">Project</InputLabel>
                 <Select
-                  value={nullToEmptyString(clientId)}
+                  value={nullToEmptyString(projectId)}
                   onChange={this.onType}
                   inputProps={{
-                    id: 'client-id',
-                    name: 'clientId',
+                    id: 'project-id',
+                    name: 'projectId',
                     required: 'required'
                   }}
                 >
                   <MenuItem value="">
-                    <em>Select client</em>
+                    <em>Select project</em>
                   </MenuItem>
                   {
-                    clients.isLoading
+                    projects.isLoading
                       ? <Loading/>
-                      : clients.list && clients.list.length > 0
-                        ? clients.list.map(client => (
-                            <MenuItem key={client._id} value={client._id}>{client.name}</MenuItem>
+                      : projects.list && projects.list.length > 0
+                        ? projects.list.map(project => (
+                            <MenuItem key={project._id} value={project._id}>{project.name}</MenuItem>
                           ))
                         : <MenuItem value="">
-                            <em>No client added.</em>
+                            <em>No project added.</em>
                           </MenuItem>
                   }
                 </Select>
@@ -362,10 +362,10 @@ class CreateOrEdit extends PureComponent {
                   <em>Select job role</em>
                 </MenuItem>
                 {
-                  jobsByClient.isLoading
+                  jobsByProject.isLoading
                     ? <Loading/>
-                    : jobsByClient.list && jobsByClient.list.length > 0
-                        ? jobsByClient.list.map(job => (
+                    : jobsByProject.list && jobsByProject.list.length > 0
+                        ? jobsByProject.list.map(job => (
                             <MenuItem key={job._id} value={job._id}>{job.role}</MenuItem>
                           ))
                         : <MenuItem value="">
@@ -445,32 +445,32 @@ class CreateOrEdit extends PureComponent {
 // Component Properties
 CreateOrEdit.propTypes = {
   elevation: PropTypes.number.isRequired,
-  clientId: PropTypes.string.isRequired,
-  clientShowLoading: PropTypes.bool.isRequired,
+  projectId: PropTypes.string.isRequired,
+  projectShowLoading: PropTypes.bool.isRequired,
   successCallback: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   candidateEdit: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
-  getClientList: PropTypes.func.isRequired,
-  getJobListByClient: PropTypes.func.isRequired,
+  getProjectList: PropTypes.func.isRequired,
+  getJobListByProject: PropTypes.func.isRequired,
   upload: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 CreateOrEdit.defaultProps = {
   elevation: 1,
-  clientId: '',
-  clientShowLoading: true,
-  clientSelectionHide: false
+  projectId: '',
+  projectShowLoading: true,
+  projectSelectionHide: false
 }
 
 // Component State
 function createOrEditState(state) {
   return {
     candidateEdit: state.candidateEdit,
-    clients: state.clients,
-    jobsByClient: state.jobsByClient
+    projects: state.projects,
+    jobsByProject: state.jobsByProject
   }
 }
 
-export default connect(createOrEditState, { createOrUpdate, editClose, getClientList, getJobListByClient, upload, messageShow })(withStyles(styles)(CreateOrEdit))
+export default connect(createOrEditState, { createOrUpdate, editClose, getProjectList, getJobListByProject, upload, messageShow })(withStyles(styles)(CreateOrEdit))

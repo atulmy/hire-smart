@@ -107,7 +107,7 @@ export default function (app) {
             type: 'RESET'
           })
 
-          // Finally send generated HTML with initial data to the client
+          // Finally send generated HTML with initial data to the project
           return response.status(status).send(html)
         }
       })

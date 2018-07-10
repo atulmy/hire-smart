@@ -29,8 +29,8 @@ import styles from './styles'
 // App Imports
 import params from '../../../../setup/config/params'
 import { nullToEmptyString } from '../../../../setup/helpers'
-import { getListByClient as getCandidateListByClient } from '../../../candidate/api/actions/query'
-import { getListByClient as getInterviewListByClient } from '../../../interviewer/api/actions/query'
+import { getListByProject as getCandidateListByProject } from '../../../candidate/api/actions/query'
+import { getListByProject as getInterviewListByProject } from '../../../interviewer/api/actions/query'
 import { createOrUpdate, editClose } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
@@ -40,11 +40,11 @@ class CreateOrEdit extends PureComponent {
   constructor(props) {
     super(props)
 
-    const { clientId, user } = props
+    const { projectId, user } = props
 
     this.interview = {
       id: '',
-      clientId: clientId,
+      projectId: projectId,
       candidateId: '',
       interviewerId: '',
       dateTime: this.defaultDate(),
@@ -61,10 +61,10 @@ class CreateOrEdit extends PureComponent {
   }
 
   componentDidMount() {
-    const { getCandidateListByClient, getInterviewListByClient, clientId } = this.props
+    const { getCandidateListByProject, getInterviewListByProject, projectId } = this.props
 
-    getCandidateListByClient({ clientId })
-    getInterviewListByClient({ clientId })
+    getCandidateListByProject({ projectId })
+    getInterviewListByProject({ projectId })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,7 +73,7 @@ class CreateOrEdit extends PureComponent {
     if(interview && interview._id !== this.state.id) {
       this.setState({
         id: interview._id,
-        clientId: interview.clientId._id,
+        projectId: interview.projectId._id,
         candidateId: interview.candidateId._id,
         interviewerId: interview.interviewerId._id,
         dateTime: moment(interview.dateTime),
@@ -108,17 +108,17 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, candidateId, interviewerId, dateTime, mode, note, invite } = this.state
+    const { id, projectId, candidateId, interviewerId, dateTime, mode, note, invite } = this.state
 
     // Validate
-    if(!isEmpty(clientId) && !isEmpty(candidateId) && !isEmpty(interviewerId)) {
+    if(!isEmpty(projectId) && !isEmpty(candidateId) && !isEmpty(interviewerId)) {
       messageShow('Adding interviewer, please wait..')
 
       this.isLoadingToggle(true)
 
       // Create or Update
       try {
-        const { data } = await createOrUpdate({ id, clientId, candidateId, interviewerId, dateTime: dateTime.format(), mode, note, invite })
+        const { data } = await createOrUpdate({ id, projectId, candidateId, interviewerId, dateTime: dateTime.format(), mode, note, invite })
 
         if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
@@ -162,7 +162,7 @@ class CreateOrEdit extends PureComponent {
   }
 
   render() {
-    const { classes, elevation, candidatesByClient, interviewersByClient, user } = this.props
+    const { classes, elevation, candidatesByProject, interviewersByProject, user } = this.props
     const { isLoading, id, candidateId, interviewerId, dateTime, mode, note, invite } = this.state
 
     return (
@@ -197,10 +197,10 @@ class CreateOrEdit extends PureComponent {
                   <em>Select candidate</em>
                 </MenuItem>
                 {
-                  candidatesByClient.isLoading
+                  candidatesByProject.isLoading
                     ? <Loading />
-                    : candidatesByClient.list && candidatesByClient.list.length > 0
-                        ? candidatesByClient.list.map(candidate => (
+                    : candidatesByProject.list && candidatesByProject.list.length > 0
+                        ? candidatesByProject.list.map(candidate => (
                             <MenuItem key={candidate._id} value={candidate._id}>{ candidate.name }</MenuItem>
                           ))
                         : <MenuItem value="">
@@ -232,10 +232,10 @@ class CreateOrEdit extends PureComponent {
                   <em>Select interviewer</em>
                 </MenuItem>
                 {
-                  interviewersByClient.isLoading
+                  interviewersByProject.isLoading
                     ? <Loading />
-                    : interviewersByClient.list && interviewersByClient.list.length > 0
-                        ? interviewersByClient.list.map(interviewer => (
+                    : interviewersByProject.list && interviewersByProject.list.length > 0
+                        ? interviewersByProject.list.map(interviewer => (
                             <MenuItem key={interviewer._id} value={interviewer._id}>{ interviewer.name }</MenuItem>
                           ))
                         : <MenuItem value="">
@@ -370,32 +370,32 @@ class CreateOrEdit extends PureComponent {
 // Component Properties
 CreateOrEdit.propTypes = {
   elevation: PropTypes.number.isRequired,
-  clientId: PropTypes.string.isRequired,
+  projectId: PropTypes.string.isRequired,
   successCallback: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   interviewEdit: PropTypes.object.isRequired,
-  candidatesByClient: PropTypes.object.isRequired,
-  interviewersByClient: PropTypes.object.isRequired,
+  candidatesByProject: PropTypes.object.isRequired,
+  interviewersByProject: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
-  getCandidateListByClient: PropTypes.func.isRequired,
-  getInterviewListByClient: PropTypes.func.isRequired,
+  getCandidateListByProject: PropTypes.func.isRequired,
+  getInterviewListByProject: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 CreateOrEdit.defaultProps = {
   elevation: 1,
-  clientShowLoading: true
+  projectShowLoading: true
 }
 
 // Component State
 function createOrEditState(state) {
   return {
     interviewEdit: state.interviewEdit,
-    candidatesByClient: state.candidatesByClient,
-    interviewersByClient: state.interviewersByClient,
+    candidatesByProject: state.candidatesByProject,
+    interviewersByProject: state.interviewersByProject,
     user: state.user
   }
 }
 
-export default connect(createOrEditState, { createOrUpdate, editClose, getCandidateListByClient, getInterviewListByClient, messageShow })(withStyles(styles)(CreateOrEdit))
+export default connect(createOrEditState, { createOrUpdate, editClose, getCandidateListByProject, getInterviewListByProject, messageShow })(withStyles(styles)(CreateOrEdit))

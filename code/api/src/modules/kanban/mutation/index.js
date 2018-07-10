@@ -7,7 +7,7 @@ import { create, remove, update, updateStatus } from './resolvers'
 
 // Kanban fields
 const fields = {
-  clientId: { type: GraphQLString },
+  projectId: { type: GraphQLString },
 
   candidateId: { type: GraphQLString },
 

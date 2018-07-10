@@ -6,10 +6,10 @@ import {
   LIST_RESPONSE,
   LIST_DONE,
   LIST_RESET,
-  LIST_BY_CLIENT_REQUEST,
-  LIST_BY_CLIENT_RESPONSE,
-  LIST_BY_CLIENT_DONE,
-  LIST_BY_CLIENT_RESET,
+  LIST_BY_PROJECT_REQUEST,
+  LIST_BY_PROJECT_RESPONSE,
+  LIST_BY_PROJECT_DONE,
+  LIST_BY_PROJECT_RESET,
   SINGLE_REQUEST,
   SINGLE_RESPONSE,
   SINGLE_DONE,
@@ -93,36 +93,36 @@ export const interviewer = (state = interviewerInitialState, action) => {
   }
 }
 
-// List by Client
+// List by Project
 
 // Initial State
-const interviewerByClientInitialState = {
+const interviewerByProjectInitialState = {
   isLoading: false,
   list: []
 }
 
 // State
-export const interviewersByClient = (state = interviewerByClientInitialState, action) => {
+export const interviewersByProject = (state = interviewerByProjectInitialState, action) => {
   switch (action.type) {
-    case LIST_BY_CLIENT_REQUEST:
+    case LIST_BY_PROJECT_REQUEST:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case LIST_BY_CLIENT_RESPONSE:
+    case LIST_BY_PROJECT_RESPONSE:
       return {
         ...state,
         list: action.list
       }
 
-    case LIST_BY_CLIENT_DONE:
+    case LIST_BY_PROJECT_DONE:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case LIST_BY_CLIENT_RESET:
+    case LIST_BY_PROJECT_RESET:
       return { ...interviewersInitialState }
 
     default:

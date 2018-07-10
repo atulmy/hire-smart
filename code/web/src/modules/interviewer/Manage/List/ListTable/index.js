@@ -19,14 +19,14 @@ import EmptyMessage from '../../../../common/EmptyMessage'
 
 // Component
 const ListTable = (props) => {
-  const { classes, list, edit, showClient } = props
+  const { classes, list, edit, showProject } = props
 
   return (
     <Table>
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
-          { showClient && <TableCell>Client</TableCell> }
+          { showProject && <TableCell>Project</TableCell> }
           <TableCell>Email</TableCell>
           <TableCell>Mobile</TableCell>
           <TableCell width={120} className={classes.textCenter}>Actions</TableCell>
@@ -39,7 +39,7 @@ const ListTable = (props) => {
             ? list.map(interviewer => (
                 <TableRow key={interviewer._id}>
                   <TableCell>{ interviewer.name }</TableCell>
-                  { showClient && <TableCell>{ interviewer.clientId.name }</TableCell> }
+                  { showProject && <TableCell>{ interviewer.projectId.name }</TableCell> }
                   <TableCell>{ interviewer.email }</TableCell>
                   <TableCell>{ interviewer.mobile }</TableCell>
                   <TableCell className={classes.textCenter}>
@@ -72,7 +72,7 @@ ListTable.propTypes = {
   edit: PropTypes.func.isRequired
 }
 ListTable.defaultProps = {
-  showClient: true
+  showProject: true
 }
 
 export default withStyles(styles)(ListTable)

@@ -59,9 +59,9 @@ class Content extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { clientDashboard: { client } } = nextProps
+    const { projectDashboard: { project } } = nextProps
 
-    if(client && this.props.clientDashboard.client && client._id !== this.props.clientDashboard.client._id) {
+    if(project && this.props.projectDashboard.project && project._id !== this.props.projectDashboard.project._id) {
       this.tabSwitch(null, overviewTabs.overview.key)
     }
   }
@@ -71,14 +71,14 @@ class Content extends PureComponent {
   }
 
   render() {
-    const { classes, clientDashboard: { client } } = this.props
+    const { classes, projectDashboard: { project } } = this.props
     const { tab } = this.state
 
     return (
       <Fade in={true}>
         <div className={classes.root}>
           {
-            client && client._id
+            project && project._id
               ? <div>
                   <div className={classes.tabs}>
                     <Tabs
@@ -109,7 +109,7 @@ class Content extends PureComponent {
                 </div>
               : <AlignCenterMiddle>
                   <IconDomain className={classes.messageIcon} />
-                  <p className={classes.messageText}>Select a client to begin</p>
+                  <p className={classes.messageText}>Select a project to begin</p>
                 </AlignCenterMiddle>
           }
         </div>
@@ -121,13 +121,13 @@ class Content extends PureComponent {
 // Component Properties
 Content.propTypes = {
   classes: PropTypes.object.isRequired,
-  clientDashboard: PropTypes.object.isRequired
+  projectDashboard: PropTypes.object.isRequired
 }
 
 // Component State
 function tabContentState(state) {
   return {
-    clientDashboard: state.clientDashboard
+    projectDashboard: state.projectDashboard
   }
 }
 

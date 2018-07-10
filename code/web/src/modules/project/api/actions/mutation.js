@@ -8,34 +8,34 @@ import { queryBuilder } from '../../../../setup/helpers'
 import { EDIT_SET, EDIT_UNSET } from './types'
 
 // Create or update
-export function createOrUpdate(client) {
-  if (!isEmpty(client.id)) {
-    return update(client)
+export function createOrUpdate(project) {
+  if (!isEmpty(project.id)) {
+    return update(project)
   } else {
-    delete client.id
-    return create(client)
+    delete project.id
+    return create(project)
   }
 }
 
 // Create
-export function create(client) {
+export function create(project) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'clientCreate',
-      data: client,
+      operation: 'projectCreate',
+      data: project,
       fields: ['_id']
     }))
   }
 }
 
 // Update
-export function update(client) {
+export function update(project) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'clientUpdate',
-      data: client,
+      operation: 'projectUpdate',
+      data: project,
       fields: ['_id']
     }))
   }
@@ -46,7 +46,7 @@ export function remove(data) {
   return dispatch => {
     return axios.post(API_URL, queryBuilder({
       type: 'mutation',
-      operation: 'clientRemove',
+      operation: 'projectRemove',
       data,
       fields: ['_id']
     }))
@@ -54,8 +54,8 @@ export function remove(data) {
 }
 
 // Edit
-export function edit(client) {
-  return { type: EDIT_SET, client }
+export function edit(project) {
+  return { type: EDIT_SET, project }
 }
 export function editClose() {
   return { type: EDIT_UNSET }

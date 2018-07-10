@@ -7,7 +7,7 @@ import { create, remove, update } from './resolvers'
 
 // Candidate fields
 const fields = {
-  clientId: { type: GraphQLString },
+  projectId: { type: GraphQLString },
 
   jobId: { type: GraphQLString },
 

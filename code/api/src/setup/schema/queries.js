@@ -4,7 +4,7 @@ import { GraphQLObjectType } from 'graphql'
 // App Imports
 import * as user from '../../modules/user/query'
 import * as organization from '../../modules/organization/query'
-import * as client from '../../modules/client/query'
+import * as project from '../../modules/project/query'
 import * as job from '../../modules/job/query'
 import * as candidate from '../../modules/candidate/query'
 import * as interviewer from '../../modules/interviewer/query'
@@ -22,7 +22,7 @@ const query = new GraphQLObjectType({
   fields: () => ({
     ...user,
     ...organization,
-    ...client,
+    ...project,
     ...job,
     ...candidate,
     ...interviewer,

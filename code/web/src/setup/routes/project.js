@@ -1,10 +1,10 @@
 // App Imports
-import Manage from '../../modules/client/Manage'
+import Manage from '../../modules/project/Manage'
 
 // Pages routes
 export default {
-  client: {
-    path: '/clients',
+  project: {
+    path: '/projects',
     component: Manage,
     auth: true
   }

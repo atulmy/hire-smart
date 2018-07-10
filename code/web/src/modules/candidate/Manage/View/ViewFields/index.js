@@ -49,14 +49,14 @@ const ViewFields = (props) => {
         </Typography>
       </div>
 
-      {/* Client */}
+      {/* Project */}
       <div className={classes.item}>
         <Typography variant={'caption'} gutterBottom>
-          Client
+          Project
         </Typography>
 
         <Typography gutterBottom>
-          { candidate.clientId.name }
+          { candidate.projectId.name }
         </Typography>
       </div>
 

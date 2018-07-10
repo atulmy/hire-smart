@@ -8,8 +8,8 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import ClientList from '../../client/widgets/List'
-import ClientCreate from '../../client/widgets/Create'
+import ProjectList from '../../project/widgets/List'
+import ProjectCreate from '../../project/widgets/Create'
 
 // Component
 class Sidebar extends PureComponent {
@@ -18,14 +18,14 @@ class Sidebar extends PureComponent {
 
     return (
       <div className={classes.sidebar}>
-        {/* Client List */}
-        <ClientList />
+        {/* Project List */}
+        <ProjectList />
 
         {/* Divider */}
         <Divider />
 
-        {/* Create Client */}
-        <ClientCreate />
+        {/* Create Project */}
+        <ProjectCreate />
       </div>
     )
   }

@@ -5,7 +5,7 @@ import axios from 'axios'
 import { API_URL } from '../../../../setup/config/env'
 import { queryBuilder } from '../../../../setup/helpers'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
-import { CLIENT_LIST_CACHE, CLIENT_SINGLE_CACHE } from './cache-keys'
+import { PROJECT_LIST_CACHE, PROJECT_SINGLE_CACHE } from './cache-keys'
 import {
   LIST_REQUEST,
   LIST_RESPONSE,
@@ -22,7 +22,7 @@ export function getList(isLoading = true) {
   return async dispatch => {
     // Caching
     try {
-      const list = JSON.parse(window.localStorage.getItem(CLIENT_LIST_CACHE))
+      const list = JSON.parse(window.localStorage.getItem(PROJECT_LIST_CACHE))
 
       if(list && list.length > 0) {
         dispatch({
@@ -46,7 +46,7 @@ export function getList(isLoading = true) {
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
-        operation: 'clientsByOrganization',
+        operation: 'projectsByOrganization',
         fields: ['_id', 'name', 'description', 'createdAt']
       }))
 
@@ -56,7 +56,7 @@ export function getList(isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.clientsByOrganization
+        const list = data.data.projectsByOrganization
 
         dispatch({
           type: LIST_RESPONSE,
@@ -66,11 +66,11 @@ export function getList(isLoading = true) {
         /*
         dispatch({
           type: DASHBOARD_SET,
-          client: list[0]
+          project: list[0]
         })
         */
 
-        window.localStorage.setItem(CLIENT_LIST_CACHE, JSON.stringify(list))
+        window.localStorage.setItem(PROJECT_LIST_CACHE, JSON.stringify(list))
       }
     } catch(error) {
       dispatch({
@@ -87,10 +87,10 @@ export function getList(isLoading = true) {
 }
 
 // Get single
-export function get(clientId, isLoading = true) {
+export function get(projectId, isLoading = true) {
   return async dispatch => {
     // Caching
-    const CACHE_KEY = `${ CLIENT_SINGLE_CACHE }.${ clientId }`
+    const CACHE_KEY = `${ PROJECT_SINGLE_CACHE }.${ projectId }`
 
     try {
       const item = JSON.parse(window.localStorage.getItem(CACHE_KEY))
@@ -116,8 +116,8 @@ export function get(clientId, isLoading = true) {
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
-        operation: 'client',
-        data: { id: clientId },
+        operation: 'project',
+        data: { id: projectId },
         fields: ['_id', 'name', 'description', 'createdAt']
       }))
 
@@ -127,7 +127,7 @@ export function get(clientId, isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const item = data.data.client
+        const item = data.data.project
 
         dispatch({
           type: SINGLE_RESPONSE,
@@ -151,8 +151,8 @@ export function get(clientId, isLoading = true) {
 }
 
 // Dashboard
-export function dashboardSet(client) {
-  return { type: DASHBOARD_SET, client }
+export function dashboardSet(project) {
+  return { type: DASHBOARD_SET, project }
 }
 export function dashboardUnset() {
   return { type: DASHBOARD_UNSET }

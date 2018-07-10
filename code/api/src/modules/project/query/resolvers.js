@@ -1,23 +1,23 @@
 // App Imports
-import Client from '../model'
+import Project from '../model'
 
-// Get client by ID
+// Get project by ID
 export async function get(parentValue, { id }) {
-  return await Client.findOne({ _id: id })
+  return await Project.findOne({ _id: id })
 }
 
 // Get by organization
 export async function getByOrganization(parentValue, {}, { auth }) {
   if(auth.user && auth.user.id) {
-    return await Client.find({
+    return await Project.find({
       organizationId: auth.user.organizationId
     })
   } else {
-    throw new Error('Please login to view your clients.')
+    throw new Error('Please login to view your projects.')
   }
 }
 
 // Get all
 export async function getAll() {
-  return await Client.find()
+  return await Project.find()
 }

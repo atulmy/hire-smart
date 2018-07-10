@@ -8,11 +8,11 @@ import Candidate from '../model'
 import Activity from '../../activity/model'
 
 // Create
-export async function create(parentValue, { clientId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
+export async function create(parentValue, { projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
   if(auth.user && auth.user.id) {
     let item = {
       organizationId: auth.user.organizationId,
-      clientId,
+      projectId,
       userId: auth.user.id,
       name,
       email,
@@ -31,7 +31,7 @@ export async function create(parentValue, { clientId, jobId = '', name, email, m
     if(candidate) {
       const kanban = await Kanban.create({
         organizationId: auth.user.organizationId,
-        clientId,
+        projectId,
         candidateId: candidate._id,
         userId: auth.user.id,
         status: params.kanban.columns[0].key,
@@ -42,7 +42,7 @@ export async function create(parentValue, { clientId, jobId = '', name, email, m
       await Activity.create({
         organizationId: auth.user.organizationId,
         userId: auth.user.id,
-        clientId,
+        projectId,
         candidateId: candidate._id,
         kanbanId: kanban._id,
         action: params.activity.types.create,
@@ -57,10 +57,10 @@ export async function create(parentValue, { clientId, jobId = '', name, email, m
 }
 
 // Update
-export async function update(parentValue, { id, clientId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
+export async function update(parentValue, { id, projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
   if(auth.user && auth.user.id && !isEmpty(id)) {
     let item = {
-      clientId,
+      projectId,
       name,
       email,
       mobile,
@@ -81,7 +81,7 @@ export async function update(parentValue, { id, clientId, jobId = '', name, emai
           organizationId: auth.user.organizationId,
           candidateId: id
         },
-        { clientId }
+        { projectId }
       )
     }
 

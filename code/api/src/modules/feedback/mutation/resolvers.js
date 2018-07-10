@@ -26,7 +26,7 @@ export async function createOrUpdate(parentValue, { interviewId, text, status })
       await Kanban.updateOne(
         {
           organizationId: interview.organizationId,
-          clientId: interview.clientId,
+          projectId: interview.projectId,
           candidateId: interview.candidateId
         },
         {
@@ -59,7 +59,7 @@ export async function createOrUpdate(parentValue, { interviewId, text, status })
         await Activity.create({
           organizationId: interview.organizationId,
           userId: interview.userId._id,
-          clientId: interview.clientId,
+          projectId: interview.projectId,
           interviewId,
           action: params.activity.types.create,
           message: `${ interview.interviewerId.name } submitted feedback for ${ interview.candidateId.name }.`

@@ -15,7 +15,7 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getListByClient } from '../../../candidate/api/actions/query'
+import { getListByProject } from '../../../candidate/api/actions/query'
 import { view, viewHide, edit, editClose } from '../../../candidate/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import CreateOrEdit from '../../../candidate/Manage/CreateOrEdit'
@@ -37,9 +37,9 @@ class Candidates extends PureComponent {
   }
 
   refresh = (isLoading = true, forceRefresh = false) => {
-    const { getListByClient, clientDashboard: { client } } = this.props
+    const { getListByProject, projectDashboard: { project } } = this.props
 
-    getListByClient({ clientId: client._id }, isLoading, forceRefresh)
+    getListByProject({ projectId: project._id }, isLoading, forceRefresh)
   }
 
   toggleDrawer = (open) => () => {
@@ -77,7 +77,7 @@ class Candidates extends PureComponent {
   }
 
   render() {
-    const { classes, clientDashboard: { client },  candidatesByClient: { isLoading, list }, candidateView, viewHide } = this.props
+    const { classes, projectDashboard: { project },  candidatesByProject: { isLoading, list }, candidateView, viewHide } = this.props
     const { drawerAdd } = this.state
 
     return (
@@ -106,7 +106,7 @@ class Candidates extends PureComponent {
                   list={list}
                   view={this.view}
                   edit={this.edit}
-                  showClient={false}
+                  showProject={false}
                 />
               </Fade>
         }
@@ -141,10 +141,10 @@ class Candidates extends PureComponent {
           <div className={classes.drawer}>
             <CreateOrEdit
               elevation={0}
-              clientId={client._id}
-              clientShowLoading={false}
+              projectId={project._id}
+              projectShowLoading={false}
               successCallback={this.successCallback}
-              clientSelectionHide={true}
+              projectSelectionHide={true}
             />
           </div>
         </Drawer>
@@ -156,10 +156,10 @@ class Candidates extends PureComponent {
 // Component Properties
 Candidates.propTypes = {
   classes: PropTypes.object.isRequired,
-  candidatesByClient: PropTypes.object.isRequired,
-  clientDashboard: PropTypes.object.isRequired,
+  candidatesByProject: PropTypes.object.isRequired,
+  projectDashboard: PropTypes.object.isRequired,
   candidateView: PropTypes.object.isRequired,
-  getListByClient: PropTypes.func.isRequired,
+  getListByProject: PropTypes.func.isRequired,
   view: PropTypes.func.isRequired,
   viewHide: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired,
@@ -170,10 +170,10 @@ Candidates.propTypes = {
 // Component State
 function candidatesState(state) {
   return {
-    candidatesByClient: state.candidatesByClient,
-    clientDashboard: state.clientDashboard,
+    candidatesByProject: state.candidatesByProject,
+    projectDashboard: state.projectDashboard,
     candidateView: state.candidateView
   }
 }
 
-export default connect(candidatesState, { getListByClient, view, viewHide, edit, editClose, messageShow })(withStyles(styles)(Candidates))
+export default connect(candidatesState, { getListByProject, view, viewHide, edit, editClose, messageShow })(withStyles(styles)(Candidates))

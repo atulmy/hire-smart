@@ -23,7 +23,7 @@ import styles from './styles'
 
 // App Imports
 import { nullToEmptyString } from '../../../../setup/helpers'
-import { getList as getClientList } from '../../../client/api/actions/query'
+import { getList as getProjectList } from '../../../project/api/actions/query'
 import { createOrUpdate, editClose } from '../../api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
@@ -35,7 +35,7 @@ class CreateOrEdit extends PureComponent {
 
     this.job = {
       id: '',
-      clientId: props.clientId,
+      projectId: props.projectId,
       role: '',
       description: ''
     }
@@ -48,9 +48,9 @@ class CreateOrEdit extends PureComponent {
   }
 
   componentDidMount() {
-    const { getClientList, clientShowLoading } = this.props
+    const { getProjectList, projectShowLoading } = this.props
 
-    getClientList(clientShowLoading)
+    getProjectList(projectShowLoading)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,7 +59,7 @@ class CreateOrEdit extends PureComponent {
     if(job && job._id !== this.state.id) {
       this.setState({
         id: job._id,
-        clientId: job.clientId._id,
+        projectId: job.projectId._id,
         role: job.role,
         description: job.description
       })
@@ -91,7 +91,7 @@ class CreateOrEdit extends PureComponent {
 
     const { createOrUpdate, successCallback, messageShow } = this.props
 
-    const { id, clientId, role, description } = this.state
+    const { id, projectId, role, description } = this.state
 
     // Validate
     if(!isEmpty(role)) {
@@ -101,7 +101,7 @@ class CreateOrEdit extends PureComponent {
 
       // Create or Update
       try {
-        const { data } = await createOrUpdate({ id, clientId, role, description })
+        const { data } = await createOrUpdate({ id, projectId, role, description })
 
         if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
@@ -129,8 +129,8 @@ class CreateOrEdit extends PureComponent {
   }
 
   render() {
-    const { classes, clients, elevation, clientSelectionHide } = this.props
-    const { isLoading, id, clientId, role, description } = this.state
+    const { classes, projects, elevation, projectSelectionHide } = this.props
+    const { isLoading, id, projectId, role, description } = this.state
 
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
@@ -158,37 +158,37 @@ class CreateOrEdit extends PureComponent {
             />
           </Grid>
 
-          {/* Input - client */}
+          {/* Input - project */}
           {
-            !clientSelectionHide &&
+            !projectSelectionHide &&
             <Grid item xs={12}>
               <FormControl
                 style={{ marginTop: 10 }}
                 fullWidth
                 required={true}
               >
-                <InputLabel htmlFor="client-id">Client</InputLabel>
+                <InputLabel htmlFor="project-id">Project</InputLabel>
                 <Select
-                  value={nullToEmptyString(clientId)}
+                  value={nullToEmptyString(projectId)}
                   onChange={this.onType}
                   inputProps={{
-                    id: 'client-id',
-                    name: 'clientId',
+                    id: 'project-id',
+                    name: 'projectId',
                     required: 'required'
                   }}
                 >
                   <MenuItem value="">
-                    <em>Select client</em>
+                    <em>Select project</em>
                   </MenuItem>
                   {
-                    clients.isLoading
+                    projects.isLoading
                       ? <Loading />
-                      : clients.list && clients.list.length > 0
-                          ? clients.list.map(client => (
-                              <MenuItem key={client._id} value={client._id}>{ client.name }</MenuItem>
+                      : projects.list && projects.list.length > 0
+                          ? projects.list.map(project => (
+                              <MenuItem key={project._id} value={project._id}>{ project.name }</MenuItem>
                             ))
                           : <MenuItem value="">
-                              <em>No client added.</em>
+                              <em>No project added.</em>
                             </MenuItem>
                   }
                 </Select>
@@ -246,30 +246,30 @@ class CreateOrEdit extends PureComponent {
 // Component Properties
 CreateOrEdit.propTypes = {
   elevation: PropTypes.number.isRequired,
-  clientId: PropTypes.string.isRequired,
-  clientShowLoading: PropTypes.bool.isRequired,
+  projectId: PropTypes.string.isRequired,
+  projectShowLoading: PropTypes.bool.isRequired,
   successCallback: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   jobEdit: PropTypes.object.isRequired,
-  clients: PropTypes.object.isRequired,
+  projects: PropTypes.object.isRequired,
   createOrUpdate: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
-  getClientList: PropTypes.func.isRequired,
+  getProjectList: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
 }
 CreateOrEdit.defaultProps = {
   elevation: 1,
-  clientId: '',
-  clientShowLoading: true,
-  clientSelectionHide: false
+  projectId: '',
+  projectShowLoading: true,
+  projectSelectionHide: false
 }
 
 // Component State
 function createOrEditState(state) {
   return {
     jobEdit: state.jobEdit,
-    clients: state.clients
+    projects: state.projects
   }
 }
 
-export default connect(createOrEditState, { createOrUpdate, editClose, getClientList, messageShow })(withStyles(styles)(CreateOrEdit))
+export default connect(createOrEditState, { createOrUpdate, editClose, getProjectList, messageShow })(withStyles(styles)(CreateOrEdit))

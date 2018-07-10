@@ -15,7 +15,7 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getListByClient } from '../../../interviewer/api/actions/query'
+import { getListByProject } from '../../../interviewer/api/actions/query'
 import { edit, editClose } from '../../../interviewer/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import CreateOrEdit from '../../../interviewer/Manage/CreateOrEdit'
@@ -36,9 +36,9 @@ class Interviewers extends PureComponent {
   }
 
   refresh = (isLoading = true, forceRefresh = false) => {
-    const { getListByClient, clientDashboard: { client } } = this.props
+    const { getListByProject, projectDashboard: { project } } = this.props
 
-    getListByClient({ clientId: client._id }, isLoading, forceRefresh)
+    getListByProject({ projectId: project._id }, isLoading, forceRefresh)
   }
 
   toggleDrawer = (open) => () => {
@@ -70,7 +70,7 @@ class Interviewers extends PureComponent {
   }
 
   render() {
-    const { classes, clientDashboard: { client }, interviewersByClient: { isLoading, list } } = this.props
+    const { classes, projectDashboard: { project }, interviewersByProject: { isLoading, list } } = this.props
     const { drawerAdd } = this.state
 
     return (
@@ -98,7 +98,7 @@ class Interviewers extends PureComponent {
                 <ListTable
                   list={list}
                   edit={this.edit}
-                  showClient={false}
+                  showProject={false}
                 />
               </Fade>
         }
@@ -117,10 +117,10 @@ class Interviewers extends PureComponent {
           <div className={classes.drawer}>
             <CreateOrEdit
               elevation={0}
-              clientId={client._id}
-              clientShowLoading={false}
+              projectId={project._id}
+              projectShowLoading={false}
               successCallback={this.successCallback}
-              clientSelectionHide={true}
+              projectSelectionHide={true}
             />
           </div>
         </Drawer>
@@ -132,9 +132,9 @@ class Interviewers extends PureComponent {
 // Component Properties
 Interviewers.propTypes = {
   classes: PropTypes.object.isRequired,
-  interviewersByClient: PropTypes.object.isRequired,
-  clientDashboard: PropTypes.object.isRequired,
-  getListByClient: PropTypes.func.isRequired,
+  interviewersByProject: PropTypes.object.isRequired,
+  projectDashboard: PropTypes.object.isRequired,
+  getListByProject: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired,
   editClose: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired
@@ -143,9 +143,9 @@ Interviewers.propTypes = {
 // Component State
 function interviewersState(state) {
   return {
-    interviewersByClient: state.interviewersByClient,
-    clientDashboard: state.clientDashboard
+    interviewersByProject: state.interviewersByProject,
+    projectDashboard: state.projectDashboard
   }
 }
 
-export default connect(interviewersState, { getListByClient, edit, editClose, messageShow })(withStyles(styles)(Interviewers))
+export default connect(interviewersState, { getListByProject, edit, editClose, messageShow })(withStyles(styles)(Interviewers))

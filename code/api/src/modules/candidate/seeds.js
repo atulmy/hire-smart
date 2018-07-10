@@ -2,7 +2,7 @@
 import params from '../../setup/config/params'
 import Organization from '../organization/model'
 import User from '../user/model'
-import Client from '../client/model'
+import Project from '../project/model'
 import Job from '../job/model'
 import Interviewer from '../interviewer/model'
 import Interview from '../interview/model'
@@ -17,7 +17,7 @@ export default async function () {
 
   const user = await User.findOne({ email: 'user@hiresmart.app' })
   const organization = await Organization.findOne()
-  const client = await Client.findOne()
+  const project = await Project.findOne()
   const job = await Job.findOne()
   const interviewer = await Interviewer.findOne()
 
@@ -29,7 +29,7 @@ export default async function () {
   for (let i of [0, 1]) {
     const candidate = await Candidate.create({
       organizationId: organization._id,
-      clientId: client._id,
+      projectId: project._id,
       jobId: job._id,
       userId: user._id,
       name: candidates[i].name,
@@ -43,7 +43,7 @@ export default async function () {
 
     const interview = await Interview.create({
       organizationId: organization._id,
-      clientId: client._id,
+      projectId: project._id,
       candidateId: candidate._id,
       interviewerId: interviewer._id,
       userId: user._id,
@@ -53,7 +53,7 @@ export default async function () {
 
     await Kanban.create({
       organizationId: organization._id,
-      clientId: client._id,
+      projectId: project._id,
       candidateId: candidate._id,
       interviews: [interview._id],
       userId: user.id,

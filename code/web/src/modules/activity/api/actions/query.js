@@ -5,21 +5,21 @@ import axios from 'axios'
 import { API_URL } from '../../../../setup/config/env'
 import { queryBuilder } from '../../../../setup/helpers'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
-import { ACTIVITY_LIST_BY_ORGANIZATION_CACHE, ACTIVITY_LIST_BY_CLIENT_CACHE } from './cache-keys'
+import { ACTIVITY_LIST_BY_ORGANIZATION_CACHE, ACTIVITY_LIST_BY_PROJECT_CACHE } from './cache-keys'
 import {
   LIST_BY_ORGANIZATION_REQUEST,
   LIST_BY_ORGANIZATION_RESPONSE,
   LIST_BY_ORGANIZATION_DONE,
-  LIST_BY_CLIENT_REQUEST,
-  LIST_BY_CLIENT_RESPONSE,
-  LIST_BY_CLIENT_DONE
+  LIST_BY_PROJECT_REQUEST,
+  LIST_BY_PROJECT_RESPONSE,
+  LIST_BY_PROJECT_DONE
 } from './types'
 
 // Get by Organization
-export function getListByOrganization({ clientId }, isLoading = true, forceRefresh = false) {
+export function getListByOrganization({ projectId }, isLoading = true, forceRefresh = false) {
   return async dispatch => {
     // Caching
-    const CACHE_KEY = `${ ACTIVITY_LIST_BY_ORGANIZATION_CACHE }.${ clientId }`
+    const CACHE_KEY = `${ ACTIVITY_LIST_BY_ORGANIZATION_CACHE }.${ projectId }`
 
     try {
       const list = JSON.parse(window.localStorage.getItem(CACHE_KEY))
@@ -83,29 +83,29 @@ export function getListByOrganization({ clientId }, isLoading = true, forceRefre
   }
 }
 
-// Get by Client
-export function getListByClient({ clientId }, isLoading = true, forceRefresh = false) {
+// Get by Project
+export function getListByProject({ projectId }, isLoading = true, forceRefresh = false) {
   return async dispatch => {
     // Caching
-    const CACHE_KEY = `${ ACTIVITY_LIST_BY_CLIENT_CACHE }.${ clientId }`
+    const CACHE_KEY = `${ ACTIVITY_LIST_BY_PROJECT_CACHE }.${ projectId }`
 
     try {
       const list = JSON.parse(window.localStorage.getItem(CACHE_KEY))
 
       if(list && !forceRefresh) {
         dispatch({
-          type: LIST_BY_CLIENT_RESPONSE,
+          type: LIST_BY_PROJECT_RESPONSE,
           list
         })
       } else {
         dispatch({
-          type: LIST_BY_CLIENT_REQUEST,
+          type: LIST_BY_PROJECT_REQUEST,
           isLoading
         })
       }
     } catch(e) {
       dispatch({
-        type: LIST_BY_CLIENT_REQUEST,
+        type: LIST_BY_PROJECT_REQUEST,
         isLoading
       })
     }
@@ -113,8 +113,8 @@ export function getListByClient({ clientId }, isLoading = true, forceRefresh = f
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
-        operation: 'activitiesByClient',
-        data: { clientId },
+        operation: 'activitiesByProject',
+        data: { projectId },
         fields: [
           '_id',
           'action',
@@ -129,10 +129,10 @@ export function getListByClient({ clientId }, isLoading = true, forceRefresh = f
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.activitiesByClient
+        const list = data.data.activitiesByProject
 
         dispatch({
-          type: LIST_BY_CLIENT_RESPONSE,
+          type: LIST_BY_PROJECT_RESPONSE,
           list
         })
 
@@ -145,7 +145,7 @@ export function getListByClient({ clientId }, isLoading = true, forceRefresh = f
       })
     } finally {
       dispatch({
-        type: LIST_BY_CLIENT_DONE,
+        type: LIST_BY_PROJECT_DONE,
         isLoading: false
       })
     }

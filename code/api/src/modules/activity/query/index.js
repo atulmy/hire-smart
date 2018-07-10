@@ -3,9 +3,9 @@ import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
 import ActivityType from '../types'
-import { getByOrganization, getByClient } from './resolvers'
+import { getByOrganization, getByProject } from './resolvers'
 
-// Get by client
+// Get by project
 export const activitiesByOrganization = {
   type: new GraphQLList(ActivityType),
   args: {
@@ -14,11 +14,11 @@ export const activitiesByOrganization = {
   resolve: getByOrganization
 }
 
-// Get by client
-export const activitiesByClient = {
+// Get by project
+export const activitiesByProject = {
   type: new GraphQLList(ActivityType),
   args: {
-    clientId: { type: GraphQLString }
+    projectId: { type: GraphQLString }
   },
-  resolve: getByClient
+  resolve: getByProject
 }

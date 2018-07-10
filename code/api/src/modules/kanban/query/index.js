@@ -3,7 +3,7 @@ import { GraphQLString, GraphQLList } from 'graphql'
 
 // App Imports
 import KanbanType from '../types'
-import { getAll, get, getByClient } from './resolvers'
+import { getAll, get, getByProject } from './resolvers'
 
 // Get all
 export const kanbans = {
@@ -20,11 +20,11 @@ export const kanban = {
   resolve: get
 }
 
-// Get by client
-export const kanbansByClient = {
+// Get by project
+export const kanbansByProject = {
   type: new GraphQLList(KanbanType),
   args: {
-    clientId: { type: GraphQLString }
+    projectId: { type: GraphQLString }
   },
-  resolve: getByClient
+  resolve: getByProject
 }

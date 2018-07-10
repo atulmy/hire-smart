@@ -10,7 +10,7 @@ export async function get(parentValue, { id }, { auth }) {
     })
       .populate({
         path: 'candidateId',
-        populate: [{ path: 'clientId' }, { path: 'jobId' }]
+        populate: [{ path: 'projectId' }, { path: 'jobId' }]
       })
       .populate({
         path: 'interviews',
@@ -21,12 +21,12 @@ export async function get(parentValue, { id }, { auth }) {
   }
 }
 
-// Get by client
-export async function getByClient(parentValue, { clientId }, { auth }) {
+// Get by project
+export async function getByProject(parentValue, { projectId }, { auth }) {
   if(auth.user && auth.user.id) {
     return await Kanban.find({
       organizationId: auth.user.organizationId,
-      clientId
+      projectId
     })
       .populate({
         path: 'candidateId',
@@ -34,7 +34,7 @@ export async function getByClient(parentValue, { clientId }, { auth }) {
       })
       .populate({
         path: 'interviews',
-        populate: { path: 'interviewerId' }
+        populate: [{ path: 'interviewerId' }, { path: 'feedbackId' }]
       })
   } else {
     throw new Error('Please login to view your interviewers.')

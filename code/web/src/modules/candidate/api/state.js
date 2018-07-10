@@ -1,7 +1,7 @@
 // App Imports
 import {
   LIST_REQUEST, LIST_RESPONSE, LIST_DONE, LIST_RESET,
-  LIST_BY_CLIENT_REQUEST, LIST_BY_CLIENT_RESPONSE, LIST_BY_CLIENT_DONE, LIST_BY_CLIENT_RESET,
+  LIST_BY_PROJECT_REQUEST, LIST_BY_PROJECT_RESPONSE, LIST_BY_PROJECT_DONE, LIST_BY_PROJECT_RESET,
   SINGLE_REQUEST, SINGLE_RESPONSE, SINGLE_DONE, SINGLE_RESET,
   EDIT_SET, EDIT_UNSET,
   VIEW_SET, VIEW_UNSET, VIEW_HIDE
@@ -82,36 +82,36 @@ export const candidate = (state = candidateInitialState, action) => {
   }
 }
 
-// List by Client
+// List by Project
 
 // Initial State
-const candidateByClientInitialState = {
+const candidateByProjectInitialState = {
   isLoading: false,
   list: []
 }
 
 // State
-export const candidatesByClient = (state = candidateByClientInitialState, action) => {
+export const candidatesByProject = (state = candidateByProjectInitialState, action) => {
   switch (action.type) {
-    case LIST_BY_CLIENT_REQUEST:
+    case LIST_BY_PROJECT_REQUEST:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case LIST_BY_CLIENT_RESPONSE:
+    case LIST_BY_PROJECT_RESPONSE:
       return {
         ...state,
         list: action.list
       }
 
-    case LIST_BY_CLIENT_DONE:
+    case LIST_BY_PROJECT_DONE:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case LIST_BY_CLIENT_RESET:
+    case LIST_BY_PROJECT_RESET:
       return { ...candidatesInitialState }
 
     default:

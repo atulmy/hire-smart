@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 // App Imports
 import { collection as Organization } from '../organization/model'
-import { collection as Client } from '../client/model'
+import { collection as Project } from '../project/model'
 import { collection as User } from '../user/model'
 
 // Collection name
@@ -22,9 +22,9 @@ const Schema = new mongoose.Schema({
     required: true,
     ref: User
   },
-  clientId: {
+  projectId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: Client
+    ref: Project
   },
   name: {
     type: String,

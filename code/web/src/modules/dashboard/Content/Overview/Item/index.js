@@ -18,6 +18,7 @@ import IconThumbsUpDown from '@material-ui/icons/ThumbsUpDown'
 import IconVoiceChat from '@material-ui/icons/VoiceChat'
 import IconGroup from '@material-ui/icons/Group'
 import IconAssignment from '@material-ui/icons/Assignment'
+import grey from '@material-ui/core/colors/grey'
 import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
@@ -27,6 +28,10 @@ import { plural } from '../../../../../setup/helpers'
 
 // Component
 class Item extends PureComponent {
+  getColumnColor = (key) => {
+    return params.kanban.columns.filter(c => c.key === key)[0].color
+  }
+
   render() {
     const { classes, item: { candidateId, interviews, highlight }, detailsOpen, isDragging, connectDragSource } = this.props
 
@@ -80,7 +85,7 @@ class Item extends PureComponent {
                     </ListItem>
 
                     <ListItem title={'Interviewer'} className={classes.infoItem}>
-                      <ListItemIcon className={classes.infoItemIcon}>
+                      <ListItemIcon className={classes.infoItemIcon} style={{ color: interview.feedbackId ? this.getColumnColor(interview.feedbackId.status) : grey[400] }}>
                         <IconThumbsUpDown />
                       </ListItemIcon>
 

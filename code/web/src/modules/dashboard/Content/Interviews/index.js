@@ -15,7 +15,7 @@ import styles from './styles'
 
 // App Imports
 import { messageShow } from '../../../common/api/actions'
-import { getListByClient } from '../../../interview/api/actions/query'
+import { getListByProject } from '../../../interview/api/actions/query'
 import { view, viewHide, edit, editClose, remind } from '../../../interview/api/actions/mutation'
 import Loading from '../../../common/Loading'
 import CreateOrEdit from '../../../interview/Manage/CreateOrEdit'
@@ -42,9 +42,9 @@ class Interviews extends PureComponent {
   }
 
   refresh = (isLoading = true, forceRefresh = false) => {
-    const { getListByClient, clientDashboard: { client } } = this.props
+    const { getListByProject, projectDashboard: { project } } = this.props
 
-    getListByClient({ clientId: client._id }, isLoading, forceRefresh)
+    getListByProject({ projectId: project._id }, isLoading, forceRefresh)
   }
 
   toggleDrawer = (open) => () => {
@@ -108,7 +108,7 @@ class Interviews extends PureComponent {
   }
 
   render() {
-    const { classes, clientDashboard: { client }, interviewsByClient: { isLoading, list }, interviewView, viewHide } = this.props
+    const { classes, projectDashboard: { project }, interviewsByProject: { isLoading, list }, interviewView, viewHide } = this.props
     const { drawerAdd } = this.state
 
     return (
@@ -172,7 +172,7 @@ class Interviews extends PureComponent {
           <div className={classes.drawer}>
             <CreateOrEdit
               elevation={0}
-              clientId={client._id}
+              projectId={project._id}
               successCallback={this.successCallback}
             />
           </div>
@@ -185,11 +185,11 @@ class Interviews extends PureComponent {
 // Component Properties
 Interviews.propTypes = {
   classes: PropTypes.object.isRequired,
-  interviewsByClient: PropTypes.object.isRequired,
+  interviewsByProject: PropTypes.object.isRequired,
   interviewView: PropTypes.object.isRequired,
-  clientDashboard: PropTypes.object.isRequired,
+  projectDashboard: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  getListByClient: PropTypes.func.isRequired,
+  getListByProject: PropTypes.func.isRequired,
   view: PropTypes.func.isRequired,
   viewHide: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired,
@@ -201,11 +201,11 @@ Interviews.propTypes = {
 // Component State
 function interviewsState(state) {
   return {
-    interviewsByClient: state.interviewsByClient,
+    interviewsByProject: state.interviewsByProject,
     interviewView: state.interviewView,
-    clientDashboard: state.clientDashboard,
+    projectDashboard: state.projectDashboard,
     user: state.user
   }
 }
 
-export default connect(interviewsState, { getListByClient, view, viewHide, edit, editClose, remind, messageShow })(withStyles(styles)(Interviews))
+export default connect(interviewsState, { getListByProject, view, viewHide, edit, editClose, remind, messageShow })(withStyles(styles)(Interviews))

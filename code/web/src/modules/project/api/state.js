@@ -19,13 +19,13 @@ import {
 // List
 
 // Initial State
-const clientsInitialState = {
+const projectsInitialState = {
   isLoading: false,
   list: []
 }
 
 // State
-export const clients = (state = clientsInitialState, action) => {
+export const projects = (state = projectsInitialState, action) => {
   switch (action.type) {
     case LIST_REQUEST:
       return {
@@ -46,7 +46,7 @@ export const clients = (state = clientsInitialState, action) => {
       }
 
     case LIST_RESET:
-      return { ...clientsInitialState }
+      return { ...projectsInitialState }
 
     default:
       return state
@@ -57,13 +57,13 @@ export const clients = (state = clientsInitialState, action) => {
 // Single
 
 // Initial State
-const clientInitialState = {
+const projectInitialState = {
   isLoading: false,
   item: {}
 }
 
 // State
-export const client = (state = clientInitialState, action) => {
+export const project = (state = projectInitialState, action) => {
   switch (action.type) {
     case SINGLE_REQUEST:
       return {
@@ -86,7 +86,7 @@ export const client = (state = clientInitialState, action) => {
     case SINGLE_RESET:
       return {
         ...state,
-        ...clientInitialState
+        ...projectInitialState
       }
 
     default:
@@ -98,25 +98,25 @@ export const client = (state = clientInitialState, action) => {
 // Edit
 
 // Initial State
-const clientEditState = {
-  client: null,
+const projectEditState = {
+  project: null,
   open: true
 }
 
 // State
-export const clientEdit = (state = clientEditState, { type, client }) => {
+export const projectEdit = (state = projectEditState, { type, project }) => {
   switch (type) {
     case EDIT_SET:
       return {
         ...state,
-        client,
+        project,
         open: true
       }
 
     case EDIT_UNSET:
       return {
         ...state,
-        ...clientEditState
+        ...projectEditState
       }
 
     default:
@@ -128,23 +128,23 @@ export const clientEdit = (state = clientEditState, { type, client }) => {
 // Dashboard
 
 // Initial State
-const clientDashboardState = {
-  client: null,
+const projectDashboardState = {
+  project: null,
 }
 
 // State
-export const clientDashboard = (state = clientDashboardState, { type, client }) => {
+export const projectDashboard = (state = projectDashboardState, { type, project }) => {
   switch (type) {
     case DASHBOARD_SET:
       return {
         ...state,
-        client
+        project
       }
 
     case DASHBOARD_UNSET:
       return {
         ...state,
-        ...clientDashboardState
+        ...projectDashboardState
       }
 
     default:

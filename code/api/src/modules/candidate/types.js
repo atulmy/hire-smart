@@ -3,7 +3,7 @@ import { GraphQLObjectType, GraphQLString } from 'graphql'
 
 // App Imports
 import OrganizationType from '../organization/types'
-import ClientType from '../client/types'
+import ProjectType from '../project/types'
 import JobType from '../job/types'
 import { UserType } from '../user/types'
 
@@ -15,7 +15,7 @@ const CandidateType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLString },
     organizationId: { type: OrganizationType },
-    clientId: { type: ClientType },
+    projectId: { type: ProjectType },
     jobId: { type: JobType },
     userId: { type: UserType },
     name: { type: GraphQLString },

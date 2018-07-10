@@ -5,7 +5,7 @@ import axios from 'axios'
 import { API_URL } from '../../../../setup/config/env'
 import { queryBuilder } from '../../../../setup/helpers'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
-import { INTERVIEW_LIST_CACHE, INTERVIEW_SINGLE_CACHE, INTERVIEW_LIST_BY_CLIENT_CACHE } from './cache-keys'
+import { INTERVIEW_LIST_CACHE, INTERVIEW_SINGLE_CACHE, INTERVIEW_LIST_BY_PROJECT_CACHE } from './cache-keys'
 import {
   LIST_REQUEST,
   LIST_RESPONSE,
@@ -13,9 +13,9 @@ import {
   SINGLE_REQUEST,
   SINGLE_RESPONSE,
   SINGLE_DONE,
-  LIST_BY_CLIENT_REQUEST,
-  LIST_BY_CLIENT_RESPONSE,
-  LIST_BY_CLIENT_DONE
+  LIST_BY_PROJECT_REQUEST,
+  LIST_BY_PROJECT_RESPONSE,
+  LIST_BY_PROJECT_DONE
 } from './types'
 
 // Get list
@@ -50,7 +50,7 @@ export function getList(isLoading = true) {
         fields: [
           '_id',
           'organizationId { _id }',
-          'clientId { _id }',
+          'projectId { _id }',
           'candidateId { _id }',
           'interviewerId { _id }',
           'userId { _id }',
@@ -122,7 +122,7 @@ export function get(interviewId, isLoading = true) {
         fields: [
           '_id',
           'organizationId { _id }',
-          'clientId { _id }',
+          'projectId { _id }',
           'candidateId { _id, name }',
           'interviewerId { _id }',
           'userId { _id }',
@@ -159,29 +159,29 @@ export function get(interviewId, isLoading = true) {
   }
 }
 
-// Get by Client
-export function getListByClient({ clientId }, isLoading = true, forceRefresh = false) {
+// Get by Project
+export function getListByProject({ projectId }, isLoading = true, forceRefresh = false) {
   return async dispatch => {
     // Caching
-    const CACHE_KEY = `${ INTERVIEW_LIST_BY_CLIENT_CACHE }.${ clientId }`
+    const CACHE_KEY = `${ INTERVIEW_LIST_BY_PROJECT_CACHE }.${ projectId }`
 
     try {
       const list = JSON.parse(window.localStorage.getItem(CACHE_KEY))
 
       if(list && !forceRefresh) {
         dispatch({
-          type: LIST_BY_CLIENT_RESPONSE,
+          type: LIST_BY_PROJECT_RESPONSE,
           list
         })
       } else {
         dispatch({
-          type: LIST_BY_CLIENT_REQUEST,
+          type: LIST_BY_PROJECT_REQUEST,
           isLoading
         })
       }
     } catch(e) {
       dispatch({
-        type: LIST_BY_CLIENT_REQUEST,
+        type: LIST_BY_PROJECT_REQUEST,
         isLoading
       })
     }
@@ -189,12 +189,12 @@ export function getListByClient({ clientId }, isLoading = true, forceRefresh = f
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',
-        operation: 'interviewsByClient',
-        data: { clientId },
+        operation: 'interviewsByProject',
+        data: { projectId },
         fields: [
           '_id',
           'organizationId { _id, name }',
-          'clientId { _id, name }',
+          'projectId { _id, name }',
           'candidateId { _id, name }',
           'interviewerId { _id, name, email, mobile }',
           'userId { _id, name }',
@@ -208,10 +208,10 @@ export function getListByClient({ clientId }, isLoading = true, forceRefresh = f
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.interviewsByClient
+        const list = data.data.interviewsByProject
 
         dispatch({
-          type: LIST_BY_CLIENT_RESPONSE,
+          type: LIST_BY_PROJECT_RESPONSE,
           list
         })
 
@@ -224,7 +224,7 @@ export function getListByClient({ clientId }, isLoading = true, forceRefresh = f
       })
     } finally {
       dispatch({
-        type: LIST_BY_CLIENT_DONE,
+        type: LIST_BY_PROJECT_DONE,
         isLoading: false
       })
     }

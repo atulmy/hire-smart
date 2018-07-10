@@ -19,7 +19,7 @@ const AccountCreatedOrVerified = ({ to, message  }) => (
       What's next? <br />
       <ol>
         <li>Start inviting your teammates</li>
-        <li>Add your clients and candidates</li>
+        <li>Add your projects and candidates</li>
         <li>Schedule interviews and track progress</li>
         <li>Receive feedback from interviewers</li>
       </ol>

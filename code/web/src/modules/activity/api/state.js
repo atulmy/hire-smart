@@ -6,10 +6,10 @@ import {
   LIST_BY_ORGANIZATION_RESPONSE,
   LIST_BY_ORGANIZATION_DONE,
   LIST_BY_ORGANIZATION_RESET,
-  LIST_BY_CLIENT_REQUEST,
-  LIST_BY_CLIENT_RESPONSE,
-  LIST_BY_CLIENT_DONE,
-  LIST_BY_CLIENT_RESET
+  LIST_BY_PROJECT_REQUEST,
+  LIST_BY_PROJECT_RESPONSE,
+  LIST_BY_PROJECT_DONE,
+  LIST_BY_PROJECT_RESET
 } from './actions/types'
 
 // List by Organization
@@ -42,7 +42,7 @@ export const activitiesByOrganization = (state = activitiesByOrganizationInitial
       }
 
     case LIST_BY_ORGANIZATION_RESET:
-      return { ...activitiesByClientInitialState }
+      return { ...activitiesByProjectInitialState }
 
     default:
       return state
@@ -50,37 +50,37 @@ export const activitiesByOrganization = (state = activitiesByOrganizationInitial
 }
 
 
-// List by Client
+// List by Project
 
 // Initial State
-const activitiesByClientInitialState = {
+const activitiesByProjectInitialState = {
   isLoading: false,
   list: []
 }
 
 // State
-export const activitiesByClient = (state = activitiesByClientInitialState, action) => {
+export const activitiesByProject = (state = activitiesByProjectInitialState, action) => {
   switch (action.type) {
-    case LIST_BY_CLIENT_REQUEST:
+    case LIST_BY_PROJECT_REQUEST:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case LIST_BY_CLIENT_RESPONSE:
+    case LIST_BY_PROJECT_RESPONSE:
       return {
         ...state,
         list: action.list
       }
 
-    case LIST_BY_CLIENT_DONE:
+    case LIST_BY_PROJECT_DONE:
       return {
         ...state,
         isLoading: action.isLoading
       }
 
-    case LIST_BY_CLIENT_RESET:
-      return { ...activitiesByClientInitialState }
+    case LIST_BY_PROJECT_RESET:
+      return { ...activitiesByProjectInitialState }
 
     default:
       return state

@@ -22,8 +22,8 @@ if (token && token !== 'undefined' && token !== '') {
   }
 }
 
-// Client App
-const Client = () => (
+// Project App
+const Project = () => (
   <Provider store={store} key={'provider'}>
     <Router>
       <ScrollToTop>
@@ -33,10 +33,10 @@ const Client = () => (
   </Provider>
 )
 
-// Mount client app
+// Mount project app
 window.onload = () => {
   hydrate(
-    <Client/>,
+    <Project/>,
     document.getElementById('app')
   )
 }
