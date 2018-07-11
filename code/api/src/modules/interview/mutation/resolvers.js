@@ -1,6 +1,7 @@
 // Imports
 import React from 'react'
 import moment from 'moment'
+import ical from 'ical-generator'
 import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
@@ -140,12 +141,34 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     .populate('userId')
 
   const date = moment(interviewDetails.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)
+  const mode = params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name
   const subjectAction = {
     invite: 'Invitation',
     update: 'Updated',
     remind: 'Reminder',
   }[type]
   const subject = `${ interviewDetails.organizationId.name } Interview ${ subjectAction } - ${ date }`
+
+  // Calendar
+  const calendar = ical({
+    method: 'publish',
+    domain: interviewDetails.organizationId.domain,
+    name: subject
+  })
+  const event = calendar.createEvent({
+    domain: interviewDetails.organizationId.domain,
+    start: moment(interviewDetails.dateTime).toDate(),
+    end: moment(interviewDetails.dateTime).add(1, 'hour').toDate(),
+    summary: subject,
+    location: mode,
+    description: interviewDetails.note
+  })
+  event.organizer({
+    name: auth.user.name,
+    email: auth.user.email,
+  })
+
+  const icalEvent = { content: calendar.toString() }
 
   // Send emails
 
@@ -155,7 +178,7 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     candidateName: interviewDetails.candidateId.name,
     date,
     organizationName: interviewDetails.organizationId.name,
-    mode: params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name,
+    mode,
     note: interviewDetails.note,
     userName: auth.user.name
   }
@@ -173,7 +196,8 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     subject,
     template: TemplateCandidate,
     organizationId: auth.user.organizationId,
-    userId: auth.user.id
+    userId: auth.user.id,
+    icalEvent
   })
 
   // 2. To Interviewer
@@ -185,7 +209,7 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     candidateName: interviewDetails.candidateId.name,
     date,
     organizationName: interviewDetails.organizationId.name,
-    mode: params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name,
+    mode,
     note: interviewDetails.note,
     userName: auth.user.name
   }
@@ -203,7 +227,8 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     subject,
     template: TemplateInterviewer,
     organizationId: auth.user.organizationId,
-    userId: auth.user.id
+    userId: auth.user.id,
+    icalEvent
   })
 
   // Log activity

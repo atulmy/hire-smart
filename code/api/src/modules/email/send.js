@@ -24,7 +24,7 @@ function transport() {
   }
 }
 
-export async function send({ to, from, subject, template, cc = null, organizationId = '', userId = '' }) {
+export async function send({ to, from, subject, template, cc = null, organizationId = '', userId = '', icalEvent = '' }) {
   const transporter = transport()
 
   if(transporter) {
@@ -44,10 +44,13 @@ export async function send({ to, from, subject, template, cc = null, organizatio
       to: toAddress,
       from: `"${ from.name }" <${ from.email }>`,
       subject,
-      html: body
+      html: body,
     }
     if(cc) {
       email.cc = `"${ cc.name }" <${ NODE_ENV === 'development' ? EMAIL_TEST : cc.email }>`
+    }
+    if(icalEvent) {
+      email.icalEvent = icalEvent
     }
 
     // Send email
