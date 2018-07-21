@@ -17,7 +17,7 @@ import EmptyMessage from '../../../../common/EmptyMessage'
 
 // Component
 const ListTable = (props) => {
-  const { list } = props
+  const { classes, list } = props
 
   return (
     <Table>
@@ -27,11 +27,11 @@ const ListTable = (props) => {
             ? list.map(activity => (
                 <TableRow key={activity._id}>
                   <TableCell>{ activity.message }</TableCell>
-                  <TableCell title={moment(activity.createdAt).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)}>{ moment(activity.createdAt).fromNow() }</TableCell>
+                  <TableCell className={classes.textNoWrap} title={moment(activity.createdAt).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)}>{ moment(activity.createdAt).fromNow() }</TableCell>
                 </TableRow>
               ))
             : <TableRow>
-                <TableCell colSpan={3}>
+                <TableCell colSpan={2}>
                   <EmptyMessage message={'No activity to show.'} />
                 </TableCell>
               </TableRow>

@@ -56,9 +56,7 @@ export async function create(parentValue, { projectId, candidateId, interviewerI
       }
 
       // Send emails
-      if (invite) {
-        sentEmails(interview._id, auth, 'invite')
-      }
+      sentEmails(invite, interview._id, auth, 'invite')
     }
 
     return interview
@@ -85,9 +83,7 @@ export async function update(parentValue, { id, projectId, candidateId, intervie
     )
 
     // Send emails
-    if(invite) {
-      sentEmails(id, auth, 'update')
-    }
+    sentEmails(invite, id, auth, 'update')
 
     return interview
   } else {
@@ -121,7 +117,7 @@ export async function remind(parentValue, { id }, { auth }) {
 
     // Send emails
 
-    sentEmails(id, auth, 'remind')
+    sentEmails(true, id, auth, 'remind')
 
     return interview
   } else {
@@ -130,7 +126,7 @@ export async function remind(parentValue, { id }, { auth }) {
 }
 
 // Email to Candidate and Interviewer
-async function sentEmails(interviewId, auth, type = 'invite') {
+async function sentEmails(invite, interviewId, auth, type = 'invite') {
   const interviewDetails = await Interview.findOne({
     _id: interviewId,
     organizationId: auth.user.organizationId
@@ -141,95 +137,98 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     .populate('userId')
 
   const date = moment(interviewDetails.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)
-  const mode = params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name
-  const subjectAction = {
-    invite: 'Invitation',
-    update: 'Updated',
-    remind: 'Reminder',
-  }[type]
-  const subject = `${ interviewDetails.organizationId.name } Interview ${ subjectAction } - ${ date }`
 
-  // Calendar
-  const calendar = ical({
-    method: 'publish',
-    domain: interviewDetails.organizationId.domain,
-    name: subject
-  })
-  const event = calendar.createEvent({
-    domain: interviewDetails.organizationId.domain,
-    start: moment(interviewDetails.dateTime).toDate(),
-    end: moment(interviewDetails.dateTime).add(1, 'hour').toDate(),
-    summary: subject,
-    location: mode,
-    description: interviewDetails.note
-  })
-  event.organizer({
-    name: auth.user.name,
-    email: auth.user.email,
-  })
+  if(invite) {
+    const mode = params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name
+    const subjectAction = {
+      invite: 'Invitation',
+      update: 'Updated',
+      remind: 'Reminder',
+    }[type]
+    const subject = `${ interviewDetails.organizationId.name } Interview ${ subjectAction } - ${ date }`
 
-  const icalEvent = { content: calendar.toString() }
+    // Calendar
+    const calendar = ical({
+      method: 'publish',
+      domain: interviewDetails.organizationId.domain,
+      name: subject
+    })
+    const event = calendar.createEvent({
+      domain: interviewDetails.organizationId.domain,
+      start: moment(interviewDetails.dateTime).toDate(),
+      end: moment(interviewDetails.dateTime).add(1, 'hour').toDate(),
+      summary: subject,
+      location: mode,
+      description: interviewDetails.note
+    })
+    event.organizer({
+      name: auth.user.name,
+      email: auth.user.email,
+    })
 
-  // Send emails
+    const icalEvent = {content: calendar.toString()}
 
-  // 1. To Candidate
+    // Send emails
 
-  const candidateProps = {
-    candidateName: interviewDetails.candidateId.name,
-    date,
-    organizationName: interviewDetails.organizationId.name,
-    mode,
-    note: interviewDetails.note,
-    userName: auth.user.name
+    // 1. To Candidate
+
+    const candidateProps = {
+      candidateName: interviewDetails.candidateId.name,
+      date,
+      organizationName: interviewDetails.organizationId.name,
+      mode,
+      note: interviewDetails.note,
+      userName: auth.user.name
+    }
+
+    const TemplateCandidate = {
+      invite: <InterviewInviteCandidate {...candidateProps} />,
+      update: <InterviewInviteCandidate {...candidateProps} />,
+      remind: <InterviewReminderCandidate {...candidateProps} />,
+    }[type]
+
+    sendEmail({
+      to: {name: interviewDetails.candidateId.name, email: interviewDetails.candidateId.email},
+      from: auth.user,
+      cc: auth.user,
+      subject,
+      template: TemplateCandidate,
+      organizationId: auth.user.organizationId,
+      userId: auth.user.id,
+      icalEvent
+    })
+
+    // 2. To Interviewer
+
+    const interviewerProps = {
+      interviewId,
+      interviewerName: interviewDetails.interviewerId.name,
+      candidateId: interviewDetails.candidateId._id,
+      candidateName: interviewDetails.candidateId.name,
+      date,
+      organizationName: interviewDetails.organizationId.name,
+      mode,
+      note: interviewDetails.note,
+      userName: auth.user.name
+    }
+
+    const TemplateInterviewer = {
+      invite: <InterviewInviteInterviewer {...interviewerProps} />,
+      update: <InterviewInviteInterviewer {...interviewerProps} />,
+      remind: <InterviewReminderInterviewer  {...interviewerProps} />,
+    }[type]
+
+    sendEmail({
+      to: {name: interviewDetails.interviewerId.name, email: interviewDetails.interviewerId.email},
+      from: auth.user,
+      cc: auth.user,
+      subject,
+      template: TemplateInterviewer,
+      organizationId: auth.user.organizationId,
+      userId: auth.user.id,
+      icalEvent
+    })
   }
-
-  const TemplateCandidate = {
-    invite: <InterviewInviteCandidate { ...candidateProps } />,
-    update: <InterviewInviteCandidate { ...candidateProps } />,
-    remind: <InterviewReminderCandidate { ...candidateProps } />,
-  }[type]
-
-  sendEmail({
-    to: { name: interviewDetails.candidateId.name, email: interviewDetails.candidateId.email },
-    from: auth.user,
-    cc: auth.user,
-    subject,
-    template: TemplateCandidate,
-    organizationId: auth.user.organizationId,
-    userId: auth.user.id,
-    icalEvent
-  })
-
-  // 2. To Interviewer
-
-  const interviewerProps = {
-    interviewId,
-    interviewerName: interviewDetails.interviewerId.name,
-    candidateId: interviewDetails.candidateId._id,
-    candidateName: interviewDetails.candidateId.name,
-    date,
-    organizationName: interviewDetails.organizationId.name,
-    mode,
-    note: interviewDetails.note,
-    userName: auth.user.name
-  }
-
-  const TemplateInterviewer = {
-    invite: <InterviewInviteInterviewer { ...interviewerProps } />,
-    update: <InterviewInviteInterviewer { ...interviewerProps } />,
-    remind: <InterviewReminderInterviewer  { ...interviewerProps } />,
-  }[type]
-
-  sendEmail({
-    to: { name: interviewDetails.interviewerId.name, email: interviewDetails.interviewerId.email },
-    from: auth.user,
-    cc: auth.user,
-    subject,
-    template: TemplateInterviewer,
-    organizationId: auth.user.organizationId,
-    userId: auth.user.id,
-    icalEvent
-  })
 
   // Log activity
   const activityAction = {
@@ -243,6 +242,8 @@ async function sentEmails(interviewId, auth, type = 'invite') {
     userId: auth.user.id,
     projectId: interviewDetails.projectId,
     interviewId: interviewDetails._id,
+    candidateId: interviewDetails.candidateId._id,
+    interviewerId: interviewDetails.interviewerId._id,
     action: params.activity.types.create,
     message: `${ auth.user.name } ${ activityAction } interview for ${ interviewDetails.candidateId.name } to be conducted by ${ interviewDetails.interviewerId.name } on ${ date }.`
   })

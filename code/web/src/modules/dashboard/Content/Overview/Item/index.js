@@ -14,6 +14,8 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import IconCall from '@material-ui/icons/Call'
+import IconThumbUp from '@material-ui/icons/ThumbUp'
+import IconThumbDown from '@material-ui/icons/ThumbDown'
 import IconThumbsUpDown from '@material-ui/icons/ThumbsUpDown'
 import IconVoiceChat from '@material-ui/icons/VoiceChat'
 import IconGroup from '@material-ui/icons/Group'
@@ -86,7 +88,15 @@ class Item extends PureComponent {
 
                     <ListItem title={'Interviewer'} className={classes.infoItem}>
                       <ListItemIcon className={classes.infoItemIcon} style={{ color: interview.feedbackId ? this.getColumnColor(interview.feedbackId.status) : grey[400] }}>
-                        <IconThumbsUpDown />
+                        {
+                          interview.feedbackId
+                            ? {
+                                hold: <IconThumbsUpDown />,
+                                rejected: <IconThumbDown />,
+                                selected: <IconThumbUp />,
+                              }[interview.feedbackId.status]
+                            : <IconThumbsUpDown />
+                        }
                       </ListItemIcon>
 
                       <ListItemText

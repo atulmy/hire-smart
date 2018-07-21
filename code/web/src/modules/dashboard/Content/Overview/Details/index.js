@@ -24,6 +24,7 @@ import Loading from '../../../../common/Loading'
 import EmptyMessage from '../../../../common/EmptyMessage'
 import CandidateViewFields from '../../../../candidate/Manage/View/ViewFields'
 import InterviewViewFields from '../../../../interview/Manage/View/ViewFields'
+import Journey from './Journey'
 
 // Component
 class Details extends PureComponent {
@@ -85,7 +86,7 @@ class Details extends PureComponent {
   }
 
   render() {
-    const { classes, user, kanban: { isLoading, item: { candidateId, interviews, status, highlight } }, toggleDrawer } = this.props
+    const { classes, kanban: { isLoading, item: { candidateId, interviews, status, highlight } }, toggleDrawer } = this.props
     const { tab } = this.state
 
     return (
@@ -101,73 +102,62 @@ class Details extends PureComponent {
                   >
                     <Tab label={'Candidate'} value={'candidate'} style={{ minWidth: 'auto' }} />
                     <Tab label={'Interview'} value={'interview'} style={{ minWidth: 'auto' }} />
+                    <Tab label={'Journey'} value={'journey'} style={{ minWidth: 'auto' }} />
                   </Tabs>
                 </div>
 
                 <div className={classes.tabContent}>
                   {
                     {
-                      candidate:
-                        <React.Fragment>
-                          {
-                            candidateId && candidateId._id &&
-                            <div>
-                              {/* Status */}
-                              <div className={classes.item}>
-                                <Typography variant={'caption'} gutterBottom>
-                                  Status
-                                </Typography>
+                      candidate: candidateId && candidateId._id &&
+                        <div>
+                          {/* Status */}
+                          <div className={classes.item}>
+                            <Typography variant={'caption'} gutterBottom>
+                              Status
+                            </Typography>
 
-                                <Typography gutterBottom>
-                                  { this.status(status).name }
+                            <Typography gutterBottom>
+                              { this.status(status).name }
 
-                                  <IconRadioButtonChecked style={{ color: this.status(status).color, float: 'right', paddingBottom: 4 }} />
+                              <IconRadioButtonChecked style={{ color: this.status(status).color, float: 'right', paddingBottom: 4 }} />
+                            </Typography>
+                          </div>
+
+                          <CandidateViewFields candidate={candidateId} />
+                        </div>,
+
+                      interview: interviews && interviews.length > 0
+                        ? interviews.map((interview, i) => (
+                            <div key={interview._id} className={classes.interview} style={ i === interviews.length - 1 ? { marginBottom: 0 } : {} }>
+                              <div className={classes.interviewNumber}>
+                                <Typography variant={'button'}>
+                                  Interview #{ i+1 }
                                 </Typography>
                               </div>
 
-                              <CandidateViewFields candidate={candidateId} />
+                              <div className={classes.interviewContent}>
+                                <InterviewViewFields interview={interview} />
+
+                                {
+                                  !interview.feedbackId &&
+                                  <div className={classes.interviewContentActions}>
+                                    <Button
+                                      color={'primary'}
+                                      onClick={this.remind(interview)}
+                                    >
+                                      Remind
+                                    </Button>
+                                  </div>
+                                }
+                              </div>
                             </div>
-                          }
-                        </React.Fragment>,
+                          ))
+                        : <EmptyMessage message={'No interview has been scheduled for this candidate.'} />,
 
-                      interview:
-                        <React.Fragment>
-                          {
-                            interviews && interviews.length > 0
-                              ? <React.Fragment>
-                                  { interviews.map((interview, i) => (
-                                    <div key={interview._id} className={classes.interview} style={ i === interviews.length - 1 ? { marginBottom: 0 } : {} }>
-                                      <div className={classes.interviewNumber}>
-                                        <Typography variant={'button'}>
-                                          Interview #{ i+1 }
-                                        </Typography>
-                                      </div>
-
-                                      <div className={classes.interviewContent}>
-                                        <InterviewViewFields interview={interview} />
-
-                                        {
-                                          !interview.feedbackId &&
-                                          <div className={classes.interviewContentActions}>
-                                            <Button
-                                              color={'primary'}
-                                              onClick={this.remind(interview)}
-                                            >
-                                              Remind
-                                            </Button>
-                                          </div>
-                                        }
-                                      </div>
-                                    </div>
-                                  )) }
-                                </React.Fragment>
-                              : <EmptyMessage message={'No interview has been scheduled for this candidate.'} />
-                          }
-                        </React.Fragment>
+                      journey: candidateId && candidateId._id && <Journey candidateId={candidateId._id} />
                     }[tab]
                   }
-
-
                 </div>
               </React.Fragment>
         }

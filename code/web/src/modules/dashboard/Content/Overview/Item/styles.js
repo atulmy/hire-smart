@@ -25,8 +25,9 @@ const styles = theme => ({
     padding: 0
   },
   infoItemIcon: {
-    marginRight: 0,
-    transform: 'scale(0.7)'
+    marginRight: 5,
+    transform: 'scale(0.7)',
+    color: grey[400]
   },
   infoItemText: {
     padding: 0

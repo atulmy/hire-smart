@@ -1,8 +1,12 @@
 // Component Styles
-const styles = theme => ({
+const styles = {
   textCenter: {
     textAlign: 'center'
+  },
+
+  textNoWrap: {
+    whiteSpace: 'nowrap'
   }
-})
+}
 
 export default styles

@@ -27,3 +27,16 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
     throw new Error('Please login to view activities.')
   }
 }
+
+// Get by candidate
+export async function getByCandidate(parentValue, { candidateId }, { auth }) {
+  if(auth.user && auth.user.id) {
+    return await Activity.find({
+      organizationId: auth.user.organizationId,
+      candidateId
+    })
+      .sort({ createdAt: 1 })
+  } else {
+    throw new Error('Please login to view activities.')
+  }
+}

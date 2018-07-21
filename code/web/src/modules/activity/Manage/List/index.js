@@ -34,11 +34,7 @@ class List extends PureComponent {
           isLoading
             ? <Loading />
             : <Fade in={true}>
-                <ListTable
-                  list={list}
-                  edit={this.edit}
-                  view={this.view}
-                />
+                <ListTable list={list} />
               </Fade>
         }
       </div>
