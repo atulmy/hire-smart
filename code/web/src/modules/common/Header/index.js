@@ -70,7 +70,7 @@ class Header extends PureComponent {
     const { classes, common: { drawerVisible }, user, drawerShow, drawerHide } = this.props
 
     return (
-      <div>
+      <React.Fragment>
         {/* Top bar */}
         <AppBar elevation={0}>
           <Toolbar>
@@ -232,7 +232,7 @@ class Header extends PureComponent {
             className={classes.drawerActivator}
           />
         }
-      </div>
+      </React.Fragment>
     )
   }
 }

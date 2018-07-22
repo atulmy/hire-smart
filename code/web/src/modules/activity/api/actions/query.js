@@ -161,8 +161,6 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
 
 // Get by Project
 export function getListByCandidate({ candidateId }, isLoading = true, forceRefresh = false) {
-  console.log(candidateId)
-
   return async dispatch => {
     // Caching
     const CACHE_KEY = `${ ACTIVITY_LIST_BY_CANDIDATE_CACHE }.${ candidateId }`

@@ -19,7 +19,7 @@ class Footer extends PureComponent {
     const { classes } = this.props
 
     return (
-      <div className={classes.root}>
+      <footer className={classes.root}>
         <Grid container>
           <Grid item sm={6} className={classes.left}>
             <Typography variant={'button'} className={classes.copyright}>
@@ -47,7 +47,7 @@ class Footer extends PureComponent {
             </Link>
           </Grid>
         </Grid>
-      </div>
+      </footer>
     )
   }
 }

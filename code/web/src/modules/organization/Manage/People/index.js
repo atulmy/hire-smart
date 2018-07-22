@@ -139,8 +139,6 @@ class People extends PureComponent {
     const { classes, user, invites } = this.props
     const { isLoading, users, isLoadingSubmit, name, email } = this.state
 
-    console.log(invites)
-
     return (
       <div>
         <Grid container spacing={24}>

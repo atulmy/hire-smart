@@ -46,7 +46,7 @@ const view = (APP_URL, NODE_ENV, params, helmet = {}, appHtml = '', appCss = '',
 </head>
 <body>  
   <!-- App -->
-  <main id="app">${ appHtml }</main>
+  <div id="app">${ appHtml }</div>
   
   <!-- Initial State -->
   <script>
