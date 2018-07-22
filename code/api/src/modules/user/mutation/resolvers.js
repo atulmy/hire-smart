@@ -2,20 +2,21 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import React from 'react'
+import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
 import serverConfig from '../../../setup/config/server'
 import params from '../../../setup/config/params'
 import { randomNumber } from '../../../setup/helpers'
-import DemoUser from '../../demo-user/model'
-import Organization from '../../organization/model'
-import Verification from '../../verification/model'
-import User from '../model'
 import { send as sendEmail } from '../../email/send'
 import Verify from '../email/Verify'
 import AccountCreatedOrVerified from '../email/AccountCreatedOrVerified'
+import DemoUser from '../../demo-user/model'
+import Organization from '../../organization/model'
+import Verification from '../../verification/model'
 import Invite from '../../invite/model'
 import Activity from '../../activity/model'
+import User from '../model'
 
 // Create a demo user and login
 export async function startNow(parentValue, {}, { auth }) {
@@ -328,4 +329,30 @@ export async function acceptInvite(parentValue, { id, name, password }) {
     // User exists
     throw new Error(`Sorry, this invitation is not valid anymore.`)
   }
+}
+
+// Update
+export async function update(parentValue, { name }, { auth }) {
+  if(auth.user && auth.user.id && !isEmpty(name)) {
+    await User.updateOne({ _id: auth.user.id }, { name })
+
+    const user = await User.findOne({ _id: auth.user.id })
+
+    const token = {
+      id: user._id,
+      organizationId: user.organizationId,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      demo: user.demo
+    }
+
+    return {
+      user: user,
+      token: jwt.sign(token, serverConfig.secret),
+      message: 'Your profile has been updates successfully.'
+    }
+  }
+
+  throw new Error('Please login to update profile.')
 }

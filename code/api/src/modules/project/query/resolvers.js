@@ -12,9 +12,9 @@ export async function getByOrganization(parentValue, {}, { auth }) {
     return await Project.find({
       organizationId: auth.user.organizationId
     })
-  } else {
-    throw new Error('Please login to view your projects.')
   }
+
+  throw new Error('Please login to view your projects.')
 }
 
 // Get all

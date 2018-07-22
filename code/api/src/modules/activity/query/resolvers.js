@@ -9,9 +9,9 @@ export async function getByOrganization(parentValue, { projectId }, { auth }) {
     })
       .sort({ createdAt: -1 })
       .populate('userId')
-  } else {
-    throw new Error('Please login to view activities.')
   }
+
+  throw new Error('Please login to view activities.')
 }
 
 // Get by project
@@ -23,9 +23,9 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
     })
       .sort({ createdAt: -1 })
       .populate('userId')
-  } else {
-    throw new Error('Please login to view activities.')
   }
+
+  throw new Error('Please login to view activities.')
 }
 
 // Get by candidate
@@ -36,7 +36,7 @@ export async function getByCandidate(parentValue, { candidateId }, { auth }) {
       candidateId
     })
       .sort({ createdAt: 1 })
-  } else {
-    throw new Error('Please login to view activities.')
   }
+
+  throw new Error('Please login to view activities.')
 }

@@ -13,9 +13,9 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
       organizationId: auth.user.organizationId,
       projectId
     })
-  } else {
-    throw new Error('Please login to view your jobs.')
   }
+
+  throw new Error('Please login to view your jobs.')
 }
 
 // Get all

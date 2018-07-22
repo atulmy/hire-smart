@@ -10,9 +10,9 @@ export async function get(parentValue, { id }) {
 export async function getByUser(parentValue, {}, { auth }) {
   if(auth.user && auth.user.id) {
     return await Organization.findOne({ _id: auth.user.organizationId })
-  } else {
-    throw new Error('Please login to view your organization.')
   }
+
+  throw new Error('Please login to view your organization.')
 }
 
 // Get all

@@ -61,7 +61,7 @@ export async function invite(parentValue, { name, email }, { auth }) {
       // User exists
       throw new Error(`The email ${ email } is already invited. Please ask the user to accept the invitation.`)
     }
-  } else {
-    throw new Error('Please login to invite team mate to your organization.')
   }
+
+  throw new Error('Please login to invite team mate to your organization.')
 }

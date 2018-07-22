@@ -22,6 +22,15 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2.5,
     borderBottom: `1px solid ${ grey[200] }`
   },
+
+  actionIcon: {
+    width: 20, height: 20, marginRight: 5
+  },
+
+  buttonsContainer: {
+    textAlign: 'right',
+    marginTop: theme.spacing.unit
+  },
 })
 
 export default styles

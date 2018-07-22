@@ -98,4 +98,6 @@ export async function createOrUpdate(parentValue, { interviewId, text, status })
       throw new Error('Please provide all the required information.')
     }
   }
+
+  throw new Error('Sorry, please try again.')
 }

@@ -23,7 +23,7 @@
     "express": "4.16.3",
     "express-graphql": "0.6.12",
     "graphql": "0.13.2",
-    "ical-generator": "1.0.1",
+    "ical-generator": "1.0.2",
     "ip": "1.1.5",
     "jsonwebtoken": "8.3.0",
     "moment": "2.22.2",

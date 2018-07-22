@@ -30,9 +30,9 @@ export async function create(parentValue, { projectId, role, description = '' },
     }
 
     return job
-  } else {
-    throw new Error('Please login to create job.')
   }
+
+  throw new Error('Please login to create job.')
 }
 
 // Update
@@ -48,9 +48,9 @@ export async function update(parentValue, { id, projectId, role, description = '
         }
       }
     )
-  } else {
-    throw new Error('Please login to update job.')
   }
+
+  throw new Error('Please login to update job.')
 }
 
 // Delete
@@ -60,7 +60,7 @@ export async function remove(parentValue, { id }, { auth }) {
       _id: _id,
       userId: auth.user.id
     })
-  } else {
-    throw new Error('Please login to delete job.')
   }
+
+  throw new Error('Please login to delete job.')
 }

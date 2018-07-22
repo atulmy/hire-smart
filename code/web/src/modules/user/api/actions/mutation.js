@@ -266,6 +266,59 @@ export function acceptInvite(invite, isLoading = true) {
   }
 }
 
+// Update account details
+export function update(details, isLoading = true) {
+  return async dispatch => {
+    dispatch({
+      type: LOGIN_REQUEST,
+      isLoading
+    })
+
+    dispatch({
+      type: MESSAGE_SHOW,
+      message: 'Please wait..'
+    })
+
+    try {
+      const { data } = await axios.post(API_URL, queryBuilder({
+        type: 'mutation',
+        operation: 'userUpdate',
+        data: details,
+        fields: ['user {name, email, role, demo}', 'token', 'message']
+      }))
+
+      let message = ''
+
+      if (data.errors && data.errors.length > 0) {
+        message = data.errors[0].message
+      } else if (data.data.userUpdate.token !== '') {
+        const token = data.data.userUpdate.token
+        const user = data.data.userUpdate.user
+
+        dispatch(setUser(token, user))
+
+        loginSetUserLocalStorageAndCookie(token, user)
+
+        message = data.data.userUpdate.message
+      }
+
+      dispatch({
+        type: MESSAGE_SHOW,
+        message
+      })
+    } catch(error) {
+      dispatch({
+        type: MESSAGE_SHOW,
+        message: 'There was some server error. Please try again.'
+      })
+    } finally {
+      dispatch({
+        type: LOGIN_RESPONSE
+      })
+    }
+  }
+}
+
 // Set a user auth header after login
 export function setUser(token, user) {
   if (token) {

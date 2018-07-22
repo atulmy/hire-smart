@@ -13,9 +13,9 @@ export async function getByOrganization(parentValue, {}, { auth }) {
     return await Interview.find({
       organizationId: auth.user.organizationId
     })
-  } else {
-    throw new Error('Please login to view interviews.')
   }
+
+  throw new Error('Please login to view interviews.')
 }
 
 // Get by project
@@ -30,7 +30,7 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
       .populate('candidateId')
       .populate('interviewerId')
       .populate('userId')
-  } else {
-    throw new Error('Please login to view interviews.')
   }
+
+  throw new Error('Please login to view interviews.')
 }

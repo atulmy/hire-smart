@@ -18,7 +18,6 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import routes from '../../../setup/routes'
 import { nullToEmptyString } from '../../../setup/helpers'
 import { verifyCode, verifySendCode, verifyUpdateAccount } from '../api/actions/mutation'
 import { messageShow } from '../../common/api/actions'

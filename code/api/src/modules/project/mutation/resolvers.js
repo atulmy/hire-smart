@@ -28,9 +28,9 @@ export async function create(parentValue, { name, description = '' }, { auth }) 
     }
 
     return project
-  } else {
-    throw new Error('Please login to create project.')
   }
+
+  throw new Error('Please login to create project.')
 }
 
 // Update
@@ -45,9 +45,9 @@ export async function update(parentValue, { id, name, description }, { auth }) {
         }
       }
     )
-  } else {
-    throw new Error('Please login to update project.')
   }
+
+  throw new Error('Please login to update project.')
 }
 
 // Delete
@@ -57,7 +57,7 @@ export async function remove(parentValue, { id }, { auth }) {
       _id: _id,
       userId: auth.user.id
     })
-  } else {
-    throw new Error('Please login to delete project.')
   }
+
+  throw new Error('Please login to delete project.')
 }

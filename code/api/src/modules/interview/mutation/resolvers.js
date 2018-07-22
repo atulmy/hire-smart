@@ -60,9 +60,9 @@ export async function create(parentValue, { projectId, candidateId, interviewerI
     }
 
     return interview
-  } else {
-    throw new Error('Please login to create interview.')
   }
+
+  throw new Error('Please login to create interview.')
 }
 
 // Update
@@ -86,9 +86,9 @@ export async function update(parentValue, { id, projectId, candidateId, intervie
     sentEmails(invite, id, auth, 'update')
 
     return interview
-  } else {
-    throw new Error('Please login to update interview.')
   }
+
+  throw new Error('Please login to update interview.')
 }
 
 // Delete
@@ -98,9 +98,9 @@ export async function remove(parentValue, { id }, { auth }) {
       _id: _id,
       userId: auth.user.id
     })
-  } else {
-    throw new Error('Please login to delete interview.')
   }
+
+  throw new Error('Please login to delete interview.')
 }
 
 // Remind
@@ -120,9 +120,9 @@ export async function remind(parentValue, { id }, { auth }) {
     sentEmails(true, id, auth, 'remind')
 
     return interview
-  } else {
-    throw new Error('Please login to send interview reminders.')
   }
+
+  throw new Error('Please login to send interview reminders.')
 }
 
 // Email to Candidate and Interviewer

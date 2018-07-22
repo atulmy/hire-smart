@@ -52,8 +52,8 @@ export async function getAll() {
 export async function getByOrganization(parentValue, { id }, { auth }) {
   if(auth.user && auth.user.id) {
     return await User.find({ organizationId: auth.user.organizationId })
-  } else {
-    throw new Error('Please login to view your organization.')
   }
+
+  throw new Error('Please login to view your organization.')
 }
 

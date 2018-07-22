@@ -18,9 +18,9 @@ export async function create(parentValue, { projectId, candidateId, interviews, 
       status,
       highlight
     })
-  } else {
-    throw new Error('Please login to create interviewer.')
   }
+
+  throw new Error('Please login to create interviewer.')
 }
 
 // Update
@@ -37,9 +37,9 @@ export async function update(parentValue, { id, interviews, status, highlight },
         }
       }
     )
-  } else {
-    throw new Error('Please login to update interviewer.')
   }
+
+  throw new Error('Please login to update interviewer.')
 }
 
 // Update status
@@ -69,9 +69,9 @@ export async function updateStatus(parentValue, { id, status }, { auth }) {
     }
 
     return updated
-  } else {
-    throw new Error('Please login to update interviewer.')
   }
+
+  throw new Error('Please login to update interviewer.')
 }
 
 // Delete
@@ -81,7 +81,7 @@ export async function remove(parentValue, { id }, { auth }) {
       _id: _id,
       userId: auth.user.id
     })
-  } else {
-    throw new Error('Please login to delete interviewer.')
   }
+
+  throw new Error('Please login to delete interviewer.')
 }

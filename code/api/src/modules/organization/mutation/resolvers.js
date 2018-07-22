@@ -10,9 +10,9 @@ export async function create(parentValue, { name, description, domain }, { auth 
       description,
       domain
     })
-  } else {
-    throw new Error('Please login to create organization.')
   }
+
+  throw new Error('Please login to create organization.')
 }
 
 // Update product
@@ -24,9 +24,9 @@ export async function update(parentValue, { id, name, description, domain }, { a
         $set: { name, description, domain }
       }
     )
-  } else {
-    throw new Error('Please login to update organization.')
   }
+
+  throw new Error('Please login to update organization.')
 }
 
 // Delete
@@ -36,7 +36,7 @@ export async function remove(parentValue, { id }, { auth }) {
       _id: _id,
       userId: auth.user.id
     })
-  } else {
-    throw new Error('Access denied.')
   }
+
+  throw new Error('Access denied.')
 }

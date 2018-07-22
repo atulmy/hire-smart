@@ -12,8 +12,8 @@ export async function getByInterview(parentValue, { interviewId }, { auth }) {
     return await Feedback.find({
       interviewId
     })
-  } else {
-    throw new Error('Please login to view feedbacks.')
   }
+
+  throw new Error('Please login to view feedback.')
 }
 

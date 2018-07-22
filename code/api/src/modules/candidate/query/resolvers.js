@@ -17,9 +17,9 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
     })
       .populate('projectId')
       .populate('jobId')
-  } else {
-    throw new Error('Please login to view your candidates.')
   }
+
+  throw new Error('Please login to view your candidates.')
 }
 
 // Get by organization
@@ -31,9 +31,9 @@ export async function getByOrganization(parentValue, {}, { auth }) {
       .populate('organizationId')
       .populate('projectId')
       .populate('jobId')
-  } else {
-    throw new Error('Please login to view your candidates.')
   }
+
+  throw new Error('Please login to view your candidates.')
 }
 
 // Get all

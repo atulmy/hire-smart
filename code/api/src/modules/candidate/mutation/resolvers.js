@@ -51,9 +51,9 @@ export async function create(parentValue, { projectId, jobId = '', name, email, 
     }
 
     return candidate
-  } else {
-    throw new Error('Please login to create candidate.')
   }
+
+  throw new Error('Please login to create candidate.')
 }
 
 // Update
@@ -86,9 +86,9 @@ export async function update(parentValue, { id, projectId, jobId = '', name, ema
     }
 
     return candidate
-  } else {
-    throw new Error('Please login to update candidate.')
   }
+
+  throw new Error('Please login to update candidate.')
 }
 
 // Delete
@@ -98,7 +98,7 @@ export async function remove(parentValue, { id }, { auth }) {
       _id: _id,
       userId: auth.user.id
     })
-  } else {
-    throw new Error('Please login to delete candidate.')
   }
+
+  throw new Error('Please login to delete candidate.')
 }

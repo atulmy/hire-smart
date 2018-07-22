@@ -14,7 +14,7 @@ export async function getByOrganization(parentValue, {}, { auth }) {
       organizationId: auth.user.organizationId,
       accepted: false
     })
-  } else {
-    throw new Error('Please login to view invites.')
   }
+
+  throw new Error('Please login to view invites.')
 }
