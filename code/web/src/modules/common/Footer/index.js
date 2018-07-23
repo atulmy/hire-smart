@@ -30,19 +30,19 @@ class Footer extends PureComponent {
           <Grid item sm={6} className={classes.right}>
             <Link to={routes.home.path}>
               <Typography variant={'button'} className={classes.link}>
-                About
+                Team
+              </Typography>
+            </Link>
+
+            <Link to={routes.home.path}>
+              <Typography variant={'button'} className={classes.link}>
+                Contact
               </Typography>
             </Link>
 
             <Link to={routes.home.path}>
               <Typography variant={'button'} className={classes.link}>
                 Privacy
-              </Typography>
-            </Link>
-
-            <Link to={routes.home.path}>
-              <Typography variant={'button'} className={classes.link}>
-                Help
               </Typography>
             </Link>
           </Grid>
