@@ -3,6 +3,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 
 // UI Imports
+import Toolbar from '@material-ui/core/Toolbar'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Fade from '@material-ui/core/Fade'
@@ -12,9 +13,9 @@ import styles from './styles'
 // App Imports
 
 // Component
-const Contact = (props) => {
+const Features = (props) => {
   const { classes } = props
-
+  
   return(
     <Fade in={true}>
       <div>
@@ -23,16 +24,27 @@ const Contact = (props) => {
           <title>Features - HireSmart</title>
         </Helmet>
 
-        <Grid container>
-          <Grid item xs={12}>
-            <Typography variant={'display1'}>
-              Features
-            </Typography>
+        {/* Toolbar - Heading */}
+        <Toolbar className={classes.toolbar}>
+          <Typography
+            variant={'body2'}
+            color={'inherit'}
+            className={classes.title}
+          >
+            Features
+          </Typography>
+        </Toolbar>
+
+        <div className={classes.content}>
+          <Grid container>
+            <Grid item xs={12}>
+
+            </Grid>
           </Grid>
-        </Grid>
+        </div>
       </div>
     </Fade>
   )
 }
 
-export default withStyles(styles)(Contact)
+export default withStyles(styles)(Features)

@@ -122,7 +122,7 @@ class Home extends PureComponent {
             </div>
 
             <div className={classes.featureItemRight}>
-              <img src={`${ APP_URL }/images/features/features-journey.png`} className={classes.featureItemImage} />
+              <img src={`${ APP_URL }/images/features/features-journey.svg`} className={classes.featureItemImage} />
             </div>
           </div>
 
@@ -130,7 +130,7 @@ class Home extends PureComponent {
 
           <div className={classes.featureItem}>
             <div className={classes.featureItemLeft}>
-              <img src={`${ APP_URL }/images/features/features-current-status.png`} className={classes.featureItemImage} />
+              <img src={`${ APP_URL }/images/features/features-current-status.svg`} className={classes.featureItemImage} />
             </div>
 
             <div className={classes.featureItemRight}>
@@ -172,7 +172,7 @@ class Home extends PureComponent {
             </div>
 
             <div className={classes.featureItemRight}>
-              <img src={`${ APP_URL }/images/features/features-feedback.png`} className={classes.featureItemImage} />
+              <img src={`${ APP_URL }/images/features/features-feedback.svg`} className={classes.featureItemImage} />
             </div>
           </div>
 
@@ -182,6 +182,8 @@ class Home extends PureComponent {
         {/* Bottom CTA */}
         <div className={classes.bottomCta}>
           <div style={{ padding: '0 5rem' }}>
+            <img src={`${ APP_URL }/images/illustrations/organize-resume.svg`} style={{ width: 275, marginBottom: '3rem' }} />
+
             <Typography
               variant={'headline'}
               gutterBottom

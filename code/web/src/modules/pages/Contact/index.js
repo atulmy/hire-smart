@@ -50,7 +50,7 @@ const Contact = (props) => {
 
           <Grid container spacing={24} style={{ marginTop: 20 }}>
             <Grid item xs={6} style={{ textAlign: 'right' }}>
-              <img src={`${ APP_URL }/images/logo.png`} style={{ width: 180 }} />
+              <img src={`${ APP_URL }/images/illustrations/contact.svg`} style={{ width: 300 }} />
             </Grid>
 
             <Grid item xs={6}>

@@ -30,8 +30,8 @@ const styles = theme => ({
   },
 
   divider: {
-    marginTop: '2rem',
-    marginBottom: '2rem'
+    marginTop: '4rem',
+    marginBottom: '4rem'
   },
 
   button: {
