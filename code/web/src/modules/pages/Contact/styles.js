@@ -24,7 +24,8 @@ const styles = theme => ({
   },
 
   caption: {
-    marginBottom: theme.spacing.unit * 3
+    marginBottom: theme.spacing.unit * 3,
+    textAlign: 'center'
   },
 
   item: {
