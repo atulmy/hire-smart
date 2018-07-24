@@ -20,7 +20,33 @@ const styles = theme => ({
   },
 
   content: {
-    padding: theme.spacing.unit * 3
+    padding: `4rem 6rem`
+  },
+
+  divider: {
+    marginTop: '4rem',
+    marginBottom: '4rem'
+  },
+
+  featureItemTextContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  featureItemImageContainer: {
+    textAlign: 'center'
+  },
+  featureItemTitle: {
+    fontFamily: `"Raleway", "Helvetica", "Arial", sans-serif`,
+    color: 'black'
+  },
+  featureItemSubTitle: {
+    padding: '0 5rem',
+    textAlign: 'center'
+  },
+  featureItemImage: {
+    height: 235
   },
 })
 

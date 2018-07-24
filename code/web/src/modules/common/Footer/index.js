@@ -34,13 +34,13 @@ class Footer extends PureComponent {
               </Typography>
             </Link>
 
-            <Link to={routes.home.path}>
+            <Link to={routes.contact.path}>
               <Typography variant={'button'} className={classes.link}>
                 Contact
               </Typography>
             </Link>
 
-            <Link to={routes.home.path}>
+            <Link to={routes.privacy.path}>
               <Typography variant={'button'} className={classes.link}>
                 Privacy
               </Typography>

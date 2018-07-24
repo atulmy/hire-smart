@@ -37,7 +37,7 @@ const Contact = (props) => {
         </Toolbar>
 
         <div className={classes.content}>
-          <Grid container>
+          <Grid container style={{ marginTop: 50 }}>
             <Grid item xs={12}>
               <Typography
                 color={'inherit'}
