@@ -1,0 +1,29 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:1.0.0
+    build: ./database
+    ports:
+     - "27017:27017"
+
+  api:
+    depends_on:
+      - mongo
+    image: api:1.0.0
+    build: ../api
+    ports:
+     - "8000:8000"
+
+  web:
+    depends_on:
+      - api
+    image: web:1.0.0
+    build: ../web
+    ports:
+     - "3000:3000"
+
+  proxy:
+    image: proxy:1.0.0
+    build: ./proxy
+    ports:
+     - "80:80"
