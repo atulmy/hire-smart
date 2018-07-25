@@ -1,0 +1,15 @@
+server {
+  server_name hiresmart.local;
+
+  location / {
+    proxy_pass http://web:3000;
+  }
+}
+
+server {
+  server_name api.hiresmart.local;
+
+  location / {
+    proxy_pass http://api:8000;
+  }
+}

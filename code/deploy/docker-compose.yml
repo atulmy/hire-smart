@@ -1,29 +1,49 @@
 version: '3'
+
 services:
   mongo:
     image: mongo:1.0.0
     build: ./database
+    restart: always
+    networks:
+      - back
     ports:
-     - "27017:27017"
+      - 27017:27017
 
   api:
-    depends_on:
-      - mongo
     image: api:1.0.0
     build: ../api
-    ports:
-     - "8000:8000"
+    restart: always
+    networks:
+      - front
+      - back
+    depends_on:
+      - mongo
 
   web:
-    depends_on:
-      - api
     image: web:1.0.0
     build: ../web
-    ports:
-     - "3000:3000"
+    restart: always
+    networks:
+      - front
+    depends_on:
+      - api
 
   proxy:
-    image: proxy:1.0.0
-    build: ./proxy
+    image: nginx
+    volumes:
+      - ./proxy:/etc/nginx/conf.d/proxy.conf
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/proxy.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    restart: always
+    networks:
+      - front
     ports:
-     - "80:80"
+      - 80:80
+    depends_on:
+      - mongo
+      - api
+      - web
+
+networks:
+  front:
+  back:
