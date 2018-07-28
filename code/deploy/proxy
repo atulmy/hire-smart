@@ -1,10 +1,10 @@
 server {
   listen      80;
   listen [::]:80;
-  server_name hiresmart.app api.hiresmart.app;
+  server_name hiresmart.app;
 
   location / {
-    rewrite ^ https://$host$request_uri? permanent;
+    rewrite ^ https://hiresmart.app$request_uri? permanent;
   }
 
   #for certbot challenges (renewal process)

@@ -5,36 +5,6 @@
 <h1 align="center">HIRE SMART</h1>
 <p align="center">An application for human resource team / recruitment consultancies to streamline hiring process, scheduling interviews and tracking candidates. This project is currently <i><strong>work in progress</strong></i>.</p>
 
-### Proposed Features
-  - Candidates management
-    - Basic info
-    - Total experience
-    - Resume file attachment
-    - Contact info
-    - Current and expected compensation (visibility on basis of role)
-  - Kanban board
-    - Manage status
-    - Drag and drop
-  - User roles
-    - Admin
-    - Manager
-    - Lead
-    - Executive
-    - Junior
-  - Tags
-    - Client name / internal team name
-    - Location
-  - Sharable URL
-  - Schedule interview
-    - Interview rounds
-      - Round number
-      - Panel selection
-      - Mode
-        - Telephonic
-        - Online (Skype, Hangouts, etc.)
-      - Feedback by panel
-   - Email notifications
-
 ## Technology Stack
   - API
     - Node
@@ -72,11 +42,15 @@
 - Development
   - Run API `cd api` and `npm start`, browse GraphiQL at http://localhost:8000/
   - Run Webapp `cd webapp` and `npm start`, browse webapp at http://localhost:3000/
-- Production
-  - Run API `cd api` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
-  - Run Webapp `cd web` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
 - Deployment
-  - Coming soon
+  - Without Docker
+      - Configure nginx on server
+      - Run API `cd api` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
+      - Run Webapp `cd web` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
+  - Using Docker
+      - `cd code/deploy`
+      - Update your domain, SSL certificate path and other configurations in `docker-compse.yml`
+      - Start Docker containers: `docker-compose up -d`
     
 ## Website
 [hiresmart.app](https://hiresmart.app/) [coming soon]
