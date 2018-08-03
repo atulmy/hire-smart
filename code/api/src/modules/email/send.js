@@ -42,7 +42,8 @@ export async function send({ to, from, subject, template, cc = null, organizatio
 
     let email = {
       to: toAddress,
-      from: `"${ from.name }" <${ from.email }>`,
+      from: `"${ params.site.emails.hello.name }" <${ params.site.emails.hello.email }>`,
+      replyTo: `"${ from.name }" <${ from.email }>`,
       subject,
       html: body,
     }
