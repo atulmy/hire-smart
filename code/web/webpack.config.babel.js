@@ -38,7 +38,13 @@ const config = {
 
   plugins: [
     new Dotenv(),
-    new HardSourceWebpackPlugin()
+    new HardSourceWebpackPlugin({
+      environmentHash: {
+        root: process.cwd(),
+        directories: [],
+        files: ['package-lock.json', 'yarn.lock', '.env']
+      }
+    })
   ],
 
   node: {
