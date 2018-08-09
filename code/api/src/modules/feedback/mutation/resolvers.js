@@ -81,8 +81,8 @@ export async function createOrUpdate(parentValue, { interviewId, text, status })
           email: interview.userId.email
         },
         from: {
-          name: params.site.emails.help.name,
-          email: params.site.emails.help.email
+          name: interview.interviewerId.name,
+          email: interview.interviewerId.email
         },
         subject: `Feedback Received for ${ interview.candidateId.name }`,
         template:
