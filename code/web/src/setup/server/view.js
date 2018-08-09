@@ -6,14 +6,15 @@ const view = (APP_URL, NODE_ENV, params, helmet = {}, appHtml = '', appCss = '',
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="theme-color" content="#2196f3">
+  <meta name="msapplication-TileColor" content="#2196f3">
   ${ helmet.title.toString() }
   ${ helmet.meta.toString() }
   
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="${ APP_URL }/images/favicon/favicon.ico" />
-  <link rel="icon" type="image/png" sizes="16x16" href="${ APP_URL }/images/favicon/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="${ APP_URL }/images/favicon/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="${ APP_URL }/images/favicon/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="96x96" href="${ APP_URL }/images/favicon/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="${ APP_URL }/images/favicon/favicon-16x16.png" />
+  <link rel="shortcut icon" href="${ APP_URL }/images/favicon/favicon.ico?v=0.1" type="image/x-icon" />
   
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />

@@ -6,7 +6,12 @@
     "url": "https://hiresmart.app",
     "title": "HIRESMART - Streamline your hiring process, scheduling interviews and tracking candidates.",
     "description": "An online application to streamline your hiring process, scheduling interviews and tracking candidates.",
-    "copyright_year": 2018
+    "keywords": "hiring, recruiter, recruitment, staffing, onboarding, tracking, interviews, feedback, candidate, streamline",
+    "author": "HIRESMART",
+    "copyright": "HIRESMART",
+    "applicationName": "HIRESMART",
+    "copyright_year": 2018,
+    "image": "logo.png"
   },
 
   "date": {
