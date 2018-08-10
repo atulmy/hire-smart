@@ -7,14 +7,16 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 
 // App Imports
-import { NODE_ENV } from '../config/env'
+import { NODE_ENV, APP_URL } from '../config/env'
 
 // Load express modules
 export default function (server) {
   console.info('SETUP - Loading modules..')
 
   // Enable CORS
-  server.use(cors())
+  server.use(cors({
+    origin: APP_URL
+  }))
 
   // Request body parser
   server.use(bodyParser.json())
