@@ -50,10 +50,6 @@ server {
     add_header X-XSS-Protection "1; mode=block" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-Frame-Options "DENY" always;
-
-    #CSP
-    add_header Content-Security-Policy "frame-src 'self'; default-src 'self'; form-action 'self'; upgrade-insecure-requests;" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
   }
 }
 
@@ -93,9 +89,5 @@ server {
     add_header X-XSS-Protection "1; mode=block" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-Frame-Options "DENY" always;
-
-    #CSP
-    add_header Content-Security-Policy "frame-src 'self'; default-src 'self'; form-action 'self'; upgrade-insecure-requests;" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
   }
 }
