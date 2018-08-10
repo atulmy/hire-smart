@@ -1,8 +1,8 @@
-// Component Styles
-const styles = {
+const styles = theme => ({
   root: {
-    textAlign: 'center'
+    textAlign: 'center',
+    padding: theme.spacing.unit * 2,
   }
-}
+})
 
 export default styles
