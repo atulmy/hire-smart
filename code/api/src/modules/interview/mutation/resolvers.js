@@ -88,6 +88,29 @@ export async function update(parentValue, { id, projectId, candidateId, intervie
       }
     )
 
+    if(interview) {
+      // Add to kanban
+      const kanban = await Kanban.findOne({
+        organizationId: auth.user.organizationId,
+        projectId: projectId,
+        candidateId: candidateId
+      })
+
+      if (kanban) {
+        let interviews = kanban.interviews
+        if(interviews.indexOf(id) === -1) {
+          interviews.push(id)
+          await Kanban.updateOne(
+            { _id: kanban._id },
+            {
+              status: params.kanban.status.progress,
+              interviews
+            }
+          )
+        }
+      }
+    }
+
     // Send emails
     sentEmails(invite, id, auth, 'update')
 
