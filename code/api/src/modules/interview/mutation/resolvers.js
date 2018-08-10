@@ -40,7 +40,7 @@ export async function create(parentValue, { projectId, candidateId, interviewerI
       if (kanban) {
         // Update kanban
         kanban.status = params.kanban.status.progress
-        kanban.interviews.push(interview);
+        kanban.interviews.push(interview._id)
         kanban.save()
       } else {
         // Create new kanban
