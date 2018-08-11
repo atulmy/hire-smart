@@ -32,7 +32,7 @@ export async function create(parentValue, { projectId, role, description = '' },
     return job
   }
 
-  throw new Error('Please login to create job.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
@@ -50,7 +50,7 @@ export async function update(parentValue, { id, projectId, role, description = '
     )
   }
 
-  throw new Error('Please login to update job.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
@@ -62,5 +62,5 @@ export async function remove(parentValue, { id }, { auth }) {
     })
   }
 
-  throw new Error('Please login to delete job.')
+  throw new Error('You are not allowed to perform this action.')
 }

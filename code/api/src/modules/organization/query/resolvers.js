@@ -1,9 +1,13 @@
 // App Imports
 import Organization from '../model'
 
-// Get subscription by ID
-export async function get(parentValue, { id }) {
-  return await Organization.findOne({ _id: id })
+// Get by ID
+export async function get(parentValue, { id }, { auth }) {
+  if(auth.user && auth.user.id) {
+    return await Organization.findOne({ _id: id })
+  }
+
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get by user
@@ -12,10 +16,14 @@ export async function getByUser(parentValue, {}, { auth }) {
     return await Organization.findOne({ _id: auth.user.organizationId })
   }
 
-  throw new Error('Please login to view your organization.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get all
-export async function getAll() {
-  return await Organization.find()
+export async function getAll(parentValue, {}, { auth }) {
+  if(auth.user && auth.user.id) {
+    return await Organization.find()
+  }
+
+  throw new Error('You are not allowed to perform this action.')
 }

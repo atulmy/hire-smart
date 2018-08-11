@@ -20,7 +20,7 @@ export async function create(parentValue, { projectId, candidateId, interviews, 
     })
   }
 
-  throw new Error('Please login to create interviewer.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
@@ -39,7 +39,7 @@ export async function update(parentValue, { id, interviews, status, highlight },
     )
   }
 
-  throw new Error('Please login to update interviewer.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Update status
@@ -71,7 +71,7 @@ export async function updateStatus(parentValue, { id, status }, { auth }) {
     return updated
   }
 
-  throw new Error('Please login to update interviewer.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
@@ -83,5 +83,5 @@ export async function remove(parentValue, { id }, { auth }) {
     })
   }
 
-  throw new Error('Please login to delete interviewer.')
+  throw new Error('You are not allowed to perform this action.')
 }

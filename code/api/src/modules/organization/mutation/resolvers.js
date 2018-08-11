@@ -12,7 +12,7 @@ export async function create(parentValue, { name, description, domain }, { auth 
     })
   }
 
-  throw new Error('Please login to create organization.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Update product
@@ -26,7 +26,7 @@ export async function update(parentValue, { id, name, description, domain }, { a
     )
   }
 
-  throw new Error('Please login to update organization.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
@@ -38,5 +38,5 @@ export async function remove(parentValue, { id }, { auth }) {
     })
   }
 
-  throw new Error('Access denied.')
+  throw new Error('You are not allowed to perform this action.')
 }

@@ -63,5 +63,5 @@ export async function invite(parentValue, { name, email }, { auth }) {
     }
   }
 
-  throw new Error('Please login to invite team mate to your organization.')
+  throw new Error('You are not allowed to perform this action.')
 }

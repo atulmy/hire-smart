@@ -68,7 +68,7 @@ export async function create(parentValue, { projectId, candidateId, interviewerI
     return interview
   }
 
-  throw new Error('Please login to create interview.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
@@ -117,7 +117,7 @@ export async function update(parentValue, { id, projectId, candidateId, intervie
     return interview
   }
 
-  throw new Error('Please login to update interview.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
@@ -151,7 +151,7 @@ export async function remind(parentValue, { id }, { auth }) {
     return interview
   }
 
-  throw new Error('Please login to send interview reminders.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Email to Candidate and Interviewer

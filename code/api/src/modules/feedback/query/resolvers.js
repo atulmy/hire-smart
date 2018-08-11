@@ -14,6 +14,6 @@ export async function getByInterview(parentValue, { interviewId }, { auth }) {
     })
   }
 
-  throw new Error('Please login to view feedback.')
+  throw new Error('You are not allowed to perform this action.')
 }
 

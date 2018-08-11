@@ -14,10 +14,14 @@ export async function getByOrganization(parentValue, {}, { auth }) {
     })
   }
 
-  throw new Error('Please login to view your projects.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get all
-export async function getAll() {
-  return await Project.find()
+export async function getAll(parentValue, {}, { auth }) {
+  if(auth.user && auth.user.id) {
+    return await Project.find()
+  }
+
+  throw new Error('You are not allowed to perform this action.')
 }

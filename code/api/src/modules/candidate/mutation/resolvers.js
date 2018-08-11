@@ -53,7 +53,7 @@ export async function create(parentValue, { projectId, jobId = '', name, email, 
     return candidate
   }
 
-  throw new Error('Please login to create candidate.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
@@ -88,7 +88,7 @@ export async function update(parentValue, { id, projectId, jobId = '', name, ema
     return candidate
   }
 
-  throw new Error('Please login to update candidate.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
@@ -100,5 +100,5 @@ export async function remove(parentValue, { id }, { auth }) {
     })
   }
 
-  throw new Error('Please login to delete candidate.')
+  throw new Error('You are not allowed to perform this action.')
 }

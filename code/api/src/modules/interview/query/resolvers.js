@@ -15,7 +15,7 @@ export async function getByOrganization(parentValue, {}, { auth }) {
     })
   }
 
-  throw new Error('Please login to view interviews.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get by project
@@ -32,5 +32,5 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
       .populate('userId')
   }
 
-  throw new Error('Please login to view interviews.')
+  throw new Error('You are not allowed to perform this action.')
 }

@@ -16,5 +16,5 @@ export async function getByOrganization(parentValue, {}, { auth }) {
     })
   }
 
-  throw new Error('Please login to view invites.')
+  throw new Error('You are not allowed to perform this action.')
 }

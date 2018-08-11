@@ -15,7 +15,7 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
     })
   }
 
-  throw new Error('Please login to view your jobs.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get all

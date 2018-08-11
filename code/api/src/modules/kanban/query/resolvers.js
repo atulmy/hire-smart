@@ -16,9 +16,9 @@ export async function get(parentValue, { id }, { auth }) {
         path: 'interviews',
         populate: [{ path: 'interviewerId' }, { path: 'feedbackId' }]
       })
-  } else {
-    throw new Error('Please login to view your interviewers.')
   }
+
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get by project
@@ -36,12 +36,16 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
         path: 'interviews',
         populate: [{ path: 'interviewerId' }, { path: 'feedbackId' }]
       })
-  } else {
-    throw new Error('Please login to view your interviewers.')
   }
+
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get all
-export async function getAll() {
-  return await Kanban.find()
+export async function getAll(parentValue, { projectId }, { auth }) {
+  if(auth.user && auth.user.id) {
+    return await Kanban.find()
+  }
+
+  throw new Error('You are not allowed to perform this action.')
 }

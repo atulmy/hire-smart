@@ -30,7 +30,7 @@ export async function create(parentValue, { name, description = '' }, { auth }) 
     return project
   }
 
-  throw new Error('Please login to create project.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
@@ -47,7 +47,7 @@ export async function update(parentValue, { id, name, description }, { auth }) {
     )
   }
 
-  throw new Error('Please login to update project.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
@@ -59,5 +59,5 @@ export async function remove(parentValue, { id }, { auth }) {
     })
   }
 
-  throw new Error('Please login to delete project.')
+  throw new Error('You are not allowed to perform this action.')
 }

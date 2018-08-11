@@ -33,7 +33,7 @@ export async function create(parentValue, { projectId, name, email, mobile }, { 
     return interviewer
   }
 
-  throw new Error('Please login to create interviewer.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
@@ -52,7 +52,7 @@ export async function update(parentValue, { id, projectId, name, email, mobile }
     )
   }
 
-  throw new Error('Please login to update interviewer.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
@@ -64,5 +64,5 @@ export async function remove(parentValue, { id }, { auth }) {
     })
   }
 
-  throw new Error('Please login to delete interviewer.')
+  throw new Error('You are not allowed to perform this action.')
 }

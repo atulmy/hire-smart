@@ -19,7 +19,7 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
       .populate('jobId')
   }
 
-  throw new Error('Please login to view your candidates.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get by organization
@@ -33,7 +33,7 @@ export async function getByOrganization(parentValue, {}, { auth }) {
       .populate('jobId')
   }
 
-  throw new Error('Please login to view your candidates.')
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get all
