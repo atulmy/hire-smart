@@ -55,7 +55,7 @@ const view = (env = { NODE_ENV: '', APP_URL: '', GA_TRACKING_ID: '' }, params, a
   </script>
   
   <!-- JS Bundles -->
-  <script type="text/javascript" src="${ env.APP_URL }/js/bundles/vendor.js?v=0.1"></script>
+  <script type="text/javascript" src="${ env.APP_URL }/js/bundles/vendor.js?v=0.2"></script>
   <script type="text/javascript" src="${ env.APP_URL }/js/bundles/app.js?v=${ env.NODE_ENV !== 'production' ? Math.random() : params.site.version }"></script>
   
   <!-- Global site tag (gtag.js) - Google Analytics -->
