@@ -14,7 +14,7 @@ import { SheetsRegistry } from 'react-jss/lib/jss'
 import JssProvider from 'react-jss/lib/JssProvider'
 
 // App Imports
-import { APP_URL, NODE_ENV } from '../config/env'
+import { APP_URL, NODE_ENV, GA_TRACKING_ID } from '../config/env'
 import params from '../config/params'
 import { rootReducer } from '../store'
 import routes from '../routes'
@@ -84,7 +84,7 @@ export default function (app) {
           const sheetsRegistry = new SheetsRegistry()
           const generateClassName = createGenerateClassName()
 
-          const appHtml = renderToString(
+          const html = renderToString(
             <Provider store={store} key={'provider'}>
               <StaticRouter context={context} location={request.url}>
                 <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
@@ -95,12 +95,12 @@ export default function (app) {
           )
 
           // Get styles
-          const appCss = sheetsRegistry.toString()
+          const css = sheetsRegistry.toString()
 
           // Get Meta header tags
-          const helmet = Helmet.renderStatic()
+          const meta = Helmet.renderStatic()
 
-          const html = view(APP_URL, NODE_ENV, params, helmet, appHtml, appCss, initialState)
+          const markup = view({ APP_URL, NODE_ENV, GA_TRACKING_ID }, params, { meta, html, css, initialState })
 
           // Reset the state on server
           store.dispatch({
@@ -108,7 +108,7 @@ export default function (app) {
           })
 
           // Finally send generated HTML with initial data to the project
-          return response.status(status).send(html)
+          return response.status(status).send(markup)
         }
       })
       .catch(error => {
