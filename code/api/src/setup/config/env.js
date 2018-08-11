@@ -7,11 +7,15 @@ dotenv.config()
 // Environment
 export const NODE_ENV = process.env.NODE_ENV
 
+// Security
+export const SECRET_KEY = process.env.SECRET_KEY
+
 // Port
 export const PORT = process.env.PORT
 
-// Mongo URL
+// Database
 export const MONGO_URL = process.env.MONGO_URL
+export const API_DOCS = process.env.API_DOCS
 
 // URL
 export const APP_URL = process.env.APP_URL

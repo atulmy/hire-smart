@@ -5,6 +5,7 @@ import React from 'react'
 import isEmpty from 'validator/lib/isEmpty'
 
 // App Imports
+import { SECRET_KEY } from '../../../setup/config/env'
 import serverConfig from '../../../setup/config/server'
 import params from '../../../setup/config/params'
 import { randomNumber } from '../../../setup/helpers'
@@ -66,7 +67,7 @@ export async function startNow(parentValue, {}, { auth }) {
 
       return {
         user,
-        token: jwt.sign(token, serverConfig.secret)
+        token: jwt.sign(token, SECRET_KEY)
       }
     } catch(error) {
       throw new Error(`There was some error. Please try again.`)
@@ -242,7 +243,7 @@ export async function verifyUpdateAccount(parentValue, { email, name, password, 
 
       return {
         user: user,
-        token: jwt.sign(token, serverConfig.secret),
+        token: jwt.sign(token, SECRET_KEY),
         message
       }
     } else {
@@ -322,7 +323,7 @@ export async function acceptInvite(parentValue, { id, name, password }) {
 
     return {
       user: user,
-      token: jwt.sign(token, serverConfig.secret),
+      token: jwt.sign(token, SECRET_KEY),
       message: `Invitation accepted successfully. Welcome ${ name }!`
     }
   } else {
@@ -349,7 +350,7 @@ export async function update(parentValue, { name }, { auth }) {
 
     return {
       user: user,
-      token: jwt.sign(token, serverConfig.secret),
+      token: jwt.sign(token, SECRET_KEY),
       message: 'Your profile has been updates successfully.'
     }
   }

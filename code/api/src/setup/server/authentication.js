@@ -1,8 +1,8 @@
 // Imports
 import jwt from 'jsonwebtoken'
-import serverConfig from '../config/server.json'
 
 // App Imports
+import { SECRET_KEY } from '../../setup/config/env'
 import User from '../../modules/user/model'
 
 // Authentication middleware
@@ -12,7 +12,7 @@ export default async function (request, response, next) {
   if (authToken && authToken !== null) {
     try {
       const token = authToken.split(' ')
-      const userToken = jwt.verify(token[1], serverConfig.secret)
+      const userToken = jwt.verify(token[1], SECRET_KEY)
       let user = await User.findOne({ _id: userToken.id })
 
       if(user) {

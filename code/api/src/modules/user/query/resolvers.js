@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 // App Imports
-import serverConfig from '../../../setup/config/server'
+import { SECRET_KEY } from '../../../setup/config/env'
 import User from '../model'
 
 // Login
@@ -32,7 +32,7 @@ export async function login(parentValue, { email, password }) {
 
       return {
         user: user,
-        token: jwt.sign(token, serverConfig.secret)
+        token: jwt.sign(token, SECRET_KEY)
       }
     }
   }
