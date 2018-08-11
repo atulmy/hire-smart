@@ -2,7 +2,7 @@
 import React from 'react'
 import moment from 'moment'
 import ical from 'ical-generator'
-import isEmpty from 'validator/lib/isEmpty'
+import isEmpty from 'lodash/isEmpty'
 
 // App Imports
 import params from '../../../setup/config/params'

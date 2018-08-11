@@ -66,6 +66,17 @@ export function isEmpty(obj) {
   return true
 }
 
+// Check email
+export function isEmail(email) {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(String(email).toLowerCase())
+}
+
+// Auth Check
+export function authCheck(auth) {
+  return auth.user && auth.user._id
+}
+
 // Slug
 export function slug(text) {
   return text.toString().toLowerCase()

@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import isEmpty from 'validator/lib/isEmpty'
+import isEmpty from 'lodash/isEmpty'
 import Datetime from 'react-datetime'
 import moment from 'moment'
 
@@ -76,7 +76,7 @@ class CreateOrEdit extends PureComponent {
         projectId: interview.projectId._id,
         candidateId: interview.candidateId._id,
         interviewerId: interview.interviewerId._id,
-        dateTime: moment(interview.dateTime),
+        dateTime: moment(new Date(interview.dateTime)),
         mode: interview.mode,
         note: interview.note
       })
@@ -190,7 +190,7 @@ class CreateOrEdit extends PureComponent {
                 inputProps={{
                   id: 'candidate-id',
                   name: 'candidateId',
-                  required: 'required'
+                  required: true
                 }}
               >
                 <MenuItem value="">
@@ -225,7 +225,7 @@ class CreateOrEdit extends PureComponent {
                 inputProps={{
                   id: 'interviewer-id',
                   name: 'interviewerId',
-                  required: 'required'
+                  required: true
                 }}
               >
                 <MenuItem value="">
@@ -285,7 +285,7 @@ class CreateOrEdit extends PureComponent {
                 inputProps={{
                   id: 'mode-id',
                   name: 'mode',
-                  required: 'required'
+                  required: true
                 }}
               >
                 <MenuItem value="">

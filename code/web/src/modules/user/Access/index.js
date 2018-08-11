@@ -13,11 +13,12 @@ import styles from './styles'
 import AuthCheckAccess from '../../auth/AuthCheckAccess'
 import Login from './Login'
 import Signup from './Signup'
+import ForgotPassword from './ForgotPassword'
 
 // Component
 class Access extends PureComponent {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       tab: 'login'
@@ -25,7 +26,7 @@ class Access extends PureComponent {
   }
 
   tabSwitch = (event, tab) => {
-    this.setState({tab})
+    this.setState({ tab })
   }
 
   render() {
@@ -43,6 +44,7 @@ class Access extends PureComponent {
             >
               <Tab label={'Login'} value={'login'} />
               <Tab label={'Signup'} value={'signup'} />
+              <Tab label={'Forgot Password'} value={'forgotPassword'} />
             </Tabs>
           </div>
 
@@ -50,7 +52,8 @@ class Access extends PureComponent {
             {
               {
                 login: <Login />,
-                signup: <Signup />
+                signup: <Signup />,
+                forgotPassword: <ForgotPassword />
               }[tab]
             }
           </div>

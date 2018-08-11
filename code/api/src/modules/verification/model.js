@@ -2,6 +2,9 @@
 import mongoose from 'mongoose'
 import { collection as User } from '../user/model'
 
+// App Imports
+import params from '../../setup/config/params'
+
 // Collection name
 export const collection = 'Verification'
 
@@ -23,6 +26,11 @@ const Schema = new mongoose.Schema({
     type: Boolean,
     required: true,
     default: false
+  },
+  type: {
+    type: String,
+    required: true,
+    default: params.user.verification.signup
   }
 }, {timestamps: true})
 

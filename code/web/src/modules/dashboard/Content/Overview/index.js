@@ -1,7 +1,6 @@
 // Imports
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import isEmpty from 'validator/lib/isEmpty'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { DragDropContext } from 'react-dnd'

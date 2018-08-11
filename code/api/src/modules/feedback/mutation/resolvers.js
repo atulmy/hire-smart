@@ -1,6 +1,6 @@
 // Imports
 import React from 'react'
-import isEmpty from 'validator/lib/isEmpty'
+import isEmpty from 'lodash/isEmpty'
 
 // App Imports
 import params from '../../../setup/config/params'

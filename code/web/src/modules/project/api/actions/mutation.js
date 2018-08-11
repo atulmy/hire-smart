@@ -1,6 +1,6 @@
 // Imports
 import axios from 'axios'
-import isEmpty from 'validator/lib/isEmpty'
+import isEmpty from 'lodash/isEmpty'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'

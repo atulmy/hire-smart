@@ -29,7 +29,7 @@ const ViewFields = (props) => {
         </Typography>
 
         <Typography gutterBottom>
-          { moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }
+          { moment(new Date(interview.dateTime)).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }
         </Typography>
       </div>
 

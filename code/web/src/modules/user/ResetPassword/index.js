@@ -19,20 +19,18 @@ import styles from './styles'
 
 // App Imports
 import { nullToEmptyString } from '../../../setup/helpers'
-import { verifyCode, verifySendCode, verifyUpdateAccount } from '../api/actions/mutation'
+import { resetPasswordSendCode, resetPasswordVerifyCode, resetPasswordUpdate } from '../api/actions/mutation'
 import { messageShow } from '../../common/api/actions'
 
 // Component
-class Verify extends PureComponent {
+class ResetPassword extends PureComponent {
   constructor(props) {
     super(props)
 
     this.demo = {
       email: '',
       verification: '',
-      name: '',
-      password: '',
-      organizationName: ''
+      password: ''
     }
 
     this.state = {
@@ -69,12 +67,12 @@ class Verify extends PureComponent {
     const { email } = this.state
 
     if(!isEmpty(email)) {
-      const { verifySendCode, messageShow } = this.props
+      const { resetPasswordSendCode, messageShow } = this.props
 
       this.isLoadingSubmitToggle(true)
 
       try {
-        const { data } = await verifySendCode({ email })
+        const { data } = await resetPasswordSendCode({ email })
 
         if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
@@ -108,7 +106,7 @@ class Verify extends PureComponent {
   step2 = async event => {
     event.preventDefault()
 
-    const { verifyCode, messageShow } = this.props
+    const { resetPasswordVerifyCode, messageShow } = this.props
 
     const { email, verification } = this.state
 
@@ -117,7 +115,7 @@ class Verify extends PureComponent {
       this.isLoadingSubmitToggle(true)
 
       try {
-        const { data } = await verifyCode({ email, code: verification })
+        const { data } = await resetPasswordVerifyCode({ email, code: verification })
 
         if(data.errors && data.errors.length > 0) {
           messageShow(data.errors[0].message)
@@ -153,13 +151,13 @@ class Verify extends PureComponent {
   step3 = async event => {
     event.preventDefault()
 
-    const { verifyUpdateAccount, messageShow } = this.props
+    const { resetPasswordUpdate, messageShow } = this.props
 
-    const { email, name, password, organizationName } = this.state
+    const { email, password } = this.state
 
-    if(!isEmpty(email) && !isEmpty(name) && !isEmpty(password) && !isEmpty(organizationName)) {
+    if(!isEmpty(email) && !isEmpty(password)) {
 
-      verifyUpdateAccount({ email, name, password, organizationName })
+      resetPasswordUpdate({ email, password })
     } else {
       messageShow('Please provide all the details.')
     }
@@ -167,7 +165,7 @@ class Verify extends PureComponent {
 
   render() {
     const { classes, user: { isLoading } } = this.props
-    const { isLoadingSubmit, name, email, verification, password, organizationName } = this.state
+    const { isLoadingSubmit, email, verification, password } = this.state
     const { enableStep1, expandStep1, enableStep2, expandStep2, enableStep3, expandStep3  } = this.state
 
     return (
@@ -175,7 +173,7 @@ class Verify extends PureComponent {
         {/* STEP 1: Provide your official email */}
         <ExpansionPanel className={classes.panel} disabled={!enableStep1} expanded={expandStep1}>>
           <ExpansionPanelSummary>
-            <Typography variant={'body2'}>STEP 1: Provide your official email address</Typography>
+            <Typography variant={'body2'}>STEP 1: Provide your email address</Typography>
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails style={{ display: 'block' }}>
@@ -264,10 +262,10 @@ class Verify extends PureComponent {
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
-        {/* STEP 3: Account info */}
+        {/* STEP 3: Set new password */}
         <ExpansionPanel className={classes.panel} disabled={!enableStep3} expanded={expandStep3}>
           <ExpansionPanelSummary>
-            <Typography variant={'body2'}>STEP 3: Account info</Typography>
+            <Typography variant={'body2'}>STEP 3: Set new password</Typography>
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails style={{ display: 'block' }}>
@@ -294,39 +292,9 @@ class Verify extends PureComponent {
                   type={'password'}
                   value={nullToEmptyString(password)}
                   onChange={this.onType}
-                  label={'Your password'}
+                  label={'Your new password'}
                   placeholder={'Enter new password'}
                   helperText={'use this password to login'}
-                  required={true}
-                  margin={'normal'}
-                  autoComplete={'off'}
-                  fullWidth
-                />
-              </Grid>
-
-              {/* Input - name */}
-              <Grid item xs={12}>
-                <TextField
-                  name={'name'}
-                  value={nullToEmptyString(name)}
-                  onChange={this.onType}
-                  label={'Your full name'}
-                  placeholder={'Enter full name'}
-                  required={true}
-                  margin={'normal'}
-                  autoComplete={'off'}
-                  fullWidth
-                />
-              </Grid>
-
-              {/* Input - Organization name */}
-              <Grid item xs={12}>
-                <TextField
-                  name={'organizationName'}
-                  value={nullToEmptyString(organizationName)}
-                  onChange={this.onType}
-                  label={'Organization name'}
-                  placeholder={'Enter name (eg: Hiresmart)'}
                   required={true}
                   margin={'normal'}
                   autoComplete={'off'}
@@ -362,20 +330,20 @@ class Verify extends PureComponent {
 }
 
 // Component Properties
-Verify.propTypes = {
+ResetPassword.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  verifySendCode: PropTypes.func.isRequired,
-  verifyCode: PropTypes.func.isRequired,
-  verifyUpdateAccount: PropTypes.func.isRequired,
+  resetPasswordSendCode: PropTypes.func.isRequired,
+  resetPasswordVerifyCode: PropTypes.func.isRequired,
+  resetPasswordUpdate: PropTypes.func.isRequired,
   messageShow: PropTypes.func.isRequired,
 }
 
 // Component State
-function verifyState(state) {
+function resetPasswordState(state) {
   return {
     user: state.user
   }
 }
 
-export default connect(verifyState, { verifySendCode, verifyCode, verifyUpdateAccount, messageShow })(withStyles(styles)(Verify))
+export default connect(resetPasswordState, { resetPasswordSendCode, resetPasswordVerifyCode, resetPasswordUpdate, messageShow })(withStyles(styles)(ResetPassword))

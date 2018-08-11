@@ -36,12 +36,12 @@ class Journey extends PureComponent {
                   list && list.length > 0
                     ? list.map((activity, i) => (
                         <div key={activity._id}>
-                          <div title={moment(activity.createdAt).fromNow()}>
+                          <div title={moment(new Date(activity.createdAt)).fromNow()}>
                             <span className={classes.timeLineItemTop}>
                               <span className={classes.timeLineItemTopIcon}>{ i+1 }</span>
 
                               <span className={classes.timeLineItemTopText}>
-                                <Typography variant={'body2'}>{ moment(activity.createdAt).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }</Typography>
+                                <Typography variant={'body2'}>{ moment(new Date(activity.createdAt)).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }</Typography>
                               </span>
                             </span>
 

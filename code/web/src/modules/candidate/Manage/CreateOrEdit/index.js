@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import isEmpty from 'validator/lib/isEmpty'
+import isEmpty from 'lodash/isEmpty'
 
 // UI Imports
 import Grid from '@material-ui/core/Grid'
@@ -247,7 +247,7 @@ class CreateOrEdit extends PureComponent {
                   inputProps={{
                     id: 'project-id',
                     name: 'projectId',
-                    required: 'required'
+                    required: true
                   }}
                 >
                   <MenuItem value="">

@@ -25,6 +25,10 @@
         "key": "user",
         "title": "User"
       }
+    },
+    "verification": {
+      "signup": "signup",
+      "password": "password"
     }
   },
 

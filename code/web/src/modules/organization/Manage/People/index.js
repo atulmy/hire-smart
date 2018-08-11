@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 
 // UI Imports
 import Grid from '@material-ui/core/Grid'
@@ -26,7 +27,6 @@ import { getList as getListInvites } from '../../../invite/api/actions/query'
 import { inviteToOrganization } from '../../../invite/api/actions/mutation'
 import { messageShow } from '../../../common/api/actions'
 import Loading from '../../../common/Loading'
-import isEmpty from 'validator/lib/isEmpty'
 import EmptyMessage from '../../../common/EmptyMessage'
 
 // Component

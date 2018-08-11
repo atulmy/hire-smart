@@ -81,7 +81,7 @@ class Item extends PureComponent {
                       </ListItemIcon>
 
                       <ListItemText
-                        primary={moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)}
+                        primary={moment(new Date(interview.dateTime)).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)}
                         className={classes.infoItemText}
                       />
                     </ListItem>

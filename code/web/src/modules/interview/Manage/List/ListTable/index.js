@@ -43,7 +43,7 @@ const ListTable = (props) => {
               <TableRow key={interview._id}>
                   <TableCell>{ interview.candidateId.name }</TableCell>
                   <TableCell>{ interview.interviewerId.name }</TableCell>
-                  <TableCell>{ moment(interview.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)  }</TableCell>
+                  <TableCell>{ moment(new Date(interview.dateTime)).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)  }</TableCell>
                   <TableCell className={classes.textCenter}>
                     <Tooltip title={'Send reminder'} placement={'top'} enterDelay={500}>
                       <IconButton

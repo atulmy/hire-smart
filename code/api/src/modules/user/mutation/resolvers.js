@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import React from 'react'
-import isEmpty from 'validator/lib/isEmpty'
+import isEmpty from 'lodash/isEmpty'
 
 // App Imports
 import { SECRET_KEY } from '../../../setup/config/env'
@@ -86,7 +86,7 @@ export async function verifySendCode(parentValue, { email }, { auth }) {
     let code
 
     if(auth.user && auth.user.id && auth.user.demo) {
-      const verification = await Verification.findOne({ userId: auth.user.id, email })
+      const verification = await Verification.findOne({ userId: auth.user.id, email, verified: false, type: params.user.verification.signup })
 
       if(verification) {
         code = verification.code
@@ -99,7 +99,8 @@ export async function verifySendCode(parentValue, { email }, { auth }) {
       Verification.create({
         email,
         code,
-        verified: false
+        verified: false,
+        type: params.user.verification.signup
       })
     }
 
@@ -126,15 +127,13 @@ export async function verifySendCode(parentValue, { email }, { auth }) {
 
 // Verify email send code
 export async function verifyCode(parentValue, { email, code }, { auth }) {
-  const verification = await Verification.findOne({ email, code })
+  const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.signup })
 
   if(verification) {
     // Mark as verified
     await Verification.updateOne(
       {_id: verification._id},
-      {
-        $set: { verified: true }
-      }
+      { verified: true }
     )
 
     return {
@@ -147,7 +146,7 @@ export async function verifyCode(parentValue, { email, code }, { auth }) {
 
 // Verify create/update user account
 export async function verifyUpdateAccount(parentValue, { email, name, password, organizationName }, { auth }) {
-  const verification = await Verification.findOne({ email, verified: true })
+  const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.signup })
 
   const userCheck = await User.findOne({ email: verification.email })
 
@@ -356,4 +355,109 @@ export async function update(parentValue, { name }, { auth }) {
   }
 
   throw new Error('Please login to update profile.')
+}
+
+// Reset password send code
+export async function resetPasswordSendCode(parentValue, { email }) {
+  const user = await User.findOne({ email })
+
+  if(user) {
+    let code
+
+    const verification = await Verification.findOne({ email, verified: false, type: params.user.verification.password })
+
+    if(verification) {
+      code = verification.code
+    }
+
+    if(!code) {
+      code = randomNumber(1000, 9999)
+
+      Verification.create({
+        userId: user._id,
+        email,
+        code,
+        verified: false,
+        type: params.user.verification.password
+      })
+    }
+
+    sendEmail({
+      to: {
+        email: email
+      },
+      from: {
+        name: params.site.emails.help.name,
+        email: params.site.emails.help.email
+      },
+      subject: `Verification Code: ${ code }`,
+      template:
+        <Verify
+          code={code}
+        />
+    })
+
+    return {
+      _id: null
+    }
+  } else {
+    throw new Error(`The email ${ email } is not registered. Please signup.`)
+  }
+}
+
+// Verify email send code
+export async function resetPasswordVerifyCode(parentValue, { email, code }) {
+  const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.password })
+
+  if(verification) {
+    // Mark as verified
+    await Verification.updateOne(
+      {_id: verification._id},
+      { verified: true }
+    )
+
+    return {
+      _id: null
+    }
+  } else {
+    throw new Error('The code you entered is invalid. Please try again with valid code.')
+  }
+}
+
+// Reset password update
+export async function resetPasswordUpdate(parentValue, { email, password }) {
+  const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.password })
+
+  const user = await User.findOne({ email: verification.email })
+
+  if(user) {
+    if (verification && verification.verified) {
+      const passwordHashed = await bcrypt.hash(password, serverConfig.saltRounds)
+
+      // Update user
+      await User.updateOne(
+        { _id: user.id },
+        { password: passwordHashed }
+      )
+
+      const token = {
+        id: user._id,
+        organizationId: user.organizationId,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        demo: user.demo
+      }
+
+      return {
+        user,
+        token: jwt.sign(token, SECRET_KEY),
+        message: 'Your password has been reset successfully.'
+      }
+    } else {
+      throw new Error('The code you entered is invalid. Please try again with valid code.')
+    }
+  } else {
+    throw new Error(`The email ${ email } is not registered. Please signup.`)
+  }
 }
