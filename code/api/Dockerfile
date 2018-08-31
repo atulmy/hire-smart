@@ -2,7 +2,7 @@ FROM node:8
 RUN mkdir -p /app
 COPY . /app
 WORKDIR /app
-RUN npm install
+RUN npm install --quiet
 RUN npm run setup
 RUN npm run build:prod
 EXPOSE 8000

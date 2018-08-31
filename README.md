@@ -5,6 +5,7 @@
 <h1 align="center">HIRE SMART</h1>
 <p align="center">An application for human resource team / recruitment consultancies to streamline hiring process, scheduling interviews and tracking candidates. This project is currently <i><strong>work in progress</strong></i>.</p>
 
+
 ## Technology Stack
   - API
     - Node
@@ -21,6 +22,7 @@
     - React Native
     - Redux
     - React Navigation
+
 
 ## Setup and Running
 - Prerequisites
@@ -51,6 +53,22 @@
       - `cd code/deploy`
       - Update your domain, SSL certificate path and other configurations in `docker-compse.yml`
       - Start Docker containers: `docker-compose up -d`
+
     
 ## Website
-[hiresmart.app](https://hiresmart.app/) [coming soon]
+[hiresmart.app](https://hiresmart.app/)
+
+
+## Authors
+- Atul Yadav - [GitHub](https://github.com/atulmy) · [Twitter](https://twitter.com/atulmy)
+- [YOUR NAME HERE] - Feel free to contribute to the codebase by resolving any open issues, refactoring, adding new features, writing test cases or any other way to make the project better and helpful to the community. Feel free to fork and send pull requests.
+
+
+## Support
+[![Become a Patreon](https://raw.githubusercontent.com/atulmy/atulmy.github.io/master/images/mix/patreon.png?v=1)](https://www.patreon.com/atulmy)
+
+
+## License
+Copyright (c) 2018 Atul Yadav http://github.com/atulmy
+
+The MIT License (http://www.opensource.org/licenses/mit-license.php)
