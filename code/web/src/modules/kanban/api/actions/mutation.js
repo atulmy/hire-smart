@@ -1,10 +1,10 @@
 // Imports
 import axios from 'axios'
+import queryBuilder from 'gql-query-builder'
 import isEmpty from 'lodash/isEmpty'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
-import { queryBuilder } from '../../../../setup/helpers'
 
 // Create or update
 export function createOrUpdate(kanban) {

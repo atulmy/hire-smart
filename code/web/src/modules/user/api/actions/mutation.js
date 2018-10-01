@@ -1,9 +1,9 @@
 // Imports
 import axios from 'axios/index'
+import queryBuilder from 'gql-query-builder'
 import cookie from 'js-cookie'
 
 // App Imports
-import { queryBuilder } from '../../../../setup/helpers'
 import { API_URL } from '../../../../setup/config/env'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
 import { LOGIN_REQUEST, LOGIN_RESPONSE, SET_USER, LOGOUT } from './types'

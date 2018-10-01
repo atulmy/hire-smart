@@ -1,9 +1,9 @@
 // Imports
 import axios from 'axios'
+import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
-import { queryBuilder } from '../../../../setup/helpers'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
 import { LIST_DONE, LIST_REQUEST, LIST_RESPONSE } from './types'
 

@@ -1,9 +1,9 @@
 // Imports
 import axios from 'axios'
+import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
-import { queryBuilder } from '../../../../setup/helpers'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
 import { JOB_LIST_CACHE, JOB_SINGLE_CACHE, JOB_LIST_BY_PROJECT_CACHE } from './cache-keys'
 import {
@@ -42,7 +42,7 @@ export function getList(isLoading = true) {
         isLoading
       })
     }
-    
+
     try {
       const { data } = await axios.post(API_URL, queryBuilder({
         type: 'query',

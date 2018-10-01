@@ -1,9 +1,9 @@
 // Imports
 import axios from 'axios'
+import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
-import { queryBuilder } from '../../../../setup/helpers'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
 import { CANDIDATE_LIST_CACHE, CANDIDATE_SINGLE_CACHE, CANDIDATE_LIST_BY_PROJECT_CACHE } from './cache-keys'
 import {
