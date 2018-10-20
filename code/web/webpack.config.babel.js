@@ -1,7 +1,6 @@
 // Imports
 import path from 'path'
 import Dotenv from 'dotenv-webpack'
-import HardSourceWebpackPlugin from 'hard-source-webpack-plugin'
 
 // Config
 const config = {
