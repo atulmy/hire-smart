@@ -55,7 +55,6 @@
     "@babel/preset-env": "7.1.0",
     "@babel/preset-react": "7.0.0",
     "@babel/runtime": "7.1.2",
-    "babel-cli": "6.26.0",
     "babel-loader": "8.0.4",
     "dotenv-webpack": "1.5.7",
     "nodemon": "1.18.4",
