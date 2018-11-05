@@ -79,7 +79,7 @@ class Home extends PureComponent {
 
           {/* Hero CTA */}
           <Button
-            variant={'raised'}
+            variant={'contained'}
             className={classes.button}
             onClick={this.startNow}
             disabled={isLoading}
@@ -194,7 +194,7 @@ class Home extends PureComponent {
           </div>
 
           <Button
-            variant={'raised'}
+            variant={'contained'}
             className={classes.bottomCtaButton}
             onClick={this.startNow}
             disabled={isLoading}

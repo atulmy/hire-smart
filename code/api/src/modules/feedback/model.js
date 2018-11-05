@@ -3,7 +3,6 @@ import mongoose from 'mongoose'
 
 // App Imports
 import { collection as Organization } from '../organization/model'
-import { collection as Interview } from '../interview/model'
 
 // Collection name
 export const collection = 'Feedback'
@@ -19,7 +18,7 @@ const Schema = new mongoose.Schema({
   interviewId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: Interview
+    ref: 'Interview'
   },
   text: {
     type: String,

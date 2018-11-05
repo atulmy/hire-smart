@@ -103,7 +103,7 @@ class Header extends PureComponent {
                   }}
                 >
                   <Button
-                    variant={'raised'}
+                    variant={'contained'}
                     className={classes.button}
                   >
                     <IconErrorOutline className={classes.buttonIcon} />
