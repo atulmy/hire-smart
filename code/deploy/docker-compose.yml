@@ -14,8 +14,8 @@ services:
     image: api:1.0.0
     build: ../api
     volumes:
-      - ../api/public:/app/public
-      - ../api/uploads:/app/uploads
+      - ../api/public:/user/src/app/public
+      - ../api/uploads:/user/src/app/uploads
     restart: always
     networks:
       - front
