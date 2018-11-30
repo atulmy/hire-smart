@@ -42,7 +42,7 @@ const Features = (props) => {
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -72,7 +72,7 @@ const Features = (props) => {
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -94,7 +94,7 @@ const Features = (props) => {
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -124,7 +124,7 @@ const Features = (props) => {
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -146,7 +146,7 @@ const Features = (props) => {
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -176,7 +176,7 @@ const Features = (props) => {
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -198,7 +198,7 @@ const Features = (props) => {
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -228,7 +228,7 @@ const Features = (props) => {
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >

@@ -17,7 +17,7 @@ import AlignCenterMiddle from '../AlignCenterMiddle'
 const NotFound = (props) => (
   <div className={props.classes.root}>
     <AlignCenterMiddle>
-      <Typography variant={'headline'} gutterBottom>
+      <Typography variant={'h5'} gutterBottom>
         Its a 404
       </Typography>
 

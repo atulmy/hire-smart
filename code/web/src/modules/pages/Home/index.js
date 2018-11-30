@@ -62,7 +62,7 @@ class Home extends PureComponent {
         {/* Hero */}
         <div className={classes.hero}>
           <Typography
-            variant={'display4'}
+            variant={'h1'}
             title={'HireSmart'}
             className={classes.title}
           >
@@ -70,7 +70,7 @@ class Home extends PureComponent {
           </Typography>
 
           <Typography
-            variant={'headline'}
+            variant={'h5'}
             gutterBottom
             className={classes.subTitle}
           >
@@ -106,7 +106,7 @@ class Home extends PureComponent {
           <div className={classes.featureItem}>
             <div className={classes.featureItemLeft}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -135,7 +135,7 @@ class Home extends PureComponent {
 
             <div className={classes.featureItemRight}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -156,7 +156,7 @@ class Home extends PureComponent {
           <div className={classes.featureItem}>
             <div className={classes.featureItemLeft}>
               <Typography
-                variant={'display1'}
+                variant={'h4'}
                 gutterBottom
                 className={classes.featureItemTitle}
               >
@@ -185,7 +185,7 @@ class Home extends PureComponent {
             <img src={`${ APP_URL }/images/illustrations/organize-resume.svg`} style={{ width: 275, marginBottom: '3rem' }} />
 
             <Typography
-              variant={'headline'}
+              variant={'h5'}
               gutterBottom
               className={classes.featureItemTitle}
             >
