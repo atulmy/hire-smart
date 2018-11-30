@@ -6,6 +6,7 @@ import activity from '../../modules/activity'
 import candidate from '../../modules/candidate'
 import interviewer from '../../modules/interviewer'
 import job from '../../modules/job'
+import kanban from '../../modules/kanban'
 
 // Modules
 export default {
@@ -16,4 +17,5 @@ export default {
   ...candidate,
   ...interviewer,
   ...job,
+  ...kanban,
 }

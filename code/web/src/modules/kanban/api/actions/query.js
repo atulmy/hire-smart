@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
@@ -44,8 +43,7 @@ export function getList(isLoading = true) {
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'kanbansByOrganization',
         fields: [
           '_id',
@@ -56,7 +54,7 @@ export function getList(isLoading = true) {
           'highlight',
           'createdAt'
         ]
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -64,7 +62,7 @@ export function getList(isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.kanbansByOrganization
+        const list = data.data
 
         dispatch({
           type: LIST_RESPONSE,
@@ -115,10 +113,9 @@ export function get(kanbanId, isLoading = true) {
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'kanban',
-        data: { id: kanbanId },
+        params: { id: kanbanId },
         fields: [
           '_id',
           'candidateId { _id, projectId { _id, name }, jobId { _id, role, description }, name, email, mobile, experience, resume, salaryCurrent, salaryExpected }',
@@ -127,7 +124,7 @@ export function get(kanbanId, isLoading = true) {
           'highlight',
           'createdAt'
         ]
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -135,7 +132,7 @@ export function get(kanbanId, isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const item = data.data.kanban
+        const item = data.data
 
         dispatch({
           type: SINGLE_RESPONSE,
@@ -186,10 +183,9 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'kanbansByProject',
-        data: { projectId },
+        params: { projectId },
         fields: [
           '_id',
           'candidateId { _id, name, mobile, experience, jobId { _id, role, description } }',
@@ -198,7 +194,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
           'highlight',
           'createdAt'
         ]
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -206,7 +202,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.kanbansByProject
+        const list = data.data
 
         dispatch({
           type: LIST_BY_PROJECT_RESPONSE,

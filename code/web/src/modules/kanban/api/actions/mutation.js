@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 import isEmpty from 'lodash/isEmpty'
 
 // App Imports
@@ -19,47 +18,39 @@ export function createOrUpdate(kanban) {
 // Create
 export function create(kanban) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'kanbanCreate',
-      data: kanban,
-      fields: ['_id']
-    }))
+      params: kanban
+    })
   }
 }
 
 // Update
 export function update(kanban) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'kanbanUpdate',
-      data: kanban,
-      fields: ['_id']
-    }))
+      params: kanban
+    })
   }
 }
 
 // Update status
 export function updateStatus(kanban) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'kanbanUpdateStatus',
-      data: kanban,
-      fields: ['_id']
-    }))
+      params: kanban
+    })
   }
 }
 
 // Remove
 export function remove(data) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'kanbanRemove',
-      data,
-      fields: ['_id']
-    }))
+      params: data
+    })
   }
 }

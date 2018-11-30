@@ -2,14 +2,15 @@
 import isEmpty from 'lodash/isEmpty'
 
 // App Imports
-import params from '../../../setup/config/params'
-import Activity from '../../activity/model'
-import Kanban from '../model'
+import params from '../../setup/config/params'
+import { authCheck } from '../../setup/helpers/utils'
+import Activity from '../activity/model'
+import Kanban from './model'
 
 // Create
-export async function create(parentValue, { projectId, candidateId, interviews, status, highlight }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Kanban.create({
+export async function kanbanCreate({ params: { projectId, candidateId, interviews, status, highlight }, auth }) {
+  if(authCheck(auth)) {
+    const data = await Kanban.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
       projectId,
@@ -18,15 +19,19 @@ export async function create(parentValue, { projectId, candidateId, interviews, 
       status,
       highlight
     })
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
-export async function update(parentValue, { id, interviews, status, highlight }, { auth }) {
-  if(auth.user && auth.user.id && !isEmpty(id)) {
-    return await Kanban.updateOne(
+export async function kanbanUpdate({ params: { id, interviews, status, highlight }, auth }) {
+  if(authCheck(auth) && !isEmpty(id)) {
+    const data = await Kanban.updateOne(
       { _id: id },
       {
         $set: {
@@ -37,14 +42,18 @@ export async function update(parentValue, { id, interviews, status, highlight },
         }
       }
     )
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Update status
-export async function updateStatus(parentValue, { id, status }, { auth }) {
-  if(auth.user && auth.user.id && !isEmpty(id)) {
+export async function kanbanUpdateStatus({ params: { id, status }, auth }) {
+  if(authCheck(auth) && !isEmpty(id)) {
     const updated = await Kanban.updateOne(
       { _id: id },
       {
@@ -68,19 +77,25 @@ export async function updateStatus(parentValue, { id, status }, { auth }) {
       })
     }
 
-    return updated
+    return {
+      data: updated
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
-export async function remove(parentValue, { id }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Kanban.remove({
+export async function kanbanRemove({ params: { id }, auth }) {
+  if(authCheck(auth)) {
+    const data = await Kanban.remove({
       _id: _id,
       userId: auth.user.id
     })
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')

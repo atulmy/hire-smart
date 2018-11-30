@@ -1,10 +1,11 @@
 // App Imports
-import Kanban from '../model'
+import { authCheck } from '../../setup/helpers/utils'
+import Kanban from './model'
 
-// Get interviewer by ID
-export async function get(parentValue, { id }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Kanban.findOne({
+// Get by ID
+export async function kanban({ params: { id }, auth }) {
+  if(authCheck(auth)) {
+    const data = await Kanban.findOne({
       _id: id,
       organizationId: auth.user.organizationId
     })
@@ -16,15 +17,19 @@ export async function get(parentValue, { id }, { auth }) {
         path: 'interviews',
         populate: [{ path: 'interviewerId' }, { path: 'feedbackId' }]
       })
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Get by project
-export async function getByProject(parentValue, { projectId }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Kanban.find({
+export async function kanbansByProject({ params: { projectId }, auth }) {
+  if(authCheck(auth)) {
+    const data = await Kanban.find({
       organizationId: auth.user.organizationId,
       projectId
     })
@@ -36,15 +41,23 @@ export async function getByProject(parentValue, { projectId }, { auth }) {
         path: 'interviews',
         populate: [{ path: 'interviewerId' }, { path: 'feedbackId' }]
       })
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Get all
-export async function getAll(parentValue, { projectId }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Kanban.find()
+export async function kanbans({ params: { projectId }, auth }) {
+  if(authCheck(auth)) {
+    const data = await Kanban.find()
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
