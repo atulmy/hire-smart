@@ -1,3 +1,8 @@
+// App Imports
+import params from '../config/params'
+
+// Utility functions
+
 // Slug
 export function slug(text) {
   return text.toString().toLowerCase()
@@ -8,13 +13,20 @@ export function slug(text) {
     .replace(/-+$/, '')            // Trim - from end of text
 }
 
-// Random number
+// Generate random number
 export function randomNumber(low, high) {
   return Math.floor(Math.random() * (high - low) + low);
 }
 
-// Check email
-export function isEmail(email) {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(String(email).toLowerCase())
+// Auth check user
+export function authCheck(auth) {
+  return auth && auth.user && auth.user._id
 }
+
+// Auth check Admin
+export function authCheckAdmin(auth) {
+  return authCheck(auth) && auth.user.role === params.user.roles.admin.key
+}
+
+// No operation
+export const noop = () => {}

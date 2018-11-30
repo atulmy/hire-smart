@@ -1,28 +1,30 @@
 // Imports
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import React from 'react'
 import isEmpty from 'lodash/isEmpty'
+import jwt from 'jsonwebtoken'
 
 // App Imports
-import { SECRET_KEY } from '../../../setup/config/env'
-import serverConfig from '../../../setup/config/server'
-import params from '../../../setup/config/params'
-import { randomNumber } from '../../../setup/helpers'
-import { send as sendEmail } from '../../email/send'
-import Verify from '../email/Verify'
-import AccountCreatedOrVerified from '../email/AccountCreatedOrVerified'
-import DemoUser from '../../demo-user/model'
-import Organization from '../../organization/model'
-import Verification from '../../verification/model'
-import Invite from '../../invite/model'
-import Activity from '../../activity/model'
-import User from '../model'
+import { SECURITY_SECRET, SECURITY_SALT_ROUNDS } from '../../setup/config/env'
+import params from '../../setup/config/params'
+import { authCheck, randomNumber } from '../../setup/helpers/utils'
+import User from './model'
+import { userAuthResponse } from './query'
+
+// Email
+import { send as sendEmail } from '../email/send'
+import Organization from '../organization/model'
+import DemoUser from '../demo-user/model'
+import Activity from '../activity/model'
+import Verification from '../verification/model'
+import Verify from './email/Verify'
+import AccountCreatedOrVerified from './email/AccountCreatedOrVerified'
+import Invite from '../invite/model'
 
 // Create a demo user and login
-export async function startNow(parentValue, {}, { auth }) {
+export async function userStartNow({ auth, translate }) {
   // Check if user is already logged in
-  if(!auth.user) {
+  if(authCheck(auth)) {
     throw new Error(`You are already logged in. Please go to your dashboard to continue.`)
   } else {
     try {
@@ -35,7 +37,7 @@ export async function startNow(parentValue, {}, { auth }) {
       const demoUser = await DemoUser.create({})
 
       // User does not exists
-      const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), serverConfig.saltRounds)
+      const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), SECURITY_SALT_ROUNDS)
 
       const user = await User.create({
         organizationId: organization._id,
@@ -56,18 +58,9 @@ export async function startNow(parentValue, {}, { auth }) {
         })
       }
 
-      const token = {
-        id: user._id,
-        organizationId: user.organizationId,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        demo: true
-      }
-
       return {
-        user,
-        token: jwt.sign(token, SECRET_KEY)
+        data: userAuthResponse(user),
+        message: translate.t('user.login.messages.success')
       }
     } catch(error) {
       throw new Error(`There was some error. Please try again.`)
@@ -76,7 +69,7 @@ export async function startNow(parentValue, {}, { auth }) {
 }
 
 // Verify email send code
-export async function verifySendCode(parentValue, { email }, { auth }) {
+export async function userVerifySendCode({ params: { email }, auth, translate }) {
   const user = await User.findOne({ email })
 
   if(user) {
@@ -85,7 +78,7 @@ export async function verifySendCode(parentValue, { email }, { auth }) {
   } else {
     let code
 
-    if(auth.user && auth.user.id && auth.user.demo) {
+    if(authCheck(auth) && auth.user.demo) {
       const verification = await Verification.findOne({ userId: auth.user.id, email, verified: false, type: params.user.verification.signup })
 
       if(verification) {
@@ -96,7 +89,7 @@ export async function verifySendCode(parentValue, { email }, { auth }) {
     if(!code) {
       code = randomNumber(1000, 9999)
 
-      Verification.create({
+      await Verification.create({
         email,
         code,
         verified: false,
@@ -120,13 +113,13 @@ export async function verifySendCode(parentValue, { email }, { auth }) {
     })
 
     return {
-      _id: null
+      data: true
     }
   }
 }
 
 // Verify email send code
-export async function verifyCode(parentValue, { email, code }, { auth }) {
+export async function userVerifyCode({ params: { email, code } }) {
   const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.signup })
 
   if(verification) {
@@ -137,7 +130,7 @@ export async function verifyCode(parentValue, { email, code }, { auth }) {
     )
 
     return {
-      _id: auth.user.id
+      data: true
     }
   } else {
     throw new Error('The code you entered is invalid. Please try again with valid code.')
@@ -145,8 +138,10 @@ export async function verifyCode(parentValue, { email, code }, { auth }) {
 }
 
 // Verify create/update user account
-export async function verifyUpdateAccount(parentValue, { email, name, password, organizationName }, { auth }) {
+export async function userVerifyUpdateAccount({ params: { email, name, password, organizationName }, auth, translate }) {
   const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.signup })
+
+  console.log(verification)
 
   const userCheck = await User.findOne({ email: verification.email })
 
@@ -155,7 +150,7 @@ export async function verifyUpdateAccount(parentValue, { email, name, password, 
       let user
       let message
 
-      const passwordHashed = await bcrypt.hash(password, serverConfig.saltRounds)
+      const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
       const organizationDomain = email.split('@')[1]
 
       if(auth.user && auth.user.id && auth.user.demo) {
@@ -231,19 +226,9 @@ export async function verifyUpdateAccount(parentValue, { email, name, password, 
           />
       })
 
-      const token = {
-        id: user._id,
-        organizationId: user.organizationId,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        demo: user.demo
-      }
-
       return {
-        user: user,
-        token: jwt.sign(token, SECRET_KEY),
-        message
+        data: userAuthResponse(user),
+        message: message
       }
     } else {
       throw new Error('The code you entered is invalid. Please try again with valid code.')
@@ -254,12 +239,12 @@ export async function verifyUpdateAccount(parentValue, { email, name, password, 
 }
 
 // Accept invitation
-export async function acceptInvite(parentValue, { id, name, password }) {
+export async function userAcceptInvite(parentValue, { id, name, password }) {
   // Users exists with same email check
   const invite = await Invite.findOne({ _id: id, accepted: false })
 
   if (invite) {
-    const passwordHashed = await bcrypt.hash(password, serverConfig.saltRounds)
+    const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
 
     // Create user
     const user = await User.create({
@@ -311,18 +296,8 @@ export async function acceptInvite(parentValue, { id, name, password }) {
       })
     }
 
-    const token = {
-      id: user._id,
-      organizationId: user.organizationId,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      demo: user.demo
-    }
-
     return {
-      user: user,
-      token: jwt.sign(token, SECRET_KEY),
+      data: userAuthResponse(user),
       message: `Invitation accepted successfully. Welcome ${ name }!`
     }
   } else {
@@ -332,25 +307,19 @@ export async function acceptInvite(parentValue, { id, name, password }) {
 }
 
 // Update
-export async function update(parentValue, { name }, { auth }) {
-  if(auth.user && auth.user.id && !isEmpty(name)) {
-    await User.updateOne({ _id: auth.user.id }, { name })
+export async function userUpdate({ params: { name }, auth }) {
+  if(authCheck(auth)) {
+    if(!isEmpty(name)) {
+      await User.updateOne({ _id: auth.user._id }, { name })
 
-    const user = await User.findOne({ _id: auth.user.id })
+      const user = await User.findOne({ _id: auth.user._id })
 
-    const token = {
-      id: user._id,
-      organizationId: user.organizationId,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      demo: user.demo
-    }
-
-    return {
-      user: user,
-      token: jwt.sign(token, SECRET_KEY),
-      message: 'Your profile has been updates successfully.'
+      return {
+        data: userAuthResponse(user),
+        message: 'Your profile has been updated successfully.'
+      }
+    } else {
+      throw new Error('Please enter valid name.')
     }
   }
 
@@ -358,7 +327,7 @@ export async function update(parentValue, { name }, { auth }) {
 }
 
 // Reset password send code
-export async function resetPasswordSendCode(parentValue, { email }) {
+export async function userResetPasswordSendCode({ params: { email } }) {
   const user = await User.findOne({ email })
 
   if(user) {
@@ -398,7 +367,7 @@ export async function resetPasswordSendCode(parentValue, { email }) {
     })
 
     return {
-      _id: null
+      data: true
     }
   } else {
     throw new Error(`The email ${ email } is not registered. Please signup.`)
@@ -406,7 +375,7 @@ export async function resetPasswordSendCode(parentValue, { email }) {
 }
 
 // Verify email send code
-export async function resetPasswordVerifyCode(parentValue, { email, code }) {
+export async function userResetPasswordVerifyCode({ params: { email, code } }) {
   const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.password })
 
   if(verification) {
@@ -417,7 +386,7 @@ export async function resetPasswordVerifyCode(parentValue, { email, code }) {
     )
 
     return {
-      _id: null
+      data: true
     }
   } else {
     throw new Error('The code you entered is invalid. Please try again with valid code.')
@@ -425,33 +394,24 @@ export async function resetPasswordVerifyCode(parentValue, { email, code }) {
 }
 
 // Reset password update
-export async function resetPasswordUpdate(parentValue, { email, password }) {
+export async function userResetPasswordUpdate({ params: { email, password } }) {
   const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.password })
 
   const user = await User.findOne({ email: verification.email })
 
   if(user) {
     if (verification && verification.verified) {
-      const passwordHashed = await bcrypt.hash(password, serverConfig.saltRounds)
+      const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
 
       // Update user
-      await User.updateOne(
+      const userUpdated = await User.findOneAndUpdate(
         { _id: user.id },
-        { password: passwordHashed }
+        { password: passwordHashed },
+        { new: true }
       )
 
-      const token = {
-        id: user._id,
-        organizationId: user.organizationId,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        demo: user.demo
-      }
-
       return {
-        user,
-        token: jwt.sign(token, SECRET_KEY),
+        data: userAuthResponse(userUpdated),
         message: 'Your password has been reset successfully.'
       }
     } else {

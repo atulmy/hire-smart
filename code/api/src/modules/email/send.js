@@ -4,7 +4,7 @@ import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 // App Imports
-import { EMAIL_HOST, EMAIL_USER, EMAIL_PASSWORD, EMAIL_TEST, NODE_ENV } from '../../setup/config/env'
+import { EMAIL_ON, EMAIL_HOST, EMAIL_USER, EMAIL_PASSWORD, EMAIL_TEST, NODE_ENV } from '../../setup/config/env'
 import params from '../../setup/config/params'
 import Email from './model'
 import view from './template/view'
@@ -55,9 +55,13 @@ export async function send({ to, from, subject, template, cc = null, organizatio
     }
 
     // Send email
-    transporter.sendMail(email, () => {
-      console.info('INFO - Email sent.')
-    })
+    if(EMAIL_ON === '1') {
+      transporter.sendMail(email, () => {
+        console.info('INFO - Email sent.')
+      })
+    } else {
+      console.info('INFO - Email not sent. EMAIL_ON is not enabled.')
+    }
 
     // Save into database
     let emailSave = {

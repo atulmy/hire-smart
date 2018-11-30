@@ -1,8 +1,6 @@
 {
   "ignore": [
     "build/*",
-    "node_modules/**/node_modules",
-    "public/*",
-    "uploads/*"
+    "node_modules/**/node_modules"
   ]
 }

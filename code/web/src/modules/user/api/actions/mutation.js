@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios/index'
-import queryBuilder from 'gql-query-builder'
 import cookie from 'js-cookie'
 
 // App Imports
@@ -22,26 +21,24 @@ export function login(userCredentials, isLoading = true) {
     })
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'userLogin',
-        data: userCredentials,
-        fields: ['user {name, email, role, demo}', 'token']
-      }))
+        params: userCredentials,
+      })
 
       let message = ''
 
       if (data.errors && data.errors.length > 0) {
         message = data.errors[0].message
-      } else if (data.data.userLogin.token !== '') {
-        const token = data.data.userLogin.token
-        const user = data.data.userLogin.user
+      } else if (data.data.token !== '') {
+        const token = data.data.token
+        const user = data.data.user
 
         dispatch(setUser(token, user))
 
         loginSetUserLocalStorageAndCookie(token, user)
 
-        message = `Login successful. Welcome back, ${ data.data.userLogin.user.name }.`
+        message = `Login successful. Welcome back, ${ data.data.user.name }.`
       }
 
       dispatch({
@@ -98,19 +95,17 @@ export function startNow(isLoading = true) {
     })
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'mutation',
-        operation: 'userStartNow',
-        fields: ['user {name, email, role, demo}', 'token']
-      }))
+      const { data } = await axios.post(API_URL, {
+        operation: 'userStartNow'
+      })
 
       let message = ''
 
       if (data.errors && data.errors.length > 0) {
         message = data.errors[0].message
-      } else if (data.data.userStartNow.token !== '') {
-        const token = data.data.userStartNow.token
-        const user = data.data.userStartNow.user
+      } else if (data.data.token !== '') {
+        const token = data.data.token
+        const user = data.data.user
 
         dispatch(setUser(token, user))
 
@@ -139,24 +134,20 @@ export function startNow(isLoading = true) {
 // Verify send email code
 export function verifySendCode(user) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'userVerifySendCode',
-      data: user,
-      fields: ['_id']
-    }))
+      params: user,
+    })
   }
 }
 
 // Verify email code
 export function verifyCode(data) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'userVerifyCode',
-      data,
-      fields: ['_id']
-    }))
+      params: data
+    })
   }
 }
 
@@ -174,26 +165,24 @@ export function verifyUpdateAccount(details, isLoading = true) {
     })
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'mutation',
+      const { data } = await axios.post(API_URL, {
         operation: 'userVerifyUpdateAccount',
-        data: details,
-        fields: ['user {name, email, role, demo}', 'token', 'message']
-      }))
+        params: details,
+      })
 
       let message = ''
 
       if (data.errors && data.errors.length > 0) {
         message = data.errors[0].message
-      } else if (data.data.userVerifyUpdateAccount.token !== '') {
-        const token = data.data.userVerifyUpdateAccount.token
-        const user = data.data.userVerifyUpdateAccount.user
+      } else if (data.data.token !== '') {
+        const token = data.data.token
+        const user = data.data.user
 
         dispatch(setUser(token, user))
 
         loginSetUserLocalStorageAndCookie(token, user)
 
-        message = data.data.userVerifyUpdateAccount.message
+        message = data.data.message
       }
 
       dispatch({
@@ -227,26 +216,24 @@ export function acceptInvite(invite, isLoading = true) {
     })
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'mutation',
-        operation: 'userInviteAccept',
-        data: invite,
-        fields: ['user {name, email, role, demo}', 'token', 'message']
-      }))
+      const { data } = await axios.post(API_URL, {
+        operation: 'userAcceptInvite',
+        params: invite
+      })
 
       let message = ''
 
       if (data.errors && data.errors.length > 0) {
         message = data.errors[0].message
-      } else if (data.data.userInviteAccept.token !== '') {
-        const token = data.data.userInviteAccept.token
-        const user = data.data.userInviteAccept.user
+      } else if (data.data.token !== '') {
+        const token = data.data.token
+        const user = data.data.user
 
         dispatch(setUser(token, user))
 
         loginSetUserLocalStorageAndCookie(token, user)
 
-        message = data.data.userInviteAccept.message
+        message = data.data.message
       }
 
       dispatch({
@@ -280,26 +267,24 @@ export function update(details, isLoading = true) {
     })
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'mutation',
+      const { data } = await axios.post(API_URL, {
         operation: 'userUpdate',
-        data: details,
-        fields: ['user {name, email, role, demo}', 'token', 'message']
-      }))
+        params: details,
+      })
 
       let message = ''
 
       if (data.errors && data.errors.length > 0) {
         message = data.errors[0].message
-      } else if (data.data.userUpdate.token !== '') {
-        const token = data.data.userUpdate.token
-        const user = data.data.userUpdate.user
+      } else if (data.data.token !== '') {
+        const token = data.data.token
+        const user = data.data.user
 
         dispatch(setUser(token, user))
 
         loginSetUserLocalStorageAndCookie(token, user)
 
-        message = data.data.userUpdate.message
+        message = data.message
       }
 
       dispatch({
@@ -322,24 +307,20 @@ export function update(details, isLoading = true) {
 // Reset password email code
 export function resetPasswordSendCode(data) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'userResetPasswordSendCode',
-      data,
-      fields: ['_id']
-    }))
+      params: data
+    })
   }
 }
 
 // Reset password verify code
 export function resetPasswordVerifyCode(data) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'userResetPasswordVerifyCode',
-      data,
-      fields: ['_id']
-    }))
+      params: data
+    })
   }
 }
 
@@ -357,26 +338,24 @@ export function resetPasswordUpdate(details, isLoading = true) {
     })
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'mutation',
+      const { data } = await axios.post(API_URL, {
         operation: 'userResetPasswordUpdate',
-        data: details,
-        fields: ['user { name, email, role, demo }', 'token', 'message']
-      }))
+        params: details,
+      })
 
       let message = ''
 
       if (data.errors && data.errors.length > 0) {
         message = data.errors[0].message
-      } else if (data.data.userResetPasswordUpdate.token !== '') {
-        const token = data.data.userResetPasswordUpdate.token
-        const user = data.data.userResetPasswordUpdate.user
+      } else if (data.data.token !== '') {
+        const token = data.data.token
+        const user = data.data.user
 
         dispatch(setUser(token, user))
 
         loginSetUserLocalStorageAndCookie(token, user)
 
-        message = data.data.userResetPasswordUpdate.message
+        message = data.message
       }
 
       dispatch({

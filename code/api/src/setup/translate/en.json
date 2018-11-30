@@ -1,0 +1,92 @@
+{
+  "common": {
+    "messages": {
+      "error": {
+        "default": "Unable to perform this operation. Please try again.",
+        "server": "Server error occurred. Please try again.",
+        "unauthorized": "You are not authorized to perform this action."
+      },
+
+      "success": {
+        "default": "Success."
+      },
+
+      "fields": {
+        "invalidDefault": "Please enter valid data.",
+        "invalid": "Please enter valid {{data}}.",
+        "invalidSelection": "Please select {{data}}."
+      }
+    },
+
+    "email": {
+      "head": {
+        "greet": "Hello"
+      },
+      "footer": {
+        "message": "Feel free to reply to this email for any assistance.",
+        "thanks": "Thanks"
+      }
+    }
+  },
+
+  "user": {
+    "messages": {
+      "fields": {
+        "name": "The name you entered is invalid.",
+        "nameMinLength": "Name needs to be atleast {{length}} characters.",
+        "email": "The email you entered is invalid.",
+        "password": "The password you entered is invalid.",
+        "passwordMinLength": "Password needs to be atleast {{length}} characters.",
+        "passwordEqual": "Passwords do not match."
+      }
+    },
+
+    "signup": {
+      "messages": {
+        "success": "You have been registered successfully.",
+
+        "error": {
+          "exists": "This email is already registered. Please login."
+        }
+      },
+
+      "email": {
+        "subject": "Welcome!",
+        "message": "You have signed up successfully. Welcome to {{site}}."
+      }
+    },
+
+    "login": {
+      "messages": {
+        "success": "You have been logged in successfully.",
+
+        "error": {
+          "wrongUser": "We do not have any registered user with this email address.",
+          "wrongCredentials": "Email or password is incorrect."
+        }
+      }
+    },
+
+    "profile": {
+      "messages": {
+        "success": "Profile has been updated successfully."
+      }
+    }
+  },
+
+  "note": {
+    "messages": {
+      "fields": {
+        "note": "Note cannot be empty."
+      },
+
+      "create": {
+        "success": "Note created successfully."
+      },
+      "remove": {
+        "success": "Note removed successfully.",
+        "error": "Invalid note."
+      }
+    }
+  }
+}

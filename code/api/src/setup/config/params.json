@@ -15,7 +15,27 @@
     }
   },
 
+  "endpoint": {
+    "url": "/",
+    "uploads": "/uploads"
+  },
+
+  "folder": {
+    "uploads": "uploads"
+  },
+
+  "common": {
+    "language": {
+      "default": "en-US"
+    }
+  },
+
   "user": {
+    "rules": {
+      "nameMinLength": 3,
+      "passwordMinLength": 6
+    },
+
     "roles": {
       "admin": {
         "key": "admin",
@@ -26,6 +46,7 @@
         "title": "User"
       }
     },
+
     "verification": {
       "signup": "signup",
       "password": "password"

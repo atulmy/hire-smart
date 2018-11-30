@@ -14,7 +14,7 @@ export default function (server) {
     } else {
       console.info(`INFO - Server started on`)
       console.info(`  Local   http://localhost:${ PORT } [${ NODE_ENV }]`)
-      console.info(`  Network http://${ ip.address() }:${ PORT } [${ NODE_ENV }]`)
+      console.info(`  Network http://${ ip.address() }:${ PORT } [${ NODE_ENV }] \n`)
     }
   })
 

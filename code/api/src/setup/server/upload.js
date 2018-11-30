@@ -5,7 +5,7 @@ import fs from 'fs'
 
 // App Imports
 import params from '../config/params'
-import { slug } from '../helpers'
+import { slug } from '../helpers/utils'
 import Candidate from '../../modules/candidate/model'
 
 // File upload configurations and route

@@ -1,7 +1,0 @@
-{
-  "saltRounds": 10,
-  "graphql": {
-    "endpoint": "/",
-    "pretty": true
-  }
-}
