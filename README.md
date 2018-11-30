@@ -11,7 +11,7 @@
     - Node
     - Express
     - MongoDB
-    - Remote Procedure Call [RPC](https://github.com/atulmy/wispy)
+    - Remote Procedure Call [(RPC)](https://github.com/atulmy/wispy)
   - Web App
     - React
     - Redux
@@ -51,7 +51,7 @@
       - Run Webapp `cd web` and `npm run start:prod`, creates an optimized build in `build` directory and runs the server
   - Using Docker
       - `cd code/deploy`
-      - Update your domain, SSL certificate path and other configurations in `docker-compse.yml`
+      - Update your domain, SSL certificate path and other configurations in `docker-compose.yml`
       - Start Docker containers: `docker-compose up -d`
 
     
