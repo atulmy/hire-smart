@@ -27,7 +27,6 @@
     "cookie-parser": "1.4.3",
     "dotenv": "6.1.0",
     "express": "4.16.4",
-    "gql-query-builder": "1.0.6",
     "ip": "1.1.5",
     "js-cookie": "2.2.0",
     "lodash": "4.17.11",

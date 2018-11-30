@@ -9,6 +9,7 @@ import job from '../../modules/job'
 import kanban from '../../modules/kanban'
 import interview from '../../modules/interview'
 import feedback from '../../modules/feedback'
+import invite from '../../modules/invite'
 
 // Modules
 export default {
@@ -22,4 +23,5 @@ export default {
   ...kanban,
   ...interview,
   ...feedback,
+  ...invite,
 }

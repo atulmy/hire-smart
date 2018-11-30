@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
@@ -10,10 +9,9 @@ import { API_URL } from '../../../../setup/config/env'
 // Get list by organization
 export function getListByOrganization() {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
+    return axios.post(API_URL, {
       operation: 'usersByOrganization',
       fields: ['_id', 'name', 'email', 'admin', 'createdAt']
-    }))
+    })
   }
 }

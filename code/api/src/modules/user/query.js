@@ -7,21 +7,21 @@ import { SECURITY_SECRET } from '../../setup/config/env'
 import params from '../../setup/config/params'
 import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
-import User, { collection as user } from './model'
+import User from './model'
 
 // Login
-export async function userLogin({ params: { email, password }, translate }) {
+export async function userLogin({ params: { email, password } }) {
   // Validation rules
   const rules = [
     {
       data: { value: email },
       check: 'email',
-      message: translate.t('user.messages.fields.email')
+      message: 'Please enter valid email.'
     },
     {
       data: { value: password, length: params.user.rules.passwordMinLength },
       check: 'lengthMin',
-      message: translate.t('user.messages.fields.passwordMinLength', { length: params.user.rules.passwordMinLength })
+      message: `Please enter valid password. Minimum ${ params.user.rules.passwordMinLength } is required.`
     }
   ]
 
@@ -48,28 +48,35 @@ export async function userLogin({ params: { email, password }, translate }) {
         throw new Error(`Sorry, the password you entered is incorrect. Please try again.`)
       } else {
         return {
-          data: userAuthResponse(user),
-          message: translate.t('user.login.messages.success')
+          data: userAuthResponse(user)
         }
       }
     }
   } catch (error) {
-    throw new Error(translate.t('common.messages.error.server'))
+    throw new Error('There was some server error.')
   }
 }
 
 // Get by ID
-export async function getById({ params: { id }, translate }) {
-  return await User.findOne({ _id: id })
+export async function user({ params: { id } }) {
+  if(authCheck(auth)) {
+    return await User.findOne({ _id: id })
+  }
+
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get all
-export async function getAll() {
-  return await User.find()
+export async function users() {
+  if(authCheck(auth)) {
+    return await User.find()
+  }
+
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get all
-export async function getByOrganization({ params: { id }, auth, translate }) {
+export async function usersByOrganization({ params: { id }, auth }) {
   if(authCheck(auth)) {
     return await User.find({ organizationId: auth.user.organizationId })
   }

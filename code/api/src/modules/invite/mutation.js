@@ -2,16 +2,17 @@
 import React from 'react'
 
 // App Imports
-import params from '../../../setup/config/params'
-import Organization from '../../organization/model'
-import Activity from '../../activity/model'
-import Invite from '../../invite/model'
-import { send as sendEmail } from '../../email/send'
-import InviteTemplate from '../email/Invite'
+import params from '../../setup/config/params'
+import { authCheck } from '../../setup/helpers/utils'
+import Organization from '../organization/model'
+import Activity from '../activity/model'
+import Invite from '../invite/model'
+import { send as sendEmail } from '../email/send'
+import InviteTemplate from './email/Invite'
 
 // Create invite to organization
-export async function invite(parentValue, { name, email }, { auth }) {
-  if(auth.user && auth.user.id) {
+export async function inviteToOrganization({ params: { name, email }, auth }) {
+  if(authCheck(auth)) {
     // Users exists with same email check
     const invited = await Invite.findOne({ email })
 
@@ -56,7 +57,9 @@ export async function invite(parentValue, { name, email }, { auth }) {
         })
       }
 
-      return invite
+      return {
+        data: invite
+      }
     } else {
       // User exists
       throw new Error(`The email ${ email } is already invited. Please ask the user to accept the invitation.`)

@@ -1,7 +1,6 @@
 // App Imports
 import { NODE_ENV } from '../config/env'
 import params from '../config/params'
-import translate from '../translate'
 import authentication from './authentication'
 import language from './language'
 import modules from './modules'
@@ -21,16 +20,12 @@ export default function (server) {
     // Check if operation to be called is set
     if(request.body.operation) {
       try {
-        // Set locale
-        translate.locale = request.language
-
         // Execute operation
         // operationName({ params, fields, auth })
-        const { data, message = translate.t('common.messages.success.default') } = await modules[request.body.operation]({
+        const { data, message } = await modules[request.body.operation]({
           params: request.body.params || {},
           fields: request.body.fields || {},
-          auth: request.auth,
-          translate
+          auth: request.auth
         })
 
         // Operation executed successfully

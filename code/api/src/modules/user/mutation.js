@@ -21,7 +21,7 @@ import AccountCreatedOrVerified from './email/AccountCreatedOrVerified'
 import Invite from '../invite/model'
 
 // Create a demo user and login
-export async function userStartNow({ auth, translate }) {
+export async function userStartNow({ auth }) {
   // Check if user is already logged in
   if(authCheck(auth)) {
     throw new Error(`You are already logged in. Please go to your dashboard to continue.`)
@@ -59,7 +59,7 @@ export async function userStartNow({ auth, translate }) {
 
       return {
         data: userAuthResponse(user),
-        message: translate.t('user.login.messages.success')
+        message: 'You have been logged in successfully.'
       }
     } catch(error) {
       throw new Error(`There was some error. Please try again.`)
@@ -68,7 +68,7 @@ export async function userStartNow({ auth, translate }) {
 }
 
 // Verify email send code
-export async function userVerifySendCode({ params: { email }, auth, translate }) {
+export async function userVerifySendCode({ params: { email }, auth }) {
   const user = await User.findOne({ email })
 
   if(user) {
@@ -137,7 +137,7 @@ export async function userVerifyCode({ params: { email, code } }) {
 }
 
 // Verify create/update user account
-export async function userVerifyUpdateAccount({ params: { email, name, password, organizationName }, auth, translate }) {
+export async function userVerifyUpdateAccount({ params: { email, name, password, organizationName }, auth }) {
   const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.signup })
 
   console.log(verification)
@@ -238,7 +238,7 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
 }
 
 // Accept invitation
-export async function userAcceptInvite(parentValue, { id, name, password }) {
+export async function userAcceptInvite({ params: { id, name, password } }) {
   // Users exists with same email check
   const invite = await Invite.findOne({ _id: id, accepted: false })
 
