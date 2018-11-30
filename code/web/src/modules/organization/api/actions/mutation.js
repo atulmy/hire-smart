@@ -19,35 +19,29 @@ export function createOrUpdate(organization) {
 // Create
 export function create(organization) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'organizationCreate',
-      data: organization,
-      fields: ['_id']
-    }))
+      params: organization
+    })
   }
 }
 
 // Update
 export function update(organization) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'organizationUpdate',
-      data: organization,
-      fields: ['_id']
-    }))
+      params: organization
+    })
   }
 }
 
 // Remove
 export function remove(data) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'organizationRemove',
-      data,
-      fields: ['_id']
-    }))
+      params: data
+    })
   }
 }

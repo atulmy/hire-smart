@@ -9,7 +9,6 @@ import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import User, { collection as user } from './model'
 
-
 // Login
 export async function userLogin({ params: { email, password }, translate }) {
   // Validation rules

@@ -50,7 +50,7 @@ class Details extends Component {
       if (data.errors && data.errors.length > 0) {
         messageShow(data.errors[0].message)
       } else {
-        this.setData(data.data.organizationByUser)
+        this.setData(data.data)
       }
     } catch(error) {
       messageShow('There was some error. Please try again.')

@@ -23,11 +23,10 @@ export function getList(isLoading = true) {
     })
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'organizationsByUser',
         fields: ['_id', 'name', 'description', 'domain', 'createdAt']
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -37,7 +36,7 @@ export function getList(isLoading = true) {
       } else {
         dispatch({
           type: LIST_RESPONSE,
-          list: data.data.organizationsByUser
+          list: data.data
         })
       }
     } catch(error) {
@@ -63,12 +62,11 @@ export function get(organizationId, isLoading = true) {
     })
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'organization',
-        data: { id: organizationId },
+        params: { id: organizationId },
         fields: ['_id', 'name', 'description', 'domain', 'createdAt']
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -78,7 +76,7 @@ export function get(organizationId, isLoading = true) {
       } else {
         dispatch({
           type: SINGLE_RESPONSE,
-          item: data.data.organization
+          item: data.data
         })
       }
     } catch(error) {
@@ -98,10 +96,9 @@ export function get(organizationId, isLoading = true) {
 // Get single by user
 export function getByUser() {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
+    return axios.post(API_URL, {
       operation: 'organizationByUser',
       fields: ['_id', 'name', 'description', 'domain', 'createdAt']
-    }))
+    })
   }
 }
