@@ -11,6 +11,7 @@
     - Node
     - Express
     - MongoDB
+    - Remote Procedure Call [RPC](https://github.com/atulmy/wispy)
   - Web App
     - React
     - Redux
