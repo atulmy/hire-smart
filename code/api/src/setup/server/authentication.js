@@ -9,8 +9,6 @@ import User from '../../modules/user/model'
 export default async function (request, response, next) {
   let header = request.headers.authorization
 
-  console.log(header)
-
   if (header && header !== null) {
     try {
       const token = header.split(' ')

@@ -2,10 +2,9 @@
 import bcrypt from 'bcrypt'
 import React from 'react'
 import isEmpty from 'lodash/isEmpty'
-import jwt from 'jsonwebtoken'
 
 // App Imports
-import { SECURITY_SECRET, SECURITY_SALT_ROUNDS } from '../../setup/config/env'
+import { SECURITY_SALT_ROUNDS } from '../../setup/config/env'
 import params from '../../setup/config/params'
 import { authCheck, randomNumber } from '../../setup/helpers/utils'
 import User from './model'

@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
@@ -44,11 +43,10 @@ export function getList(isLoading = true) {
 
     // Get data
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'projectsByOrganization',
         fields: ['_id', 'name', 'description', 'createdAt']
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -56,7 +54,7 @@ export function getList(isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.projectsByOrganization
+        const list = data.data
 
         dispatch({
           type: LIST_RESPONSE,
@@ -114,12 +112,11 @@ export function get(projectId, isLoading = true) {
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'project',
-        data: { id: projectId },
+        params: { id: projectId },
         fields: ['_id', 'name', 'description', 'createdAt']
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -127,7 +124,7 @@ export function get(projectId, isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const item = data.data.project
+        const item = data.data
 
         dispatch({
           type: SINGLE_RESPONSE,

@@ -1,9 +1,10 @@
 // App Imports
 import Organization from './model'
+import { authCheck } from '../../setup/helpers/utils'
 
 // Create
 export async function organizationCreate({ params: { name, description, domain }, auth }) {
-  if(auth.user && auth.user.id) {
+  if(authCheck(auth)) {
     const data = await Organization.create({
       userId: auth.user.id,
       name,
@@ -21,7 +22,7 @@ export async function organizationCreate({ params: { name, description, domain }
 
 // Update product
 export async function organizationUpdate({ params: { id, name, description, domain }, auth }) {
-  if(auth.user && auth.user.id) {
+  if(authCheck(auth)) {
     const data = await Organization.updateOne(
       { _id: auth.user.organizationId },
       {
@@ -39,7 +40,7 @@ export async function organizationUpdate({ params: { id, name, description, doma
 
 // Delete
 export async function organizationRemove({ params: { id }, auth }) {
-  if(auth.user && auth.user.id) {
+  if(authCheck(auth)) {
     const data = await Organization.remove({
       _id: _id,
       userId: auth.user.id
