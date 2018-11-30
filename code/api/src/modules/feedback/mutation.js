@@ -3,16 +3,16 @@ import React from 'react'
 import isEmpty from 'lodash/isEmpty'
 
 // App Imports
-import params from '../../../setup/config/params'
-import Activity from '../../activity/model'
-import Interview from '../../interview/model'
-import Kanban from '../../kanban/model'
-import Feedback from '../model'
-import { send as sendEmail } from '../../email/send'
-import FeedbackTemplate from '../email/Feedback'
+import params from '../../setup/config/params'
+import { send as sendEmail } from '../email/send'
+import Activity from '../activity/model'
+import Interview from '../interview/model'
+import Kanban from '../kanban/model'
+import FeedbackTemplate from './email/Feedback'
+import Feedback from './model'
 
 // Create
-export async function createOrUpdate(parentValue, { interviewId, text, status }) {
+export async function feedbackCreateOrUpdate({ params: { interviewId, text, status } }) {
   const interview = await Interview.findOne({ _id: interviewId })
     .populate('candidateId')
     .populate('interviewerId')
@@ -93,7 +93,9 @@ export async function createOrUpdate(parentValue, { interviewId, text, status })
           />
       })
 
-      return feedback
+      return {
+        data: feedback
+      }
     } else {
       throw new Error('Please provide all the required information.')
     }
