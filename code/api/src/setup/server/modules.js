@@ -4,6 +4,7 @@ import organization from '../../modules/organization'
 import project from '../../modules/project'
 import activity from '../../modules/activity'
 import candidate from '../../modules/candidate'
+import interviewer from '../../modules/interviewer'
 
 // Modules
 export default {
@@ -12,4 +13,5 @@ export default {
   ...project,
   ...activity,
   ...candidate,
+  ...interviewer,
 }

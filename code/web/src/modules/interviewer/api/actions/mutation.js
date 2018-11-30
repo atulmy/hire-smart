@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 import isEmpty from 'lodash/isEmpty'
 
 // App Imports
@@ -20,36 +19,30 @@ export function createOrUpdate(interviewer) {
 // Create
 export function create(interviewer) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'interviewerCreate',
-      data: interviewer,
-      fields: ['_id']
-    }))
+      params: interviewer,
+    })
   }
 }
 
 // Update
 export function update(interviewer) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'interviewerUpdate',
-      data: interviewer,
-      fields: ['_id']
-    }))
+      params: interviewer,
+    })
   }
 }
 
 // Remove
 export function remove(data) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'interviewerRemove',
-      data,
-      fields: ['_id']
-    }))
+      params: data,
+    })
   }
 }
 

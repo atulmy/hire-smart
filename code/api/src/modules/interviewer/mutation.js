@@ -2,13 +2,14 @@
 import isEmpty from 'lodash/isEmpty'
 
 // App Imports
-import params from '../../../setup/config/params'
-import Activity from '../../activity/model'
-import Interviewer from '../model'
+import params from '../../setup/config/params'
+import { authCheck } from '../../setup/helpers/utils'
+import Activity from '../activity/model'
+import Interviewer from './model'
 
 // Create
-export async function create(parentValue, { projectId, name, email, mobile }, { auth }) {
-  if(auth.user && auth.user.id) {
+export async function interviewerCreate({ params: { projectId, name, email, mobile }, auth }) {
+  if(authCheck(auth)) {
     const interviewer = await Interviewer.create({
       organizationId: auth.user.organizationId,
       userId: auth.user.id,
@@ -30,16 +31,18 @@ export async function create(parentValue, { projectId, name, email, mobile }, { 
       })
     }
 
-    return interviewer
+    return {
+      data: interviewer
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
-export async function update(parentValue, { id, projectId, name, email, mobile }, { auth }) {
-  if(auth.user && auth.user.id && !isEmpty(id)) {
-    return await Interviewer.updateOne(
+export async function interviewerUpdate({ params: { id, projectId, name, email, mobile }, auth }) {
+  if(authCheck(auth) && !isEmpty(id)) {
+    const data = await Interviewer.updateOne(
       { _id: id },
       {
         $set: {
@@ -50,18 +53,26 @@ export async function update(parentValue, { id, projectId, name, email, mobile }
         }
       }
     )
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
-export async function remove(parentValue, { id }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Interviewer.remove({
+export async function interviewerRemove({ params: { id }, auth }) {
+  if(authCheck(auth)) {
+    const data = await Interviewer.remove({
       _id: _id,
       userId: auth.user.id
     })
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
