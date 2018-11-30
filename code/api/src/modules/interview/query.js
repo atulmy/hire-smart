@@ -4,16 +4,12 @@ import Interview from './model'
 
 // Get interview by ID
 export async function interview({ params: { id } }) {
-  if(authCheck(auth)) {
-    const data = await Interview.findOne({ _id: id })
-      .populate('candidateId')
+  const data = await Interview.findOne({ _id: id })
+    .populate('candidateId')
 
-    return {
-      data
-    }
+  return {
+    data
   }
-
-  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get by organization

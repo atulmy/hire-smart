@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // App Imports
-import { APP_URL, API_URL } from '../../../setup/config/env'
+import { WEB_URL, API_URL } from '../../../setup/config/env'
 import params from '../../../setup/config/params'
 
 // Component
@@ -29,13 +29,13 @@ const InterviewReminder = ({ interviewId, interviewerName, candidateId, candidat
     </p>
 
     <p>
-      Candidate's resume: <a href={`${ API_URL }/download/${ candidateId }`}><button>DOWNLOAD</button></a>
+      Candidate's resume: <a href={`${ API_URL }/download/${ candidateId }`}>DOWNLOAD</a>
     </p>
 
     <p>
       After conducting the interview, please provide your feedback for { candidateName } by using following link: <br />
 
-      <a href={`${ APP_URL + params.web.routes.feedback  }/${ interviewId }`}><button>GIVE FEEDBACK</button></a>
+      <a href={`${ WEB_URL + params.web.routes.feedback  }/${ interviewId }`}>GIVE FEEDBACK</a>
     </p>
 
     <p>Feel free to reply to this email for any assistance.</p>

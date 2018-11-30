@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // App Imports
-import { APP_URL } from '../../../setup/config/env'
+import { WEB_URL } from '../../../setup/config/env'
 import params from '../../../setup/config/params'
 
 // Component
@@ -13,7 +13,7 @@ const Invite = ({ invitedTo, invitedBy, invitedCode, organizationName }) => (
 
     <p>I'm inviting you to join { organizationName } on HIRESMART, an application to streamline hiring process, scheduling interviews and tracking candidates.</p>
 
-    <p><a href={`${ APP_URL + params.web.routes.invite }/${ invitedCode }`}><button>ACCEPT INVITATION</button></a></p>
+    <p><a href={`${ WEB_URL + params.web.routes.invite }/${ invitedCode }`}>ACCEPT INVITATION</a></p>
 
     <p>
       Thanks, <br/>

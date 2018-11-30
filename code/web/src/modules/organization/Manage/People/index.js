@@ -60,10 +60,10 @@ class People extends PureComponent {
       const { data } = await getListByOrganization()
 
       if (data.errors && data.errors.length > 0) {
-        messageShow(response.data.errors[0].message)
+        messageShow(data.errors[0].message)
       } else {
         this.setState({
-          users: data.data.usersByOrganization
+          users: data.data
         })
       }
     } catch(error) {

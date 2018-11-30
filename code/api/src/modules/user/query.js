@@ -60,7 +60,10 @@ export async function userLogin({ params: { email, password } }) {
 // Get by ID
 export async function user({ params: { id } }) {
   if(authCheck(auth)) {
-    return await User.findOne({ _id: id })
+    const data = await User.findOne({ _id: id })
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
@@ -69,7 +72,11 @@ export async function user({ params: { id } }) {
 // Get all
 export async function users() {
   if(authCheck(auth)) {
-    return await User.find()
+    const data = await User.find()
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
@@ -78,7 +85,11 @@ export async function users() {
 // Get all
 export async function usersByOrganization({ params: { id }, auth }) {
   if(authCheck(auth)) {
-    return await User.find({ organizationId: auth.user.organizationId })
+    const data = await User.find({ organizationId: auth.user.organizationId })
+
+    return {
+      data
+    }
   }
 
   throw new Error('Please login to view your organization.')

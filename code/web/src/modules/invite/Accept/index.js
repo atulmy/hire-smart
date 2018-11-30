@@ -63,11 +63,11 @@ class Invite extends PureComponent {
       if (data.errors && data.errors.length > 0) {
         messageShow(data.errors[0].message)
       } else {
-        if(data.data.invite && data.data.invite._id) {
+        if(data.data && data.data._id) {
           this.setState({
-            invite: data.data.invite,
-            name: data.data.invite.name,
-            email: data.data.invite.email
+            invite: data.data,
+            name: data.data.name,
+            email: data.data.email
           })
         } else {
           messageShow('Invalid invite link.')

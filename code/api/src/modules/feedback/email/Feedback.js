@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // App Imports
-import { APP_URL } from '../../../setup/config/env'
+import { WEB_URL } from '../../../setup/config/env'
 import params from '../../../setup/config/params'
 
 // Component
@@ -21,7 +21,7 @@ const Feedback = ({ interview, text, status }) => (
       <strong>Feedback:</strong> { text }
     </p>
 
-    <p><a href={APP_URL + params.web.routes.dashboard}><button>OPEN DASHBOARD</button></a></p>
+    <p><a href={WEB_URL + params.web.routes.dashboard}>OPEN DASHBOARD</a></p>
 
     <p>Feel free to reply to this email for any assistance.</p>
 

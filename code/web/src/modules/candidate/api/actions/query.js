@@ -129,7 +129,7 @@ export function get(candidateId, isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const item = data.data.candidate
+        const item = data.data
 
         dispatch({
           type: SINGLE_RESPONSE,

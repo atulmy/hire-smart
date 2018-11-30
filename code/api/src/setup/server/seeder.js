@@ -6,6 +6,10 @@ import { NODE_ENV } from '../config/env'
 import database from '../server/database'
 import organization from '../../modules/organization/seed'
 import user from '../../modules/user/seed'
+import project from '../../modules/project/seeds'
+import job from '../../modules/job/seeds'
+import interviewer from '../../modules/interviewer/seeds'
+import candidate from '../../modules/candidate/seeds'
 
 // Seeder
 async function seeder() {
@@ -23,6 +27,10 @@ async function seeder() {
   // Seeds
   await organization()
   await user()
+  await project()
+  await job()
+  await interviewer()
+  await candidate()
 
   // Close connection
   mongoose.connection.close()

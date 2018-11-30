@@ -52,7 +52,7 @@ export function get(id) {
   return dispatch => {
     return axios.post(API_URL, {
       operation: 'invite',
-      data: { id },
+      params: { id },
       fields: ['_id', 'organizationId { _id, name }', 'email', 'name', 'createdAt']
     })
   }

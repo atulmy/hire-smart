@@ -1,18 +1,15 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
 
-// Invite user to organization
+// Feedback
 export function submit(invite) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'mutation',
+    return axios.post(API_URL, {
       operation: 'feedbackCreateOrUpdate',
-      data: invite,
-      fields: ['_id']
-    }))
+      params: invite,
+    })
   }
 }

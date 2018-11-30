@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
@@ -18,11 +17,10 @@ export function getList(isLoading = true) {
     })
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'invitesByOrganization',
         fields: ['_id', 'name', 'email', 'createdAt']
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -32,7 +30,7 @@ export function getList(isLoading = true) {
       } else {
         dispatch({
           type: LIST_RESPONSE,
-          list: data.data.invitesByOrganization
+          list: data.data
         })
       }
     } catch(error) {
@@ -52,11 +50,10 @@ export function getList(isLoading = true) {
 // Get by id
 export function get(id) {
   return dispatch => {
-    return axios.post(API_URL, queryBuilder({
-      type: 'query',
+    return axios.post(API_URL, {
       operation: 'invite',
-      data: { id },
+      params: { id },
       fields: ['_id', 'organizationId { _id, name }', 'email', 'name', 'createdAt']
-    }))
+    })
   }
 }
