@@ -126,7 +126,7 @@ class Interview extends PureComponent {
               ? <Loading />
               : <Zoom in={true}>
                   <Paper className={classes.container}>
-                    <Typography variant={'title'} gutterBottom style={{ textAlign: 'center' }}>
+                    <Typography variant={'h6'} gutterBottom style={{ textAlign: 'center' }}>
                       Interview Feedback
                     </Typography>
 

@@ -146,7 +146,7 @@ class People extends PureComponent {
           <Grid item xs={12} md={3}>
             <Paper elevation={1} className={classes.formContainer}>
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 color={'inherit'}
               >
                 Invite team mate to join the organization

@@ -114,7 +114,7 @@ class Home extends PureComponent {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 A candidate is a potential future employee. The journey matters as soon as you consider the profile and we enable you to have a holistic view at every step.
@@ -143,7 +143,7 @@ class Home extends PureComponent {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 We enable you to easily track the current status of the candidate so you have better control and make proper decisions.
@@ -164,7 +164,7 @@ class Home extends PureComponent {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 Interviewer can provide a subjective and objective feedback for the candidate with a great ease in turn helping you to make the right decision for hiring.

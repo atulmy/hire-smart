@@ -5,6 +5,7 @@ import project from '../../modules/project'
 import activity from '../../modules/activity'
 import candidate from '../../modules/candidate'
 import interviewer from '../../modules/interviewer'
+import job from '../../modules/job'
 
 // Modules
 export default {
@@ -14,4 +15,5 @@ export default {
   ...activity,
   ...candidate,
   ...interviewer,
+  ...job,
 }

@@ -118,7 +118,7 @@ class CreateOrEdit extends PureComponent {
     return (
       <Paper elevation={1} className={classes.formContainer}>
         <Typography
-          variant={'subheading'}
+          variant={'subtitle1'}
           color={'inherit'}
         >
           { id === '' ? `Add new project` : `Edit project` }

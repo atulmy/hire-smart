@@ -4,11 +4,15 @@ import Interviewer from './model'
 
 // Get interviewer by ID
 export async function interviewer({ params: { id }}) {
-  const data = await Interviewer.findOne({ _id: id })
+  if(authCheck(auth)) {
+    const data = await Interviewer.findOne({ _id: id })
 
-  return {
-    data
+    return {
+      data
+    }
   }
+
+  throw new Error('You are not allowed to perform this action.')
 }
 
 // Get by project
@@ -48,9 +52,13 @@ export async function interviewersByOrganization({ auth }) {
 
 // Get all
 export async function interviewers() {
-  const data = await Interviewer.find()
+  if(authCheck(auth)) {
+    const data = await Interviewer.find()
 
-  return {
-    data
+    return {
+      data
+    }
   }
+
+  throw new Error('You are not allowed to perform this action.')
 }

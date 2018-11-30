@@ -59,7 +59,7 @@ class CreateOrEdit extends PureComponent {
     if(job && job._id !== this.state.id) {
       this.setState({
         id: job._id,
-        projectId: job.projectId._id,
+        projectId: job.projectId,
         role: job.role,
         description: job.description
       })
@@ -135,7 +135,7 @@ class CreateOrEdit extends PureComponent {
     return (
       <Paper elevation={elevation} className={classes.formContainer}>
         <Typography
-          variant={'subheading'}
+          variant={'subtitle1'}
           color={'inherit'}
         >
           { id === '' ? `Add new job` : `Edit job` }

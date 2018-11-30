@@ -50,7 +50,7 @@ const Features = (props) => {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 Summary of the project, candidates and activities at one place.
@@ -80,7 +80,7 @@ const Features = (props) => {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 Create your organization and invite your team mates. Keep everyone updated on the progress.
@@ -102,7 +102,7 @@ const Features = (props) => {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 Track the progress and journey of candidates.
@@ -132,7 +132,7 @@ const Features = (props) => {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 Manage all your project, candidate, interviewers and other data in one place.
@@ -154,7 +154,7 @@ const Features = (props) => {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 Hiring is sometimes not a one person job. We make it easy to collaborate with ease.
@@ -184,7 +184,7 @@ const Features = (props) => {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 We use industry standard encryption and high quality storage service. Your data is safe and protected.
@@ -206,7 +206,7 @@ const Features = (props) => {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 Keep your team mates, candidates and interviewer notified.
@@ -236,7 +236,7 @@ const Features = (props) => {
               </Typography>
 
               <Typography
-                variant={'subheading'}
+                variant={'subtitle1'}
                 className={classes.featureItemSubTitle}
               >
                 Get feedback from the interviewer and make informed decision on hiring.

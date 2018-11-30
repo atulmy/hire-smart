@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
@@ -44,11 +43,10 @@ export function getList(isLoading = true) {
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'jobsByOrganization',
         fields: ['_id', 'projectId { _id, name }', 'role', 'description', 'createdAt']
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -56,7 +54,7 @@ export function getList(isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.jobsByOrganization
+        const list = data.data
 
         dispatch({
           type: LIST_RESPONSE,
@@ -107,12 +105,11 @@ export function get(jobId, isLoading = true) {
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'job',
-        data: { id: jobId },
+        params: { id: jobId },
         fields: ['_id', 'projectId { _id, name }', 'role', 'description', 'createdAt']
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -120,7 +117,7 @@ export function get(jobId, isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const item = data.data.job
+        const item = data.data
 
         dispatch({
           type: SINGLE_RESPONSE,
@@ -171,12 +168,11 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'jobsByProject',
-        data: { projectId },
+        params: { projectId },
         fields: ['_id', 'projectId { _id, name }', 'role', 'description', 'createdAt']
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -184,7 +180,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.jobsByProject
+        const list = data.data
 
         dispatch({
           type: LIST_BY_PROJECT_RESPONSE,

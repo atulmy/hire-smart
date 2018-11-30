@@ -18,7 +18,7 @@ class Signup extends PureComponent {
     return (
       <div className={classes.root}>
         <Typography
-          variant={'subheading'}
+          variant={'subtitle1'}
           color={'inherit'}
           className={classes.heading}
         >

@@ -44,7 +44,7 @@ class Item extends PureComponent {
           onClick={detailsOpen}
         >
           {/* Item details */}
-          <Typography variant={'title'} className={classes.name} gutterBottom>
+          <Typography variant={'h6'} className={classes.name} gutterBottom>
             { candidateId.name }
           </Typography>
 

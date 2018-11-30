@@ -2,13 +2,14 @@
 import isEmpty from 'lodash/isEmpty'
 
 // App Imports
-import params from '../../../setup/config/params'
-import Activity from '../../activity/model'
-import Job from '../model'
+import params from '../../setup/config/params'
+import { authCheck } from '../../setup/helpers/utils'
+import Activity from '../activity/model'
+import Job from './model'
 
 // Create
-export async function create(parentValue, { projectId, role, description = '' }, { auth }) {
-  if(auth.user && auth.user.id) {
+export async function jobCreate({ params: { projectId, role, description = '' }, auth }) {
+  if(authCheck(auth)) {
     const job = await Job.create({
       organizationId: auth.user.organizationId,
       projectId,
@@ -29,16 +30,18 @@ export async function create(parentValue, { projectId, role, description = '' },
       })
     }
 
-    return job
+    return {
+      data: job
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
-export async function update(parentValue, { id, projectId, role, description = '' }, { auth }) {
-  if(auth.user && auth.user.id && !isEmpty(id)) {
-    return await Job.updateOne(
+export async function jobUpdate({ params: { id, projectId, role, description = '' }, auth }) {
+  if(authCheck(auth) && !isEmpty(id)) {
+    const data = await Job.updateOne(
       { _id: id },
       {
         $set: {
@@ -48,18 +51,26 @@ export async function update(parentValue, { id, projectId, role, description = '
         }
       }
     )
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
-export async function remove(parentValue, { id }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Job.remove({
+export async function jobRemove(parentValue, { id }, { auth }) {
+  if(authCheck(auth)) {
+    const data = await Job.remove({
       _id: _id,
       userId: auth.user.id
     })
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
