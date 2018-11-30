@@ -5,19 +5,20 @@ import ical from 'ical-generator'
 import isEmpty from 'lodash/isEmpty'
 
 // App Imports
-import params from '../../../setup/config/params'
-import Activity from '../../activity/model'
-import Kanban from '../../kanban/model'
-import Interview from '../model'
-import { send as sendEmail } from '../../email/send'
-import InterviewInviteCandidate from '../../candidate/email/InterviewInvite'
-import InterviewInviteInterviewer from '../../interviewer/email/InterviewInvite'
-import InterviewReminderCandidate from '../../candidate/email/InterviewReminder'
-import InterviewReminderInterviewer from '../../interviewer/email/InterviewReminder'
+import params from '../../setup/config/params'
+import { authCheck } from '../../setup/helpers/utils'
+import { send as sendEmail } from '../email/send'
+import InterviewInviteCandidate from '../candidate/email/InterviewInvite'
+import InterviewInviteInterviewer from '../interviewer/email/InterviewInvite'
+import InterviewReminderCandidate from '../candidate/email/InterviewReminder'
+import InterviewReminderInterviewer from '../interviewer/email/InterviewReminder'
+import Activity from '../activity/model'
+import Kanban from '../kanban/model'
+import Interview from './model'
 
 // Create
-export async function create(parentValue, { projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, { auth }) {
-  if(auth.user && auth.user.id) {
+export async function interviewCreate({ params: { projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, auth }) {
+  if(authCheck(auth)) {
     // Create interview
     const interview = await Interview.create({
       organizationId: auth.user.organizationId,
@@ -65,15 +66,17 @@ export async function create(parentValue, { projectId, candidateId, interviewerI
       sentEmails(invite, interview._id, auth, 'invite')
     }
 
-    return interview
+    return {
+      data: interview
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
-export async function update(parentValue, { id, projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, { auth }) {
-  if(auth.user && auth.user.id && !isEmpty(id)) {
+export async function interviewUpdate({ params: { id, projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, auth }) {
+  if(authCheck(auth) && !isEmpty(id)) {
     const interview = await Interview.updateOne(
       { _id: id },
       {
@@ -114,27 +117,33 @@ export async function update(parentValue, { id, projectId, candidateId, intervie
     // Send emails
     sentEmails(invite, id, auth, 'update')
 
-    return interview
+    return {
+      data: interview
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
-export async function remove(parentValue, { id }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Interview.remove({
+export async function interviewRemove({ params: { id }, auth }) {
+  if(authCheck(auth)) {
+    const data = await Interview.remove({
       _id: _id,
       userId: auth.user.id
     })
+
+    return {
+      data
+    }
   }
 
   throw new Error('Please login to delete interview.')
 }
 
 // Remind
-export async function remind(parentValue, { id }, { auth }) {
-  if(auth.user && auth.user.id) {
+export async function remind({ params: { id }, auth }) {
+  if(authCheck(auth)) {
     const interview = await Interview.findOne({
       _id: id,
       organizationId: auth.user.organizationId
@@ -148,7 +157,9 @@ export async function remind(parentValue, { id }, { auth }) {
 
     sentEmails(true, id, auth, 'remind')
 
-    return interview
+    return {
+      data: interview
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')

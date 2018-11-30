@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
@@ -44,8 +43,7 @@ export function getList(isLoading = true) {
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'interviewsByOrganization',
         fields: [
           '_id',
@@ -56,7 +54,7 @@ export function getList(isLoading = true) {
           'userId { _id }',
           'dateTime', 'mode', 'note', 'createdAt'
         ]
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -64,7 +62,7 @@ export function getList(isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.interviewsByOrganization
+        const list = data.data
 
         dispatch({
           type: LIST_RESPONSE,
@@ -115,10 +113,9 @@ export function get(interviewId, isLoading = true) {
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'interview',
-        data: { id: interviewId },
+        params: { id: interviewId },
         fields: [
           '_id',
           'organizationId { _id }',
@@ -128,7 +125,7 @@ export function get(interviewId, isLoading = true) {
           'userId { _id }',
           'dateTime', 'mode', 'note', 'createdAt'
         ]
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -136,7 +133,7 @@ export function get(interviewId, isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const item = data.data.interview
+        const item = data.data
 
         dispatch({
           type: SINGLE_RESPONSE,
@@ -187,10 +184,9 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'interviewsByProject',
-        data: { projectId },
+        params: { projectId },
         fields: [
           '_id',
           'organizationId { _id, name }',
@@ -200,7 +196,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
           'userId { _id, name }',
           'dateTime', 'mode', 'note', 'createdAt'
         ]
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -208,7 +204,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.interviewsByProject
+        const list = data.data
 
         dispatch({
           type: LIST_BY_PROJECT_RESPONSE,
