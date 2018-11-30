@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
@@ -50,16 +49,10 @@ export function getListByOrganization({ projectId }, isLoading = true, forceRefr
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'activitiesByOrganization',
-        fields: [
-          '_id',
-          'action',
-          'message',
-          'createdAt'
-        ]
-      }))
+        fields: ['_id', 'action', 'message', 'createdAt']
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -67,7 +60,7 @@ export function getListByOrganization({ projectId }, isLoading = true, forceRefr
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.activitiesByOrganization
+        const list = data.data
 
         dispatch({
           type: LIST_BY_ORGANIZATION_RESPONSE,
@@ -118,17 +111,11 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'activitiesByProject',
-        data: { projectId },
-        fields: [
-          '_id',
-          'action',
-          'message',
-          'createdAt'
-        ]
-      }))
+        params: { projectId },
+        fields: ['_id', 'action', 'message', 'createdAt']
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -136,7 +123,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.activitiesByProject
+        const list = data.data
 
         dispatch({
           type: LIST_BY_PROJECT_RESPONSE,
@@ -187,17 +174,11 @@ export function getListByCandidate({ candidateId }, isLoading = true, forceRefre
     }
 
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'activitiesByCandidate',
-        data: { candidateId },
-        fields: [
-          '_id',
-          'action',
-          'message',
-          'createdAt'
-        ]
-      }))
+        params: { candidateId },
+        fields: ['_id', 'action', 'message', 'createdAt']
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -205,7 +186,7 @@ export function getListByCandidate({ candidateId }, isLoading = true, forceRefre
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.activitiesByCandidate
+        const list = data.data
 
         dispatch({
           type: LIST_BY_CANDIDATE_RESPONSE,

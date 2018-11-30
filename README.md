@@ -10,7 +10,6 @@
   - API
     - Node
     - Express
-    - GraphQL
     - MongoDB
   - Web App
     - React
@@ -42,8 +41,8 @@
   - API: Install packages and database setup (migrations and seed) `cd api` and `npm run setup`
   - Webapp: Install packages `cd web` and `npm install`
 - Development
-  - Run API `cd api` and `npm start`, browse GraphiQL at http://localhost:8000/
-  - Run Webapp `cd webapp` and `npm start`, browse webapp at http://localhost:3000/
+  - Run API `cd api` and `npm start`, browse at http://localhost:8000/
+  - Run Webapp `cd web` and `npm start`, browse webapp at http://localhost:3000/
 - Deployment
   - Without Docker
       - Configure nginx on server

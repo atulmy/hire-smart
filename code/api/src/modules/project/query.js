@@ -1,4 +1,5 @@
 // App Imports
+import { authCheck } from '../../setup/helpers/utils'
 import Project from './model'
 
 // Get project by ID
@@ -12,7 +13,7 @@ export async function project({ params: { id }}) {
 
 // Get by organization
 export async function projectsByOrganization({ auth }) {
-  if(auth.user && auth.user.id) {
+  if(authCheck(auth)) {
     const data = await Project.find({
       organizationId: auth.user.organizationId
     })
@@ -27,7 +28,7 @@ export async function projectsByOrganization({ auth }) {
 
 // Get all
 export async function projects({ auth }) {
-  if(auth.user && auth.user.id) {
+  if(authCheck(auth)) {
     const data = await Project.find()
 
     return {
