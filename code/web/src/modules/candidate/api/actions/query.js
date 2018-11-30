@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios'
-import queryBuilder from 'gql-query-builder'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
@@ -45,8 +44,7 @@ export function getList(isLoading = true) {
 
     // Get data
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'candidatesByOrganization',
         fields: [
           '_id',
@@ -54,7 +52,7 @@ export function getList(isLoading = true) {
           'jobId { _id, role, description }',
           'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt'
         ]
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -62,7 +60,7 @@ export function getList(isLoading = true) {
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.candidatesByOrganization
+        const list = data.data
 
         dispatch({
           type: LIST_RESPONSE,
@@ -114,17 +112,16 @@ export function get(candidateId, isLoading = true) {
 
     // Get data
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'candidate',
-        data: { id: candidateId },
+        params: { id: candidateId },
         fields: [
           '_id',
           'projectId { _id, name }',
           'jobId { _id, role, description }',
           'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt'
         ]
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -184,12 +181,11 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
 
     // Get data
     try {
-      const { data } = await axios.post(API_URL, queryBuilder({
-        type: 'query',
+      const { data } = await axios.post(API_URL, {
         operation: 'candidatesByProject',
-        data: { projectId },
+        params: { projectId },
         fields: ['_id', 'projectId { _id, name }', 'jobId { _id, role, description }', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
-      }))
+      })
 
       if(data.errors && data.errors.length > 0) {
         dispatch({
@@ -197,7 +193,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
           message: data.errors[0].message
         })
       } else {
-        const list = data.data.candidatesByProject
+        const list = data.data
 
         dispatch({
           type: LIST_BY_PROJECT_RESPONSE,

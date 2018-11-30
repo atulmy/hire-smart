@@ -2,14 +2,15 @@
 import isEmpty from 'lodash/isEmpty'
 
 // App Imports
-import params from '../../../setup/config/params'
-import Kanban from '../../kanban/model'
-import Candidate from '../model'
-import Activity from '../../activity/model'
+import params from '../../setup/config/params'
+import { authCheck } from '../../setup/helpers/utils'
+import Kanban from '../kanban/model'
+import Activity from '../activity/model'
+import Candidate from './model'
 
 // Create
-export async function create(parentValue, { projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
-  if(auth.user && auth.user.id) {
+export async function candidateCreate({ params: { projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, auth }) {
+  if(authCheck(auth)) {
     let item = {
       organizationId: auth.user.organizationId,
       projectId,
@@ -50,15 +51,17 @@ export async function create(parentValue, { projectId, jobId = '', name, email, 
       })
     }
 
-    return candidate
+    return {
+      data: candidate
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Update
-export async function update(parentValue, { id, projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, { auth }) {
-  if(auth.user && auth.user.id && !isEmpty(id)) {
+export async function candidateUpdate({ params: { id, projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, auth }) {
+  if(authCheck(auth) && !isEmpty(id)) {
     let item = {
       projectId,
       name,
@@ -85,19 +88,25 @@ export async function update(parentValue, { id, projectId, jobId = '', name, ema
       )
     }
 
-    return candidate
+    return {
+      data: candidate
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
 }
 
 // Delete
-export async function remove(parentValue, { id }, { auth }) {
-  if(auth.user && auth.user.id) {
-    return await Candidate.remove({
+export async function candidateRemove({ params: { id }, auth }) {
+  if(authCheck(auth)) {
+    const data = await Candidate.remove({
       _id: _id,
       userId: auth.user.id
     })
+
+    return {
+      data
+    }
   }
 
   throw new Error('You are not allowed to perform this action.')
