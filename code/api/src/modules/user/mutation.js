@@ -1,11 +1,11 @@
 // Imports
 import bcrypt from 'bcrypt'
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
 
 // App Imports
 import { SECURITY_SALT_ROUNDS } from '../../setup/config/env'
 import params from '../../setup/config/params'
+import validate from '../../setup/helpers/validation'
 import { authCheck, randomNumber } from '../../setup/helpers/utils'
 import User from './model'
 import { userAuthResponse } from './query'
@@ -69,246 +69,370 @@ export async function userStartNow({ auth }) {
 
 // Verify email send code
 export async function userVerifySendCode({ params: { email }, auth }) {
-  const user = await User.findOne({ email })
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    }
+  ]
 
-  if(user) {
-    // User already exists
-    throw new Error(`The email ${ email } is already registered. Please try to login.`)
-  } else {
-    let code
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
+  }
 
-    if(authCheck(auth) && auth.user.demo) {
-      const verification = await Verification.findOne({ userId: auth.user.id, email, verified: false, type: params.user.verification.signup })
+  try {
+    const user = await User.findOne({ email })
 
-      if(verification) {
-        code = verification.code
+    if(user) {
+      // User already exists
+      throw new Error(`The email ${ email } is already registered. Please try to login.`)
+    } else {
+      let code
+
+      if(authCheck(auth) && auth.user.demo) {
+        const verification = await Verification.findOne({ userId: auth.user.id, email, verified: false, type: params.user.verification.signup })
+
+        if(verification) {
+          code = verification.code
+        }
       }
-    }
 
-    if(!code) {
-      code = randomNumber(1000, 9999)
+      if(!code) {
+        code = randomNumber(1000, 9999)
 
-      await Verification.create({
-        email,
-        code,
-        verified: false,
-        type: params.user.verification.signup
-      })
-    }
-
-    sendEmail({
-      to: {
-        email: email
-      },
-      from: {
-        name: params.site.emails.help.name,
-        email: params.site.emails.help.email
-      },
-      subject: `Verification Code: ${ code }`,
-      template:
-        <Verify
-          code={code}
-        />
-    })
-
-    return {
-      data: true
-    }
-  }
-}
-
-// Verify email send code
-export async function userVerifyCode({ params: { email, code } }) {
-  const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.signup })
-
-  if(verification) {
-    // Mark as verified
-    await Verification.updateOne(
-      {_id: verification._id},
-      { verified: true }
-    )
-
-    return {
-      data: true
-    }
-  } else {
-    throw new Error('The code you entered is invalid. Please try again with valid code.')
-  }
-}
-
-// Verify create/update user account
-export async function userVerifyUpdateAccount({ params: { email, name, password, organizationName }, auth }) {
-  const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.signup })
-
-  console.log(verification)
-
-  const userCheck = await User.findOne({ email: verification.email })
-
-  if(!userCheck) {
-    if (verification && verification.verified) {
-      let user
-      let message
-
-      const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
-      const organizationDomain = email.split('@')[1]
-
-      if(auth.user && auth.user.id && auth.user.demo) {
-        // Update user
-        await User.updateOne(
-          { _id: auth.user.id },
-          {
-            $set: {
-              email: verification.email,
-              password: passwordHashed,
-              name,
-              demo: false
-            }
-          }
-        )
-
-        // Update organization name
-        await Organization.updateOne(
-          { _id: auth.user.organizationId },
-          {
-            $set: {
-              name: organizationName,
-              domain: organizationDomain
-            }
-          }
-        )
-
-        // Log activity - User joined organization
-        await Activity.create({
-          organizationId: auth.user.organizationId,
-          userId: auth.user.id,
-          action: params.activity.types.create,
-          message: `${ name } (${ email }) joined the organization.`
+        await Verification.create({
+          email,
+          code,
+          verified: false,
+          type: params.user.verification.signup
         })
-
-        user = await User.findOne({ _id: auth.user.id })
-
-        message = 'Your account has been verified and updated successfully.'
-      } else {
-        // Create new user
-        const organization = await Organization.create({
-          name: organizationName,
-          domain: organizationDomain
-        })
-
-        // Create user
-        user = await User.create({
-          organizationId: organization._id,
-          name,
-          email: verification.email,
-          password: passwordHashed,
-          admin: true,
-          demo: false
-        })
-
-        message = 'Your account has been created successfully.'
       }
 
       sendEmail({
         to: {
-          name,
           email: email
         },
         from: {
           name: params.site.emails.help.name,
           email: params.site.emails.help.email
         },
-        subject: message,
+        subject: `Verification Code: ${ code }`,
         template:
-          <AccountCreatedOrVerified
-            to={name}
-            message={message}
+          <Verify
+            code={code}
           />
       })
 
       return {
-        data: userAuthResponse(user),
-        message: message
+        data: true
+      }
+    }
+  } catch(error) {
+    throw new Error(params.common.message.error)
+  }
+}
+
+// Verify email send code
+export async function userVerifyCode({ params: { email, code } }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: code },
+      check: 'notEmpty',
+      message: 'Please enter valid code.'
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.signup })
+
+    if(verification) {
+      // Mark as verified
+      await Verification.updateOne(
+        {_id: verification._id},
+        { verified: true }
+      )
+
+      return {
+        data: true
       }
     } else {
       throw new Error('The code you entered is invalid. Please try again with valid code.')
     }
-  } else {
-    throw new Error(`The email ${ verification.email } is already registered. Please try to login.`)
+  } catch(error) {
+    throw new Error(params.common.message.error)
+  }
+}
+
+// Verify create/update user account
+export async function userVerifyUpdateAccount({ params: { email, name, password, organizationName }, auth }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: name },
+      check: 'notEmpty',
+      message: 'Please enter valid name.'
+    },
+    {
+      data: { value: password, length: params.user.rules.passwordMinLength },
+      check: 'lengthMin',
+      message: `Please enter valid password. Minimum ${ params.user.rules.passwordMinLength } is required.`
+    },
+    {
+      data: { value: organizationName },
+      check: 'notEmpty',
+      message: 'Please enter valid organization name.'
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.signup })
+
+    const userCheck = await User.findOne({ email: verification.email })
+
+    if(!userCheck) {
+      if (verification && verification.verified) {
+        let user
+        let message
+
+        const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
+        const organizationDomain = email.split('@')[1]
+
+        if(auth.user && auth.user.id && auth.user.demo) {
+          // Update user
+          await User.updateOne(
+            { _id: auth.user.id },
+            {
+              $set: {
+                email: verification.email,
+                password: passwordHashed,
+                name,
+                demo: false
+              }
+            }
+          )
+
+          // Update organization name
+          await Organization.updateOne(
+            { _id: auth.user.organizationId },
+            {
+              $set: {
+                name: organizationName,
+                domain: organizationDomain
+              }
+            }
+          )
+
+          // Log activity - User joined organization
+          await Activity.create({
+            organizationId: auth.user.organizationId,
+            userId: auth.user.id,
+            action: params.activity.types.create,
+            message: `${ name } (${ email }) joined the organization.`
+          })
+
+          user = await User.findOne({ _id: auth.user.id })
+
+          message = 'Your account has been verified and updated successfully.'
+        } else {
+          // Create new user
+          const organization = await Organization.create({
+            name: organizationName,
+            domain: organizationDomain
+          })
+
+          // Create user
+          user = await User.create({
+            organizationId: organization._id,
+            name,
+            email: verification.email,
+            password: passwordHashed,
+            admin: true,
+            demo: false
+          })
+
+          message = 'Your account has been created successfully.'
+        }
+
+        sendEmail({
+          to: {
+            name,
+            email: email
+          },
+          from: {
+            name: params.site.emails.help.name,
+            email: params.site.emails.help.email
+          },
+          subject: message,
+          template:
+            <AccountCreatedOrVerified
+              to={name}
+              message={message}
+            />
+        })
+
+        return {
+          data: userAuthResponse(user),
+          message: message
+        }
+      } else {
+        throw new Error('The code you entered is invalid. Please try again with valid code.')
+      }
+    } else {
+      throw new Error(`The email ${ verification.email } is already registered. Please try to login.`)
+    }
+  } catch(error) {
+    throw new Error(params.common.message.error)
   }
 }
 
 // Accept invitation
 export async function userAcceptInvite({ params: { id, name, password } }) {
-  // Users exists with same email check
-  const invite = await Invite.findOne({ _id: id, accepted: false })
+  // Validation rules
+  const rules = [
+    {
+      data: { value: id },
+      check: 'notEmpty',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: name },
+      check: 'notEmpty',
+      message: 'Please enter valid name.'
+    },
+    {
+      data: { value: password, length: params.user.rules.passwordMinLength },
+      check: 'lengthMin',
+      message: `Please enter valid password. Minimum ${ params.user.rules.passwordMinLength } is required.`
+    }
+  ]
 
-  if (invite) {
-    const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
+  }
 
-    // Create user
-    const user = await User.create({
-      organizationId: invite.organizationId,
-      name,
-      email: invite.email,
-      password: passwordHashed,
-      admin: false,
-      demo: false
-    })
+  try {
+    // Users exists with same email check
+    const invite = await Invite.findOne({ _id: id, accepted: false })
 
-    // Set invitation accepted
-    await Invite.updateOne(
-      { _id: invite._id },
-      {
-        $set: {
-          accepted: true
-        }
-      }
-    )
+    if (invite) {
+      const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
 
-    // Send email
-    const subject = 'Your account has been created successfully.'
-    sendEmail({
-      to: {
-        name,
-        email: invite.email
-      },
-      from: {
-        name: params.site.emails.help.name,
-        email: params.site.emails.help.email
-      },
-      subject,
-      template:
-        <AccountCreatedOrVerified
-          to={name}
-          message={subject}
-        />
-    })
-
-    // Log activity
-    if(invite) {
-      await Activity.create({
+      // Create user
+      const user = await User.create({
         organizationId: invite.organizationId,
-        userId: user._id,
-        inviteId: invite._id,
-        action: params.activity.types.create,
-        message: `${ name } (${ invite.email }) joined the organization.`
+        name,
+        email: invite.email,
+        password: passwordHashed,
+        admin: false,
+        demo: false
       })
-    }
 
-    return {
-      data: userAuthResponse(user),
-      message: `Invitation accepted successfully. Welcome ${ name }!`
+      // Set invitation accepted
+      await Invite.updateOne(
+        { _id: invite._id },
+        {
+          $set: {
+            accepted: true
+          }
+        }
+      )
+
+      // Send email
+      const subject = 'Your account has been created successfully.'
+      sendEmail({
+        to: {
+          name,
+          email: invite.email
+        },
+        from: {
+          name: params.site.emails.help.name,
+          email: params.site.emails.help.email
+        },
+        subject,
+        template:
+          <AccountCreatedOrVerified
+            to={name}
+            message={subject}
+          />
+      })
+
+      // Log activity
+      if(invite) {
+        await Activity.create({
+          organizationId: invite.organizationId,
+          userId: user._id,
+          inviteId: invite._id,
+          action: params.activity.types.create,
+          message: `${ name } (${ invite.email }) joined the organization.`
+        })
+      }
+
+      return {
+        data: userAuthResponse(user),
+        message: `Invitation accepted successfully. Welcome ${ name }!`
+      }
+    } else {
+      // User exists
+      throw new Error(`Sorry, this invitation is not valid anymore.`)
     }
-  } else {
-    // User exists
-    throw new Error(`Sorry, this invitation is not valid anymore.`)
+  } catch(error) {
+    throw new Error(params.common.message.error)
   }
 }
 
 // Update
 export async function userUpdate({ params: { name }, auth }) {
   if(authCheck(auth)) {
-    if(!isEmpty(name)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: name },
+        check: 'notEmpty',
+        message: 'Please enter valid name.'
+      }
+    ]
+
+    // Validate
+    try {
+      validate(rules)
+    } catch(error) {
+      throw new Error(error.message)
+    }
+
+    try {
       await User.updateOne({ _id: auth.user._id }, { name })
 
       const user = await User.findOne({ _id: auth.user._id })
@@ -317,8 +441,8 @@ export async function userUpdate({ params: { name }, auth }) {
         data: userAuthResponse(user),
         message: 'Your profile has been updated successfully.'
       }
-    } else {
-      throw new Error('Please enter valid name.')
+    } catch(error) {
+      throw new Error(params.common.message.error)
     }
   }
 
@@ -327,96 +451,166 @@ export async function userUpdate({ params: { name }, auth }) {
 
 // Reset password send code
 export async function userResetPasswordSendCode({ params: { email } }) {
-  const user = await User.findOne({ email })
-
-  if(user) {
-    let code
-
-    const verification = await Verification.findOne({ email, verified: false, type: params.user.verification.password })
-
-    if(verification) {
-      code = verification.code
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
     }
+  ]
 
-    if(!code) {
-      code = randomNumber(1000, 9999)
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
+  }
 
-      Verification.create({
-        userId: user._id,
-        email,
-        code,
-        verified: false,
-        type: params.user.verification.password
+  try {
+    const user = await User.findOne({ email })
+
+    if(user) {
+      let code
+
+      const verification = await Verification.findOne({ email, verified: false, type: params.user.verification.password })
+
+      if(verification) {
+        code = verification.code
+      }
+
+      if(!code) {
+        code = randomNumber(1000, 9999)
+
+        Verification.create({
+          userId: user._id,
+          email,
+          code,
+          verified: false,
+          type: params.user.verification.password
+        })
+      }
+
+      sendEmail({
+        to: {
+          email: email
+        },
+        from: {
+          name: params.site.emails.help.name,
+          email: params.site.emails.help.email
+        },
+        subject: `Verification Code: ${ code }`,
+        template:
+          <Verify
+            code={code}
+          />
       })
-    }
 
-    sendEmail({
-      to: {
-        email: email
-      },
-      from: {
-        name: params.site.emails.help.name,
-        email: params.site.emails.help.email
-      },
-      subject: `Verification Code: ${ code }`,
-      template:
-        <Verify
-          code={code}
-        />
-    })
-
-    return {
-      data: true
+      return {
+        data: true
+      }
+    } else {
+      throw new Error(`The email ${ email } is not registered. Please signup.`)
     }
-  } else {
-    throw new Error(`The email ${ email } is not registered. Please signup.`)
+  } catch(error) {
+    throw new Error(params.common.message.error)
   }
 }
 
 // Verify email send code
 export async function userResetPasswordVerifyCode({ params: { email, code } }) {
-  const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.password })
-
-  if(verification) {
-    // Mark as verified
-    await Verification.updateOne(
-      {_id: verification._id},
-      { verified: true }
-    )
-
-    return {
-      data: true
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: code },
+      check: 'notEmpty',
+      message: 'Please enter valid code.'
     }
-  } else {
-    throw new Error('The code you entered is invalid. Please try again with valid code.')
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.password })
+
+    if(verification) {
+      // Mark as verified
+      await Verification.updateOne(
+        {_id: verification._id},
+        { verified: true }
+      )
+
+      return {
+        data: true
+      }
+    } else {
+      throw new Error('The code you entered is invalid. Please try again with valid code.')
+    }
+  } catch(error) {
+    throw new Error(params.common.message.error)
   }
 }
 
 // Reset password update
 export async function userResetPasswordUpdate({ params: { email, password } }) {
-  const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.password })
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: password, length: params.user.rules.passwordMinLength },
+      check: 'lengthMin',
+      message: `Please enter valid password. Minimum ${ params.user.rules.passwordMinLength } is required.`
+    }
+  ]
 
-  const user = await User.findOne({ email: verification.email })
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
+  }
 
-  if(user) {
-    if (verification && verification.verified) {
-      const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
+  try {
+    const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.password })
 
-      // Update user
-      const userUpdated = await User.findOneAndUpdate(
-        { _id: user.id },
-        { password: passwordHashed },
-        { new: true }
-      )
+    const user = await User.findOne({ email: verification.email })
 
-      return {
-        data: userAuthResponse(userUpdated),
-        message: 'Your password has been reset successfully.'
+    if(user) {
+      if (verification && verification.verified) {
+        const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
+
+        // Update user
+        const userUpdated = await User.findOneAndUpdate(
+          { _id: user.id },
+          { password: passwordHashed },
+          { new: true }
+        )
+
+        return {
+          data: userAuthResponse(userUpdated),
+          message: 'Your password has been reset successfully.'
+        }
+      } else {
+        throw new Error('The code you entered is invalid. Please try again with valid code.')
       }
     } else {
-      throw new Error('The code you entered is invalid. Please try again with valid code.')
+      throw new Error(`The email ${ email } is not registered. Please signup.`)
     }
-  } else {
-    throw new Error(`The email ${ email } is not registered. Please signup.`)
+  } catch(error) {
+    throw new Error(params.common.message.error)
   }
 }

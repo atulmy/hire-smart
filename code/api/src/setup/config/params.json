@@ -27,6 +27,13 @@
   "common": {
     "language": {
       "default": "en-US"
+    },
+
+    "message": {
+      "error": {
+        "server": "There was some server error. Please try again.",
+        "invalidData": "Invalid data provided."
+      }
     }
   },
 
@@ -50,6 +57,12 @@
     "verification": {
       "signup": "signup",
       "password": "password"
+    },
+
+    "message": {
+      "error": {
+        "auth": "You are not allowed to perform this action."
+      }
     }
   },
 

@@ -8,7 +8,7 @@ const styles = theme => ({
   },
 
   container: {
-    width: '35vw',
+    width: 500,
     margin: '0 auto'
   },
 

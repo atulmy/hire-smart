@@ -53,46 +53,58 @@ export async function userLogin({ params: { email, password } }) {
       }
     }
   } catch (error) {
-    throw new Error('There was some server error.')
+    throw new Error(params.common.message.error)
   }
 }
 
 // Get by ID
 export async function user({ params: { id } }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: id },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
+  }
+
   if(authCheck(auth)) {
-    const data = await User.findOne({ _id: id })
-    return {
-      data
+    try {
+      const data = await User.findOne({ _id: id })
+
+      return {
+        data
+      }
+    } catch(error) {
+      throw new Error(params.common.message.error)
     }
   }
 
-  throw new Error('You are not allowed to perform this action.')
+  throw new Error(params.user.message.error.auth)
 }
 
-// Get all
-export async function users() {
+// Get by organization
+export async function usersByOrganization({ auth }) {
   if(authCheck(auth)) {
-    const data = await User.find()
+    try {
+      const data = await User.find({ organizationId: auth.user.organizationId })
 
-    return {
-      data
+      return {
+        data
+      }
+    } catch(error) {
+      throw new Error(params.common.message.error)
     }
   }
 
-  throw new Error('You are not allowed to perform this action.')
-}
-
-// Get all
-export async function usersByOrganization({ params: { id }, auth }) {
-  if(authCheck(auth)) {
-    const data = await User.find({ organizationId: auth.user.organizationId })
-
-    return {
-      data
-    }
-  }
-
-  throw new Error('Please login to view your organization.')
+  throw new Error(params.user.message.error.auth)
 }
 
 // Auth Response (token and user info)
