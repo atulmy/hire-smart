@@ -1,9 +1,9 @@
 // App Imports
 import params from '../../setup/config/params'
 import { authCheck } from '../../setup/helpers/utils'
+import validate from '../../setup/helpers/validation'
 import Activity from '../activity/model'
 import Project from './model'
-import validate from '../../setup/helpers/validation'
 
 // Create
 export async function projectCreate({ params: { name, description = '' }, auth }) {
