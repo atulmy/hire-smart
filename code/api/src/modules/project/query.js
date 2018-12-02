@@ -1,40 +1,74 @@
 // App Imports
+import params from '../../setup/config/params'
+import validate from '../../setup/helpers/validation'
 import { authCheck } from '../../setup/helpers/utils'
 import Project from './model'
 
 // Get project by ID
-export async function project({ params: { id }}) {
-  const data = await Project.findOne({ _id: id })
+export async function project({ params: { id }, auth }) {
+  if(authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: id },
+        check: 'notEmpty',
+        message: params.common.message.error.invalidData
+      }
+    ]
 
-  return {
-    data
+    // Validate
+    try {
+      validate(rules)
+    } catch(error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      const data = await Project.findOne({ _id: id })
+
+      return {
+        data
+      }
+    } catch(error) {
+      throw new Error(params.common.message.error)
+    }
   }
+
+  throw new Error(params.user.message.error.auth)
 }
 
 // Get by organization
 export async function projectsByOrganization({ auth }) {
   if(authCheck(auth)) {
-    const data = await Project.find({
-      organizationId: auth.user.organizationId
-    })
+    try {
+      const data = await Project.find({
+        organizationId: auth.user.organizationId
+      })
 
-    return {
-      data
+      return {
+        data
+      }
+    } catch(error) {
+      throw new Error(params.common.message.error)
     }
   }
 
-  throw new Error('You are not allowed to perform this action.')
+  throw new Error(params.user.message.error.auth)
 }
 
 // Get all
 export async function projects({ auth }) {
   if(authCheck(auth)) {
-    const data = await Project.find()
+    try {
+      const data = await Project.find()
 
-    return {
-      data
+      return {
+        data
+      }
+    } catch(error) {
+      throw new Error(params.common.message.error)
     }
   }
 
-  throw new Error('You are not allowed to perform this action.')
+  throw new Error(params.user.message.error.auth)
 }
