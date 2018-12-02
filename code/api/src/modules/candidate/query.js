@@ -5,7 +5,7 @@ import validate from '../../setup/helpers/validation'
 import Candidate from './model'
 
 // Get candidate by ID
-export async function candidate({ params: { id }}) {
+export async function candidate({ params: { id }, fields = { candidate: [], project: [], job: [] }}) {
   // Validation rules
   const rules = [
     {
@@ -24,8 +24,9 @@ export async function candidate({ params: { id }}) {
 
   try {
     const data = await Candidate.findOne({ _id: id })
-      .populate('projectId')
-      .populate('jobId')
+      .select(fields.candidate)
+      .populate({ path: 'projectId', select: fields.project })
+      .populate({ path: 'jobId', select: fields.job })
 
     return {
       data
@@ -36,7 +37,7 @@ export async function candidate({ params: { id }}) {
 }
 
 // Get by project
-export async function candidatesByProject({ params: { projectId }, auth }) {
+export async function candidatesByProject({ params: { projectId }, fields = { candidate: [], job: [] }, auth }) {
   if(authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -59,8 +60,10 @@ export async function candidatesByProject({ params: { projectId }, auth }) {
         organizationId: auth.user.organizationId,
         projectId
       })
-        .populate('projectId')
-        .populate('jobId')
+        .select(fields.candidate)
+        .populate({ path: 'projectId', select: fields.project })
+        .populate({ path: 'jobId', select: fields.job })
+
 
       return {
         data
@@ -74,15 +77,15 @@ export async function candidatesByProject({ params: { projectId }, auth }) {
 }
 
 // Get by organization
-export async function candidatesByOrganization({ auth }) {
+export async function candidatesByOrganization({ fields = { candidate: [], project: [], job: [] }, auth }) {
   if(authCheck(auth)) {
     try {
       const data = await Candidate.find({
         organizationId: auth.user.organizationId
       })
-        .populate('organizationId')
-        .populate('projectId')
-        .populate('jobId')
+        .select(fields.candidate)
+        .populate({ path: 'projectId', select: fields.project })
+        .populate({ path: 'jobId', select: fields.job })
 
       return {
         data

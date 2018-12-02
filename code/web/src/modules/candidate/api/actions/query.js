@@ -46,12 +46,11 @@ export function getList(isLoading = true) {
     try {
       const { data } = await axios.post(API_URL, {
         operation: 'candidatesByOrganization',
-        fields: [
-          '_id',
-          'projectId { _id, name }',
-          'jobId { _id, role, description }',
-          'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt'
-        ]
+        fields: {
+          candidate: ['_id', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt'],
+          project: ['_id', 'name'],
+          job: ['_id', 'role', 'description']
+        }
       })
 
       if(data.errors && data.errors.length > 0) {
@@ -115,12 +114,11 @@ export function get(candidateId, isLoading = true) {
       const { data } = await axios.post(API_URL, {
         operation: 'candidate',
         params: { id: candidateId },
-        fields: [
-          '_id',
-          'projectId { _id, name }',
-          'jobId { _id, role, description }',
-          'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt'
-        ]
+        fields: {
+          candidate: ['_id', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt'],
+          project: ['_id', 'name'],
+          job: ['_id', 'role', 'description']
+        }
       })
 
       if(data.errors && data.errors.length > 0) {
@@ -184,7 +182,11 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
       const { data } = await axios.post(API_URL, {
         operation: 'candidatesByProject',
         params: { projectId },
-        fields: ['_id', 'projectId { _id, name }', 'jobId { _id, role, description }', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt']
+        fields: {
+          candidate: ['_id', 'name', 'email', 'mobile', 'experience', 'resume', 'salaryCurrent', 'salaryExpected', 'createdAt'],
+          project: ['_id', 'name'],
+          job: ['_id', 'role', 'description']
+        }
       })
 
       if(data.errors && data.errors.length > 0) {

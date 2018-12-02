@@ -1,6 +1,6 @@
 // App Imports
 import params from '../../setup/config/params'
-import { authCheck, selectFields } from '../../setup/helpers/utils'
+import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import Interviewer from './model'
 
@@ -62,7 +62,7 @@ export async function interviewersByProject({ params: { projectId }, fields = { 
         projectId
       })
         .select(fields.interviewer)
-        .populate({ path: 'projectId', select: selectFields(fields.project) })
+        .populate({ path: 'projectId', select: fields.project })
 
       return {
         data
@@ -83,7 +83,7 @@ export async function interviewersByOrganization({ fields = { interviewer: [], p
         organizationId: auth.user.organizationId
       })
         .select(fields.interviewer)
-        .populate({ path: 'projectId', select: selectFields(fields.project) })
+        .populate({ path: 'projectId', select: fields.project })
 
       return {
         data
