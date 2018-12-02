@@ -70,6 +70,8 @@ class CreateOrEdit extends PureComponent {
   componentWillReceiveProps(nextProps) {
     const { interview } = nextProps.interviewEdit
 
+    console.log(interview)
+
     if(interview && interview._id !== this.state.id) {
       this.setState({
         id: interview._id,

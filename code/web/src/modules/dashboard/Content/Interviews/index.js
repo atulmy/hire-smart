@@ -25,8 +25,8 @@ import View from '../../../interview/Manage/View'
 // Component
 class Interviews extends PureComponent {
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
       drawerAdd: false

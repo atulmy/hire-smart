@@ -5,7 +5,7 @@ import validate from '../../setup/helpers/validation'
 import Interview from './model'
 
 // Get interview by ID
-export async function interview({ params: { id }, fields = { candidate: [] } }) {
+export async function interview({ params: { id }, fields }) {
   // Validation rules
   const rules = [
     {
@@ -36,7 +36,7 @@ export async function interview({ params: { id }, fields = { candidate: [] } }) 
 }
 
 // Get by organization
-export async function interviewsByOrganization({ fields = { interview: [], candidate: [], interviewer: [] }, auth }) {
+export async function interviewsByOrganization({ fields, auth }) {
   if(authCheck(auth)) {
     try {
       const data = await Interview.find({
@@ -58,7 +58,7 @@ export async function interviewsByOrganization({ fields = { interview: [], candi
 }
 
 // Get by project
-export async function interviewsByProject({ params: { projectId }, fields = { interview: [], candidate: [], interviewer: [] }, auth }) {
+export async function interviewsByProject({ params: { projectId }, fields, auth }) {
   if(authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -82,6 +82,7 @@ export async function interviewsByProject({ params: { projectId }, fields = { in
         projectId
       })
         .select(fields.interview)
+        .populate({ path: 'projectId', select: fields.projectId })
         .populate({ path: 'candidateId', select: fields.candidate })
         .populate({ path: 'interviewerId', select: fields.candidate })
 

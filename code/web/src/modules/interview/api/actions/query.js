@@ -112,6 +112,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
         operation: 'interviewsByProject',
         params: { projectId },
         fields: {
+          project: ['_id'],
           interview: ['_id', 'dateTime', 'mode', 'note', 'createdAt'],
           candidate: ['_id', 'name'],
           interviewer: ['_id', 'name', 'email', 'mobile'],
