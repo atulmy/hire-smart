@@ -1,24 +1,52 @@
 // Imports
 import React from 'react'
-import isEmpty from 'lodash/isEmpty'
 
 // App Imports
 import params from '../../setup/config/params'
-import { send as sendEmail } from '../email/send'
+import validate from '../../setup/helpers/validation'
 import Activity from '../activity/model'
 import Interview from '../interview/model'
 import Kanban from '../kanban/model'
-import FeedbackTemplate from './email/Feedback'
 import Feedback from './model'
+
+// Email
+import { send as sendEmail } from '../email/send'
+import FeedbackTemplate from './email/Feedback'
 
 // Create
 export async function feedbackCreateOrUpdate({ params: { interviewId, text, status } }) {
-  const interview = await Interview.findOne({ _id: interviewId })
-    .populate('candidateId')
-    .populate('interviewerId')
-    .populate('userId')
+  // Validation rules
+  const rules = [
+    {
+      data: { value: interviewId },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
+    },
+    {
+      data: { value: text },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
+    },
+    {
+      data: { value: status },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
+    }
+  ]
 
-  if(!isEmpty(interviewId) && !isEmpty(text) && !isEmpty(status)) {
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const interview = await Interview.findOne({ _id: interviewId })
+      .populate('candidateId')
+      .populate('interviewerId')
+      .populate('userId')
+
     if (interview) {
       let feedback = await Feedback.findOne({ interviewId })
 
@@ -96,10 +124,10 @@ export async function feedbackCreateOrUpdate({ params: { interviewId, text, stat
       return {
         data: feedback
       }
-    } else {
-      throw new Error('Please provide all the required information.')
     }
+  } catch(error) {
+    throw new Error(params.common.message.error.server)
   }
 
-  throw new Error('Sorry, please try again.')
+  throw new Error(params.common.message.error.default)
 }

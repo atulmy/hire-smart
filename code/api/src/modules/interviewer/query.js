@@ -30,7 +30,7 @@ export async function interviewer({ params: { id }}) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -68,7 +68,7 @@ export async function interviewersByProject({ params: { projectId }, auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -89,7 +89,7 @@ export async function interviewersByOrganization({ auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

@@ -47,7 +47,7 @@ export async function projectCreate({ params: { name, description = '' }, auth }
         data: project
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -93,7 +93,7 @@ export async function projectUpdate({ params: { id, name, description = '' }, au
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -129,7 +129,7 @@ export async function projectRemove({ params: { id }, auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

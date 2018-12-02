@@ -52,7 +52,7 @@ export async function kanbanCreate({ params: { projectId, candidateId, interview
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -95,7 +95,7 @@ export async function kanbanUpdate({ params: { id, interviews, status, highlight
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -154,7 +154,7 @@ export async function kanbanUpdateStatus({ params: { id, status }, auth }) {
         data: updated
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -190,7 +190,7 @@ export async function kanbanRemove({ params: { id }, auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

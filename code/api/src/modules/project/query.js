@@ -30,7 +30,7 @@ export async function project({ params: { id }, auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -49,7 +49,7 @@ export async function projectsByOrganization({ auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -66,7 +66,7 @@ export async function projects({ auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

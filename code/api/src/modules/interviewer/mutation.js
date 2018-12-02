@@ -65,7 +65,7 @@ export async function interviewerCreate({ params: { projectId, name, email, mobi
         data: interviewer
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -128,7 +128,7 @@ export async function interviewerUpdate({ params: { id, projectId, name, email, 
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -164,7 +164,7 @@ export async function interviewerRemove({ params: { id }, auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

@@ -53,7 +53,7 @@ export async function userLogin({ params: { email, password } }) {
       }
     }
   } catch (error) {
-    throw new Error(params.common.message.error)
+    throw new Error(params.common.message.error.server)
   }
 }
 
@@ -83,7 +83,7 @@ export async function user({ params: { id } }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -100,7 +100,7 @@ export async function usersByOrganization({ auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

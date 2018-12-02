@@ -54,7 +54,7 @@ export async function jobCreate({ params: { projectId, role, description = '' },
         data: job
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -101,7 +101,7 @@ export async function jobUpdate({ params: { id, projectId, role, description = '
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -137,7 +137,7 @@ export async function jobRemove(parentValue, { id }, { auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

@@ -1,28 +1,33 @@
 // App Imports
-import { authCheck } from '../../setup/helpers/utils'
+import params from '../../setup/config/params'
+import validate from '../../setup/helpers/validation'
 import Feedback from './model'
 
-// Get project by ID
+// Get by ID
 export async function feedback({ params: { id } }) {
-  const data = await Feedback.findOne({ _id: id })
+  // Validation rules
+  const rules = [
+    {
+      data: { value: id },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
+    }
+  ]
 
-  return {
-    data
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
   }
-}
 
-// Get by organization
-export async function feedbacksByInterview({ params: { interviewId }, auth }) {
-  if(authCheck(auth)) {
-    const data = await Feedback.find({
-      interviewId
-    })
+  try {
+    const data = await Feedback.findOne({ _id: id })
 
     return {
       data
     }
+  } catch(error) {
+    throw new Error(params.common.message.error.server)
   }
-
-  throw new Error('You are not allowed to perform this action.')
 }
-

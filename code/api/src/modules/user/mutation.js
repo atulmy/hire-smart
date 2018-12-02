@@ -133,7 +133,7 @@ export async function userVerifySendCode({ params: { email }, auth }) {
       }
     }
   } catch(error) {
-    throw new Error(params.common.message.error)
+    throw new Error(params.common.message.error.server)
   }
 }
 
@@ -177,7 +177,7 @@ export async function userVerifyCode({ params: { email, code } }) {
       throw new Error('The code you entered is invalid. Please try again with valid code.')
     }
   } catch(error) {
-    throw new Error(params.common.message.error)
+    throw new Error(params.common.message.error.server)
   }
 }
 
@@ -311,7 +311,7 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
       throw new Error(`The email ${ verification.email } is already registered. Please try to login.`)
     }
   } catch(error) {
-    throw new Error(params.common.message.error)
+    throw new Error(params.common.message.error.server)
   }
 }
 
@@ -410,7 +410,7 @@ export async function userAcceptInvite({ params: { id, name, password } }) {
       throw new Error(`Sorry, this invitation is not valid anymore.`)
     }
   } catch(error) {
-    throw new Error(params.common.message.error)
+    throw new Error(params.common.message.error.server)
   }
 }
 
@@ -443,7 +443,7 @@ export async function userUpdate({ params: { name }, auth }) {
         message: 'Your profile has been updated successfully.'
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -514,7 +514,7 @@ export async function userResetPasswordSendCode({ params: { email } }) {
       throw new Error(`The email ${ email } is not registered. Please signup.`)
     }
   } catch(error) {
-    throw new Error(params.common.message.error)
+    throw new Error(params.common.message.error.server)
   }
 }
 
@@ -558,7 +558,7 @@ export async function userResetPasswordVerifyCode({ params: { email, code } }) {
       throw new Error('The code you entered is invalid. Please try again with valid code.')
     }
   } catch(error) {
-    throw new Error(params.common.message.error)
+    throw new Error(params.common.message.error.server)
   }
 }
 
@@ -612,6 +612,6 @@ export async function userResetPasswordUpdate({ params: { email, password } }) {
       throw new Error(`The email ${ email } is not registered. Please signup.`)
     }
   } catch(error) {
-    throw new Error(params.common.message.error)
+    throw new Error(params.common.message.error.server)
   }
 }

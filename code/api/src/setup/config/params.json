@@ -31,6 +31,7 @@
 
     "message": {
       "error": {
+        "default": "There was some error. Please try again.",
         "server": "There was some server error. Please try again.",
         "invalidData": "Invalid data provided."
       }

@@ -35,7 +35,7 @@ export async function organizationCreate({ params: { name, description = '', dom
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -73,7 +73,7 @@ export async function organizationUpdate({ params: { id, name, description = '',
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -109,7 +109,7 @@ export async function organizationRemove({ params: { id }, auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

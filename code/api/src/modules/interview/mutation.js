@@ -109,7 +109,7 @@ export async function interviewCreate({ params: { projectId, candidateId, interv
         data: interview
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -205,7 +205,7 @@ export async function interviewUpdate({ params: { id, projectId, candidateId, in
         data: interview
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -241,7 +241,7 @@ export async function interviewRemove({ params: { id }, auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -285,7 +285,7 @@ export async function remind({ params: { id }, auth }) {
         data: interview
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

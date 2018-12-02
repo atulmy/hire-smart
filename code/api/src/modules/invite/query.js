@@ -30,7 +30,7 @@ export async function invite({ params: { id } }) {
       data
     }
   } catch(error) {
-    throw new Error(params.common.message.error)
+    throw new Error(params.common.message.error.server)
   }
 }
 
@@ -47,7 +47,7 @@ export async function invitesByOrganization({ auth }) {
         data
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

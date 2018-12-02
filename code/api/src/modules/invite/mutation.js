@@ -90,7 +90,7 @@ export async function inviteToOrganization({ params: { name, email }, auth }) {
         throw new Error(`The email ${ email } is already invited. Please ask the user to accept the invitation.`)
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 

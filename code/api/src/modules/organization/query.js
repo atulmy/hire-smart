@@ -43,7 +43,7 @@ export async function organizationByUser({ auth }) {
         data: organization
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
@@ -60,7 +60,7 @@ export async function organizationsByUser({ auth }) {
         data: organizations
       }
     } catch(error) {
-      throw new Error(params.common.message.error)
+      throw new Error(params.common.message.error.server)
     }
   }
 
