@@ -31,7 +31,7 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
       },
       {
         data: { value: mobile },
-        check: 'mobile',
+        check: 'notEmpty',
         message: 'Please enter a valid mobile number.'
       },
       {
