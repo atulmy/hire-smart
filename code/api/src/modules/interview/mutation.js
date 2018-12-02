@@ -227,7 +227,7 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
       remind: <InterviewReminderCandidate {...candidateProps} />,
     }[type]
 
-    sendEmail({
+    await sendEmail({
       to: {name: interviewDetails.candidateId.name, email: interviewDetails.candidateId.email},
       from: auth.user,
       cc: auth.user,
@@ -258,7 +258,7 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
       remind: <InterviewReminderInterviewer  {...interviewerProps} />,
     }[type]
 
-    sendEmail({
+    await sendEmail({
       to: {name: interviewDetails.interviewerId.name, email: interviewDetails.interviewerId.email},
       from: auth.user,
       cc: auth.user,

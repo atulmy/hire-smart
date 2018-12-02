@@ -75,7 +75,7 @@ export async function feedbackCreateOrUpdate({ params: { interviewId, text, stat
       )
 
       // Send email
-      sendEmail({
+      await sendEmail({
         to: {
           name: interview.userId.name,
           email: interview.userId.email

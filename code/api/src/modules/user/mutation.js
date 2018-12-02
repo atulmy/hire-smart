@@ -113,7 +113,7 @@ export async function userVerifySendCode({ params: { email }, auth }) {
         })
       }
 
-      sendEmail({
+      await sendEmail({
         to: {
           email: email
         },
@@ -283,7 +283,7 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
           message = 'Your account has been created successfully.'
         }
 
-        sendEmail({
+        await sendEmail({
           to: {
             name,
             email: email
@@ -372,7 +372,8 @@ export async function userAcceptInvite({ params: { id, name, password } }) {
 
       // Send email
       const subject = 'Your account has been created successfully.'
-      sendEmail({
+
+      await sendEmail({
         to: {
           name,
           email: invite.email
@@ -491,7 +492,7 @@ export async function userResetPasswordSendCode({ params: { email } }) {
         })
       }
 
-      sendEmail({
+      await sendEmail({
         to: {
           email: email
         },
