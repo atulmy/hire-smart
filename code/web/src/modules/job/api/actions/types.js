@@ -1,11 +1,5 @@
 // Actions Types
 
-// List
-export const LIST_REQUEST = 'JOB/LIST/REQUEST'
-export const LIST_RESPONSE = 'JOB/LIST/RESPONSE'
-export const LIST_DONE = 'JOB/LIST/DONE'
-export const LIST_RESET = 'JOB/LIST/RESET'
-
 // Single
 export const SINGLE_REQUEST = 'JOB/SINGLE/REQUEST'
 export const SINGLE_RESPONSE = 'JOB/SINGLE/RESPONSE'

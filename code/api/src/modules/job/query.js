@@ -4,8 +4,8 @@ import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import Job from './model'
 
-// Get job by ID
-export async function job({ params: { id } }) {
+// Get by ID
+export async function job({ params: { id }, fields = { job: [], project: [] } }) {
   if(authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -24,7 +24,10 @@ export async function job({ params: { id } }) {
     }
 
     try {
-      const data = await Job.findOne({ _id: id })
+      const data = await Job
+        .findOne({ _id: id })
+        .select(fields.job)
+        .populate({ path: 'projectId', select: fields.project })
 
       return {
         data
@@ -38,7 +41,7 @@ export async function job({ params: { id } }) {
 }
 
 // Get by project
-export async function jobsByProject({ params: { projectId }, auth }) {
+export async function jobsByProject({ params: { projectId }, fields, auth }) {
   if(authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -61,6 +64,7 @@ export async function jobsByProject({ params: { projectId }, auth }) {
         organizationId: auth.user.organizationId,
         projectId
       })
+        .select(fields)
 
       return {
         data

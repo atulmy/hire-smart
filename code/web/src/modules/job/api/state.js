@@ -1,49 +1,10 @@
 // App Imports
 import {
-  LIST_REQUEST, LIST_RESPONSE, LIST_DONE, LIST_RESET,
   LIST_BY_PROJECT_REQUEST, LIST_BY_PROJECT_RESPONSE, LIST_BY_PROJECT_DONE, LIST_BY_PROJECT_RESET,
   SINGLE_REQUEST, SINGLE_RESPONSE, SINGLE_DONE, SINGLE_RESET,
   EDIT_SET, EDIT_UNSET,
   VIEW_SET, VIEW_UNSET, VIEW_HIDE
 } from './actions/types'
-
-// List
-
-// Initial State
-const jobsInitialState = {
-  isLoading: false,
-  list: []
-}
-
-// State
-export const jobs = (state = jobsInitialState, action) => {
-  switch (action.type) {
-    case LIST_REQUEST:
-      return {
-        ...state,
-        isLoading: action.isLoading
-      }
-
-    case LIST_RESPONSE:
-      return {
-        ...state,
-        list: action.list
-      }
-
-    case LIST_DONE:
-      return {
-        ...state,
-        isLoading: false
-      }
-
-    case LIST_RESET:
-      return { ...jobsInitialState }
-
-    default:
-      return state
-  }
-}
-
 
 // Single
 
