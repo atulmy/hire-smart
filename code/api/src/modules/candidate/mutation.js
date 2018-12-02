@@ -132,7 +132,7 @@ export async function candidateUpdate({ params: { id, projectId, jobId = '', nam
       },
       {
         data: { value: mobile },
-        check: 'mobile',
+        check: 'notEmpty',
         message: 'Please enter a valid mobile number.'
       },
       {
