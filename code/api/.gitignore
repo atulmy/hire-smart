@@ -5,6 +5,7 @@ build/
 
 uploads/*
 !uploads/.gitkeep
+!uploads/resume.pdf
 
 public/images/user/*
 !public/images/user/default.jpg
