@@ -54,7 +54,7 @@ export default function (server) {
         const fileCheck = fs.existsSync(filePath)
 
         if(fileCheck) {
-          const fileName = `${ slug(candidate.name) }.${ path.extname(candidate.resume) }`
+          const fileName = slug(candidate.name) + path.extname(candidate.resume)
 
           response.download(filePath, fileName)
         } else {
