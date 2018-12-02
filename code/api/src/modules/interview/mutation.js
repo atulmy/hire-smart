@@ -22,7 +22,7 @@ export async function interviewCreate({ params: { projectId, candidateId, interv
     // Create interview
     const interview = await Interview.create({
       organizationId: auth.user.organizationId,
-      userId: auth.user.id,
+      userId: auth.user._id,
       projectId,
       candidateId,
       interviewerId,
@@ -56,7 +56,7 @@ export async function interviewCreate({ params: { projectId, candidateId, interv
           projectId: projectId,
           candidateId: candidateId,
           interviews: [interview._id],
-          userId: auth.user.id,
+          userId: auth.user._id,
           status: params.kanban.status.shortlisted,
           highlight: false
         })
@@ -130,7 +130,7 @@ export async function interviewRemove({ params: { id }, auth }) {
   if(authCheck(auth)) {
     const data = await Interview.remove({
       _id: _id,
-      userId: auth.user.id
+      userId: auth.user._id
     })
 
     return {
@@ -234,7 +234,7 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
       subject,
       template: TemplateCandidate,
       organizationId: auth.user.organizationId,
-      userId: auth.user.id,
+      userId: auth.user._id,
       icalEvent
     })
 
@@ -265,7 +265,7 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
       subject,
       template: TemplateInterviewer,
       organizationId: auth.user.organizationId,
-      userId: auth.user.id,
+      userId: auth.user._id,
       icalEvent
     })
   }
@@ -279,7 +279,7 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
 
   await Activity.create({
     organizationId: auth.user.organizationId,
-    userId: auth.user.id,
+    userId: auth.user._id,
     projectId: interviewDetails.projectId,
     interviewId: interviewDetails._id,
     candidateId: interviewDetails.candidateId._id,

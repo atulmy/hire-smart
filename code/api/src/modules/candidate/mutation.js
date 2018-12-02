@@ -14,7 +14,7 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
     let item = {
       organizationId: auth.user.organizationId,
       projectId,
-      userId: auth.user.id,
+      userId: auth.user._id,
       name,
       email,
       mobile,
@@ -34,7 +34,7 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
         organizationId: auth.user.organizationId,
         projectId,
         candidateId: candidate._id,
-        userId: auth.user.id,
+        userId: auth.user._id,
         status: params.kanban.columns[0].key,
         highlight: false
       })
@@ -42,7 +42,7 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
       // Log activity
       await Activity.create({
         organizationId: auth.user.organizationId,
-        userId: auth.user.id,
+        userId: auth.user._id,
         projectId,
         candidateId: candidate._id,
         kanbanId: kanban._id,
@@ -101,7 +101,7 @@ export async function candidateRemove({ params: { id }, auth }) {
   if(authCheck(auth)) {
     const data = await Candidate.remove({
       _id: _id,
-      userId: auth.user.id
+      userId: auth.user._id
     })
 
     return {

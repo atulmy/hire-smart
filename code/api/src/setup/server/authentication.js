@@ -7,7 +7,7 @@ import User from '../../modules/user/model'
 
 // Authentication middleware
 export default async function (request, response, next) {
-  let header = request.headers.authorization
+  let header = request.headers.authentication
 
   if (header && header !== null) {
     try {

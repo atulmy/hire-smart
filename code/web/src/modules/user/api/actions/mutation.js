@@ -378,9 +378,9 @@ export function resetPasswordUpdate(details, isLoading = true) {
 // Set a user auth header after login
 export function setUser(token, user) {
   if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    axios.defaults.headers.common['Authentication'] = `Bearer ${token}`
   } else {
-    delete axios.defaults.headers.common['Authorization']
+    delete axios.defaults.headers.common['Authentication']
   }
 
   return { type: SET_USER, user }

@@ -13,7 +13,7 @@ export async function jobCreate({ params: { projectId, role, description = '' },
     const job = await Job.create({
       organizationId: auth.user.organizationId,
       projectId,
-      userId: auth.user.id,
+      userId: auth.user._id,
       role,
       description
     })
@@ -22,7 +22,7 @@ export async function jobCreate({ params: { projectId, role, description = '' },
       // Log activity
       await Activity.create({
         organizationId: auth.user.organizationId,
-        userId: auth.user.id,
+        userId: auth.user._id,
         projectId,
         jobId: job._id,
         action: params.activity.types.create,
@@ -65,7 +65,7 @@ export async function jobRemove(parentValue, { id }, { auth }) {
   if(authCheck(auth)) {
     const data = await Job.remove({
       _id: _id,
-      userId: auth.user.id
+      userId: auth.user._id
     })
 
     return {

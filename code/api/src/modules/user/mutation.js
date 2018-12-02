@@ -95,7 +95,7 @@ export async function userVerifySendCode({ params: { email }, auth }) {
       let code
 
       if(authCheck(auth) && auth.user.demo) {
-        const verification = await Verification.findOne({ userId: auth.user.id, email, verified: false, type: params.user.verification.signup })
+        const verification = await Verification.findOne({ userId: auth.user._id, email, verified: false, type: params.user.verification.signup })
 
         if(verification) {
           code = verification.code
@@ -227,10 +227,10 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
         const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
         const organizationDomain = email.split('@')[1]
 
-        if(auth.user && auth.user.id && auth.user.demo) {
+        if(auth.user && auth.user._id && auth.user.demo) {
           // Update user
           await User.updateOne(
-            { _id: auth.user.id },
+            { _id: auth.user._id },
             {
               $set: {
                 email: verification.email,
@@ -255,12 +255,12 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
           // Log activity - User joined organization
           await Activity.create({
             organizationId: auth.user.organizationId,
-            userId: auth.user.id,
+            userId: auth.user._id,
             action: params.activity.types.create,
             message: `${ name } (${ email }) joined the organization.`
           })
 
-          user = await User.findOne({ _id: auth.user.id })
+          user = await User.findOne({ _id: auth.user._id })
 
           message = 'Your account has been verified and updated successfully.'
         } else {

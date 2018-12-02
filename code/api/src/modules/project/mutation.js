@@ -13,7 +13,7 @@ export async function projectCreate({ params: { name, description = '' }, auth }
       {
         data: { value: name },
         check: 'notEmpty',
-        message: params.common.message.error.invalidData
+        message: 'Please enter valid name.'
       }
     ]
 
@@ -67,7 +67,7 @@ export async function projectUpdate({ params: { id, name, description = '' }, au
       {
         data: { value: name },
         check: 'notEmpty',
-        message: params.common.message.error.invalidData
+        message: 'Please enter valid name.'
       }
     ]
 

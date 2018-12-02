@@ -12,7 +12,7 @@ export async function kanbanCreate({ params: { projectId, candidateId, interview
   if(authCheck(auth)) {
     const data = await Kanban.create({
       organizationId: auth.user.organizationId,
-      userId: auth.user.id,
+      userId: auth.user._id,
       projectId,
       candidateId,
       interviews,
@@ -69,7 +69,7 @@ export async function kanbanUpdateStatus({ params: { id, status }, auth }) {
 
       await Activity.create({
         organizationId: auth.user.organizationId,
-        userId: auth.user.id,
+        userId: auth.user._id,
         projectId: kanban.projectId,
         candidateId: kanban.candidateId._id,
         action: params.activity.types.update,
@@ -90,7 +90,7 @@ export async function kanbanRemove({ params: { id }, auth }) {
   if(authCheck(auth)) {
     const data = await Kanban.remove({
       _id: _id,
-      userId: auth.user.id
+      userId: auth.user._id
     })
 
     return {

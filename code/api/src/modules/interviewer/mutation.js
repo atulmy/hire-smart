@@ -12,7 +12,7 @@ export async function interviewerCreate({ params: { projectId, name, email, mobi
   if(authCheck(auth)) {
     const interviewer = await Interviewer.create({
       organizationId: auth.user.organizationId,
-      userId: auth.user.id,
+      userId: auth.user._id,
       projectId,
       name,
       email,
@@ -23,7 +23,7 @@ export async function interviewerCreate({ params: { projectId, name, email, mobi
       // Log activity
       await Activity.create({
         organizationId: auth.user.organizationId,
-        userId: auth.user.id,
+        userId: auth.user._id,
         projectId,
         interviewerId: interviewer._id,
         action: params.activity.types.create,
@@ -67,7 +67,7 @@ export async function interviewerRemove({ params: { id }, auth }) {
   if(authCheck(auth)) {
     const data = await Interviewer.remove({
       _id: _id,
-      userId: auth.user.id
+      userId: auth.user._id
     })
 
     return {

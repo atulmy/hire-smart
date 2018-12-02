@@ -19,7 +19,7 @@ export async function inviteToOrganization({ params: { name, email }, auth }) {
     if (!invited) {
       const invite = await Invite.create({
         organizationId: auth.user.organizationId,
-        userId: auth.user.id,
+        userId: auth.user._id,
         email,
         name,
         accepted: false
@@ -43,14 +43,14 @@ export async function inviteToOrganization({ params: { name, email }, auth }) {
             organizationName={organization.name}
           />,
         organizationId: auth.user.organizationId,
-        userId: auth.user.id
+        userId: auth.user._id
       })
 
       // Log activity
       if(invite) {
         await Activity.create({
           organizationId: auth.user.organizationId,
-          userId: auth.user.id,
+          userId: auth.user._id,
           inviteId: invite._id,
           action: params.activity.types.create,
           message: `${ auth.user.name } invited ${ name } (${ email }) to the organization.`
