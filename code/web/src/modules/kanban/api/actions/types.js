@@ -1,11 +1,5 @@
 // Actions Types
 
-// List
-export const LIST_REQUEST = 'KANBAN/LIST/REQUEST'
-export const LIST_RESPONSE = 'KANBAN/LIST/RESPONSE'
-export const LIST_DONE = 'KANBAN/LIST/DONE'
-export const LIST_RESET = 'KANBAN/LIST/RESET'
-
 // Single
 export const SINGLE_REQUEST = 'KANBAN/SINGLE/REQUEST'
 export const SINGLE_RESPONSE = 'KANBAN/SINGLE/RESPONSE'

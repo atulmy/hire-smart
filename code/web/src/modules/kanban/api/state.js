@@ -2,10 +2,6 @@
 
 // App Imports
 import {
-  LIST_REQUEST,
-  LIST_RESPONSE,
-  LIST_DONE,
-  LIST_RESET,
   LIST_BY_PROJECT_REQUEST,
   LIST_BY_PROJECT_RESPONSE,
   LIST_BY_PROJECT_DONE,
@@ -15,44 +11,6 @@ import {
   SINGLE_DONE,
   SINGLE_RESET
 } from './actions/types'
-
-// List
-
-// Initial State
-const kanbansInitialState = {
-  isLoading: false,
-  list: []
-}
-
-// State
-export const kanbans = (state = kanbansInitialState, action) => {
-  switch (action.type) {
-    case LIST_REQUEST:
-      return {
-        ...state,
-        isLoading: action.isLoading
-      }
-
-    case LIST_RESPONSE:
-      return {
-        ...state,
-        list: action.list
-      }
-
-    case LIST_DONE:
-      return {
-        ...state,
-        isLoading: false
-      }
-
-    case LIST_RESET:
-      return { ...kanbansInitialState }
-
-    default:
-      return state
-  }
-}
-
 
 // Single
 

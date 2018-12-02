@@ -5,7 +5,7 @@ import validate from '../../setup/helpers/validation'
 import Kanban from './model'
 
 // Get by ID
-export async function kanban({ params: { id }, auth }) {
+export async function kanban({ params: { id }, fields, auth }) {
   if(authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -28,13 +28,22 @@ export async function kanban({ params: { id }, auth }) {
         _id: id,
         organizationId: auth.user.organizationId
       })
+        .select(fields.kanban)
         .populate({
           path: 'candidateId',
-          populate: [{ path: 'projectId' }, { path: 'jobId' }]
+          select: fields.candidate,
+          populate: [
+            { path: 'projectId', select: fields.project },
+            { path: 'jobId', select: fields.job }
+            ]
         })
         .populate({
           path: 'interviews',
-          populate: [{ path: 'interviewerId' }, { path: 'feedbackId' }]
+          select: fields.interview,
+          populate: [
+            { path: 'interviewerId', select: fields.interviewer },
+            { path: 'feedbackId', select: fields.feedback }
+            ]
         })
 
       return {
@@ -49,7 +58,7 @@ export async function kanban({ params: { id }, auth }) {
 }
 
 // Get by project
-export async function kanbansByProject({ params: { projectId }, auth }) {
+export async function kanbansByProject({ params: { projectId }, fields, auth }) {
   if(authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -72,13 +81,28 @@ export async function kanbansByProject({ params: { projectId }, auth }) {
         organizationId: auth.user.organizationId,
         projectId
       })
+        .select(fields.kanban)
         .populate({
           path: 'candidateId',
-          populate: { path: 'jobId' }
+          select: fields.candidate,
+          populate: {
+            path: 'jobId',
+            select: fields.job
+          }
         })
         .populate({
           path: 'interviews',
-          populate: [{ path: 'interviewerId' }, { path: 'feedbackId' }]
+          select: fields.interview,
+          populate: [
+            {
+              path: 'interviewerId',
+              select: fields.interviewer
+            },
+            {
+              path: 'feedbackId',
+              select: fields.feedback
+            }
+          ]
         })
 
       return {

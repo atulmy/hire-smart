@@ -4,11 +4,8 @@ import axios from 'axios'
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
 import { MESSAGE_SHOW } from '../../../common/api/actions'
-import { INTERVIEW_LIST_CACHE, INTERVIEW_SINGLE_CACHE, INTERVIEW_LIST_BY_PROJECT_CACHE } from './cache-keys'
+import { INTERVIEW_SINGLE_CACHE, INTERVIEW_LIST_BY_PROJECT_CACHE } from './cache-keys'
 import {
-  LIST_REQUEST,
-  LIST_RESPONSE,
-  LIST_DONE,
   SINGLE_REQUEST,
   SINGLE_RESPONSE,
   SINGLE_DONE,
@@ -16,74 +13,6 @@ import {
   LIST_BY_PROJECT_RESPONSE,
   LIST_BY_PROJECT_DONE
 } from './types'
-
-// Get list
-export function getList(isLoading = true) {
-  return async dispatch => {
-    // Caching
-    try {
-      const list = JSON.parse(window.localStorage.getItem(INTERVIEW_LIST_CACHE))
-
-      if(list) {
-        dispatch({
-          type: LIST_RESPONSE,
-          list
-        })
-      } else {
-        dispatch({
-          type: LIST_REQUEST,
-          isLoading
-        })
-      }
-    } catch(e) {
-      dispatch({
-        type: LIST_REQUEST,
-        isLoading
-      })
-    }
-
-    try {
-      const { data } = await axios.post(API_URL, {
-        operation: 'interviewsByOrganization',
-        fields: [
-          '_id',
-          'organizationId { _id }',
-          'projectId { _id }',
-          'candidateId { _id }',
-          'interviewerId { _id }',
-          'userId { _id }',
-          'dateTime', 'mode', 'note', 'createdAt'
-        ]
-      })
-
-      if(data.errors && data.errors.length > 0) {
-        dispatch({
-          type: MESSAGE_SHOW,
-          message: data.errors[0].message
-        })
-      } else {
-        const list = data.data
-
-        dispatch({
-          type: LIST_RESPONSE,
-          list
-        })
-
-        window.localStorage.setItem(INTERVIEW_LIST_CACHE, JSON.stringify(list))
-      }
-    } catch(error) {
-      dispatch({
-        type: MESSAGE_SHOW,
-        message: 'Some error occurred. Please try again.'
-      })
-    } finally {
-      dispatch({
-        type: LIST_DONE,
-        isLoading: false
-      })
-    }
-  }
-}
 
 // Get single
 export function get(interviewId, isLoading = true) {
@@ -116,15 +45,10 @@ export function get(interviewId, isLoading = true) {
       const { data } = await axios.post(API_URL, {
         operation: 'interview',
         params: { id: interviewId },
-        fields: [
-          '_id',
-          'organizationId { _id }',
-          'projectId { _id }',
-          'candidateId { _id, name }',
-          'interviewerId { _id }',
-          'userId { _id }',
-          'dateTime', 'mode', 'note', 'createdAt'
-        ]
+        fields: {
+          interview: ['_id', 'dateTime'],
+          candidate: ['_id', 'name']
+        }
       })
 
       if(data.errors && data.errors.length > 0) {
@@ -187,15 +111,11 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
       const { data } = await axios.post(API_URL, {
         operation: 'interviewsByProject',
         params: { projectId },
-        fields: [
-          '_id',
-          'organizationId { _id, name }',
-          'projectId { _id, name }',
-          'candidateId { _id, name }',
-          'interviewerId { _id, name, email, mobile }',
-          'userId { _id, name }',
-          'dateTime', 'mode', 'note', 'createdAt'
-        ]
+        fields: {
+          interview: ['_id', 'dateTime', 'mode', 'note', 'createdAt'],
+          candidate: ['_id', 'name'],
+          interviewer: ['_id', 'name', 'email', 'mobile'],
+        }
       })
 
       if(data.errors && data.errors.length > 0) {

@@ -5,7 +5,7 @@ import validate from '../../setup/helpers/validation'
 import Interview from './model'
 
 // Get interview by ID
-export async function interview({ params: { id } }) {
+export async function interview({ params: { id }, fields = { candidate: [] } }) {
   // Validation rules
   const rules = [
     {
@@ -24,7 +24,8 @@ export async function interview({ params: { id } }) {
 
   try {
     const data = await Interview.findOne({ _id: id })
-      .populate('candidateId')
+      .select(fields.interview)
+      .populate({ path: 'candidateId', select: fields.candidate })
 
     return {
       data
@@ -35,12 +36,15 @@ export async function interview({ params: { id } }) {
 }
 
 // Get by organization
-export async function interviewsByOrganization({ auth }) {
+export async function interviewsByOrganization({ fields = { interview: [], candidate: [], interviewer: [] }, auth }) {
   if(authCheck(auth)) {
     try {
       const data = await Interview.find({
         organizationId: auth.user.organizationId
       })
+        .select(fields.interview)
+        .populate({ path: 'candidateId', select: fields.candidate })
+        .populate({ path: 'interviewerId', select: fields.candidate })
 
       return {
         data
@@ -54,7 +58,7 @@ export async function interviewsByOrganization({ auth }) {
 }
 
 // Get by project
-export async function interviewsByProject({ params: { projectId }, auth }) {
+export async function interviewsByProject({ params: { projectId }, fields = { interview: [], candidate: [], interviewer: [] }, auth }) {
   if(authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -77,11 +81,9 @@ export async function interviewsByProject({ params: { projectId }, auth }) {
         organizationId: auth.user.organizationId,
         projectId
       })
-        .populate('organizationId')
-        .populate('projectId')
-        .populate('candidateId')
-        .populate('interviewerId')
-        .populate('userId')
+        .select(fields.interview)
+        .populate({ path: 'candidateId', select: fields.candidate })
+        .populate({ path: 'interviewerId', select: fields.candidate })
 
       return {
         data
