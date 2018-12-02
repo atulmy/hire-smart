@@ -38,29 +38,12 @@ export async function project({ params: { id }, auth }) {
 }
 
 // Get by organization
-export async function projectsByOrganization({ auth }) {
+export async function projectsByOrganization({ fields, auth }) {
   if(authCheck(auth)) {
     try {
-      const data = await Project.find({
-        organizationId: auth.user.organizationId
-      })
-
-      return {
-        data
-      }
-    } catch(error) {
-      throw new Error(params.common.message.error.server)
-    }
-  }
-
-  throw new Error(params.user.message.error.auth)
-}
-
-// Get all
-export async function projects({ auth }) {
-  if(authCheck(auth)) {
-    try {
-      const data = await Project.find()
+      const data = await Project
+        .find({ organizationId: auth.user.organizationId })
+        .select(fields)
 
       return {
         data

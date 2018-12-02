@@ -22,7 +22,7 @@ export default function (server) {
       try {
         // Execute operation
         // operationName({ params, fields, auth })
-        const { data, message } = await modules[request.body.operation]({
+        const { data, message = params.common.message.success.default } = await modules[request.body.operation]({
           params: request.body.params || {},
           fields: request.body.fields || {},
           auth: request.auth

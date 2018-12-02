@@ -1,6 +1,6 @@
 // App Imports
 import params from '../../setup/config/params'
-import { authCheck } from '../../setup/helpers/utils'
+import { authCheck, selectFields } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import Interviewer from './model'
 
@@ -38,7 +38,7 @@ export async function interviewer({ params: { id }}) {
 }
 
 // Get by project
-export async function interviewersByProject({ params: { projectId }, auth }) {
+export async function interviewersByProject({ params: { projectId }, fields = { interviewer: [], project: [] }, auth }) {
   if(authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -61,8 +61,8 @@ export async function interviewersByProject({ params: { projectId }, auth }) {
         organizationId: auth.user.organizationId,
         projectId
       })
-        .populate('organizationId')
-        .populate('projectId')
+        .select(fields.interviewer)
+        .populate({ path: 'projectId', select: selectFields(fields.project) })
 
       return {
         data
@@ -76,14 +76,14 @@ export async function interviewersByProject({ params: { projectId }, auth }) {
 }
 
 // Get by organization
-export async function interviewersByOrganization({ auth }) {
+export async function interviewersByOrganization({ fields = { interviewer: [], project: [] }, auth }) {
   if(authCheck(auth)) {
     try {
       const data = await Interviewer.find({
         organizationId: auth.user.organizationId
       })
-        .populate('organizationId')
-        .populate('projectId')
+        .select(fields.interviewer)
+        .populate({ path: 'projectId', select: selectFields(fields.project) })
 
       return {
         data

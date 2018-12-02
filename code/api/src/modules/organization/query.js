@@ -34,10 +34,12 @@ export async function organization({ params: { id }, auth }) {
 }
 
 // Get by user
-export async function organizationByUser({ auth }) {
+export async function organizationByUser({ fields, auth }) {
   if(authCheck(auth)) {
     try {
-      const organization = await Organization.findOne({ _id: auth.user.organizationId })
+      const organization = await Organization
+        .findOne({ _id: auth.user.organizationId })
+        .select(fields)
 
       return {
         data: organization
@@ -51,10 +53,12 @@ export async function organizationByUser({ auth }) {
 }
 
 // Get all
-export async function organizationsByUser({ auth }) {
+export async function organizationsByUser({ fields, auth }) {
   if(authCheck(auth)) {
     try {
-      const organizations = await Organization.find({ userId: auth.user._id })
+      const organizations = await Organization
+        .find({ userId: auth.user._id })
+        .select(fields)
 
       return {
         data: organizations

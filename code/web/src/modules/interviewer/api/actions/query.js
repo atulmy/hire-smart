@@ -45,7 +45,10 @@ export function getList(isLoading = true) {
     try {
       const { data } = await axios.post(API_URL, {
         operation: 'interviewersByOrganization',
-        fields: ['_id', 'projectId { _id, name }', 'name', 'email', 'mobile', 'createdAt']
+        fields: {
+          interviewer: ['_id', 'name', 'email', 'mobile', 'createdAt'],
+          project: ['_id', 'name']
+        }
       })
 
       if(data.errors && data.errors.length > 0) {
@@ -171,7 +174,10 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
       const { data } = await axios.post(API_URL, {
         operation: 'interviewersByProject',
         params: { projectId },
-        fields: ['_id', 'projectId { _id, name }', 'name', 'email', 'mobile', 'createdAt']
+        fields: {
+          interviewer: ['_id', 'name', 'email', 'mobile', 'createdAt'],
+          project: ['_id', 'name']
+        }
       })
 
       if(data.errors && data.errors.length > 0) {

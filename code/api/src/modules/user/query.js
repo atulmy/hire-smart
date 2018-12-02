@@ -91,10 +91,12 @@ export async function user({ params: { id } }) {
 }
 
 // Get by organization
-export async function usersByOrganization({ auth }) {
+export async function usersByOrganization({ fields, auth }) {
   if(authCheck(auth)) {
     try {
-      const data = await User.find({ organizationId: auth.user.organizationId })
+      const data = await User
+        .find({ organizationId: auth.user.organizationId })
+        .select(fields)
 
       return {
         data

@@ -3,6 +3,11 @@ import params from '../config/params'
 
 // Utility functions
 
+// Fields
+export function selectFields(fields) {
+  return fields.join(' ')
+}
+
 // Slug
 export function slug(text) {
   return text.toString().toLowerCase()
