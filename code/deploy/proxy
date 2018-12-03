@@ -22,8 +22,6 @@ server {
 
   server_tokens off;
 
-  ssl on;
-
   ssl_buffer_size 8k;
   ssl_dhparam /etc/ssl/certs/dhparam-2048.pem;
 
