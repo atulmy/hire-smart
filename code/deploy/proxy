@@ -42,8 +42,56 @@ server {
   ssl_certificate /etc/letsencrypt/live/hiresmart.app/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/hiresmart.app/privkey.pem;
 
+  set $mobile_rewrite do_not_perform;
+  if ($http_user_agent ~* "|android|ip(ad|hone|od)|kindle") {
+    set $mobile_rewrite perform;
+  }
+  if ($mobile_rewrite = perform) {
+    rewrite ^ https://mobile.hiresmart.app$request_uri? redirect;
+    break;
+  }
+
   location / {
     proxy_pass http://web:3000;
+
+    #security headers
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+  }
+}
+
+server {
+  server_name mobile.hiresmart.app;
+
+  listen 443 ssl http2;
+  listen [::]:443 ssl http2;
+
+  server_tokens off;
+
+  ssl on;
+
+  ssl_buffer_size 8k;
+  ssl_dhparam /etc/ssl/certs/dhparam-2048.pem;
+
+  ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
+  ssl_prefer_server_ciphers on;
+  ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;
+
+  ssl_ecdh_curve secp384r1;
+  ssl_session_tickets off;
+
+  # OCSP stapling
+  ssl_stapling on;
+  ssl_stapling_verify on;
+  resolver 8.8.8.8 8.8.4.4;
+
+  ssl_certificate /etc/letsencrypt/live/hiresmart.app/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/hiresmart.app/privkey.pem;
+
+  location / {
+    proxy_pass http://mobile:5000;
 
     #security headers
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
