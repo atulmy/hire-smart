@@ -23,8 +23,6 @@ const Feedback = ({ interview, text, status }) => (
 
     <p><a href={WEB_URL + params.web.routes.dashboard}>OPEN DASHBOARD</a></p>
 
-    <p>Feel free to reply to this email for any assistance.</p>
-
     <p>
       Thanks, <br/>
       { params.site.name }
