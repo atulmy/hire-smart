@@ -35,7 +35,7 @@ services:
   mobile:
     image: mobile:1.0.0
     build: ../mobile/web
-    restart: mobile
+    restart: always
     networks:
       - front
     depends_on:
