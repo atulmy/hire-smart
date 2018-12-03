@@ -19,6 +19,7 @@ export const MONGO_URL = process.env.MONGO_URL
 
 // URL
 export const WEB_URL = process.env.WEB_URL
+export const MOBILE_URL = process.env.MOBILE_URL
 export const API_URL = process.env.API_URL
 
 // Email

@@ -1,0 +1,56 @@
+{
+  "site": {
+    "name": "HIRESMART",
+    "domain": "hiresmart.app",
+    "url": "https://hiresmart.app",
+    "title": "HIRESMART - Streamline your hiring process, scheduling interviews and tracking candidates.",
+    "description": "Application to streamline your hiring process, scheduling interviews and tracking candidates.",
+    "keywords": "hiring, recruiter, recruitment, staffing, onboarding, tracking, interviews, feedback, candidate, streamline",
+    "author": "HIRESMART",
+    "copyright": "HIRESMART",
+    "applicationName": "HIRESMART",
+    "copyright_year": 2018,
+    "image": "logo.png"
+  },
+
+  "folders": {
+    "public": "public/"
+  },
+
+  "user": {
+    "roles": {
+      "admin": {
+        "key": "admin",
+        "title": "Admin"
+      },
+      "user": {
+        "key": "user",
+        "title": "User"
+      }
+    },
+    "uploads": {
+      "path": "images/user"
+    }
+  },
+
+  "import": {
+    "uploads": {
+      "path": "import"
+    }
+  },
+
+  "image": {
+    "default": "default.jpg"
+  },
+
+  "date": {
+    "format": {
+      "date": "YYYY-MM-DD",
+      "time": "HH:mm",
+      "nice": {
+        "date": "Do MMM",
+        "time": "h:mm A"
+      }
+    }
+  }
+}

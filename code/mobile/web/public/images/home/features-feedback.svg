@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="372" width="621.0822747663865">
+  <defs>
+    <rect id="rect-0" opacity="1" x="0" y="0" width="621.0822747663865" height="372"/>
+    <rect id="rect-1" opacity="1" x="0" y="0" width="621" height="372" rx="5" ry="5"/>
+    <filter id="filter-2" filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
+      <feOffset in="SourceAlpha" result="shadow-1-feOffset-shadow" dx="0" dy="5"/>
+      <feGaussianBlur in="shadow-1-feOffset-shadow" result="shadow-1-feGaussianBlur-shadow" stdDeviation="2.5"/>
+      <feColorMatrix in="shadow-1-feGaussianBlur-shadow" result="shadow-1-feColorMatrix-shadow" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.2 0"/>
+    </filter>
+    <path id="path-3" opacity="1" d="M5,0 L616.0822747663865,0 C618.8418498888565,0 621.0822747663865,2.24042487753 621.0822747663865,5 L621.0822747663865,34 L0,34 L0,5 C0,2.24042487753 2.24042487753,0 5,0Z"/>
+    <rect id="rect-4" opacity="1" x="14" y="12" width="10.603448275862121" height="11" rx="8" ry="8"/>
+    <rect id="rect-5" opacity="1" x="28.844827586207998" y="12" width="10.603448275862124" height="11" rx="8" ry="8"/>
+    <rect id="rect-6" opacity="1" x="44.39655172413654" y="12" width="10.603448275862121" height="11" rx="8" ry="8"/>
+    <rect id="rect-7" opacity="1" x="387" y="96" width="221" height="251"/>
+    <rect id="rect-8" opacity="1" x="399" y="246" width="190" height="64.46998591978172"/>
+    <rect id="rect-9" opacity="1" x="406" y="252" width="176" height="10"/>
+    <rect id="rect-10" opacity="1" x="406" y="266" width="154" height="10"/>
+    <rect id="rect-11" opacity="1" x="406" y="280" width="50" height="10"/>
+    <rect id="rect-12" opacity="1" x="399" y="217" width="102" height="17"/>
+    <rect id="rect-13" opacity="1" x="399" y="136" width="190" height="64.46998591978172"/>
+    <rect id="rect-14" opacity="1" x="406" y="142" width="176" height="10"/>
+    <rect id="rect-15" opacity="1" x="406" y="156" width="154" height="10"/>
+    <rect id="rect-16" opacity="1" x="406" y="170" width="50" height="10"/>
+    <rect id="rect-17" opacity="1" x="399" y="107" width="102" height="17"/>
+    <rect id="rect-18" opacity="1" x="137" y="96" width="221" height="251"/>
+    <rect id="rect-19" opacity="1" x="177.5046728971961" y="278" width="145.49532710280374" height="14"/>
+    <path id="path-20" opacity="1" d="M147,273 L171,273 L171,297 L147,297 L147,273Z"/>
+    <path id="path-21" opacity="1" d="M159,278 C161.21,278 163,279.79 163,282 C163,282.88 162.64,283.68 162.07,284.25 L161.17,285.17 C160.45,285.9 160,286.5 160,288 L158,288 L158,287.5 C158,286.4 158.45,285.4 159.17,284.67 L160.41,283.41 C160.78,283.05 161,282.55 161,282 C161,280.9 160.1,280 159,280 C157.9,280 157,280.9 157,282 L155,282 C155,279.79 156.79,278 159,278 L159,278ZM160,290 L160,292 L158,292 L158,290 L160,290ZM159,275 C153.48,275 149,279.48 149,285 C149,290.52 153.48,295 159,295 C164.52,295 169,290.52 169,285 C169,279.48 164.52,275 159,275 L159,275Z"/>
+    <rect id="rect-22" opacity="1" x="177.5046728971961" y="250" width="115.49532710280374" height="14"/>
+    <path id="path-23" opacity="1" d="M162.59,252 L164,253.41 L160.41,257 L164,260.59 L162.59,262 L159,258.41 L155.41,262 L154,260.59 L157.59,257 L154,253.41 L155.41,252 L159,255.59 L162.59,252 L162.59,252ZM159,247 C153.47,247 149,251.47 149,257 C149,262.53 153.47,267 159,267 C164.53,267 169,262.53 169,257 C169,251.47 164.53,247 159,247 L159,247Z"/>
+    <path id="path-24" opacity="1" d="M147,245 L171,245 L171,269 L147,269 L147,245Z"/>
+    <rect id="rect-25" opacity="1" x="177.5046728971961" y="223" width="149.49532710280374" height="14"/>
+    <path id="path-26" opacity="1" d="M162.59,225 L164,226.41 L160.41,230 L164,233.59 L162.59,235 L159,231.41 L155.41,235 L154,233.59 L157.59,230 L154,226.41 L155.41,225 L159,228.59 L162.59,225 L162.59,225ZM159,220 C153.47,220 149,224.47 149,230 C149,235.53 153.47,240 159,240 C164.53,240 169,235.53 169,230 C169,224.47 164.53,220 159,220 L159,220Z"/>
+    <path id="path-27" opacity="1" d="M147,218 L171,218 L171,242 L147,242 L147,218Z"/>
+    <rect id="rect-28" opacity="1" x="177.5046728971961" y="195" width="141.49532710280374" height="14"/>
+    <path id="path-29" opacity="1" d="M164.5900000000001,196.57999999999998 L166.00000000000009,197.99999999999997 L157.0000000000001,206.99999999999997 L152.0000000000001,201.99999999999997 L153.4100000000001,200.58999999999997 L157.0000000000001,204.17 L164.5900000000001,196.57999999999998 L164.5900000000001,196.57999999999998ZM158.99999999999997,192 C153.48,192 149,196.48 149,202 C149,207.52 153.48,212 158.99999999999997,212 C164.51999999999998,212 168.99999999999997,207.52 168.99999999999997,202 C168.99999999999997,196.48 164.51999999999998,192 158.99999999999997,192 L158.99999999999997,192Z"/>
+    <rect id="rect-30" opacity="1" x="179" y="168" width="104" height="14"/>
+    <path id="path-31" opacity="1" d="M164.59,169.57999999999998 L166,170.99999999999997 L157,179.99999999999997 L152,174.99999999999997 L153.41,173.58999999999997 L157,177.17 L164.59,169.57999999999998 L164.59,169.57999999999998ZM159,165 C153.48,165 149,169.48 149,175 C149,180.52 153.48,185 159,185 C164.52,185 169,180.52 169,175 C169,169.48 164.52,165 159,165 L159,165Z"/>
+    <rect id="rect-32" opacity="1" x="179" y="140" width="144" height="14"/>
+    <path id="path-33" opacity="1" d="M164.59,141.57999999999998 L166,142.99999999999997 L157,151.99999999999997 L152,146.99999999999997 L153.41,145.58999999999997 L157,149.17 L164.59,141.57999999999998 L164.59,141.57999999999998ZM159,137 C153.48,137 149,141.48 149,147 C149,152.52 153.48,157 159,157 C164.52,157 169,152.52 169,147 C169,141.48 164.52,137 159,137 L159,137Z"/>
+    <rect id="rect-34" opacity="1" x="149" y="107" width="102" height="17"/>
+    <rect id="rect-35" opacity="1" x="12" y="203" width="91.97675238259808" height="14"/>
+    <rect id="rect-36" opacity="1" x="35.14537507653051" y="222" width="45.68600222953707" height="14"/>
+    <rect id="rect-37" opacity="1" x="22.645375076530513" y="241" width="70.68600222953707" height="14"/>
+    <ellipse id="ellipse-38" opacity="1" rx="44.5" ry="44.5" cx="56.49999999999998" cy="138.5"/>
+    <ellipse id="ellipse-39" opacity="1" rx="22" ry="28.64634146341464" cx="57.99999999999998" cy="141.64634146341464"/>
+    <path id="path-40" opacity="1" d="M50.47728188743259,108.63433605176475 C43.36744662374823,110.06159216823542 36.25761136006387,114.50194453058864 32.55922171617425,119.8303673654125 C28.765184064252995,125.31737421317754 27.99999999999997,130.70923065317788 29.657898805881526,140.41457224517848 C30.646261555541685,146.25046392141417 30.805674902261064,154.05279735812053 30.00860816866416,157.5416456428266 C29.753546813913154,158.65173373341491 29.657898805881526,159.53980420588556 29.81731215260091,159.53980420588556 C30.327434862102923,159.53980420588556 32.46357370814262,158.33456570753253 33.73888048189766,157.31962802470895 L35.0141872556527,156.30469034188536 L35.10983526368433,158.1125480894149 C35.17360060237208,159.1274857722385 35.04606992499658,160.36444107317973 34.8866565782772,160.90362671717978 C34.344651199431304,162.42603324141515 34.44029920746293,162.6163340569446 36.25761136006387,163.3141037138858 C39.22269960904434,164.4241918044741 46.97018825960622,166.10518234165067 46.97018825960622,165.66114710541535 C46.97018825960622,165.59771350023888 46.46006555010421,165.0902446588271 45.82241216322669,164.55105901482705 C43.46309463177985,162.48946684659165 42.21967052736869,159.00061856188555 41.071894430989154,151.13485152000268 C40.05164901198512,144.25230535835522 41.51825180180342,142.44444761082568 51.338113959717234,138.41641368211955 C55.48286097442113,136.70370634235474 58.92618926355974,134.95928220000167 61.79562950450859,133.05627404470744 C64.6969524148013,131.1532658894132 68.77793409081744,127.50583359176592 69.95759285654086,125.79312625200112 C70.37206755801125,125.15879020023635 70.88219026751327,124.65132135882456 71.07348628357653,124.65132135882456 C71.48796098504691,124.65132135882456 72.79515042814583,127.47411678917769 73.71974783911824,130.36034582470728 C76.0153000318773,137.65521042000185 76.20659604794056,147.55085282753186 74.22987054862026,155.32146946165 C73.2415077989601,159.1274857722385 72.0299663638928,161.82341399223864 70.3083022193235,163.9167229630623 C69.12864345360009,165.37569588212122 69.03299544556845,165.56599669765063 69.67064883244598,165.4391294872977 C70.08512353391636,165.34397907953297 71.26478229963976,165.1219614614153 72.31691038798769,164.9316606458859 C74.48493190337126,164.51934221223883 77.92826019250987,163.472687726827 79.26733230495267,162.806634872474 C80.2875777239567,162.2991660310622 81.94547652983826,159.19091937741496 82.87007394081067,156.05095592117948 C83.34831398096881,154.40168218659113 83.47584465834431,152.97442607012044 83.47584465834431,148.97810894400254 C83.47584465834431,146.25046392141417 83.57149266637595,143.9985709376493 83.69902334375143,143.9985709376493 C84.11349804522183,143.9985709376493 86.2815195606054,146.06016310588473 86.85540760879518,146.9799503809436 L87.42929565698495,147.8997376560025 L87.65247434239208,147.01166718353184 C88.32201039861347,144.31573896353166 87.01482095551455,135.40331743623702 85.13374346422586,129.72600977294252 C82.64689525540354,122.43114517764795 77.48190282169561,116.40495268588288 73.62409983108661,116.40495268588288 C72.60385441208258,116.40495268588288 72.44444106536321,116.27808547552992 71.9024356865173,115.04113017458867 C70.62712891276226,112.18661794164731 66.80120859149713,109.83957455011776 61.57245081910146,108.76120326211769 C58.16100519930673,108.06343360517647 53.56990081378857,108 50.47728188743259,108.63433605176475Z"/>
+    <rect id="rect-41" opacity="1" x="12" y="45" width="34" height="16"/>
+    <rect id="rect-42" opacity="1" x="46" y="45" width="48" height="16"/>
+    <rect id="rect-43" opacity="1" x="568" y="45" width="16" height="16" rx="10" ry="10"/>
+    <rect id="rect-44" opacity="1" x="593" y="45" width="16" height="16" rx="10" ry="10"/>
+    <rect id="rect-45" opacity="1" x="542" y="45" width="16" height="16" rx="10" ry="10"/>
+  </defs>
+  <g transform="translate(0, 0) " opacity="1">
+    <g transform="translate(0, 0) " opacity="1">
+      <g transform="translate(0, 0) ">
+        <use xlink:href="#rect-1" fill="black" fill-opacity="NaN" filter="url(#filter-2)" stroke="black" stroke-opacity="0" stroke-width="0"/>
+        <use xlink:href="#rect-1" fill="rgb(255,255,255)" fill-opacity="1"/>
+      </g>
+      <g transform="translate(0, 0) ">
+        <use xlink:href="#path-3" fill="rgb(230,230,230)" fill-opacity="1"/>
+      </g>
+      <g transform="translate(0, 0) " opacity="0.72">
+        <g transform="translate(0, 0) ">
+          <use xlink:href="#rect-4" fill="rgb(223,112,101)" fill-opacity="1"/>
+        </g>
+        <g transform="translate(0, 0) ">
+          <use xlink:href="#rect-5" fill="rgb(255,211,32)" fill-opacity="1"/>
+        </g>
+        <g transform="translate(0, 0) ">
+          <use xlink:href="#rect-6" fill="rgb(43,244,129)" fill-opacity="1"/>
+        </g>
+      </g>
+    </g>
+    <g transform="translate(0, 0) " opacity="1">
+      <g transform="translate(0, 0) " opacity="1">
+        <g transform="translate(0, 0) " opacity="1">
+          <g transform="translate(0, 0) " opacity="1">
+            <g transform="translate(0, 0) ">
+              <use xlink:href="#rect-7" fill="rgb(244,244,244)" fill-opacity="1"/>
+            </g>
+            <g transform="translate(0, 0) " opacity="1">
+              <g transform="translate(0, 0) " opacity="1">
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#rect-8" fill="rgb(255,255,255)" fill-opacity="1"/>
+                </g>
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#rect-9" fill="rgb(200,200,200)" fill-opacity="1"/>
+                </g>
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#rect-10" fill="rgb(200,200,200)" fill-opacity="1"/>
+                </g>
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#rect-11" fill="rgb(200,200,200)" fill-opacity="1"/>
+                </g>
+              </g>
+              <g transform="translate(0, 0) ">
+                <use xlink:href="#rect-12" fill="rgb(200,200,200)" fill-opacity="1"/>
+              </g>
+            </g>
+            <g transform="translate(0, 0) " opacity="1">
+              <g transform="translate(0, 0) " opacity="1">
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#rect-13" fill="rgb(255,255,255)" fill-opacity="1"/>
+                </g>
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#rect-14" fill="rgb(200,200,200)" fill-opacity="1"/>
+                </g>
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#rect-15" fill="rgb(200,200,200)" fill-opacity="1"/>
+                </g>
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#rect-16" fill="rgb(200,200,200)" fill-opacity="1"/>
+                </g>
+              </g>
+              <g transform="translate(0, 0) ">
+                <use xlink:href="#rect-17" fill="rgb(200,200,200)" fill-opacity="1"/>
+              </g>
+            </g>
+          </g>
+          <g transform="translate(0, 0) " opacity="1">
+            <g transform="translate(0, 0) ">
+              <use xlink:href="#rect-18" fill="rgb(244,244,244)" fill-opacity="1"/>
+            </g>
+            <g transform="translate(0, 0) " opacity="1">
+              <g transform="translate(0, 0) ">
+                <use xlink:href="#rect-19" fill="rgb(193,193,193)" fill-opacity="1"/>
+              </g>
+              <g transform="translate(0, 0) " opacity="1">
+                <g transform="translate(0, 0) "/>
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#path-21" fill="rgb(255,200,0)" fill-opacity="1"/>
+                </g>
+              </g>
+            </g>
+            <g transform="translate(0, 0) " opacity="1">
+              <g transform="translate(0, 0) ">
+                <use xlink:href="#rect-22" fill="rgb(193,193,193)" fill-opacity="1"/>
+              </g>
+              <g transform="translate(0, 0) " opacity="1">
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#path-23" fill="rgb(255,0,0)" fill-opacity="1"/>
+                </g>
+                <g transform="translate(0, 0) "/>
+              </g>
+            </g>
+            <g transform="translate(0, 0) " opacity="1">
+              <g transform="translate(0, 0) ">
+                <use xlink:href="#rect-25" fill="rgb(193,193,193)" fill-opacity="1"/>
+              </g>
+              <g transform="translate(0, 0) " opacity="1">
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#path-26" fill="rgb(255,0,0)" fill-opacity="1"/>
+                </g>
+                <g transform="translate(0, 0) "/>
+              </g>
+            </g>
+            <g transform="translate(0, 0) " opacity="1">
+              <g transform="translate(0, 0) ">
+                <use xlink:href="#rect-28" fill="rgb(193,193,193)" fill-opacity="1"/>
+              </g>
+              <g transform="translate(0, 0) " opacity="1">
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#path-29" fill="rgb(0,202,66)" fill-opacity="1"/>
+                </g>
+              </g>
+            </g>
+            <g transform="translate(0, 0) " opacity="1">
+              <g transform="translate(0, 0) ">
+                <use xlink:href="#rect-30" fill="rgb(193,193,193)" fill-opacity="1"/>
+              </g>
+              <g transform="translate(0, 0) " opacity="1">
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#path-31" fill="rgb(0,202,66)" fill-opacity="1"/>
+                </g>
+              </g>
+            </g>
+            <g transform="translate(0, 0) " opacity="1">
+              <g transform="translate(0, 0) ">
+                <use xlink:href="#rect-32" fill="rgb(193,193,193)" fill-opacity="1"/>
+              </g>
+              <g transform="translate(0, 0) " opacity="1">
+                <g transform="translate(0, 0) ">
+                  <use xlink:href="#path-33" fill="rgb(0,202,66)" fill-opacity="1"/>
+                </g>
+              </g>
+            </g>
+            <g transform="translate(0, 0) ">
+              <use xlink:href="#rect-34" fill="rgb(200,200,200)" fill-opacity="1"/>
+            </g>
+          </g>
+        </g>
+        <g transform="translate(0, 0) " opacity="1">
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#rect-35" fill="rgb(193,193,193)" fill-opacity="1"/>
+          </g>
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#rect-36" fill="rgb(193,193,193)" fill-opacity="1"/>
+          </g>
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#rect-37" fill="rgb(193,193,193)" fill-opacity="1"/>
+          </g>
+        </g>
+        <g transform="translate(0, 0) " opacity="1">
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#ellipse-38" fill="rgb(244,244,244)" fill-opacity="1"/>
+          </g>
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#ellipse-39" fill="rgb(227,227,227)" fill-opacity="1"/>
+          </g>
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#path-40" fill="rgb(168,168,168)" fill-opacity="1"/>
+          </g>
+        </g>
+      </g>
+      <g transform="translate(0, 0) " opacity="1">
+        <g transform="translate(0, 0) " opacity="1">
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#rect-41" fill="rgb(219,219,219)" fill-opacity="1"/>
+          </g>
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#rect-42" fill="rgb(255,200,0)" fill-opacity="1"/>
+          </g>
+        </g>
+        <g transform="translate(0, 0) " opacity="1">
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#rect-43" fill="rgb(219,219,219)" fill-opacity="1"/>
+          </g>
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#rect-44" fill="rgb(219,219,219)" fill-opacity="1"/>
+          </g>
+          <g transform="translate(0, 0) ">
+            <use xlink:href="#rect-45" fill="rgb(219,219,219)" fill-opacity="1"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

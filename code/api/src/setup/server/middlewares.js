@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 
 // App Imports
-import { NODE_ENV, WEB_URL } from '../config/env'
+import { NODE_ENV, WEB_URL, MOBILE_URL } from '../config/env'
 
 // Setup middlewares
 export default function (server) {
@@ -15,7 +15,8 @@ export default function (server) {
 
   // Enable CORS
   server.use(cors({
-    origin: WEB_URL
+    origin: [WEB_URL, MOBILE_URL],
+    default: WEB_URL
   }))
 
   // Request body parser
