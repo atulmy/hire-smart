@@ -28,9 +28,9 @@ class ResetPassword extends PureComponent {
     super(props)
 
     this.demo = {
-      email: 'atul.12788@gmail.com',
+      email: '',
       verification: '',
-      password: '345678'
+      password: ''
     }
 
     this.state = {

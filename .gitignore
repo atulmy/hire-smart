@@ -1,1 +1,3 @@
 /.idea
+/code/mobile/web/
+!/code/mobile/web/.gitkeep
