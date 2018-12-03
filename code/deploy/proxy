@@ -40,15 +40,6 @@ server {
   ssl_certificate /etc/letsencrypt/live/hiresmart.app/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/hiresmart.app/privkey.pem;
 
-  set $mobile_rewrite do_not_perform;
-  if ($http_user_agent ~* "|android|ip(ad|hone|od)|kindle") {
-    set $mobile_rewrite perform;
-  }
-  if ($mobile_rewrite = perform) {
-    rewrite ^ https://mobile.hiresmart.app$request_uri? redirect;
-    break;
-  }
-
   location / {
     proxy_pass http://web:3000;
 
