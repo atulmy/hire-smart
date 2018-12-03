@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // UI Imports
-import Toolbar from '@material-ui/core/Toolbar/Toolbar'
 import Typography from '@material-ui/core/Typography/Typography'
 import Button from '@material-ui/core/Button/Button'
 import { withStyles } from '@material-ui/core/styles/index'
@@ -35,7 +34,7 @@ class Profile extends PureComponent {
     const { auth: { details }, classes } = this.props
 
     return (
-      <Layout>
+      <Layout showFooter>
         <Header title={'Profile'} />
 
         <Section>

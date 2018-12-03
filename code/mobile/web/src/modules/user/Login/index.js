@@ -6,8 +6,6 @@ import isEmpty from 'lodash/isEmpty'
 
 // UI Import
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import IconButton from '@material-ui/core/IconButton'
 import IconCheck from '@material-ui/icons/Check'
@@ -22,6 +20,7 @@ import AuthCheck from '../../auth/AuthCheck'
 import Layout from '../../common/Layout'
 import Header from '../../common/Header'
 import Section from '../../common/Section'
+import ActionContact from '../../common/Header/ActionContact'
 
 // Component
 class Login extends PureComponent {
@@ -59,7 +58,11 @@ class Login extends PureComponent {
 
     return (
       <Layout>
-        <Header />
+        <Header
+          rightIcon={
+            <ActionContact />
+          }
+        />
 
         <Section>
           <form onSubmit={this.login}>

@@ -5,6 +5,7 @@ const styles = theme => ({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'flex-start',
     padding: theme.spacing.unit * 4
   },
 

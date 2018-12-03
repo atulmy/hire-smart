@@ -1,50 +1,66 @@
 // Imports
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Link, withRouter } from 'react-router-dom'
+import {  withRouter } from 'react-router-dom'
 
 // UI Imports
 import Paper from '@material-ui/core/Paper'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
-import RestoreIcon from '@material-ui/icons/Restore'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import LocationOnIcon from '@material-ui/icons/LocationOn'
+import IconDashboard from '@material-ui/icons/Dashboard'
+import IconAccountCircle from '@material-ui/icons/AccountCircle'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
 import routes from '../../../setup/routes'
-import params from '../../../setup/config/params'
-import { messageShow } from '../api/actions'
-import { logout } from '../../user/api/actions/query'
 
 // Component
 class Footer extends Component {
   state = {
-    value: 0,
-  };
+    value: 'dashboard'
+  }
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
+  onChange = (event, value) => {
+    const routeMap = {
+      dashboard: routes.userDashboard.path,
+      profile: routes.userProfile.path,
+    }
 
+    const { history } = this.props
+
+    this.setState({ value }, () => {
+
+      history.push(routeMap[value])
+    })
+
+    console.log(value)
+
+
+  }
 
   render () {
-    const { classes, auth: { isAuthenticated, details } } = this.props
+    const { classes } = this.props
     const { value } = this.state
 
     return (
       <Paper elevation={4} className={classes.root}>
         <BottomNavigation
           value={value}
-          onChange={this.handleChange}
+          onChange={this.onChange}
           showLabels
         >
-          <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-          <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+          <BottomNavigationAction
+            label="Dashboard"
+            value="dashboard"
+            icon={<IconDashboard />}
+          />
+
+          <BottomNavigationAction
+            label="Profile"
+            value="profile"
+            icon={<IconAccountCircle />}
+          />
         </BottomNavigation>
       </Paper>
     )
@@ -53,17 +69,7 @@ class Footer extends Component {
 
 // Component Properties
 Footer.propTypes = {
-  auth: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired,
-  messageShow: PropTypes.func.isRequired
+  classes: PropTypes.object.isRequired
 }
 
-// Component State
-function footerState (state) {
-  return {
-    auth: state.auth
-  }
-}
-
-export default withRouter(connect(footerState, { logout, messageShow })(withStyles(styles)(Footer)))
+export default withRouter(withStyles(styles)(Footer))

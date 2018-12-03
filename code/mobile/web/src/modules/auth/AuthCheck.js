@@ -5,15 +5,12 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 // App Imports
-import params from '../../setup/config/params'
 import routes from '../../setup/routes'
 
 // Component
-const AuthCheck = ({ auth: { isAuthenticated, details } }) => (
+const AuthCheck = ({ auth: { isAuthenticated } }) => (
   isAuthenticated
-    ? details.role === params.user.roles.admin.key
-      ? <Redirect to={routes.adminDashboard.path} />
-      : <Redirect to={routes.userDashboard.path} />
+    ? <Redirect to={routes.userDashboard.path} />
     : ''
 )
 

@@ -24,9 +24,7 @@ const Home = ({ classes }) => (
 
       <Typography variant={'subtitle1'} className={classes.description}>{ params.site.description }</Typography>
 
-      <Link to={routes.userLogin.path}>
-        <Button variant="contained" className={classes.button}>Login</Button>
-      </Link>
+      <Button component={Link} to={routes.userLogin.path} variant="contained" className={classes.button}>Login</Button>
     </div>
 
     {/* Auth Check */}
