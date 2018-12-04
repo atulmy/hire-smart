@@ -13,12 +13,12 @@ import styles from './styles'
 import params from '../../../setup/config/params'
 import routes from '../../../setup/routes'
 import AuthCheck from '../../auth/AuthCheck'
-import Layout from '../../common/Layout'
+import Body from '../../common/Body'
 import Logo from '../../common/Logo'
 
 // Component
 const Home = ({ classes }) => (
-  <Layout background={'primary'}>
+  <Body background={'primary'}>
     <div className={classes.root}>
       <Logo size={'h4'} />
 
@@ -29,7 +29,7 @@ const Home = ({ classes }) => (
 
     {/* Auth Check */}
     <AuthCheck />
-  </Layout>
+  </Body>
 )
 
 // Component Properties

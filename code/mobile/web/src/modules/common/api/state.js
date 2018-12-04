@@ -1,12 +1,14 @@
 // App Imports
-import { MESSAGE_SHOW, MESSAGE_HIDE } from './actions'
+import { MESSAGE_SHOW, MESSAGE_HIDE, FOOTER_SELECTION } from './actions'
 
 // Initial State
 export const commonInitialState = {
   message: {
     text: [],
     open: false
-  }
+  },
+
+  footer: 'dashboard'
 }
 
 // State
@@ -28,6 +30,12 @@ export default (state = commonInitialState, action) => {
           text: [],
           open: false
         }
+      }
+
+    case FOOTER_SELECTION:
+      return {
+        ...state,
+        footer: action.footer
       }
 
     default:

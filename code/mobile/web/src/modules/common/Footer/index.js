@@ -1,7 +1,8 @@
 // Imports
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {  withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 // UI Imports
 import Paper from '@material-ui/core/Paper'
@@ -14,39 +15,31 @@ import styles from './styles'
 
 // App Imports
 import routes from '../../../setup/routes'
+import { footerSelection } from '../../../modules/common/api/actions'
+
+const routeMap = {
+  dashboard: routes.userDashboard.path,
+  profile: routes.userProfile.path,
+}
 
 // Component
 class Footer extends Component {
-  state = {
-    value: 'dashboard'
-  }
 
   onChange = (event, value) => {
-    const routeMap = {
-      dashboard: routes.userDashboard.path,
-      profile: routes.userProfile.path,
-    }
+    const { history, footerSelection } = this.props
 
-    const { history } = this.props
+    history.push(routeMap[value])
 
-    this.setState({ value }, () => {
-
-      history.push(routeMap[value])
-    })
-
-    console.log(value)
-
-
+    footerSelection(value)
   }
 
   render () {
-    const { classes } = this.props
-    const { value } = this.state
+    const { common: { footer }, classes } = this.props
 
     return (
-      <Paper elevation={4} className={classes.root}>
+      <Paper id="footer" elevation={4} className={classes.root}>
         <BottomNavigation
-          value={value}
+          value={footer}
           onChange={this.onChange}
           showLabels
         >
@@ -69,7 +62,16 @@ class Footer extends Component {
 
 // Component Properties
 Footer.propTypes = {
+  common: PropTypes.object.isRequired,
+  footerSelection: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired
 }
 
-export default withRouter(withStyles(styles)(Footer))
+// Component State
+function footerState(state) {
+  return {
+    common: state.common
+  }
+}
+
+export default connect(footerState, { footerSelection })(withRouter(withStyles(styles)(Footer)))

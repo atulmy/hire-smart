@@ -8,19 +8,19 @@ import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
 // App Imports
-import Layout from '../../common/Layout'
+import Body from '../../common/Body'
 import Header from '../../common/Header'
 import Section from '../../common/Section'
 
 // Component
 const Dashboard = ({ classes }) => (
-  <Layout showFooter>
+  <Body showFooter>
     <Header title={'Dashboard'} />
 
     <Section>
       <Typography>Classis germanus habena est. Quadra de grandis bromium, imitari rector!</Typography>
     </Section>
-  </Layout>
+  </Body>
 )
 
 // Component Properties

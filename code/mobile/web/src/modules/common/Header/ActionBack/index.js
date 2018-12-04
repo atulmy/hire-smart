@@ -1,5 +1,6 @@
 // Imports
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 
 // App Imports
@@ -10,9 +11,9 @@ import IconArrowBack from '@material-ui/icons/ArrowBack'
 class ActionBack extends PureComponent {
 
   onClick = () => {
-    const { history } = this.props
+    const { route, history } = this.props
 
-    history.goBack()
+    route ? history.push(route) : history.goBack()
   }
 
   render() {
@@ -27,6 +28,11 @@ class ActionBack extends PureComponent {
       </IconButton>
     )
   }
+}
+
+// Component Properties
+ActionBack.propTypes = {
+  route: PropTypes.string
 }
 
 export default withRouter(ActionBack)

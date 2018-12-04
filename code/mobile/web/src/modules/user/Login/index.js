@@ -14,13 +14,15 @@ import styles from './styles'
 
 // App Imports
 import { nullToEmptyString } from '../../../setup/helpers'
+import routes from '../../../setup/routes'
 import { messageShow } from '../../common/api/actions'
 import { login } from '../api/actions/query'
 import AuthCheck from '../../auth/AuthCheck'
-import Layout from '../../common/Layout'
+import Body from '../../common/Body'
 import Header from '../../common/Header'
 import Section from '../../common/Section'
 import ActionContact from '../../common/Header/ActionContact'
+import ActionBack from '../../common/Header/ActionBack'
 
 // Component
 class Login extends PureComponent {
@@ -57,8 +59,11 @@ class Login extends PureComponent {
     const { email, password } = this.state
 
     return (
-      <Layout>
+      <Body>
         <Header
+          leftIcon={
+            <ActionBack route={routes.pagesHome.path} />
+          }
           rightIcon={
             <ActionContact />
           }
@@ -115,7 +120,7 @@ class Login extends PureComponent {
 
         {/* Auth Check */}
         <AuthCheck />
-      </Layout>
+      </Body>
     )
   }
 }

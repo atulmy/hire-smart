@@ -12,6 +12,7 @@ import routes from './setup/routes'
 import theme from './setup/theme'
 import { setUser, setUserLocally } from './modules/user/api/actions/query'
 import Redirector from './modules/common/Redirector'
+import Layout from './modules/common/Layout'
 import RoutePrivate from './modules/auth/RoutePrivate'
 import * as serviceWorker from './serviceWorker'
 
@@ -32,25 +33,27 @@ ReactDOM.render(
   <StateProvider store={store}>
     <Router>
       <MuiThemeProvider theme={theme}>
-        <Switch>
-          {
-            Object.values(routes).map((route, index) => (
-              route.auth
-                ? <RoutePrivate
-                  {...route}
-                  key={index}
-                  path={isFunction(route.path) ? route.path() : route.path}
-                />
-                : <Route
-                  {...route}
-                  key={index}
-                  path={isFunction(route.path) ? route.path() : route.path}
-                />
-            ))
-          }
+        <Layout>
+          <Switch>
+            {
+              Object.values(routes).map((route, index) => (
+                route.auth
+                  ? <RoutePrivate
+                    {...route}
+                    key={index}
+                    path={isFunction(route.path) ? route.path() : route.path}
+                  />
+                  : <Route
+                    {...route}
+                    key={index}
+                    path={isFunction(route.path) ? route.path() : route.path}
+                  />
+              ))
+            }
 
-          <Route component={Redirector} />
-        </Switch>
+            <Route component={Redirector} />
+          </Switch>
+        </Layout>
       </MuiThemeProvider>
     </Router>
   </StateProvider>,

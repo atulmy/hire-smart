@@ -1,10 +1,10 @@
 // Imports
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 // UI Imports
-import grey from '@material-ui/core/colors/grey'
-import blue from '@material-ui/core/colors/blue'
 import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
@@ -12,27 +12,28 @@ import styles from './styles'
 import Footer from '../Footer'
 
 // Component
-const Layout = ({ background, showFooter = false, classes, children }) => (
+const Layout = ({ auth: { isAuthenticated }, classes, children }) => (
   <div
     id="layout"
     className={classes.root}
-    style={{ background: background === 'primary' ? blue[500] : grey[50] }}
   >
     { children }
 
-
-    {
-      showFooter &&
-      <Footer />
-    }
+    { isAuthenticated && <Footer /> }
   </div>
 )
 
 // Component Properties
 Layout.propTypes = {
-  background: PropTypes.string,
-  showFooter: PropTypes.bool,
+  auth: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(Layout)
+// Component State
+function layoutState(state) {
+  return {
+    auth: state.auth
+  }
+}
+
+export default withRouter(connect(layoutState, {})(withStyles(styles)(Layout)))

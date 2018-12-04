@@ -13,7 +13,7 @@ import styles from './styles'
 import { messageShow } from '../../common/api/actions'
 import { logout } from '../../user/api/actions/query'
 import Section from '../../common/Section'
-import Layout from '../../common/Layout'
+import Body from '../../common/Body'
 import Header from '../../common/Header'
 
 // Component
@@ -34,7 +34,7 @@ class Profile extends PureComponent {
     const { auth: { details }, classes } = this.props
 
     return (
-      <Layout showFooter>
+      <Body showFooter>
         <Header title={'Profile'} />
 
         <Section>
@@ -45,7 +45,7 @@ class Profile extends PureComponent {
 
           <Button onClick={this.onClickLogout} variant="outlined">Logout</Button>
         </Section>
-      </Layout>
+      </Body>
     )
   }
 }
