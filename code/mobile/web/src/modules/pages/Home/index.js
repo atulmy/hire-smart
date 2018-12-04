@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 // UI Imports
 import Button from '@material-ui/core/Button/Button'
 import Typography from '@material-ui/core/Typography/Typography'
+import Fade from '@material-ui/core/Fade'
 import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
@@ -19,13 +20,15 @@ import Logo from '../../common/Logo'
 // Component
 const Home = ({ classes }) => (
   <Body background={'primary'}>
-    <div className={classes.root}>
-      <Logo size={'h4'} />
+    <Fade in={true} timeout={1000}>
+      <div className={classes.root}>
+        <Logo size={'h4'} />
 
-      <Typography variant={'subtitle1'} className={classes.description}>{ params.site.description }</Typography>
+        <Typography variant={'subtitle1'} className={classes.description}>{ params.site.description }</Typography>
 
-      <Button component={Link} to={routes.userLogin.path} variant="contained" className={classes.button}>Login</Button>
-    </div>
+        <Button component={Link} to={routes.userLogin.path} variant="contained" className={classes.button}>Login</Button>
+      </div>
+    </Fade>
 
     {/* Auth Check */}
     <AuthCheck />

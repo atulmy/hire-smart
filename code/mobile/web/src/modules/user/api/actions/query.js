@@ -3,7 +3,7 @@ import axios from 'axios'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
-import { MESSAGE_SHOW } from '../../../common/api/actions'
+import { MESSAGE_SHOW, FOOTER_SELECTION } from '../../../common/api/actions'
 import { LOGIN_REQUEST, LOGIN_RESPONSE, SET_USER, LOGOUT } from './types'
 
 // Actions
@@ -64,6 +64,11 @@ export function logout() {
 
     dispatch({
       type: LOGOUT
+    })
+
+    dispatch({
+      type: FOOTER_SELECTION,
+      footer: 'dashboard'
     })
   }
 }
