@@ -10,8 +10,8 @@ import thunk from 'redux-thunk'
 
 // UI Imports
 import { createGenerateClassName } from '@material-ui/core/styles'
-import { SheetsRegistry } from 'react-jss/lib/jss'
-import JssProvider from 'react-jss/lib/JssProvider'
+import { SheetsRegistry } from 'jss'
+import JssProvider from 'react-jss'
 
 // App Imports
 import { APP_URL, NODE_ENV, GA_TRACKING_ID } from '../config/env'

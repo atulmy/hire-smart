@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles/index'
 import styles from './styles'
 
 // App Imports
+import { CONTACT_PHONE, CONTACT_EMAIL, CONTACT_ADDRESS } from '../../../setup/config/env'
 import Body from '../../common/Body'
 import Header from '../../common/Header'
 import ActionBack from '../../common/Header/ActionBack'
@@ -24,7 +25,39 @@ const Dashboard = ({ classes }) => (
     />
 
     <Section>
-      <Typography>Classis germanus habena est. Quadra de grandis bromium, imitari rector!</Typography>
+      <Typography>We are available 24x7, 365 days a year. Please feel free to get in touch via any of following way:</Typography>
+
+      <div style={{ marginTop: 20 }}>
+        <div className={classes.item}>
+          <Typography variant={'caption'} color="textSecondary" gutterBottom>
+            Email
+          </Typography>
+
+          <Typography gutterBottom>
+            <a href={`mailto:${ CONTACT_EMAIL }`} target="_blank" rel="noopener noreferrer">{ CONTACT_EMAIL }</a>
+          </Typography>
+        </div>
+
+        <div className={classes.item}>
+          <Typography variant={'caption'} color="textSecondary" gutterBottom>
+            Mobile
+          </Typography>
+
+          <Typography gutterBottom>
+            { CONTACT_PHONE }
+          </Typography>
+        </div>
+
+        <div className={classes.item}>
+          <Typography variant={'caption'} color="textSecondary" gutterBottom>
+            Address
+          </Typography>
+
+          <Typography gutterBottom>
+            { CONTACT_ADDRESS }
+          </Typography>
+        </div>
+      </div>
     </Section>
   </Body>
 )

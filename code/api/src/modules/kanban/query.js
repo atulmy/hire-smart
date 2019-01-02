@@ -35,7 +35,7 @@ export async function kanban({ params: { id }, fields, auth }) {
           populate: [
             { path: 'projectId', select: fields.project },
             { path: 'jobId', select: fields.job }
-            ]
+          ]
         })
         .populate({
           path: 'interviews',
@@ -43,7 +43,7 @@ export async function kanban({ params: { id }, fields, auth }) {
           populate: [
             { path: 'interviewerId', select: fields.interviewer },
             { path: 'feedbackId', select: fields.feedback }
-            ]
+          ]
         })
 
       return {

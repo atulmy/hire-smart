@@ -64,6 +64,8 @@ export function logout() {
   return dispatch => {
     logoutUnsetUserLocalStorageAndCookie()
 
+    delete axios.defaults.headers.common['Authentication'];
+
     dispatch({
       type: LOGOUT
     })

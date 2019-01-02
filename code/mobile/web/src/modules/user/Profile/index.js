@@ -15,6 +15,7 @@ import { logout } from '../../user/api/actions/query'
 import Section from '../../common/Section'
 import Body from '../../common/Body'
 import Header from '../../common/Header'
+import ActionContact from '../../common/Header/ActionContact'
 
 // Component
 class Profile extends PureComponent {
@@ -35,7 +36,12 @@ class Profile extends PureComponent {
 
     return (
       <Body showFooter>
-        <Header title={'Profile'} />
+        <Header
+          title={'Profile'}
+          rightIcon={
+            <ActionContact />
+          }
+        />
 
         <Section>
           <Typography paragraph>Sunt consiliumes convertam nobilis, neuter cobaltumes.</Typography>
