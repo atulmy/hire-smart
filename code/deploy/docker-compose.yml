@@ -9,6 +9,8 @@ services:
     restart: always
     networks:
       - back
+    #ports:
+      #- "27017:27017"
 
   api:
     image: api:1.0.0
