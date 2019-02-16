@@ -1,4 +1,8 @@
-const view = (env = { NODE_ENV: '', APP_URL: '', GA_TRACKING_ID: '' }, params, app = { meta: null, html: '', css: '', initialState: {} } ) => (
+const view = (
+  env = { NODE_ENV: '', APP_URL: '', GA_TRACKING_ID: '' },
+  params,
+  app = { meta: null, html: '', css: '', initialState: {} }
+) => (
 `<!doctype html>
 <html lang="en">
 <head>
