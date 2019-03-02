@@ -1,1 +1,0 @@
-export const USER_LIST_CACHE = 'CACHE.KEY.USER.LIST'

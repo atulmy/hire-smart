@@ -34,15 +34,6 @@ services:
     depends_on:
       - api
 
-  mobile:
-    image: mobile:1.0.0
-    build: ../mobile/web
-    restart: always
-    networks:
-      - front
-    depends_on:
-      - api
-
   proxy:
     image: nginx
     volumes:

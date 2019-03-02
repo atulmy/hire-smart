@@ -18,10 +18,6 @@
     - React Router
     - Server Side Rendering
     - Material UI
-  - Mobile App
-    - React Native
-    - Redux
-    - React Navigation
 
 
 ## Setup and Running
