@@ -5,5 +5,5 @@ COPY ./package*.json ./
 RUN npm install --quiet
 COPY . ./
 RUN npm run build:prod
-EXPOSE 3000
+EXPOSE 3001
 ENTRYPOINT ["node", "build/index.js"]
