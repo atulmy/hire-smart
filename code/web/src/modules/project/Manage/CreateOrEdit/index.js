@@ -40,7 +40,7 @@ class CreateOrEdit extends PureComponent {
   componentWillReceiveProps(nextProps) {
     const { project } = nextProps.projectEdit
 
-    if(project._id !== this.state.id) {
+    if(project && project._id !== this.state.id) {
       this.setState({
         id: project._id,
         name: project.name,

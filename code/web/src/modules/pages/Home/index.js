@@ -11,7 +11,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { APP_URL } from '../../../setup/config/env'
+import { WEB_URL } from '../../../setup/config/env'
 import routes from '../../../setup/routes'
 import { messageShow } from '../../common/api/actions'
 import { startNow } from '../../user/api/actions/mutation'
@@ -122,7 +122,7 @@ class Home extends PureComponent {
             </div>
 
             <div className={classes.featureItemRight}>
-              <img src={`${ APP_URL }/images/home/features-journey.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/home/features-journey.svg`} className={classes.featureItemImage} />
             </div>
           </div>
 
@@ -130,7 +130,7 @@ class Home extends PureComponent {
 
           <div className={classes.featureItem}>
             <div className={classes.featureItemLeft}>
-              <img src={`${ APP_URL }/images/home/features-current-status.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/home/features-current-status.svg`} className={classes.featureItemImage} />
             </div>
 
             <div className={classes.featureItemRight}>
@@ -172,7 +172,7 @@ class Home extends PureComponent {
             </div>
 
             <div className={classes.featureItemRight}>
-              <img src={`${ APP_URL }/images/home/features-feedback.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/home/features-feedback.svg`} className={classes.featureItemImage} />
             </div>
           </div>
 
@@ -182,7 +182,7 @@ class Home extends PureComponent {
         {/* Bottom CTA */}
         <div className={classes.bottomCta}>
           <div style={{ padding: '0 5rem' }}>
-            <img src={`${ APP_URL }/images/illustrations/organize-resume.svg`} style={{ width: 275, marginBottom: '3rem' }} />
+            <img src={`${ WEB_URL }/images/illustrations/organize-resume.svg`} style={{ width: 275, marginBottom: '3rem' }} />
 
             <Typography
               variant={'h5'}

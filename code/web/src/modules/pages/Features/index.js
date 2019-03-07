@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import Fade from '@material-ui/core/Fade'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
-import { APP_URL } from '../../../setup/config/env'
+import { WEB_URL } from '../../../setup/config/env'
 
 // App Imports
 
@@ -58,7 +58,7 @@ const Features = (props) => {
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ APP_URL }/images/illustrations/dashboard.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/dashboard.svg`} className={classes.featureItemImage} />
             </Grid>
           </Grid>
 
@@ -67,7 +67,7 @@ const Features = (props) => {
           {/* Teamwork */}
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ APP_URL }/images/illustrations/connected.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/connected.svg`} className={classes.featureItemImage} />
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
@@ -110,7 +110,7 @@ const Features = (props) => {
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ APP_URL }/images/illustrations/progress.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/progress.svg`} className={classes.featureItemImage} />
             </Grid>
           </Grid>
 
@@ -119,7 +119,7 @@ const Features = (props) => {
           {/* Master Data Management */}
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ APP_URL }/images/illustrations/files.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/files.svg`} className={classes.featureItemImage} />
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
@@ -162,7 +162,7 @@ const Features = (props) => {
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ APP_URL }/images/illustrations/collaboration.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/collaboration.svg`} className={classes.featureItemImage} />
             </Grid>
           </Grid>
 
@@ -171,7 +171,7 @@ const Features = (props) => {
           {/* Secure */}
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ APP_URL }/images/illustrations/security.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/security.svg`} className={classes.featureItemImage} />
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
@@ -214,7 +214,7 @@ const Features = (props) => {
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ APP_URL }/images/illustrations/email.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/email.svg`} className={classes.featureItemImage} />
             </Grid>
           </Grid>
 
@@ -223,7 +223,7 @@ const Features = (props) => {
           {/* Secure */}
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ APP_URL }/images/illustrations/checklist.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/checklist.svg`} className={classes.featureItemImage} />
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>

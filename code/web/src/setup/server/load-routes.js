@@ -14,7 +14,7 @@ import { SheetsRegistry } from 'jss'
 import { JssProvider } from 'react-jss'
 
 // App Imports
-import { APP_URL, NODE_ENV, GA_TRACKING_ID } from '../config/env'
+import { WEB_URL, NODE_ENV, GA_TRACKING_ID } from '../config/env'
 import params from '../config/params'
 import { rootReducer } from '../store'
 import routes from '../routes'
@@ -88,7 +88,7 @@ export default function (app) {
             <Provider store={store} key={'provider'}>
               <StaticRouter context={context} location={request.url}>
                 <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-                  <App/>
+                  <App />
                 </JssProvider>
               </StaticRouter>
             </Provider>
@@ -100,7 +100,7 @@ export default function (app) {
           // Get Meta header tags
           const meta = Helmet.renderStatic()
 
-          const markup = view({ APP_URL, NODE_ENV, GA_TRACKING_ID }, params, { meta, html, css, initialState })
+          const markup = view({ WEB_URL, NODE_ENV, GA_TRACKING_ID }, params, { meta, html, css, initialState })
 
           // Reset the state on server
           store.dispatch({

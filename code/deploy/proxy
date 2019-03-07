@@ -78,7 +78,7 @@ server {
   ssl_certificate_key /etc/letsencrypt/live/hiresmart.app/privkey.pem;
 
   location / {
-    proxy_pass http://api:8000;
+    proxy_pass http://api:3001;
 
     #security headers
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";

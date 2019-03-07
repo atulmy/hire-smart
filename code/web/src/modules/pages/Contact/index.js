@@ -11,7 +11,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { APP_URL, CONTACT_EMAIL, CONTACT_PHONE, CONTACT_ADDRESS } from '../../../setup/config/env'
+import { WEB_URL, CONTACT_EMAIL, CONTACT_PHONE, CONTACT_ADDRESS } from '../../../setup/config/env'
 
 // Component
 const Contact = (props) => {
@@ -50,7 +50,7 @@ const Contact = (props) => {
 
           <Grid container spacing={24} style={{ marginTop: 20 }}>
             <Grid item xs={6} style={{ textAlign: 'right' }}>
-              <img src={`${ APP_URL }/images/illustrations/contact.svg`} style={{ width: 300 }} />
+              <img src={`${ WEB_URL }/images/illustrations/contact.svg`} style={{ width: 300 }} />
             </Grid>
 
             <Grid item xs={6}>
