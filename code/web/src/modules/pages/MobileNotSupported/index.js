@@ -12,20 +12,27 @@ const MobileNotSupported = (props) => {
   const { classes } = props
   
   return(
-    <div>
+    <div className={classes.root}>
       {/* Meta tags */}
       <Helmet>
         <title>Mobile Not Supported - HireSmart</title>
       </Helmet>
 
-      <div className={classes.content}>
-        <Typography
-          color={'inherit'}
-          className={classes.caption}
-        >
-          Sorry, at this time we do not support mobile phones.
-        </Typography>
-      </div>
+      <Typography
+        variant={'h3'}
+        title={'HireSmart'}
+        className={classes.title}
+      >
+        Hire<span className={classes.titleHighlight}>Smart</span>
+      </Typography>
+
+      <Typography
+        variant={'subtitle1'}
+        gutterBottom
+        className={classes.subTitle}
+      >
+        Sorry, currently this website is not supported on mobile phones. Please try in your desktop browser.
+      </Typography>
     </div>
   )
 }

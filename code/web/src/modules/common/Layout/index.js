@@ -1,15 +1,12 @@
 // Imports
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Helmet } from 'react-helmet'
 
 // UI Imports
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 
 // App Imports
-import { WEB_URL } from '../../../setup/config/env'
-import params from '../../../setup/config/params'
 import Header from '../Header'
 import Footer from '../Footer'
 import Message from '../Message'
