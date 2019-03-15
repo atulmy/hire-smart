@@ -122,7 +122,7 @@ class Home extends PureComponent {
             </div>
 
             <div className={classes.featureItemRight}>
-              <img src={`${ WEB_URL }/images/home/features-journey.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/home/features-journey.svg`} className={classes.featureItemImage} alt='Journey of candidate' />
             </div>
           </div>
 
@@ -130,7 +130,7 @@ class Home extends PureComponent {
 
           <div className={classes.featureItem}>
             <div className={classes.featureItemLeft}>
-              <img src={`${ WEB_URL }/images/home/features-current-status.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/home/features-current-status.svg`} className={classes.featureItemImage} alt='Current status of the candidate' />
             </div>
 
             <div className={classes.featureItemRight}>
@@ -172,7 +172,7 @@ class Home extends PureComponent {
             </div>
 
             <div className={classes.featureItemRight}>
-              <img src={`${ WEB_URL }/images/home/features-feedback.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/home/features-feedback.svg`} className={classes.featureItemImage} alt='Get feedback from interviewer' />
             </div>
           </div>
 
@@ -182,7 +182,7 @@ class Home extends PureComponent {
         {/* Bottom CTA */}
         <div className={classes.bottomCta}>
           <div style={{ padding: '0 5rem' }}>
-            <img src={`${ WEB_URL }/images/illustrations/organize-resume.svg`} style={{ width: 275, marginBottom: '3rem' }} />
+            <img src={`${ WEB_URL }/images/illustrations/organize-resume.svg`} style={{ width: 275, marginBottom: '3rem' }} alt='start now' />
 
             <Typography
               variant={'h5'}

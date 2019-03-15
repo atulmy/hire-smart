@@ -1,6 +1,5 @@
 // Imports
 import axios from 'axios/index'
-import cookie from 'js-cookie'
 
 // App Imports
 import { API_URL } from '../../../../setup/config/env'
@@ -36,7 +35,7 @@ export function login(userCredentials, isLoading = true) {
 
         dispatch(setUser(token, user))
 
-        loginSetUserLocalStorageAndCookie(token, user)
+        loginSetUserLocalStorage(token, user)
 
         message = `Login successful. Welcome back, ${ data.data.user.name }.`
       }
@@ -48,7 +47,7 @@ export function login(userCredentials, isLoading = true) {
 
       dispatch({
         type: LOGIN_RESPONSE,
-        error
+        error: message
       })
     } catch(error) {
       dispatch({
@@ -62,7 +61,7 @@ export function login(userCredentials, isLoading = true) {
 // Log out user and remove token from localStorage
 export function logout() {
   return dispatch => {
-    logoutUnsetUserLocalStorageAndCookie()
+    logoutUnsetUserLocalStorage()
 
     delete axios.defaults.headers.common['Authentication'];
 
@@ -111,7 +110,7 @@ export function startNow(isLoading = true) {
 
         dispatch(setUser(token, user))
 
-        loginSetUserLocalStorageAndCookie(token, user)
+        loginSetUserLocalStorage(token, user)
 
         message = 'You are now logged in as a new demo user.'
       }
@@ -182,7 +181,7 @@ export function verifyUpdateAccount(details, isLoading = true) {
 
         dispatch(setUser(token, user))
 
-        loginSetUserLocalStorageAndCookie(token, user)
+        loginSetUserLocalStorage(token, user)
 
         message = data.data.message
       }
@@ -233,7 +232,7 @@ export function acceptInvite(invite, isLoading = true) {
 
         dispatch(setUser(token, user))
 
-        loginSetUserLocalStorageAndCookie(token, user)
+        loginSetUserLocalStorage(token, user)
 
         message = data.data.message
       }
@@ -284,7 +283,7 @@ export function update(details, isLoading = true) {
 
         dispatch(setUser(token, user))
 
-        loginSetUserLocalStorageAndCookie(token, user)
+        loginSetUserLocalStorage(token, user)
 
         message = data.message
       }
@@ -355,7 +354,7 @@ export function resetPasswordUpdate(details, isLoading = true) {
 
         dispatch(setUser(token, user))
 
-        loginSetUserLocalStorageAndCookie(token, user)
+        loginSetUserLocalStorage(token, user)
 
         message = data.message
       }
@@ -389,21 +388,15 @@ export function setUser(token, user) {
 }
 
 // Set user token and info in localStorage and cookie
-export function loginSetUserLocalStorageAndCookie(token, user) {
+export function loginSetUserLocalStorage(token, user) {
   // Update token
   window.localStorage.setItem('token', token)
   window.localStorage.setItem('user', JSON.stringify(user))
-
-  // Set cookie for SSR
-  cookie.set('auth', { token, user }, { path: '/' })
 }
 
 // Unset user token and info in localStorage and cookie
-export function logoutUnsetUserLocalStorageAndCookie() {
+export function logoutUnsetUserLocalStorage() {
   // Remove token
   window.localStorage.removeItem('token')
   window.localStorage.removeItem('user')
-
-  // Remove cookie
-  cookie.remove('auth')
 }

@@ -1,64 +1,44 @@
 {
-  "name": "web",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "setup": "npm install",
-    "start": "npm run build:client && npm run start:server",
-    "build:client": "webpack -d",
-    "start:server": "nodemon --exec babel-node -- src/index.js",
-    "start:prod": "npm run build:prod && npm run start:server:prod",
-    "start:server:prod": "node build/index.js",
-    "build:prod": "npm run build:client:prod && npm run build:server:prod",
-    "build:server:prod": "babel src -s -D -d build",
-    "build:client:prod": "webpack -p",
-    "notify:pre": "osascript -e 'display notification \"🕙 Building..\" with title \"Development\" sound name \"Pop\"'",
-    "notify:post": "osascript -e 'display notification \"✅ Build complete\" with title \"Development\" sound name \"Purr\"'"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "name": "web.new",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
     "@material-ui/core": "3.9.2",
     "@material-ui/icons": "3.0.2",
     "axios": "0.18.0",
-    "body-parser": "1.18.3",
-    "cookie-parser": "1.4.4",
-    "dotenv": "6.2.0",
-    "express": "4.16.4",
-    "ip": "1.1.5",
-    "js-cookie": "2.2.0",
     "jss": "9.8.7",
     "lodash": "4.17.11",
     "moment": "2.24.0",
     "prop-types": "15.7.2",
-    "react": "16.8.4",
+    "react": "^16.8.4",
     "react-copy-to-clipboard": "5.0.1",
     "react-datetime": "2.16.3",
-    "react-dnd": "7.1.0",
-    "react-dnd-html5-backend": "7.1.0",
-    "react-dom": "16.8.4",
+    "react-dnd": "7.3.2",
+    "react-dnd-html5-backend": "7.2.0",
+    "react-dom": "^16.8.4",
     "react-helmet": "5.2.0",
-    "react-jss": "10.0.0-alpha.6",
+    "react-jss": "8.6.1",
     "react-redux": "6.0.1",
     "react-router-dom": "4.3.1",
     "redux": "4.0.1",
     "redux-thunk": "2.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.2.3",
-    "@babel/core": "7.3.4",
-    "@babel/node": "7.2.2",
-    "@babel/plugin-proposal-class-properties": "7.3.4",
-    "@babel/plugin-transform-runtime": "7.3.4",
-    "@babel/preset-env": "7.3.4",
-    "@babel/preset-react": "7.0.0",
-    "@babel/runtime": "7.3.4",
-    "babel-loader": "8.0.5",
-    "dotenv-webpack": "1.7.0",
-    "nodemon": "1.18.10",
-    "webpack": "4.29.6",
-    "webpack-cli": "3.2.3"
-  }
+    "react-scripts": "2.1.8"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

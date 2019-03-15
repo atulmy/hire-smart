@@ -1,21 +1,44 @@
 // Imports
-import { Server } from 'http'
-import Express from 'express'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { Provider } from 'react-redux'
 
 // App Imports
-import loadModules from './setup/server/load-modules'
-import loadRoutes from './setup/server/load-routes'
-import startServer from './setup/server/start-server'
+import { store } from './setup/store'
+import { setUser, loginSetUserLocalStorage } from './modules/user/api/actions/mutation'
+import ScrollToTop from './modules/common/ScrollToTop'
+import App from './setup/client/App'
+import * as serviceWorker from './serviceWorker'
 
-// Create new server
-const app = new Express()
-const server = new Server(app)
+// User Authentication
+const token = window.localStorage.getItem('token')
+if (token && token !== 'undefined' && token !== '') {
+  const user = JSON.parse(window.localStorage.getItem('user'))
+  if (user) {
+    // Dispatch action
+    store.dispatch(setUser(token, user))
 
-// Load express modules
-loadModules(app)
+    loginSetUserLocalStorage(token, user)
+  }
+}
 
-// Load routes and SSR
-loadRoutes(app)
+// App
+const Root = () => (
+  <Provider store={store} key={'provider'}>
+    <Router>
+      <ScrollToTop>
+        <App />
+      </ScrollToTop>
+    </Router>
+  </Provider>
+)
 
-// Start Server
-startServer(server)
+// Mount project app
+ReactDOM.render(
+  <Root/>,
+  document.getElementById('root')
+)
+
+// Service Worker
+serviceWorker.unregister()

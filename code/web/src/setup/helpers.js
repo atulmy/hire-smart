@@ -52,7 +52,7 @@ export function nullToZero(value) {
 
 // Add (s) to any string by count
 export function plural(value) {
-  return value == 1 ? '' : 's'
+  return value === 1 ? '' : 's'
 }
 
 // Check if object is empty
@@ -66,12 +66,6 @@ export function isEmpty(obj) {
   return true
 }
 
-// Check email
-export function isEmail(email) {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(String(email).toLowerCase())
-}
-
 // Auth Check
 export function authCheck(auth) {
   return auth.user && auth.user._id
@@ -79,10 +73,5 @@ export function authCheck(auth) {
 
 // Slug
 export function slug(text) {
-  return text.toString().toLowerCase()
-    .replace(/\s+/g, '-')           // Replace spaces with -
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    //.replace(/\-\-+/g, '-')         // Replace multiple - with single -
-    .replace(/^-+/, '')             // Trim - from start of text
-    .replace(/-+$/, '')            // Trim - from end of text
+  return text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-')
 }

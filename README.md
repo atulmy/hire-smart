@@ -12,11 +12,10 @@
     - Express
     - MongoDB
     - Remote Procedure Call [(RPC)](https://github.com/atulmy/wispy)
-  - Web App
+  - Web
     - React
     - Redux
     - React Router
-    - Server Side Rendering
     - Material UI
 
 
@@ -31,15 +30,15 @@
     - Create local environment file `cp /api/.env.example /api/.env`
     - Modify `/api/.env` for database credentials
     - Modify `/api/.env` for PORT (optional)
-  - Webapp
+  - Web
     - Create local environment file `cp /web/.env.example /web/.env`
     - Modify `/web/.env` for PORT / API URL (optional)
 - Setup
   - API: Install packages and database setup (migrations and seed) `cd api` and `npm run setup`
   - Webapp: Install packages `cd web` and `npm install`
 - Development
-  - Run API `cd api` and `npm start`, browse at http://localhost:8000/
-  - Run Webapp `cd web` and `npm start`, browse webapp at http://localhost:3000/
+  - Run API `cd api` and `npm start`, browse at http://localhost:3000/
+  - Run Webapp `cd web` and `npm start`, browse web at http://localhost:3001/
 - Deployment
   - Without Docker
       - Configure nginx on server

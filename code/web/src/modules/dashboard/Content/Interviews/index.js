@@ -87,7 +87,7 @@ class Interviews extends PureComponent {
     if(user.isAuthenticated && user.details.demo) {
       messageShow('Sorry, to perform this action you need to verify your account.')
     } else {
-      let check = confirm('Are you sure you want to send reminder email to the candidate and interviewer?')
+      let check = window.confirm('Are you sure you want to send reminder email to the candidate and interviewer?')
 
       if (check) {
         messageShow('Sending reminder emails, please wait..')

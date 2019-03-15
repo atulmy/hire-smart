@@ -121,7 +121,7 @@ class Details extends Component {
 
   render() {
     const { classes } = this.props
-    const { isLoading, isLoadingSubmit, name, description, domain } = this.state
+    const { isLoading, isLoadingSubmit, name, description } = this.state
 
     return (
       <div>

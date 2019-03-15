@@ -43,7 +43,7 @@ class Sidebar extends PureComponent {
         message = `Since you are using a demo account, all your data will be lost. Are you sure you want to log out?`
       }
 
-      let check = confirm(message)
+      let check = window.confirm(message)
 
       if(check) {
         const {logout, messageShow} = this.props

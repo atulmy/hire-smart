@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet'
 
 // UI Imports
 import Toolbar from '@material-ui/core/Toolbar'
-import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Fade from '@material-ui/core/Fade'
 import { withStyles } from '@material-ui/core/styles'

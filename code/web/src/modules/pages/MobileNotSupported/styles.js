@@ -1,13 +1,9 @@
 // Component Styles
 const styles = theme => ({
-  root: {
-    maxHeight: 'calc(100vh - 200px)',
-    overflowY: 'auto'
-  },
-
-  textCenter: {
+  caption: {
+    marginBottom: theme.spacing.unit * 3,
     textAlign: 'center'
-  }
+  },
 })
 
 export default styles

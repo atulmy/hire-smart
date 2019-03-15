@@ -58,7 +58,7 @@ const Features = (props) => {
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ WEB_URL }/images/illustrations/dashboard.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/dashboard.svg`} className={classes.featureItemImage} alt='Birds Eye View' />
             </Grid>
           </Grid>
 
@@ -67,7 +67,7 @@ const Features = (props) => {
           {/* Teamwork */}
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ WEB_URL }/images/illustrations/connected.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/connected.svg`} className={classes.featureItemImage} alt='Teamwork for the Win!' />
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
@@ -110,7 +110,7 @@ const Features = (props) => {
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ WEB_URL }/images/illustrations/progress.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/progress.svg`} className={classes.featureItemImage} alt="Candidate's Progress" />
             </Grid>
           </Grid>
 
@@ -119,7 +119,7 @@ const Features = (props) => {
           {/* Master Data Management */}
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ WEB_URL }/images/illustrations/files.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/files.svg`} className={classes.featureItemImage} alt='Master Data Management' />
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
@@ -162,7 +162,7 @@ const Features = (props) => {
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ WEB_URL }/images/illustrations/collaboration.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/collaboration.svg`} className={classes.featureItemImage} alt='Collaborate' />
             </Grid>
           </Grid>
 
@@ -171,7 +171,7 @@ const Features = (props) => {
           {/* Secure */}
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ WEB_URL }/images/illustrations/security.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/security.svg`} className={classes.featureItemImage} alt='Secure' />
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>
@@ -214,7 +214,7 @@ const Features = (props) => {
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ WEB_URL }/images/illustrations/email.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/email.svg`} className={classes.featureItemImage} alt='Notification' />
             </Grid>
           </Grid>
 
@@ -223,7 +223,7 @@ const Features = (props) => {
           {/* Secure */}
           <Grid container>
             <Grid item xs={12} md={6} className={classes.featureItemImageContainer}>
-              <img src={`${ WEB_URL }/images/illustrations/checklist.svg`} className={classes.featureItemImage} />
+              <img src={`${ WEB_URL }/images/illustrations/checklist.svg`} className={classes.featureItemImage} alt='Receive Feedback' />
             </Grid>
 
             <Grid item xs={12} md={6} className={classes.featureItemTextContainer}>

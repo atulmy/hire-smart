@@ -73,7 +73,7 @@ export const jobsByProject = (state = jobByProjectInitialState, action) => {
       }
 
     case LIST_BY_PROJECT_RESET:
-      return { ...jobsInitialState }
+      return { ...jobByProjectInitialState }
 
     default:
       return state

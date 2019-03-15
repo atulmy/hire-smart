@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
+import MbileDetect from 'mobile-detect'
 
 // UI Imports
 import { createGenerateClassName } from '@material-ui/core/styles'
@@ -20,6 +21,7 @@ import { rootReducer } from '../store'
 import routes from '../routes'
 import { setUser } from '../../modules/user/api/actions/mutation'
 import App from '../client/App'
+import AppMobile from '../client/AppMobile'
 import view from './view'
 
 export default function (app) {
@@ -84,11 +86,17 @@ export default function (app) {
           const sheetsRegistry = new SheetsRegistry()
           const generateClassName = createGenerateClassName()
 
+          const mobileCheck = new MbileDetect(request.headers['user-agent'])
+
           const html = renderToString(
             <Provider store={store} key={'provider'}>
               <StaticRouter context={context} location={request.url}>
                 <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
-                  <App />
+                  {
+                    mobileCheck.mobile()
+                      ? <AppMobile />
+                      : <App />
+                  }
                 </JssProvider>
               </StaticRouter>
             </Provider>

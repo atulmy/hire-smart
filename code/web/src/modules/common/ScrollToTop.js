@@ -1,9 +1,9 @@
 // Imports
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { withRouter } from 'react-router-dom'
 
 // Component
-class ScrollToTop extends PureComponent {
+class ScrollToTop extends React.PureComponent {
 
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {

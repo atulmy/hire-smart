@@ -35,7 +35,7 @@ class Item extends PureComponent {
   }
 
   render() {
-    const { classes, item: { candidateId, interviews, highlight }, detailsOpen, isDragging, connectDragSource } = this.props
+    const { classes, item: { candidateId, interviews }, detailsOpen, connectDragSource } = this.props
 
     return connectDragSource(
       <div className={classes.root}>

@@ -83,7 +83,7 @@ export const interviewsByProject = (state = interviewByProjectInitialState, acti
       }
 
     case LIST_BY_PROJECT_RESET:
-      return { ...interviewsInitialState }
+      return { ...interviewByProjectInitialState }
 
     default:
       return state

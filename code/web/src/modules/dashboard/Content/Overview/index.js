@@ -104,24 +104,6 @@ class Overview extends PureComponent {
     return count > 0 ? `(${ count })` : ''
   }
 
-  handleDrop = (index, item) => {
-    const { name } = item
-    const droppedBoxNames = name ? { $push: [name] } : {}
-
-    this.setState(
-      update(this.state, {
-        dustbins: {
-          [index]: {
-            lastDroppedItem: {
-              $set: item,
-            },
-          },
-        },
-        droppedBoxNames,
-      }),
-    )
-  }
-
   itemDropped = async (kanbanId, columnKey) => {
     const { updateKanbanStatus, messageShow } = this.props
 
