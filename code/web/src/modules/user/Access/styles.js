@@ -13,7 +13,7 @@ const styles = theme => ({
   },
 
   heading: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     backgroundColor: grey[200],
     borderBottom: `1px solid ${ grey[200] }`
   },
@@ -24,7 +24,7 @@ const styles = theme => ({
   },
 
   tabsContent: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
 
 })

@@ -4,11 +4,11 @@ import grey from '@material-ui/core/colors/grey'
 // Component Styles
 const styles = theme => ({
   title: {
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing(3)
   },
 
   item: {
-    marginBottom: theme.spacing.unit * 2.5,
+    marginBottom: theme.spacing(2.5),
     borderBottom: `1px solid ${ grey[200] }`
   },
 
@@ -17,19 +17,19 @@ const styles = theme => ({
     borderBottom: `1px solid ${ grey[100] }`,
   },
   tabContent: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
 
   interview: {
     border: `1px solid ${ grey[200] }`,
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   },
   interviewNumber: {
     backgroundColor: grey[200],
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
   interviewContent: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   interviewContentActions: {
     textAlign: 'right'
@@ -37,8 +37,8 @@ const styles = theme => ({
 
   action: {
     textAlign: 'right',
-    paddingRight: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
   },
 
   clickToCopy: {

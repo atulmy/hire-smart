@@ -42,7 +42,7 @@ class Manage extends PureComponent {
           </Toolbar>
 
           <div className={classes.content}>
-            <Grid container spacing={24}>
+            <Grid container spacing={6}>
               {/* Add or Edit */}
               <Grid item xs={12} md={3}>
                 <CreateOrEdit successCallback={getList} />

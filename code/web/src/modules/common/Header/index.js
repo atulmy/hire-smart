@@ -12,6 +12,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Drawer from '@material-ui/core/Drawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import Avatar from '@material-ui/core/Avatar'
@@ -166,7 +167,10 @@ class Header extends PureComponent {
                   >
                     <Link to={routes.dashboard.path}>
                       <ListItem button>
-                        <Avatar style={{ backgroundColor: blue[500] }}><IconDashboard /></Avatar>
+                        <ListItemAvatar>
+                          <Avatar style={{ backgroundColor: blue[500] }}><IconDashboard /></Avatar>
+                        </ListItemAvatar>
+
                         <ListItemText primary={'Dashboard'} secondary={'Birds eye view'} />
                       </ListItem>
                     </Link>
@@ -175,7 +179,10 @@ class Header extends PureComponent {
                       !user.details.demo &&
                       <Link to={routes.activity.path}>
                         <ListItem button>
-                          <Avatar style={{ backgroundColor: orange[500] }}><IconUpdate /></Avatar>
+                          <ListItemAvatar>
+                            <Avatar style={{ backgroundColor: orange[500] }}><IconUpdate /></Avatar>
+                          </ListItemAvatar>
+
                           <ListItemText primary={'Activities'} secondary={'View all activities'} />
                         </ListItem>
                       </Link>
@@ -183,28 +190,40 @@ class Header extends PureComponent {
 
                     <Link to={routes.candidate.path}>
                       <ListItem button>
-                        <Avatar style={{ backgroundColor: pink[500] }}><IconSupervisorAccount /></Avatar>
+                        <ListItemAvatar>
+                          <Avatar style={{ backgroundColor: pink[500] }}><IconSupervisorAccount /></Avatar>
+                        </ListItemAvatar>
+
                         <ListItemText primary={'Candidates'} secondary={'Manage all candidates'} />
                       </ListItem>
                     </Link>
 
                     <Link to={routes.interviewer.path}>
                       <ListItem button>
-                        <Avatar style={{ backgroundColor: teal[500] }}><IconThumbsUpDown /></Avatar>
+                        <ListItemAvatar>
+                          <Avatar style={{ backgroundColor: teal[500] }}><IconThumbsUpDown /></Avatar>
+                        </ListItemAvatar>
+
                         <ListItemText primary={'Interviewers'} secondary={'Manage all interviewers'} />
                       </ListItem>
                     </Link>
 
                     <Link to={routes.project.path}>
                       <ListItem button>
-                        <Avatar style={{ backgroundColor: purple[500] }}><IconDomain /></Avatar>
+                        <ListItemAvatar>
+                          <Avatar style={{ backgroundColor: purple[500] }}><IconDomain /></Avatar>
+                        </ListItemAvatar>
+
                         <ListItemText primary={'Projects'} secondary={'Manage all projects'} />
                       </ListItem>
                     </Link>
 
                     <Link to={routes.organization.path}>
                       <ListItem button>
-                        <Avatar style={{ backgroundColor: green[500] }}><IconAccountBalance /></Avatar>
+                        <ListItemAvatar>
+                          <Avatar style={{ backgroundColor: green[500] }}><IconAccountBalance /></Avatar>
+                        </ListItemAvatar>
+
                         <ListItemText primary={'Organization'} secondary={'Manage your organization'} />
                       </ListItem>
                     </Link>
@@ -215,7 +234,10 @@ class Header extends PureComponent {
                   >
                     <Link to={routes.login.path}>
                       <ListItem button>
-                        <Avatar style={{ backgroundColor: green[500] }}><IconPersonAdd /></Avatar>
+                        <ListItemAvatar>
+                          <Avatar style={{ backgroundColor: green[500] }}><IconPersonAdd /></Avatar>
+                        </ListItemAvatar>
+
                         <ListItemText primary={'Login or Signup'} />
                       </ListItem>
                     </Link>

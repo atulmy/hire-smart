@@ -35,7 +35,7 @@ const styles = theme => ({
   },
 
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     color: 'black',
     backgroundColor: 'white',
   },
@@ -77,7 +77,7 @@ const styles = theme => ({
     textAlign: 'center'
   },
   bottomCtaButton: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     color: theme.palette.getContrastText(theme.palette.primary[500]),
     backgroundColor: theme.palette.primary[500],
     '&:hover': {

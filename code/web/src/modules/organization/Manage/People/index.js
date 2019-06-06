@@ -141,7 +141,7 @@ class People extends PureComponent {
 
     return (
       <div>
-        <Grid container spacing={24}>
+        <Grid container spacing={6}>
           {/* Add */}
           <Grid item xs={12} md={3}>
             <Paper elevation={1} className={classes.formContainer}>
@@ -206,7 +206,7 @@ class People extends PureComponent {
                 isLoading || invites.isLoading
                   ? <Loading />
                   : <Fade in={true}>
-                      <Table>
+                      <Table size="small">
                         <TableHead>
                           <TableRow>
                             <TableCell>Name</TableCell>

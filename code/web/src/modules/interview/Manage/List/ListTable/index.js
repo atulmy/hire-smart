@@ -26,7 +26,7 @@ const ListTable = (props) => {
   const { classes, list, view, edit, remind } = props
 
   return (
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell>Candidate</TableCell>

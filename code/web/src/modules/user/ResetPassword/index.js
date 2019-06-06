@@ -171,9 +171,9 @@ class ResetPassword extends PureComponent {
     return (
       <div>
         {/* STEP 1: Provide your official email */}
-        <ExpansionPanel className={classes.panel} disabled={!enableStep1} expanded={expandStep1}>>
+        <ExpansionPanel className={classes.panel} disabled={!enableStep1} expanded={expandStep1}>
           <ExpansionPanelSummary>
-            <Typography variant={'body2'}>STEP 1: Provide your email address</Typography>
+            <Typography variant={'body1'}>STEP 1: Provide your email address</Typography>
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails style={{ display: 'block' }}>
@@ -214,7 +214,7 @@ class ResetPassword extends PureComponent {
         {/* STEP 2: Verify your email */}
         <ExpansionPanel className={classes.panel} disabled={!enableStep2} expanded={expandStep2}>
           <ExpansionPanelSummary>
-            <Typography variant={'body2'}>STEP 2: Verify your email address</Typography>
+            <Typography variant={'body1'}>STEP 2: Verify your email address</Typography>
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails style={{ display: 'block' }}>
@@ -265,7 +265,7 @@ class ResetPassword extends PureComponent {
         {/* STEP 3: Set new password */}
         <ExpansionPanel className={classes.panel} disabled={!enableStep3} expanded={expandStep3}>
           <ExpansionPanelSummary>
-            <Typography variant={'body2'}>STEP 3: Set new password</Typography>
+            <Typography variant={'body1'}>STEP 3: Set new password</Typography>
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails style={{ display: 'block' }}>

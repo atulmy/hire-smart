@@ -6,15 +6,15 @@ import blue from '@material-ui/core/colors/blue'
 const styles = theme => ({
   root: {
     flex: 1,
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
-    paddingRight: theme.spacing.unit * 3,
-    paddingLeft: theme.spacing.unit * 3
+    paddingTop: theme.spacing(),
+    paddingBottom: theme.spacing(),
+    paddingRight: theme.spacing(3),
+    paddingLeft: theme.spacing(3)
   },
 
   buttonsContainer: {
     textAlign: 'right',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
 
   buttonAdd: {

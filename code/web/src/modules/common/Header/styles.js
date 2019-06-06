@@ -26,7 +26,7 @@ const styles = theme => ({
   },
 
   button: {
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
     backgroundColor: 'white',
     color: red[500]
   },

@@ -10,8 +10,8 @@ const styles = theme => ({
 
   actions: {
     textAlign: 'right',
-    padding: `${ theme.spacing.unit }px ${ theme.spacing.unit * 2.5 }px`,
-    paddingBottom: theme.spacing.unit,
+    padding: `${ theme.spacing() }px ${ theme.spacing(2.5) }px`,
+    paddingBottom: theme.spacing(),
   },
   actionIcon: {
     width: 20,
@@ -20,8 +20,8 @@ const styles = theme => ({
   },
 
   divider: {
-    marginLeft: theme.spacing.unit * 2.5,
-    marginRight: theme.spacing.unit * 2.5
+    marginLeft: theme.spacing(2.5),
+    marginRight: theme.spacing(2.5)
   },
 
   kanban: {
@@ -37,22 +37,22 @@ const styles = theme => ({
   },
   columnTitle: {
     textAlign: 'center',
-    margin: `0 ${ theme.spacing.unit * 2.5 }px`,
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit,
+    margin: `0 ${ theme.spacing(2.5) }px`,
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(),
     cursor: 'default'
   },
   columnButtonAdd: {
     color: grey[500],
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
   columnButtonAddPrimary: {
     color: blue[500],
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
 
   itemContainer: {
-    padding: `0 ${ theme.spacing.unit * 2.5 }px`,
+    padding: `0 ${ theme.spacing(2.5) }px`,
     height: 'calc(100vh - 243px)',
     overflowY: 'auto'
   },

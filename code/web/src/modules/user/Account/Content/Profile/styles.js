@@ -15,11 +15,11 @@ const styles = theme => ({
   },
 
   content: {
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing(3)
   },
 
   item: {
-    marginBottom: theme.spacing.unit * 2.5,
+    marginBottom: theme.spacing(2.5),
     borderBottom: `1px solid ${ grey[200] }`
   },
 
@@ -29,7 +29,7 @@ const styles = theme => ({
 
   buttonsContainer: {
     textAlign: 'right',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
 })
 

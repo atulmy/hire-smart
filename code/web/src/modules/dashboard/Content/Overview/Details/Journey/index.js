@@ -41,7 +41,7 @@ class Journey extends PureComponent {
                               <span className={classes.timeLineItemTopIcon}>{ i+1 }</span>
 
                               <span className={classes.timeLineItemTopText}>
-                                <Typography variant={'body2'}>{ moment(new Date(activity.createdAt)).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }</Typography>
+                                <Typography variant={'body1'}>{ moment(new Date(activity.createdAt)).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`) }</Typography>
                               </span>
                             </span>
 

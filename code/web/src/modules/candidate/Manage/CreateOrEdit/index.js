@@ -376,7 +376,7 @@ class CreateOrEdit extends PureComponent {
 
           {/* Input - Salary */}
           <Grid item xs={12}>
-            <Grid container spacing={24}>
+            <Grid container spacing={6}>
               {/* Input - Current */}
               <Grid item md={6}>
                 <TextField

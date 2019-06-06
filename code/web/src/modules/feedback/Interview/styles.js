@@ -8,16 +8,16 @@ const styles = theme => ({
   container: {
     maxWidth: 360,
     margin: '0 auto',
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
 
   buttonsContainer: {
     textAlign: 'right',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
 
   radioContainer: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   },
 
   radio: {

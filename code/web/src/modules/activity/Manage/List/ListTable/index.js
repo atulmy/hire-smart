@@ -20,7 +20,7 @@ const ListTable = (props) => {
   const { classes, list } = props
 
   return (
-    <Table>
+    <Table size="small">
       <TableBody>
         {
           list && list.length > 0

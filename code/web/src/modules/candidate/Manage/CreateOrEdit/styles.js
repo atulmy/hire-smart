@@ -4,21 +4,21 @@ import grey from '@material-ui/core/colors/grey'
 // Component Styles
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     backgroundColor: grey[500]
   },
 
   buttonsContainer: {
     textAlign: 'right',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
 
   formContainer: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
 
   buttonUpload: {
-    marginTop: theme.spacing.unit * 2.5
+    marginTop: theme.spacing(2.5)
   },
 
   buttonIcon: {

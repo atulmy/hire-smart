@@ -5,11 +5,11 @@ import grey from '@material-ui/core/colors/grey'
 const styles = theme => ({
   buttonsContainer: {
     textAlign: 'right',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
 
   panel: {
-    backgroundColor: grey[50],
+    backgroundColor: `${ grey[50] } !important`,
   }
 })
 

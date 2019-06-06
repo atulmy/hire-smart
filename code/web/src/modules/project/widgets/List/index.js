@@ -6,8 +6,9 @@ import { connect } from 'react-redux'
 // UI Imports
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListSubheader from '@material-ui/core/ListSubheader'
 import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListSubheader from '@material-ui/core/ListSubheader'
 import Avatar from '@material-ui/core/Avatar'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
@@ -61,7 +62,9 @@ class ProjectList extends PureComponent {
                       button
                       style={ this.selected(item._id)  ? { backgroundColor: '#ddd' } : {}}
                     >
-                      <Avatar style={ this.selected(item._id) ? { backgroundColor: avatarColor(item.name) } : {}}>{ avatarLetter(item.name) }</Avatar>
+                      <ListItemAvatar>
+                        <Avatar style={ this.selected(item._id) ? { backgroundColor: avatarColor(item.name) } : {}}>{ avatarLetter(item.name) }</Avatar>
+                      </ListItemAvatar>
 
                       <ListItemText primary={item.name} secondary={''} />
                     </ListItem>

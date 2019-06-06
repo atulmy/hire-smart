@@ -42,11 +42,11 @@ const Privacy = (props) => {
           <p>We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible from http://hiresmart.app</p>
 
 
-          <Typography variant="headline" gutterBottom>Information Collection And Use</Typography>
+          <Typography variant="h5" gutterBottom>Information Collection And Use</Typography>
 
           <p>We collect several different types of information for various purposes to provide and improve our Service to you.</p>
 
-          <Typography variant="title">Types of Data Collected</Typography>
+          <Typography variant="h6">Types of Data Collected</Typography>
 
           <Typography>Personal Data</Typography>
 
@@ -71,7 +71,7 @@ const Privacy = (props) => {
             <li><strong>Security Cookies.</strong> We use Security Cookies for security purposes.</li>
           </ul>
 
-          <Typography variant="headline" gutterBottom>Use of Data</Typography>
+          <Typography variant="h5" gutterBottom>Use of Data</Typography>
 
           <p>HIRESMART uses the collected data for various purposes:</p>
           <ul>
@@ -84,15 +84,15 @@ const Privacy = (props) => {
             <li>To detect, prevent and address technical issues</li>
           </ul>
 
-          <Typography variant="headline" gutterBottom>Transfer Of Data</Typography>
+          <Typography variant="h5" gutterBottom>Transfer Of Data</Typography>
           <p>Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from your jurisdiction.</p>
           <p>If you are located outside India and choose to provide information to us, please note that we transfer the data, including Personal Data, to India and process it there.</p>
           <p>Your consent to this Privacy Policy followed by your submission of such information represents your agreement to that transfer.</p>
           <p>HIRESMART will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this Privacy Policy and no transfer of your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of your data and other personal information.</p>
 
-          <Typography variant="headline" gutterBottom>Disclosure Of Data</Typography>
+          <Typography variant="h5" gutterBottom>Disclosure Of Data</Typography>
 
-          <Typography variant="title">Legal Requirements</Typography>
+          <Typography variant="h6">Legal Requirements</Typography>
           <p>HIRESMART may disclose your Personal Data in the good faith belief that such action is necessary to:</p>
           <ul>
             <li>To comply with a legal obligation</li>
@@ -102,14 +102,14 @@ const Privacy = (props) => {
             <li>To protect against legal liability</li>
           </ul>
 
-          <Typography variant="headline" gutterBottom>Security Of Data</Typography>
+          <Typography variant="h5" gutterBottom>Security Of Data</Typography>
           <p>The security of your data is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Data, we cannot guarantee its absolute security.</p>
 
-          <Typography variant="headline" gutterBottom>Service Providers</Typography>
+          <Typography variant="h5" gutterBottom>Service Providers</Typography>
           <p>We may employ third party companies and individuals to facilitate our Service ("Service Providers"), to provide the Service on our behalf, to perform Service-related services or to assist us in analyzing how our Service is used.</p>
           <p>These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
 
-          <Typography variant="title">Analytics</Typography>
+          <Typography variant="h6">Analytics</Typography>
           <p>We may use third-party Service Providers to monitor and analyze the use of our Service.</p>
           <ul>
             <li>
@@ -120,23 +120,23 @@ const Privacy = (props) => {
           </ul>
 
 
-          <Typography variant="headline" gutterBottom>Links To Other Sites</Typography>
+          <Typography variant="h5" gutterBottom>Links To Other Sites</Typography>
           <p>Our Service may contain links to other sites that are not operated by us. If you click on a third party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit.</p>
           <p>We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.</p>
 
 
-          <Typography variant="headline" gutterBottom>Children's Privacy</Typography>
+          <Typography variant="h5" gutterBottom>Children's Privacy</Typography>
           <p>Our Service does not address anyone under the age of 18 ("Children").</p>
           <p>We do not knowingly collect personally identifiable information from anyone under the age of 18. If you are a parent or guardian and you are aware that your Children has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from children without verification of parental consent, we take steps to remove that information from our servers.</p>
 
 
-          <Typography variant="headline" gutterBottom>Changes To This Privacy Policy</Typography>
+          <Typography variant="h5" gutterBottom>Changes To This Privacy Policy</Typography>
           <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
           <p>We will let you know via email and/or a prominent notice on our Service, prior to the change becoming effective and update the "effective date" at the top of this Privacy Policy.</p>
           <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
 
 
-          <Typography variant="headline" gutterBottom>Contact Us</Typography>
+          <Typography variant="h5" gutterBottom>Contact Us</Typography>
           <p>If you have any questions about this Privacy Policy, please contact us:</p>
           <ul>
             <li>By email: hello@hiresmart.app</li>

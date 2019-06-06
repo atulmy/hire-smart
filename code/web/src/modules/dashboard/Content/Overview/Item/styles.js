@@ -8,9 +8,9 @@ const styles = theme => ({
     position: 'relative'
   },
   paper: {
-    margin: `${ theme.spacing.unit * 2.5 }px 0`,
-    padding: theme.spacing.unit * 1.5,
-    paddingBottom: theme.spacing.unit,
+    margin: `${ theme.spacing(2.5) }px 0`,
+    padding: theme.spacing(1.5),
+    paddingBottom: theme.spacing(),
     cursor: 'pointer',
     backgroundColor: grey[50]
   },
@@ -18,14 +18,15 @@ const styles = theme => ({
     fontSize: '1.1rem'
   },
   divider: {
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
 
   infoItem: {
     padding: 0
   },
   infoItemIcon: {
-    marginRight: 5,
+    marginRight: 0,
+    minWidth: 30,
     transform: 'scale(0.7)',
     color: grey[400]
   },

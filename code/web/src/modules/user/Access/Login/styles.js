@@ -1,16 +1,16 @@
 // Component Styles
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit
+    padding: theme.spacing()
   },
 
   buttonsContainer: {
     textAlign: 'right',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
 
   heading: {
-    marginBottom: theme.spacing.unit * 2
+    marginBottom: theme.spacing(2)
   }
 })
 

@@ -13,7 +13,7 @@ import Layout from '../../modules/common/Layout'
 import NotFound from '../../modules/common/NotFound'
 
 const App = () => (
-  <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+  <MuiThemeProvider theme={theme}>
     <Layout>
       <Switch>
         { Object.values(routes).map((route, index) => (

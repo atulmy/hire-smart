@@ -82,7 +82,7 @@ const ViewFields = (props) => {
       </div>
 
       <Grid item xs={12}>
-        <Grid container spacing={24}>
+        <Grid container spacing={6}>
           <Grid item md={6}>
             {/* Experience */}
             <div className={classes.item}>
@@ -103,9 +103,11 @@ const ViewFields = (props) => {
                 Resume
               </Typography>
 
-              <Typography variant={'button'} gutterBottom>
-                { candidate.resume ? <a href={`${ API_URL}/download/${ candidate._id }`} target={'_blank'} rel={'noopener noreferrer'}>Download</a> : '-' }
-              </Typography>
+              <div>
+                <Typography variant={'button'} gutterBottom>
+                  { candidate.resume ? <a href={`${ API_URL}/download/${ candidate._id }`} target={'_blank'} rel={'noopener noreferrer'}>Download</a> : '-' }
+                </Typography>
+              </div>
             </div>
           </Grid>
         </Grid>
@@ -113,7 +115,7 @@ const ViewFields = (props) => {
 
       {/* Salary */}
       <Grid item xs={12}>
-        <Grid container spacing={24}>
+        <Grid container spacing={6}>
           {/* Salary Current */}
           <Grid item md={6}>
             <div className={classes.item}>

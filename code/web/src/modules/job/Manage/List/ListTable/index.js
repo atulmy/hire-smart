@@ -22,7 +22,7 @@ const ListTable = (props) => {
   const { classes, list, edit } = props
 
   return (
-    <Table>
+    <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell>Role</TableCell>

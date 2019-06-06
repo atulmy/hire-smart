@@ -25,7 +25,7 @@ const styles = theme => ({
   },
 
   tabContent: {
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing(3)
   },
 })
 

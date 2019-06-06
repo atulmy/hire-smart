@@ -38,7 +38,7 @@ class Manage extends PureComponent {
           </Toolbar>
 
           <div className={classes.content}>
-            <Grid container spacing={24}>
+            <Grid container spacing={6}>
               {/* List */}
               <Grid item xs={12}>
                 <List />

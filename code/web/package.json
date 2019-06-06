@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "3.9.3",
-    "@material-ui/icons": "3.0.2",
-    "axios": "0.18.0",
+    "@material-ui/core": "4.0.2",
+    "@material-ui/icons": "4.0.1",
+    "axios": "0.19.0",
     "jss": "9.8.7",
     "lodash": "4.17.11",
     "moment": "2.24.0",
@@ -18,14 +18,13 @@
     "react-dnd-html5-backend": "7.4.4",
     "react-dom": "^16.8.6",
     "react-helmet": "5.2.1",
-    "react-jss": "8.6.1",
     "react-redux": "7.0.3",
-    "react-router-dom": "5.0.0",
+    "react-router-dom": "5.0.1",
     "redux": "4.0.1",
     "redux-thunk": "2.3.0"
   },
   "devDependencies": {
-    "react-scripts": "3.0.0"
+    "react-scripts": "3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

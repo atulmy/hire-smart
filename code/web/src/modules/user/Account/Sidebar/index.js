@@ -9,6 +9,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar'
 import IconError from '@material-ui/icons/Error'
 import InboxPerson from '@material-ui/icons/Person'
@@ -68,18 +69,22 @@ class Sidebar extends PureComponent {
             user.isAuthenticated && user.details.demo
               ? <Link to={routes.account.child.demo.path}>
                   <ListItem button style={ this.isActiveMenu(routes.account.child.demo.path)  ? { backgroundColor: grey[300] } : {}}>
-                    <Avatar style={ this.isActiveMenu(routes.account.child.demo.path) ? { backgroundColor: red[500] } : {}}>
-                      <IconError />
-                    </Avatar>
+                    <ListItemAvatar>
+                      <Avatar style={ this.isActiveMenu(routes.account.child.demo.path) ? { backgroundColor: red[500] } : {}}>
+                        <IconError />
+                      </Avatar>
+                    </ListItemAvatar>
 
                     <ListItemText primary={'Demo Account'} />
                   </ListItem>
                 </Link>
               : <Link to={routes.account.path}>
                   <ListItem button style={ this.isActiveMenu(routes.account.path)  ? { backgroundColor: grey[300] } : {}}>
-                    <Avatar style={ this.isActiveMenu(routes.account.path) ? { backgroundColor: green[500] } : {}}>
-                      <InboxPerson />
-                    </Avatar>
+                    <ListItemAvatar>
+                      <Avatar style={ this.isActiveMenu(routes.account.path) ? { backgroundColor: green[500] } : {}}>
+                        <InboxPerson />
+                      </Avatar>
+                    </ListItemAvatar>
 
                     <ListItemText primary={'My Profile'} />
                   </ListItem>
@@ -87,7 +92,10 @@ class Sidebar extends PureComponent {
           }
 
           <ListItem button onClick={this.onLogout}>
-            <Avatar><InboxExitToApp /></Avatar>
+            <ListItemAvatar>
+              <Avatar><InboxExitToApp /></Avatar>
+            </ListItemAvatar>
+
             <ListItemText primary={'Logout'} />
           </ListItem>
         </List>

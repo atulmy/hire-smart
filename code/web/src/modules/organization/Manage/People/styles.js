@@ -6,11 +6,11 @@ const styles = theme => ({
 
   buttonsContainer: {
     textAlign: 'right',
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing()
   },
 
   formContainer: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
 
   list: {

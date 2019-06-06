@@ -20,16 +20,16 @@ const styles = theme => ({
   },
 
   content: {
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing(3)
   },
 
   caption: {
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing(3),
     textAlign: 'center'
   },
 
   item: {
-    marginBottom: theme.spacing.unit * 2.5,
+    marginBottom: theme.spacing(2.5),
     borderBottom: `1px solid ${ grey[200] }`,
     display: 'inline-block'
   },

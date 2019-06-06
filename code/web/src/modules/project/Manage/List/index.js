@@ -50,7 +50,7 @@ class List extends PureComponent {
           isLoading
             ? <Loading />
             : <Fade in={true}>
-                <Table>
+                <Table size="small">
                   <TableHead>
                     <TableRow>
                       <TableCell>Name</TableCell>
