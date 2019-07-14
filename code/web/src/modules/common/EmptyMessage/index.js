@@ -3,13 +3,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // UI Imports
+import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 // Component
 const EmptyMessage = (props) => (
-  <Typography variant={'caption'} align="center">
-    { props.message }
-  </Typography>
+  <Box component="span" m={2}>
+    <Typography variant={'caption'} align="center">
+      { props.message }
+    </Typography>
+  </Box>
 )
 
 // Component Properties
