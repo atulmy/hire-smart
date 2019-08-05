@@ -1,7 +1,7 @@
 // Component Styles
 const styles = {
   root: {
-    marginTop: '64px !important'
+    marginTop: '59px !important'
   },
 
   main: {
