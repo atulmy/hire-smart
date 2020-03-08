@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">HIRE SMART</h1>
-<p align="center">An application for human resource team / recruitment consultancies to streamline hiring process, scheduling interviews and tracking candidates. This project is currently <i><strong>work in progress</strong></i>.</p>
+<p align="center">An application for human resource team / recruitment consultancies to streamline hiring process, scheduling interviews and tracking candidates.</p>
 
 ## Technology Stack
   - API

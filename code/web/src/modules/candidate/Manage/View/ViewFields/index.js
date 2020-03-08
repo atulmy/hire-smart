@@ -105,7 +105,7 @@ const ViewFields = (props) => {
 
               <div>
                 <Typography variant={'button'} gutterBottom>
-                  { candidate.resume ? <a href={`${ API_URL}/download/${ candidate._id }`} target={'_blank'} rel={'noopener noreferrer'}>Download</a> : '-' }
+                  { candidate.resume ? <a href={`${ API_URL}/download/${ candidate._id }`} target='_blank' rel='noopener noreferrer'>Download</a> : '-' }
                 </Typography>
               </div>
             </div>
