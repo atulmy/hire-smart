@@ -25,29 +25,23 @@ export function login(userCredentials, isLoading = true) {
         params: userCredentials,
       })
 
-      let message = ''
-
-      if (data.errors && data.errors.length > 0) {
-        message = data.errors[0].message
-      } else if (data.data.token !== '') {
+      if(data.success) {
         const token = data.data.token
         const user = data.data.user
 
         dispatch(setUser(token, user))
 
         loginSetUserLocalStorage(token, user)
-
-        message = `Login successful. Welcome back, ${ data.data.user.name }.`
       }
 
       dispatch({
         type: MESSAGE_SHOW,
-        message
+        message: data.message
       })
 
       dispatch({
         type: LOGIN_RESPONSE,
-        error: message
+        error: data.message
       })
     } catch(error) {
       dispatch({

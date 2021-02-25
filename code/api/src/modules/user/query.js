@@ -34,24 +34,31 @@ export async function userLogin({ params: { email, password } }) {
 
   // Check if user exists with same email
   try {
+    const response = {
+      success: true,
+      message: 'You have been logged in successfully.'
+    }
+
     const user = await User.findOne({ email })
 
     if (!user) {
       // User does not exists
-      throw new Error(`We do not have any user registered with ${ email } email address. Please signup.`)
+      response.success = false
+      response.message = `We do not have any user registered with ${ email } email address. Please signup.`
     } else {
       // User exists
       const passwordMatch = await bcrypt.compare(password, user.password)
 
       if (!passwordMatch) {
         // Incorrect password
-        throw new Error(`Sorry, the password you entered is incorrect. Please try again.`)
+        response.success = false
+        response.message = `Sorry, the password you entered is incorrect. Please try again.`
       } else {
-        return {
-          data: userAuthResponse(user)
-        }
+        response.data = userAuthResponse(user)
       }
     }
+
+    return response
   } catch (error) {
     throw new Error(params.common.message.error.server)
   }
