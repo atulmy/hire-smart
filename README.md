@@ -47,8 +47,6 @@
       - Update your domain, SSL certificate path and other configurations in `docker-compose.yml`
       - Start Docker containers: `docker-compose up -d`
   
-## Website
-[hiresmart.app](https://hiresmart.app/)
 
 ## Authors
 - Atul Yadav - [GitHub](https://github.com/atulmy) · [Twitter](https://twitter.com/atulmy)
