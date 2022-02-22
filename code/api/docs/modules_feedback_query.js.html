@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/feedback/query.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/feedback/query.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// App Imports
+import params from '../../setup/config/params'
+import validate from '../../setup/helpers/validation'
+import Feedback from './model'
+
+/**
+ * Busca feedback por id
+ * 
+ * @param {String} params.id id do feedback
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar feedback no banco de dados
+ * @returns {Object} feedback
+ */
+export async function feedback({ params: { id } }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: id },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const data = await Feedback.findOne({ _id: id })
+
+    return {
+      data
+    }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#activitiesByCandidate">activitiesByCandidate</a></li><li><a href="global.html#activitiesByOrganization">activitiesByOrganization</a></li><li><a href="global.html#activitiesByProject">activitiesByProject</a></li><li><a href="global.html#authCheck">authCheck</a></li><li><a href="global.html#authCheckAdmin">authCheckAdmin</a></li><li><a href="global.html#candidate">candidate</a></li><li><a href="global.html#candidateCreate">candidateCreate</a></li><li><a href="global.html#candidateRemove">candidateRemove</a></li><li><a href="global.html#candidatesByOrganization">candidatesByOrganization</a></li><li><a href="global.html#candidatesByProject">candidatesByProject</a></li><li><a href="global.html#candidateUpdate">candidateUpdate</a></li><li><a href="global.html#feedback">feedback</a></li><li><a href="global.html#feedbackCreateOrUpdate">feedbackCreateOrUpdate</a></li><li><a href="global.html#interview">interview</a></li><li><a href="global.html#interviewCreate">interviewCreate</a></li><li><a href="global.html#interviewer">interviewer</a></li><li><a href="global.html#interviewerCreate">interviewerCreate</a></li><li><a href="global.html#interviewerRemove">interviewerRemove</a></li><li><a href="global.html#interviewersByOrganization">interviewersByOrganization</a></li><li><a href="global.html#interviewersByProject">interviewersByProject</a></li><li><a href="global.html#interviewerUpdate">interviewerUpdate</a></li><li><a href="global.html#interviewRemove">interviewRemove</a></li><li><a href="global.html#interviewsByOrganization">interviewsByOrganization</a></li><li><a href="global.html#interviewsByProject">interviewsByProject</a></li><li><a href="global.html#interviewUpdate">interviewUpdate</a></li><li><a href="global.html#invite">invite</a></li><li><a href="global.html#invitesByOrganization">invitesByOrganization</a></li><li><a href="global.html#inviteToOrganization">inviteToOrganization</a></li><li><a href="global.html#job">job</a></li><li><a href="global.html#jobCreate">jobCreate</a></li><li><a href="global.html#jobRemove">jobRemove</a></li><li><a href="global.html#jobsByProject">jobsByProject</a></li><li><a href="global.html#jobUpdate">jobUpdate</a></li><li><a href="global.html#kanban">kanban</a></li><li><a href="global.html#kanbanCreate">kanbanCreate</a></li><li><a href="global.html#kanbanRemove">kanbanRemove</a></li><li><a href="global.html#kanbansByProject">kanbansByProject</a></li><li><a href="global.html#kanbanUpdate">kanbanUpdate</a></li><li><a href="global.html#kanbanUpdateStatus">kanbanUpdateStatus</a></li><li><a href="global.html#organization">organization</a></li><li><a href="global.html#organizationByUser">organizationByUser</a></li><li><a href="global.html#organizationCreate">organizationCreate</a></li><li><a href="global.html#organizationRemove">organizationRemove</a></li><li><a href="global.html#organizationsByUser">organizationsByUser</a></li><li><a href="global.html#organizationUpdate">organizationUpdate</a></li><li><a href="global.html#project">project</a></li><li><a href="global.html#projectCreate">projectCreate</a></li><li><a href="global.html#projectRemove">projectRemove</a></li><li><a href="global.html#projectsByOrganization">projectsByOrganization</a></li><li><a href="global.html#projectUpdate">projectUpdate</a></li><li><a href="global.html#randomNumber">randomNumber</a></li><li><a href="global.html#remind">remind</a></li><li><a href="global.html#send">send</a></li><li><a href="global.html#sentEmails">sentEmails</a></li><li><a href="global.html#transport">transport</a></li><li><a href="global.html#user">user</a></li><li><a href="global.html#userAcceptInvite">userAcceptInvite</a></li><li><a href="global.html#userAuthResponse">userAuthResponse</a></li><li><a href="global.html#userLogin">userLogin</a></li><li><a href="global.html#userResetPasswordSendCode">userResetPasswordSendCode</a></li><li><a href="global.html#userResetPasswordUpdate">userResetPasswordUpdate</a></li><li><a href="global.html#userResetPasswordVerifyCode">userResetPasswordVerifyCode</a></li><li><a href="global.html#usersByOrganization">usersByOrganization</a></li><li><a href="global.html#userStartNow">userStartNow</a></li><li><a href="global.html#userUpdate">userUpdate</a></li><li><a href="global.html#userVerifyCode">userVerifyCode</a></li><li><a href="global.html#userVerifySendCode">userVerifySendCode</a></li><li><a href="global.html#userVerifyUpdateAccount">userVerifyUpdateAccount</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

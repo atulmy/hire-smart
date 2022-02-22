@@ -9,9 +9,31 @@ import Kanban from '../kanban/model'
 import Activity from '../activity/model'
 import Candidate from './model'
 
-// Create
+/**
+ * Adiciona um novo candidato
+ * 
+ * @param {String} params.projectId relacionado ao candidato
+ * @param {String} params.jobId relacionado ao candidato
+ * @param {String} params.name nome do candidato
+ * @param {String} params.email email do candidato
+ * @param {String} params.mobile telefone do candidato
+ * @param {String} params.experience tempo em anos de experiência do candidato
+ * @param {String} params.resume currículo do candidato
+ * @param {String} params.salaryCurrent salário atual do candidato
+ * @param {String} params.salaryExpected intenção salarial do candidato 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectId for vazio
+ * @Throws Error se name for vazio
+ * @Throws Error se email for vazio
+ * @Throws Error se mobile for vazio
+ * @Throws Error se experience for vazio
+ * @Throws Error se resume for vazio
+ * @Throws Error se houver falha ao criar candidato no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} candidato criado
+ */
 export async function candidateCreate({ params: { projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -49,7 +71,7 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -66,13 +88,13 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
         salaryCurrent,
         salaryExpected
       }
-      if(!isEmpty(jobId)) {
+      if (!isEmpty(jobId)) {
         item.jobId = jobId
       }
 
       const candidate = await Candidate.create(item)
 
-      if(candidate) {
+      if (candidate) {
         const kanban = await Kanban.create({
           organizationId: auth.user.organizationId,
           projectId,
@@ -90,14 +112,14 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
           candidateId: candidate._id,
           kanbanId: kanban._id,
           action: params.activity.types.create,
-          message: `${ auth.user.name } added a new candidate ${ name } (${ email }).`
+          message: `${auth.user.name} added a new candidate ${name} (${email}).`
         })
       }
 
       return {
         data: candidate
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -105,9 +127,33 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
   throw new Error(params.user.message.error.auth)
 }
 
-// Update
+/**
+ * Atualiza um candidato
+ * 
+ * @param {String} params.id id do candidato
+ * @param {String} params.projectId relacionado ao candidato
+ * @param {String} params.jobId relacionado ao candidato
+ * @param {String} params.name nome do candidato
+ * @param {String} params.email email do candidato
+ * @param {String} params.mobile telefone do candidato
+ * @param {String} params.experience tempo em anos de experiência do candidato
+ * @param {String} params.resume currículo do candidato
+ * @param {String} params.salaryCurrent salário atual do candidato
+ * @param {String} params.salaryExpected intenção salarial do candidato 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id do candidato for vazio
+ * @Throws Error se projectId for vazio
+ * @Throws Error se name for vazio
+ * @Throws Error se email for vazio
+ * @Throws Error se mobile for vazio
+ * @Throws Error se experience for vazio
+ * @Throws Error se resume for vazio
+ * @Throws Error se houver falha ao atualizar candidato no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} candidato criado
+ */
 export async function candidateUpdate({ params: { id, projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, auth }) {
-  if(authCheck(auth) && !isEmpty(id)) {
+  if (authCheck(auth) && !isEmpty(id)) {
     // Validation rules
     const rules = [
       {
@@ -150,7 +196,7 @@ export async function candidateUpdate({ params: { id, projectId, jobId = '', nam
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -165,13 +211,13 @@ export async function candidateUpdate({ params: { id, projectId, jobId = '', nam
         salaryCurrent,
         salaryExpected
       }
-      if(!isEmpty(jobId)) {
+      if (!isEmpty(jobId)) {
         item.jobId = jobId
       }
 
       const candidate = await Candidate.updateOne({ _id: id }, { $set: item })
 
-      if(candidate) {
+      if (candidate) {
         await Kanban.updateOne(
           {
             organizationId: auth.user.organizationId,
@@ -184,7 +230,7 @@ export async function candidateUpdate({ params: { id, projectId, jobId = '', nam
       return {
         data: candidate
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -192,9 +238,18 @@ export async function candidateUpdate({ params: { id, projectId, jobId = '', nam
   throw new Error(params.user.message.error.auth)
 }
 
-// Delete
+/**
+ * Remove um candidato
+ * 
+ * @param {String} params.id id do candidato
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id do candidato for vazio
+ * @Throws Error se houver falha ao remover candidato no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} id do candidato removido
+ */
 export async function candidateRemove({ params: { id }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -207,7 +262,7 @@ export async function candidateRemove({ params: { id }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -220,7 +275,7 @@ export async function candidateRemove({ params: { id }, auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/interview/mutation.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/interview/mutation.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// Imports
+import React from 'react'
+import moment from 'moment'
+import ical from 'ical-generator'
+
+// App Imports
+import params from '../../setup/config/params'
+import { authCheck } from '../../setup/helpers/utils'
+import validate from '../../setup/helpers/validation'
+import Activity from '../activity/model'
+import Kanban from '../kanban/model'
+import Interview from './model'
+
+// Email
+import { send as sendEmail } from '../email/send'
+import InterviewInviteCandidate from '../candidate/email/InterviewInvite'
+import InterviewInviteInterviewer from '../interviewer/email/InterviewInvite'
+import InterviewReminderCandidate from '../candidate/email/InterviewReminder'
+import InterviewReminderInterviewer from '../interviewer/email/InterviewReminder'
+
+/**
+ * Cria uma nova entrevista
+ * 
+ * @param {String} params.projectId id do projeto
+ * @param {String} params.candidateId id do candidato
+ * @param {String} params.interviewerId id do entrevistador
+ * @param {String} params.dateTime data/hora da entrevista
+ * @param {String} params.mode como ocorrerá entrevista (via vídeo-conferência, ligação...)
+ * @param {String} params.note anotações
+ * @param {Boolean} params.invite convite 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectId for vazio
+ * @Throws Error se candidateId for vazio
+ * @Throws Error se interviewerId for vazio
+ * @Throws Error se dateTime for vazio
+ * @Throws Error se mode for vazio
+ * @Throws Error se houver falha ao criar entrevista no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevista criada
+ */
+export async function interviewCreate({ params: { projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, auth }) {
+  if (authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: projectId },
+        check: 'notEmpty',
+        message: params.common.message.error.invalidData
+      },
+      {
+        data: { value: candidateId },
+        check: 'notEmpty',
+        message: 'Please select a candidate.'
+      },
+      {
+        data: { value: interviewerId },
+        check: 'notEmpty',
+        message: 'Please select an interviewer.'
+      },
+      {
+        data: { value: dateTime },
+        check: 'notEmpty',
+        message: 'Please select valid date and time.'
+      },
+      {
+        data: { value: mode },
+        check: 'notEmpty',
+        message: 'Please select valid mode.'
+      }
+    ]
+
+    // Validate
+    try {
+      validate(rules)
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      // Create interview
+      const interview = await Interview.create({
+        organizationId: auth.user.organizationId,
+        userId: auth.user._id,
+        projectId,
+        candidateId,
+        interviewerId,
+        dateTime,
+        mode,
+        note
+      })
+
+      if (interview) {
+        // Add to kanban
+        const kanban = await Kanban.findOne({
+          organizationId: auth.user.organizationId,
+          projectId: projectId,
+          candidateId: candidateId
+        })
+        if (kanban) {
+          // Update kanban
+          let interviews = kanban.interviews
+          interviews.push(interview._id)
+          await Kanban.updateOne(
+            { _id: kanban._id },
+            {
+              status: params.kanban.status.progress,
+              interviews,
+            }
+          )
+        } else {
+          // Create new kanban
+          await Kanban.create({
+            organizationId: auth.user.organizationId,
+            projectId: projectId,
+            candidateId: candidateId,
+            interviews: [interview._id],
+            userId: auth.user._id,
+            status: params.kanban.status.shortlisted,
+            highlight: false
+          })
+        }
+
+        // Send emails
+        sentEmails(invite, interview._id, auth, 'invite')
+      }
+
+      return {
+        data: interview
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
+    }
+  }
+
+  throw new Error(params.user.message.error.auth)
+}
+
+/**
+ * Atualiza entrevista
+ * 
+ * @param {String} params.id id da entrevista
+ * @param {String} params.projectId id do projeto
+ * @param {String} params.candidateId id do candidato
+ * @param {String} params.interviewerId id do entrevistador
+ * @param {String} params.dateTime data/hora da entrevista
+ * @param {String} params.mode como ocorrerá entrevista (via vídeo-conferência, ligação...)
+ * @param {String} params.note anotações
+ * @param {Boolean} params.invite convite 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se projectId for vazio
+ * @Throws Error se candidateId for vazio
+ * @Throws Error se interviewerId for vazio
+ * @Throws Error se dateTime for vazio
+ * @Throws Error se mode for vazio
+ * @Throws Error se houver falha ao atualizar entrevista no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevista criada
+ */
+export async function interviewUpdate({ params: { id, projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, auth }) {
+  if (authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: id },
+        check: 'notEmpty',
+        message: params.common.message.error.invalidData
+      },
+      {
+        data: { value: projectId },
+        check: 'notEmpty',
+        message: params.common.message.error.invalidData
+      },
+      {
+        data: { value: candidateId },
+        check: 'notEmpty',
+        message: 'Please select a candidate.'
+      },
+      {
+        data: { value: interviewerId },
+        check: 'notEmpty',
+        message: 'Please select an interviewer.'
+      },
+      {
+        data: { value: dateTime },
+        check: 'notEmpty',
+        message: 'Please select valid date and time.'
+      },
+      {
+        data: { value: mode },
+        check: 'notEmpty',
+        message: 'Please select valid mode.'
+      }
+    ]
+
+    // Validate
+    try {
+      validate(rules)
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      const interview = await Interview.updateOne(
+        { _id: id },
+        {
+          $set: {
+            projectId,
+            candidateId,
+            interviewerId,
+            dateTime,
+            mode,
+            note
+          }
+        }
+      )
+
+      if (interview) {
+        // Add to kanban
+        const kanban = await Kanban.findOne({
+          organizationId: auth.user.organizationId,
+          projectId: projectId,
+          candidateId: candidateId
+        })
+
+        if (kanban) {
+          let interviews = kanban.interviews
+          if (interviews.indexOf(id) === -1) {
+            interviews.push(id)
+            await Kanban.updateOne(
+              { _id: kanban._id },
+              {
+                status: params.kanban.status.progress,
+                interviews
+              }
+            )
+          }
+        }
+      }
+
+      // Send emails
+      await sentEmails(invite, id, auth, 'update')
+
+      return {
+        data: interview
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
+    }
+  }
+
+  throw new Error(params.user.message.error.auth)
+}
+
+/**
+ * Remove uma entrevista
+ * 
+ * @param {String} params.id id da entrevista
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao remover entrevista no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} id da entrevista removida
+ */
+export async function interviewRemove({ params: { id }, auth }) {
+  if (authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: id },
+        check: 'notEmpty',
+        message: params.common.message.error.invalidData
+      }
+    ]
+
+    // Validate
+    try {
+      validate(rules)
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      const data = await Interview.remove({
+        _id: _id,
+        userId: auth.user._id
+      })
+
+      return {
+        data
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
+    }
+  }
+
+  throw new Error(params.user.message.error.auth)
+}
+
+/**
+ * Envia notificação de uma entrevista
+ * 
+ * @param {String} params.id id da entrevista
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao busca entrevista no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevista
+ */
+export async function remind({ params: { id }, auth }) {
+  if (authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: id },
+        check: 'notEmpty',
+        message: params.common.message.error.invalidData
+      }
+    ]
+
+    // Validate
+    try {
+      validate(rules)
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      const interview = await Interview.findOne({
+        _id: id,
+        organizationId: auth.user.organizationId
+      })
+        .populate('organizationId')
+        .populate('candidateId')
+        .populate('interviewerId')
+        .populate('userId')
+
+      // Send emails
+
+      await sentEmails(true, id, auth, 'remind')
+
+      return {
+        data: interview
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
+    }
+  }
+
+  throw new Error(params.user.message.error.auth)
+}
+
+/**
+ * Envia emails para candidato e entrevistador
+ * 
+ * @param {Boolean} invite convite
+ * @param {String} interviewId id da entrevista
+ * @param {Object} auth para autorizar requisição
+ * @param {String} type tipo de email
+ */
+async function sentEmails(invite, interviewId, auth, type = 'invite') {
+  const interviewDetails = await Interview.findOne({
+    _id: interviewId,
+    organizationId: auth.user.organizationId
+  })
+    .populate('organizationId')
+    .populate('candidateId')
+    .populate('interviewerId')
+    .populate('userId')
+
+  const date = moment(interviewDetails.dateTime).format(`${params.date.format.nice.date}, ${params.date.format.nice.time}`)
+
+  if (invite) {
+    const mode = params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name
+    const subjectAction = {
+      invite: 'Invitation',
+      update: 'Updated',
+      remind: 'Reminder',
+    }[type]
+    const subject = `${interviewDetails.organizationId.name} Interview ${subjectAction} - ${date}`
+
+    // Calendar
+    const calendar = ical({
+      method: 'publish',
+      domain: interviewDetails.organizationId.domain,
+      name: subject
+    })
+    const event = calendar.createEvent({
+      domain: interviewDetails.organizationId.domain,
+      start: moment(interviewDetails.dateTime).toDate(),
+      end: moment(interviewDetails.dateTime).add(1, 'hour').toDate(),
+      summary: subject,
+      location: mode,
+      description: interviewDetails.note
+    })
+    event.organizer({
+      name: auth.user.name,
+      email: auth.user.email,
+    })
+
+    const icalEvent = { content: calendar.toString() }
+
+    // Send emails
+
+    // 1. To Candidate
+
+    const candidateProps = {
+      candidateName: interviewDetails.candidateId.name,
+      date,
+      organizationName: interviewDetails.organizationId.name,
+      mode,
+      note: interviewDetails.note,
+      userName: auth.user.name
+    }
+
+    const TemplateCandidate = {
+      invite: &lt;InterviewInviteCandidate {...candidateProps} />,
+      update: &lt;InterviewInviteCandidate {...candidateProps} />,
+      remind: &lt;InterviewReminderCandidate {...candidateProps} />,
+    }[type]
+
+    await sendEmail({
+      to: { name: interviewDetails.candidateId.name, email: interviewDetails.candidateId.email },
+      from: auth.user,
+      cc: auth.user,
+      subject,
+      template: TemplateCandidate,
+      organizationId: auth.user.organizationId,
+      userId: auth.user._id,
+      icalEvent
+    })
+
+    // 2. To Interviewer
+
+    const interviewerProps = {
+      interviewId,
+      interviewerName: interviewDetails.interviewerId.name,
+      candidateId: interviewDetails.candidateId._id,
+      candidateName: interviewDetails.candidateId.name,
+      date,
+      organizationName: interviewDetails.organizationId.name,
+      mode,
+      note: interviewDetails.note,
+      userName: auth.user.name
+    }
+
+    const TemplateInterviewer = {
+      invite: &lt;InterviewInviteInterviewer {...interviewerProps} />,
+      update: &lt;InterviewInviteInterviewer {...interviewerProps} />,
+      remind: &lt;InterviewReminderInterviewer  {...interviewerProps} />,
+    }[type]
+
+    await sendEmail({
+      to: { name: interviewDetails.interviewerId.name, email: interviewDetails.interviewerId.email },
+      from: auth.user,
+      cc: auth.user,
+      subject,
+      template: TemplateInterviewer,
+      organizationId: auth.user.organizationId,
+      userId: auth.user._id,
+      icalEvent
+    })
+  }
+
+  // Log activity
+  const activityAction = {
+    invite: 'scheduled an',
+    update: 'updated the ',
+    remind: 'sent a reminder for the'
+  }[type]
+
+  await Activity.create({
+    organizationId: auth.user.organizationId,
+    userId: auth.user._id,
+    projectId: interviewDetails.projectId,
+    interviewId: interviewDetails._id,
+    candidateId: interviewDetails.candidateId._id,
+    interviewerId: interviewDetails.interviewerId._id,
+    action: params.activity.types.create,
+    message: `${auth.user.name} ${activityAction} interview for ${interviewDetails.candidateId.name} to be conducted by ${interviewDetails.interviewerId.name} on ${date}.`
+  })
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#activitiesByCandidate">activitiesByCandidate</a></li><li><a href="global.html#activitiesByOrganization">activitiesByOrganization</a></li><li><a href="global.html#activitiesByProject">activitiesByProject</a></li><li><a href="global.html#authCheck">authCheck</a></li><li><a href="global.html#authCheckAdmin">authCheckAdmin</a></li><li><a href="global.html#candidate">candidate</a></li><li><a href="global.html#candidateCreate">candidateCreate</a></li><li><a href="global.html#candidateRemove">candidateRemove</a></li><li><a href="global.html#candidatesByOrganization">candidatesByOrganization</a></li><li><a href="global.html#candidatesByProject">candidatesByProject</a></li><li><a href="global.html#candidateUpdate">candidateUpdate</a></li><li><a href="global.html#feedback">feedback</a></li><li><a href="global.html#feedbackCreateOrUpdate">feedbackCreateOrUpdate</a></li><li><a href="global.html#interview">interview</a></li><li><a href="global.html#interviewCreate">interviewCreate</a></li><li><a href="global.html#interviewer">interviewer</a></li><li><a href="global.html#interviewerCreate">interviewerCreate</a></li><li><a href="global.html#interviewerRemove">interviewerRemove</a></li><li><a href="global.html#interviewersByOrganization">interviewersByOrganization</a></li><li><a href="global.html#interviewersByProject">interviewersByProject</a></li><li><a href="global.html#interviewerUpdate">interviewerUpdate</a></li><li><a href="global.html#interviewRemove">interviewRemove</a></li><li><a href="global.html#interviewsByOrganization">interviewsByOrganization</a></li><li><a href="global.html#interviewsByProject">interviewsByProject</a></li><li><a href="global.html#interviewUpdate">interviewUpdate</a></li><li><a href="global.html#invite">invite</a></li><li><a href="global.html#invitesByOrganization">invitesByOrganization</a></li><li><a href="global.html#inviteToOrganization">inviteToOrganization</a></li><li><a href="global.html#job">job</a></li><li><a href="global.html#jobCreate">jobCreate</a></li><li><a href="global.html#jobRemove">jobRemove</a></li><li><a href="global.html#jobsByProject">jobsByProject</a></li><li><a href="global.html#jobUpdate">jobUpdate</a></li><li><a href="global.html#kanban">kanban</a></li><li><a href="global.html#kanbanCreate">kanbanCreate</a></li><li><a href="global.html#kanbanRemove">kanbanRemove</a></li><li><a href="global.html#kanbansByProject">kanbansByProject</a></li><li><a href="global.html#kanbanUpdate">kanbanUpdate</a></li><li><a href="global.html#kanbanUpdateStatus">kanbanUpdateStatus</a></li><li><a href="global.html#organization">organization</a></li><li><a href="global.html#organizationByUser">organizationByUser</a></li><li><a href="global.html#organizationCreate">organizationCreate</a></li><li><a href="global.html#organizationRemove">organizationRemove</a></li><li><a href="global.html#organizationsByUser">organizationsByUser</a></li><li><a href="global.html#organizationUpdate">organizationUpdate</a></li><li><a href="global.html#project">project</a></li><li><a href="global.html#projectCreate">projectCreate</a></li><li><a href="global.html#projectRemove">projectRemove</a></li><li><a href="global.html#projectsByOrganization">projectsByOrganization</a></li><li><a href="global.html#projectUpdate">projectUpdate</a></li><li><a href="global.html#randomNumber">randomNumber</a></li><li><a href="global.html#remind">remind</a></li><li><a href="global.html#send">send</a></li><li><a href="global.html#sentEmails">sentEmails</a></li><li><a href="global.html#transport">transport</a></li><li><a href="global.html#user">user</a></li><li><a href="global.html#userAcceptInvite">userAcceptInvite</a></li><li><a href="global.html#userAuthResponse">userAuthResponse</a></li><li><a href="global.html#userLogin">userLogin</a></li><li><a href="global.html#userResetPasswordSendCode">userResetPasswordSendCode</a></li><li><a href="global.html#userResetPasswordUpdate">userResetPasswordUpdate</a></li><li><a href="global.html#userResetPasswordVerifyCode">userResetPasswordVerifyCode</a></li><li><a href="global.html#usersByOrganization">usersByOrganization</a></li><li><a href="global.html#userStartNow">userStartNow</a></li><li><a href="global.html#userUpdate">userUpdate</a></li><li><a href="global.html#userVerifyCode">userVerifyCode</a></li><li><a href="global.html#userVerifySendCode">userVerifySendCode</a></li><li><a href="global.html#userVerifyUpdateAccount">userVerifyUpdateAccount</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

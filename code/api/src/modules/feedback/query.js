@@ -3,7 +3,14 @@ import params from '../../setup/config/params'
 import validate from '../../setup/helpers/validation'
 import Feedback from './model'
 
-// Get by ID
+/**
+ * Busca feedback por id
+ * 
+ * @param {String} params.id id do feedback
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar feedback no banco de dados
+ * @returns {Object} feedback
+ */
 export async function feedback({ params: { id } }) {
   // Validation rules
   const rules = [
@@ -17,7 +24,7 @@ export async function feedback({ params: { id } }) {
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
@@ -27,7 +34,7 @@ export async function feedback({ params: { id } }) {
     return {
       data
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }

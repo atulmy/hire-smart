@@ -4,9 +4,18 @@ import validate from '../../setup/helpers/validation'
 import { authCheck } from '../../setup/helpers/utils'
 import Project from './model'
 
-// Get project by ID
+/**
+ * Busca projeto por id
+ * 
+ * @param {String} params.id id da organização
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar projeto no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} projeto
+ */
 export async function project({ params: { id }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -19,7 +28,7 @@ export async function project({ params: { id }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -29,7 +38,7 @@ export async function project({ params: { id }, auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -37,9 +46,18 @@ export async function project({ params: { id }, auth }) {
   throw new Error(params.user.message.error.auth)
 }
 
-// Get by organization
+/**
+ * Busca projeto por organização
+ * 
+ * @param {Array} fields campos que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar projeto no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} projeto
+ */
 export async function projectsByOrganization({ fields, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     try {
       const data = await Project
         .find({ organizationId: auth.user.organizationId })
@@ -48,7 +66,7 @@ export async function projectsByOrganization({ fields, auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

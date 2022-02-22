@@ -4,8 +4,17 @@ import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import Candidate from './model'
 
-// Get candidate by ID
-export async function candidate({ params: { id }, fields = { candidate: [], project: [], job: [] }}) {
+/**
+ * Busca candidato por id
+ * 
+ * @param {String} params.id id do candidato
+ * @param {Array} fields.candidate campos do objeto candidato que devem ser obtidos
+ * @param {Array} fields.project campos do objeto projeto que devem ser obtidos
+ * @param {Array} fields.job campos do objeto trabalho que devem ser obtidos
+ * @Throws Error se houver falha ao buscar o candidato no banco de dados 
+ * @returns {Object} candidato
+ */
+export async function candidate({ params: { id }, fields = { candidate: [], project: [], job: [] } }) {
   // Validation rules
   const rules = [
     {
@@ -18,7 +27,7 @@ export async function candidate({ params: { id }, fields = { candidate: [], proj
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
@@ -31,14 +40,23 @@ export async function candidate({ params: { id }, fields = { candidate: [], proj
     return {
       data
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }
 
-// Get by project
+/**
+ * Busca candidato por projeto
+ * 
+ * @param {String} params.projectId id do projeto
+ * @param {Array} fields.candidate campos do objeto candidato que devem ser obtidos
+ * @param {Array} fields.job campos do objeto trabalho que devem ser obtidos
+ * @Throws Error se houver falha ao buscar candidato no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} candidato
+ */
 export async function candidatesByProject({ params: { projectId }, fields = { candidate: [], job: [] }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -51,7 +69,7 @@ export async function candidatesByProject({ params: { projectId }, fields = { ca
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -68,7 +86,7 @@ export async function candidatesByProject({ params: { projectId }, fields = { ca
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -76,9 +94,18 @@ export async function candidatesByProject({ params: { projectId }, fields = { ca
   throw new Error(params.user.message.error.auth)
 }
 
-// Get by organization
+/**
+ * Busca candidato por organização
+ * 
+ * @param {Array} fields.candidate campos do objeto candidato que devem ser obtidos
+ * @param {Array} fields.project campos do objeto projeto que devem ser obtidos
+ * @param {Array} fields.job campos do objeto trabalho que devem ser obtidos
+ * @Throws Error se houver falha ao buscar candidato no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} candidato
+ */
 export async function candidatesByOrganization({ fields = { candidate: [], project: [], job: [] }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     try {
       const data = await Candidate.find({
         organizationId: auth.user.organizationId
@@ -90,7 +117,7 @@ export async function candidatesByOrganization({ fields = { candidate: [], proje
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

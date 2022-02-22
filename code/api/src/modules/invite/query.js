@@ -4,7 +4,14 @@ import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import Invite from './model'
 
-// Get by id
+/**
+ * Busca convite por id
+ * 
+ * @param {String} params.id id do convite
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar convite no banco de dados
+ * @returns {Object} convite
+ */
 export async function invite({ params: { id } }) {
   // Validation rules
   const rules = [
@@ -18,7 +25,7 @@ export async function invite({ params: { id } }) {
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
@@ -29,14 +36,21 @@ export async function invite({ params: { id } }) {
     return {
       data
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }
 
-// Get by organization
+/**
+ * Busca convite por organização
+ * 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se houver falha ao buscar convite no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} convite
+ */
 export async function invitesByOrganization({ auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     try {
       const data = await Invite.find({
         organizationId: auth.user.organizationId,
@@ -46,7 +60,7 @@ export async function invitesByOrganization({ auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

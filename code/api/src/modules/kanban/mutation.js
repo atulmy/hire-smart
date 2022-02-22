@@ -8,9 +8,24 @@ import validate from '../../setup/helpers/validation'
 import Activity from '../activity/model'
 import Kanban from './model'
 
-// Create
+/**
+ * Cria um novo quadro kaban
+ * 
+ * @param {String} params.projectId id do projeto
+ * @param {String} params.candidateId id do candidato
+ * @param {Array} params.interviews entrevistas
+ * @param {String} params.status status
+ * @param {Boolean} params.highlight em evidência
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectid for vazio
+ * @Throws Error se candidateId for vazio
+ * @Throws Error se status for vazio
+ * @Throws Error se houver falha ao criar quadro kaban no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} quadro kaban
+ */
 export async function kanbanCreate({ params: { projectId, candidateId, interviews = [], status, highlight = false }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -33,7 +48,7 @@ export async function kanbanCreate({ params: { projectId, candidateId, interview
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -51,7 +66,7 @@ export async function kanbanCreate({ params: { projectId, candidateId, interview
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -59,9 +74,21 @@ export async function kanbanCreate({ params: { projectId, candidateId, interview
   throw new Error(params.user.message.error.auth)
 }
 
-// Update
+/**
+ * Atualiza um quadro kaban
+ * 
+ * @param {String} params.id id do quadro kaban
+ * @param {Array} params.interviews entrevistas
+ * @param {String} params.status status
+ * @param {Boolean} params.highlight em evidência
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao atualizar quadro kaban no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} quadro kaban
+ */
 export async function kanbanUpdate({ params: { id, interviews, status, highlight }, auth }) {
-  if(authCheck(auth) && !isEmpty(id)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -74,7 +101,7 @@ export async function kanbanUpdate({ params: { id, interviews, status, highlight
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -94,7 +121,7 @@ export async function kanbanUpdate({ params: { id, interviews, status, highlight
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -102,9 +129,19 @@ export async function kanbanUpdate({ params: { id, interviews, status, highlight
   throw new Error(params.user.message.error.auth)
 }
 
-// Update status
+/**
+ * Atualiza o status do quadro kaban
+ * 
+ * @param {String} params.id id do quadro kaban
+ * @param {String} params.status status
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao atualizar o status quadro kaban no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} quadro kaban
+ */
 export async function kanbanUpdateStatus({ params: { id, status }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -122,7 +159,7 @@ export async function kanbanUpdateStatus({ params: { id, status }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -137,7 +174,7 @@ export async function kanbanUpdateStatus({ params: { id, status }, auth }) {
       )
 
       // Log activity
-      if(updated) {
+      if (updated) {
         const kanban = await Kanban.findOne({ _id: id }).populate('candidateId')
 
         await Activity.create({
@@ -146,14 +183,14 @@ export async function kanbanUpdateStatus({ params: { id, status }, auth }) {
           projectId: kanban.projectId,
           candidateId: kanban.candidateId._id,
           action: params.activity.types.update,
-          message: `${ auth.user.name } updated ${ kanban.candidateId.name }'s status to ${ status.toUpperCase() }.`
+          message: `${auth.user.name} updated ${kanban.candidateId.name}'s status to ${status.toUpperCase()}.`
         })
       }
 
       return {
         data: updated
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -161,9 +198,18 @@ export async function kanbanUpdateStatus({ params: { id, status }, auth }) {
   throw new Error(params.user.message.error.auth)
 }
 
-// Delete
+/**
+ * Remove um quadro kaban
+ * 
+ * @param {String} params.id id do quadro kaban
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao remover quadro kaban no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} quadro kaban
+ */
 export async function kanbanRemove({ params: { id }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -176,7 +222,7 @@ export async function kanbanRemove({ params: { id }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -189,7 +235,7 @@ export async function kanbanRemove({ params: { id }, auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

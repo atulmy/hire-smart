@@ -9,7 +9,16 @@ import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import User from './model'
 
-// Login
+/**
+ * Login
+ * 
+ * @param {String} params.email email do usuário 
+ * @param {String} params.password senha do usuário 
+ * @Throws Error se email for inválido
+ * @Throws Error se senha for inválida
+ * @Throws Error se houver falha ao buscar o usuário no banco de dados
+ * @returns token e usuário
+ */
 export async function userLogin({ params: { email, password } }) {
   // Validation rules
   const rules = [
@@ -21,14 +30,14 @@ export async function userLogin({ params: { email, password } }) {
     {
       data: { value: password, length: params.user.rules.passwordMinLength },
       check: 'lengthMin',
-      message: `Please enter valid password. Minimum ${ params.user.rules.passwordMinLength } is required.`
+      message: `Please enter valid password. Minimum ${params.user.rules.passwordMinLength} is required.`
     }
   ]
 
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
@@ -44,7 +53,7 @@ export async function userLogin({ params: { email, password } }) {
     if (!user) {
       // User does not exists
       response.success = false
-      response.message = `We do not have any user registered with ${ email } email address. Please signup.`
+      response.message = `We do not have any user registered with ${email} email address. Please signup.`
     } else {
       // User exists
       const passwordMatch = await bcrypt.compare(password, user.password)
@@ -64,8 +73,18 @@ export async function userLogin({ params: { email, password } }) {
   }
 }
 
-// Get by ID
-export async function user({ params: { id } }) {
+/**
+ * Buscar usuário por id
+ * 
+ * @param {String} params.id id do usuário 
+ * @param {String} params.password senha do usuário 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar o usuário no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns usuário
+ */
+export async function user({ params: { id }, auth }) {
   // Validation rules
   const rules = [
     {
@@ -78,18 +97,18 @@ export async function user({ params: { id } }) {
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     try {
       const data = await User.findOne({ _id: id })
 
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -97,9 +116,17 @@ export async function user({ params: { id } }) {
   throw new Error(params.user.message.error.auth)
 }
 
-// Get by organization
+/**
+ * Buscar usuário por organização
+ * 
+ * @param {Array} fields campos que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se houver falha ao buscar o usuário no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns usuário
+ */
 export async function usersByOrganization({ fields, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     try {
       const data = await User
         .find({ organizationId: auth.user.organizationId })
@@ -108,7 +135,7 @@ export async function usersByOrganization({ fields, auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -116,7 +143,17 @@ export async function usersByOrganization({ fields, auth }) {
   throw new Error(params.user.message.error.auth)
 }
 
-// Auth Response (token and user info)
+/**
+ * Constrói objeto de autenticação de usuário
+ * 
+ * @param {String} _id id do usuário
+ * @param {String} organizationId id da organização
+ * @param {String} name nome do usuário
+ * @param {String} email email do usuário
+ * @param {String} role perfil do usuário
+ * @param {Boolean} demo usuário de demonstração
+ * @returns token e usuário
+ */
 export function userAuthResponse({ _id, organizationId, name, email, role, demo }) {
   return {
     token: jwt.sign({ id: _id }, SECURITY_SECRET),

@@ -4,9 +4,18 @@ import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import Organization from './model'
 
-// Get by ID
+/**
+ * Busca organização por id
+ * 
+ * @param {String} params.id id da organização
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar organização no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} organização
+ */
 export async function organization({ params: { id }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -19,7 +28,7 @@ export async function organization({ params: { id }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -33,9 +42,17 @@ export async function organization({ params: { id }, auth }) {
   throw new Error(params.user.message.error.auth)
 }
 
-// Get by user
+/**
+ * Busca organização por usuário
+ * 
+ * @param {Array} fields campos que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se houver falha ao buscar organização no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} organização
+ */
 export async function organizationByUser({ fields, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     try {
       const organization = await Organization
         .findOne({ _id: auth.user.organizationId })
@@ -44,7 +61,7 @@ export async function organizationByUser({ fields, auth }) {
       return {
         data: organization
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -52,9 +69,17 @@ export async function organizationByUser({ fields, auth }) {
   throw new Error(params.user.message.error.auth)
 }
 
-// Get all
+/**
+ * Busca todas organizações
+ * 
+ * @param {Array} fields campos que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se houver falha ao buscar organização no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} organização
+ */
 export async function organizationsByUser({ fields, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     try {
       const organizations = await Organization
         .find({ userId: auth.user._id })
@@ -63,7 +88,7 @@ export async function organizationsByUser({ fields, auth }) {
       return {
         data: organizations
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

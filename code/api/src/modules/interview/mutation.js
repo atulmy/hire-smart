@@ -18,9 +18,28 @@ import InterviewInviteInterviewer from '../interviewer/email/InterviewInvite'
 import InterviewReminderCandidate from '../candidate/email/InterviewReminder'
 import InterviewReminderInterviewer from '../interviewer/email/InterviewReminder'
 
-// Create
+/**
+ * Cria uma nova entrevista
+ * 
+ * @param {String} params.projectId id do projeto
+ * @param {String} params.candidateId id do candidato
+ * @param {String} params.interviewerId id do entrevistador
+ * @param {String} params.dateTime data/hora da entrevista
+ * @param {String} params.mode como ocorrerá entrevista (via vídeo-conferência, ligação...)
+ * @param {String} params.note anotações
+ * @param {Boolean} params.invite convite 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectId for vazio
+ * @Throws Error se candidateId for vazio
+ * @Throws Error se interviewerId for vazio
+ * @Throws Error se dateTime for vazio
+ * @Throws Error se mode for vazio
+ * @Throws Error se houver falha ao criar entrevista no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevista criada
+ */
 export async function interviewCreate({ params: { projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -53,7 +72,7 @@ export async function interviewCreate({ params: { projectId, candidateId, interv
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -70,7 +89,7 @@ export async function interviewCreate({ params: { projectId, candidateId, interv
         note
       })
 
-      if(interview) {
+      if (interview) {
         // Add to kanban
         const kanban = await Kanban.findOne({
           organizationId: auth.user.organizationId,
@@ -108,7 +127,7 @@ export async function interviewCreate({ params: { projectId, candidateId, interv
       return {
         data: interview
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -116,9 +135,30 @@ export async function interviewCreate({ params: { projectId, candidateId, interv
   throw new Error(params.user.message.error.auth)
 }
 
-// Update
+/**
+ * Atualiza entrevista
+ * 
+ * @param {String} params.id id da entrevista
+ * @param {String} params.projectId id do projeto
+ * @param {String} params.candidateId id do candidato
+ * @param {String} params.interviewerId id do entrevistador
+ * @param {String} params.dateTime data/hora da entrevista
+ * @param {String} params.mode como ocorrerá entrevista (via vídeo-conferência, ligação...)
+ * @param {String} params.note anotações
+ * @param {Boolean} params.invite convite 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se projectId for vazio
+ * @Throws Error se candidateId for vazio
+ * @Throws Error se interviewerId for vazio
+ * @Throws Error se dateTime for vazio
+ * @Throws Error se mode for vazio
+ * @Throws Error se houver falha ao atualizar entrevista no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevista criada
+ */
 export async function interviewUpdate({ params: { id, projectId, candidateId, interviewerId, dateTime, mode, note = '', invite = true }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -156,7 +196,7 @@ export async function interviewUpdate({ params: { id, projectId, candidateId, in
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -175,7 +215,7 @@ export async function interviewUpdate({ params: { id, projectId, candidateId, in
         }
       )
 
-      if(interview) {
+      if (interview) {
         // Add to kanban
         const kanban = await Kanban.findOne({
           organizationId: auth.user.organizationId,
@@ -185,7 +225,7 @@ export async function interviewUpdate({ params: { id, projectId, candidateId, in
 
         if (kanban) {
           let interviews = kanban.interviews
-          if(interviews.indexOf(id) === -1) {
+          if (interviews.indexOf(id) === -1) {
             interviews.push(id)
             await Kanban.updateOne(
               { _id: kanban._id },
@@ -204,7 +244,7 @@ export async function interviewUpdate({ params: { id, projectId, candidateId, in
       return {
         data: interview
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -212,9 +252,18 @@ export async function interviewUpdate({ params: { id, projectId, candidateId, in
   throw new Error(params.user.message.error.auth)
 }
 
-// Delete
+/**
+ * Remove uma entrevista
+ * 
+ * @param {String} params.id id da entrevista
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao remover entrevista no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} id da entrevista removida
+ */
 export async function interviewRemove({ params: { id }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -227,7 +276,7 @@ export async function interviewRemove({ params: { id }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -240,17 +289,26 @@ export async function interviewRemove({ params: { id }, auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
 
-  throw new Error('Please login to delete interview.')
+  throw new Error(params.user.message.error.auth)
 }
 
-// Remind
+/**
+ * Envia notificação de uma entrevista
+ * 
+ * @param {String} params.id id da entrevista
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao busca entrevista no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevista
+ */
 export async function remind({ params: { id }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -263,7 +321,7 @@ export async function remind({ params: { id }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -284,7 +342,7 @@ export async function remind({ params: { id }, auth }) {
       return {
         data: interview
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -292,7 +350,14 @@ export async function remind({ params: { id }, auth }) {
   throw new Error(params.user.message.error.auth)
 }
 
-// Email to Candidate and Interviewer
+/**
+ * Envia emails para candidato e entrevistador
+ * 
+ * @param {Boolean} invite convite
+ * @param {String} interviewId id da entrevista
+ * @param {Object} auth para autorizar requisição
+ * @param {String} type tipo de email
+ */
 async function sentEmails(invite, interviewId, auth, type = 'invite') {
   const interviewDetails = await Interview.findOne({
     _id: interviewId,
@@ -303,16 +368,16 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
     .populate('interviewerId')
     .populate('userId')
 
-  const date = moment(interviewDetails.dateTime).format(`${ params.date.format.nice.date }, ${ params.date.format.nice.time }`)
+  const date = moment(interviewDetails.dateTime).format(`${params.date.format.nice.date}, ${params.date.format.nice.time}`)
 
-  if(invite) {
+  if (invite) {
     const mode = params.interview.modes.filter(item => item.key === interviewDetails.mode)[0].name
     const subjectAction = {
       invite: 'Invitation',
       update: 'Updated',
       remind: 'Reminder',
     }[type]
-    const subject = `${ interviewDetails.organizationId.name } Interview ${ subjectAction } - ${ date }`
+    const subject = `${interviewDetails.organizationId.name} Interview ${subjectAction} - ${date}`
 
     // Calendar
     const calendar = ical({
@@ -333,7 +398,7 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
       email: auth.user.email,
     })
 
-    const icalEvent = {content: calendar.toString()}
+    const icalEvent = { content: calendar.toString() }
 
     // Send emails
 
@@ -355,7 +420,7 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
     }[type]
 
     await sendEmail({
-      to: {name: interviewDetails.candidateId.name, email: interviewDetails.candidateId.email},
+      to: { name: interviewDetails.candidateId.name, email: interviewDetails.candidateId.email },
       from: auth.user,
       cc: auth.user,
       subject,
@@ -386,7 +451,7 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
     }[type]
 
     await sendEmail({
-      to: {name: interviewDetails.interviewerId.name, email: interviewDetails.interviewerId.email},
+      to: { name: interviewDetails.interviewerId.name, email: interviewDetails.interviewerId.email },
       from: auth.user,
       cc: auth.user,
       subject,
@@ -412,6 +477,6 @@ async function sentEmails(invite, interviewId, auth, type = 'invite') {
     candidateId: interviewDetails.candidateId._id,
     interviewerId: interviewDetails.interviewerId._id,
     action: params.activity.types.create,
-    message: `${ auth.user.name } ${ activityAction } interview for ${ interviewDetails.candidateId.name } to be conducted by ${ interviewDetails.interviewerId.name } on ${ date }.`
+    message: `${auth.user.name} ${activityAction} interview for ${interviewDetails.candidateId.name} to be conducted by ${interviewDetails.interviewerId.name} on ${date}.`
   })
 }

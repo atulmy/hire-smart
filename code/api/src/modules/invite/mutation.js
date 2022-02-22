@@ -13,9 +13,20 @@ import Invite from '../invite/model'
 import { send as sendEmail } from '../email/send'
 import InviteTemplate from './email/Invite'
 
-// Create invite to organization
+/**
+ * Cria convite para organização
+ * 
+ * @param {String} params.name nome do colaborador convidado
+ * @param {String} params.email email do colaborador convidado
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se name for vazio
+ * @Throws Error se email for vazio
+ * @Throws Error se houver falha ao criar convite no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} convite
+ */
 export async function inviteToOrganization({ params: { name, email }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -33,7 +44,7 @@ export async function inviteToOrganization({ params: { name, email }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -72,13 +83,13 @@ export async function inviteToOrganization({ params: { name, email }, auth }) {
         })
 
         // Log activity
-        if(invite) {
+        if (invite) {
           await Activity.create({
             organizationId: auth.user.organizationId,
             userId: auth.user._id,
             inviteId: invite._id,
             action: params.activity.types.create,
-            message: `${ auth.user.name } invited ${ name } (${ email }) to the organization.`
+            message: `${auth.user.name} invited ${name} (${email}) to the organization.`
           })
         }
 
@@ -87,9 +98,9 @@ export async function inviteToOrganization({ params: { name, email }, auth }) {
         }
       } else {
         // User exists
-        throw new Error(`The email ${ email } is already invited. Please ask the user to accept the invitation.`)
+        throw new Error(`The email ${email} is already invited. Please ask the user to accept the invitation.`)
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

@@ -13,7 +13,18 @@ import Feedback from './model'
 import { send as sendEmail } from '../email/send'
 import FeedbackTemplate from './email/Feedback'
 
-// Create
+/**
+ * Cria ou atualiza feedback
+ * 
+ * @param {String} params.interviewId
+ * @param {String} params.text
+ * @param {String} params.status
+ * @Throws Error se interviewId for vazio
+ * @Throws Error se text for vazio
+ * @Throws Error se status for vazio
+ * @Throws Error se houver falha ao criar ou atualizar feedback no banco de dados
+ * @returns {Object} feedback
+ */
 export async function feedbackCreateOrUpdate({ params: { interviewId, text, status } }) {
   // Validation rules
   const rules = [

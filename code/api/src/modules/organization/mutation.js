@@ -4,9 +4,20 @@ import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import Organization from './model'
 
-// Create
+/**
+ * Cria uma nova organização
+ * 
+ * @param {String} params.name nome da organização
+ * @param {String} params.description descrição da organização
+ * @param {String} params.domain domínimo da organização
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se name for vazio
+ * @Throws Error se houver falha ao criar organização no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} organização
+ */
 export async function organizationCreate({ params: { name, description = '', domain = '' }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -19,7 +30,7 @@ export async function organizationCreate({ params: { name, description = '', dom
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -34,7 +45,7 @@ export async function organizationCreate({ params: { name, description = '', dom
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -42,9 +53,20 @@ export async function organizationCreate({ params: { name, description = '', dom
   throw new Error(params.user.message.error.auth)
 }
 
-// Update product
+/**
+ * Atualiza uma organização
+ * 
+ * @param {String} params.name nome da organização
+ * @param {String} params.description descrição da organização
+ * @param {String} params.domain domínimo da organização
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se name for vazio
+ * @Throws Error se houver falha ao atualizar organização no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} organização
+ */
 export async function organizationUpdate({ params: { id, name, description = '', domain = '' }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -57,7 +79,7 @@ export async function organizationUpdate({ params: { id, name, description = '',
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -72,7 +94,7 @@ export async function organizationUpdate({ params: { id, name, description = '',
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -80,9 +102,18 @@ export async function organizationUpdate({ params: { id, name, description = '',
   throw new Error(params.user.message.error.auth)
 }
 
-// Delete
+/**
+ * Remove uma organização
+ * 
+ * @param {String} params.id id da organização
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao atualizar organização no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} organização
+ */
 export async function organizationRemove({ params: { id }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -95,7 +126,7 @@ export async function organizationRemove({ params: { id }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -108,7 +139,7 @@ export async function organizationRemove({ params: { id }, auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

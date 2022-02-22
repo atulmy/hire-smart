@@ -4,9 +4,18 @@ import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import Interviewer from './model'
 
-// Get interviewer by ID
-export async function interviewer({ params: { id }}) {
-  if(authCheck(auth)) {
+/**
+ * Busca entrevistador por id
+ * 
+ * @param {String} params.id id do entrevistador
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar entrevistador no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevistador
+ */
+export async function interviewer({ params: { id } , auth}) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -19,7 +28,7 @@ export async function interviewer({ params: { id }}) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -29,7 +38,7 @@ export async function interviewer({ params: { id }}) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -37,9 +46,20 @@ export async function interviewer({ params: { id }}) {
   throw new Error(params.user.message.error.auth)
 }
 
-// Get by project
+/**
+ * Busca entrevistador por projeto
+ * 
+ * @param {String} params.projectId id do projeto
+ * @param {Array} fields.interviewer dados do entrevistador que devem ser populados
+ * @param {Array} fields.project dados do projeto que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectId for vazio
+ * @Throws Error se houver falha ao buscar entrevistador no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevistador
+ */
 export async function interviewersByProject({ params: { projectId }, fields = { interviewer: [], project: [] }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -52,7 +72,7 @@ export async function interviewersByProject({ params: { projectId }, fields = { 
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -67,7 +87,7 @@ export async function interviewersByProject({ params: { projectId }, fields = { 
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -75,9 +95,18 @@ export async function interviewersByProject({ params: { projectId }, fields = { 
   throw new Error(params.user.message.error.auth)
 }
 
-// Get by organization
+/**
+ * Busca entrevistador por organização
+ * 
+ * @param {Array} fields.interviewer dados do entrevistador que devem ser populados
+ * @param {Array} fields.project dados do projeto que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se houver falha ao buscar entrevistador no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevistador
+ */
 export async function interviewersByOrganization({ fields = { interviewer: [], project: [] }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     try {
       const data = await Interviewer.find({
         organizationId: auth.user.organizationId
@@ -88,7 +117,7 @@ export async function interviewersByOrganization({ fields = { interviewer: [], p
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

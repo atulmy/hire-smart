@@ -4,9 +4,19 @@ import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
 import Kanban from './model'
 
-// Get by ID
+/**
+ * Busca quadro kaban por id
+ * 
+ * @param {String} params.id id do quadro kaban
+ * @param {Array} fields campos que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar quadro kaban no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} quadro kaban
+ */
 export async function kanban({ params: { id }, fields, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -19,7 +29,7 @@ export async function kanban({ params: { id }, fields, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -49,7 +59,7 @@ export async function kanban({ params: { id }, fields, auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -57,9 +67,19 @@ export async function kanban({ params: { id }, fields, auth }) {
   throw new Error(params.user.message.error.auth)
 }
 
-// Get by project
+/**
+ * Busca quadro kaban por projeto
+ * 
+ * @param {String} params.projectId id do projeto
+ * @param {Array} fields campos que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectId for vazio
+ * @Throws Error se houver falha ao buscar quadro kaban no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} quadro kaban
+ */
 export async function kanbansByProject({ params: { projectId }, fields, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -72,7 +92,7 @@ export async function kanbansByProject({ params: { projectId }, fields, auth }) 
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -108,7 +128,7 @@ export async function kanbansByProject({ params: { projectId }, fields, auth }) 
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

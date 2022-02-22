@@ -5,9 +5,24 @@ import validate from '../../setup/helpers/validation'
 import Activity from '../activity/model'
 import Interviewer from './model'
 
-// Create
+/**
+ * Cria um novo entrevistador
+ * 
+ * @param {String} params.projectId id do projeto
+ * @param {String} params.name nome do entrevistador
+ * @param {String} params.email email do entrevistador
+ * @param {String} params.mobile telefone do entrevistador
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectId for vazio
+ * @Throws Error se name for vazio
+ * @Throws Error se email for vazio
+ * @Throws Error se mobile for vazio
+ * @Throws Error se houver falha ao criar entrevistador no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevistador
+ */
 export async function interviewerCreate({ params: { projectId, name, email, mobile }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -35,7 +50,7 @@ export async function interviewerCreate({ params: { projectId, name, email, mobi
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -49,7 +64,7 @@ export async function interviewerCreate({ params: { projectId, name, email, mobi
         mobile
       })
 
-      if(interviewer) {
+      if (interviewer) {
         // Log activity
         await Activity.create({
           organizationId: auth.user.organizationId,
@@ -57,14 +72,14 @@ export async function interviewerCreate({ params: { projectId, name, email, mobi
           projectId,
           interviewerId: interviewer._id,
           action: params.activity.types.create,
-          message: `${ auth.user.name } added a new interviewer ${ name } (${ email }).`
+          message: `${auth.user.name} added a new interviewer ${name} (${email}).`
         })
       }
 
       return {
         data: interviewer
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -72,9 +87,26 @@ export async function interviewerCreate({ params: { projectId, name, email, mobi
   throw new Error(params.user.message.error.auth)
 }
 
-// Update
+/**
+ * Atualiza um entrevistador
+ * 
+ * @param {String} params.id id do entrevistador
+ * @param {String} params.projectId id do projeto
+ * @param {String} params.name nome do do entrevistador
+ * @param {String} params.email email do do entrevistador
+ * @param {String} params.mobile telefone do entrevistador
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se projectId for vazio
+ * @Throws Error se name for vazio
+ * @Throws Error se email for vazio
+ * @Throws Error se mobile for vazio
+ * @Throws Error se houver falha ao atualizar entrevistador no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevistador
+ */
 export async function interviewerUpdate({ params: { id, projectId, name, email, mobile }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -107,7 +139,7 @@ export async function interviewerUpdate({ params: { id, projectId, name, email, 
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -127,7 +159,7 @@ export async function interviewerUpdate({ params: { id, projectId, name, email, 
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -135,9 +167,19 @@ export async function interviewerUpdate({ params: { id, projectId, name, email, 
   throw new Error(params.user.message.error.auth)
 }
 
-// Delete
+
+/**
+ * Remove um entrevistador
+ * 
+ * @param {String} params.id id do entrevistador
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao remover entrevistador no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} id do entrevistador
+ */
 export async function interviewerRemove({ params: { id }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -150,7 +192,7 @@ export async function interviewerRemove({ params: { id }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -163,7 +205,7 @@ export async function interviewerRemove({ params: { id }, auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

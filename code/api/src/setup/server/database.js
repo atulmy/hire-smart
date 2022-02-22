@@ -13,7 +13,7 @@ export default async function () {
 
 // Handle connection error
 mongoose.connection.on('error', error => {
-  console.log(`ERROR - Connection failed: ${ error.message }`)
+  console.log(`ERROR - Connection failed: ${error.message}`)
 
   setTimeout(async () => {
     console.log('SETUP - Connecting database.. retrying..')

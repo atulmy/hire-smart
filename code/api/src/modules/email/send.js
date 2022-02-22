@@ -10,9 +10,13 @@ import Email from './model'
 import view from './template/view'
 import Layout from './template/Layout'
 
-// email
+/**
+ * Responsável por criar uma conexão com servidor de email
+ * 
+ * @returns conexão com SMTP
+ */
 function transport() {
-  if(EMAIL_HOST && EMAIL_USER && EMAIL_PASSWORD) {
+  if (EMAIL_HOST && EMAIL_USER && EMAIL_PASSWORD) {
     return nodemailer.createTransport({
       host: EMAIL_HOST,
       secure: false,
@@ -24,38 +28,51 @@ function transport() {
   }
 }
 
+/**
+ * Responsável por enviar emails
+ * 
+ * @param {String} to destinatário
+ * @param {String} from remetente
+ * @param {String} subject assunto
+ * @param {String} template layout do email
+ * @param {String} cc emails em copia
+ * @param {String} organizationId id da organização
+ * @param {String} userId id do usuário
+ * @param {String} icalEvent eventos
+ * @returns {Object} email 
+ */
 export async function send({ to, from, subject, template, cc = null, organizationId = '', userId = '', icalEvent = '' }) {
   const transporter = transport()
 
-  if(transporter) {
+  if (transporter) {
     // Create markup
     const body = view(renderToStaticMarkup(
       <Layout>
-        { template }
+        {template}
       </Layout>
     ))
 
-    subject = `${ params.site.name } - ${ subject }`
+    subject = `${params.site.name} - ${subject}`
 
     const toEmail = NODE_ENV === 'development' ? EMAIL_TEST : to.email
-    const toAddress = to.name && to.name.length > 0 ? `"${ to.name }" <${ toEmail }>` : toEmail
+    const toAddress = to.name && to.name.length > 0 ? `"${to.name}" <${toEmail}>` : toEmail
 
     let email = {
       to: toAddress,
-      from: `"${ from.name }" <${ params.site.emails.hello.email }>`,
-      replyTo: `"${ from.name }" <${ from.email }>`,
+      from: `"${from.name}" <${params.site.emails.hello.email}>`,
+      replyTo: `"${from.name}" <${from.email}>`,
       subject,
       html: body,
     }
-    if(cc) {
-      email.cc = `"${ cc.name }" <${ NODE_ENV === 'development' ? EMAIL_TEST : cc.email }>`
+    if (cc) {
+      email.cc = `"${cc.name}" <${NODE_ENV === 'development' ? EMAIL_TEST : cc.email}>`
     }
-    if(icalEvent) {
+    if (icalEvent) {
       email.icalEvent = icalEvent
     }
 
     // Send email
-    if(EMAIL_ON === '1') {
+    if (EMAIL_ON === '1') {
       transporter.sendMail(email, () => {
         console.info('INFO - Email sent.')
       })
@@ -71,13 +88,13 @@ export async function send({ to, from, subject, template, cc = null, organizatio
       subject,
       body
     }
-    if(to.name && to.name.length > 0) {
+    if (to.name && to.name.length > 0) {
       emailSave.toName = to.name
     }
-    if(organizationId) {
+    if (organizationId) {
       emailSave.organizationId = organizationId
     }
-    if(userId) {
+    if (userId) {
       emailSave.userId = userId
     }
 

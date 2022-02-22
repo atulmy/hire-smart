@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/user/mutation.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/user/mutation.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// Imports
+import bcrypt from 'bcrypt'
+import React from 'react'
+
+// App Imports
+import { SECURITY_SALT_ROUNDS } from '../../setup/config/env'
+import params from '../../setup/config/params'
+import validate from '../../setup/helpers/validation'
+import { authCheck, randomNumber } from '../../setup/helpers/utils'
+import User from './model'
+import { userAuthResponse } from './query'
+
+// Email
+import { send as sendEmail } from '../email/send'
+import Organization from '../organization/model'
+import DemoUser from '../demo-user/model'
+import Activity from '../activity/model'
+import Verification from '../verification/model'
+import Verify from './email/Verify'
+import AccountCreatedOrVerified from './email/AccountCreatedOrVerified'
+import Invite from '../invite/model'
+
+/**
+ * Cria um usuário de demonstração
+ * 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se usuário já estiver logado
+ * @Throws Error se houver falha ao criar usuário de demonstração no banco de dados
+ * @returns {Object} boolean
+ */
+export async function userStartNow({ auth }) {
+  // Check if user is already logged in
+  if (authCheck(auth)) {
+    throw new Error(`You are already logged in. Please go to your dashboard to continue.`)
+  } else {
+    try {
+      // Create new Organization
+      const organization = await Organization.create({
+        name: 'Demo Organization'
+      })
+
+      // Create a new demo user
+      const demoUser = await DemoUser.create({})
+
+      // User does not exists
+      const passwordHashed = await bcrypt.hash(demoUser._id + Math.random(), SECURITY_SALT_ROUNDS)
+
+      const user = await User.create({
+        organizationId: organization._id,
+        name: 'Demo User',
+        email: `demo.user+${demoUser._id}@${params.site.domain}`,
+        password: passwordHashed,
+        admin: true,
+        demo: true
+      })
+
+      // Log activity - Organization Created
+      if (user) {
+        await Activity.create({
+          organizationId: organization._id,
+          userId: user._id,
+          action: params.activity.types.create,
+          message: `Your organization was created.`
+        })
+      }
+
+      return {
+        data: userAuthResponse(user),
+        message: 'You have been logged in successfully.'
+      }
+    } catch (error) {
+      throw new Error(`There was some error. Please try again.`)
+    }
+  }
+}
+
+/**
+ * Envia código por email de ativação
+ * 
+ * @param {String} params.email email de ativação
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se email estiver vazio
+ * @Throws Error se email já estiver registrado
+ * @Throws Error se email não estiver registrado e usuário não estiver logado
+ * @Throws Error se houver falha ao buscar usuário ou email registrado no banco de dados
+ * @returns {Object} usuário
+ */
+export async function userVerifySendCode({ params: { email }, auth }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const user = await User.findOne({ email })
+
+    if (user) {
+      // User already exists
+      throw new Error(`The email ${email} is already registered. Please try to login.`)
+    } else {
+      let code
+
+      if (authCheck(auth) &amp;&amp; auth.user.demo) {
+        const verification = await Verification.findOne({ userId: auth.user._id, email, verified: false, type: params.user.verification.signup })
+
+        if (verification) {
+          code = verification.code
+        }
+      }
+
+      if (!code) {
+        code = randomNumber(1000, 9999)
+
+        await Verification.create({
+          email,
+          code,
+          verified: false,
+          type: params.user.verification.signup
+        })
+      }
+
+      await sendEmail({
+        to: {
+          email: email
+        },
+        from: {
+          name: params.site.emails.help.name,
+          email: params.site.emails.help.email
+        },
+        subject: `Verification Code: ${code}`,
+        template:
+          &lt;Verify
+            code={code}
+          />
+      })
+
+      return {
+        data: true
+      }
+    }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
+  }
+}
+
+/**
+ * Verifica código por email de ativação
+ * 
+ * @param {String} params.email email de ativação
+ * @param {Object} code código de ativação
+ * @Throws Error se email não for válido
+ * @Throws Error se code for vazio
+ * @Throws Error se code for inválido
+ * @Throws Error se houver falha ao buscar verificação no banco de dados
+ * @returns {Object} boolean
+ */
+export async function userVerifyCode({ params: { email, code } }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: code },
+      check: 'notEmpty',
+      message: 'Please enter valid code.'
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.signup })
+
+    if (verification) {
+      // Mark as verified
+      await Verification.updateOne(
+        { _id: verification._id },
+        { verified: true }
+      )
+
+      return {
+        data: true
+      }
+    } else {
+      throw new Error('The code you entered is invalid. Please try again with valid code.')
+    }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
+  }
+}
+
+/**
+ * Verifica conta do usuário
+ * 
+ * @param {String} params.email email do usuário
+ * @param {String} params.name nome do usuário
+ * @param {String} params.password senha do usuário
+ * @param {String} params.organizationName nome da organização
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se email não for válido
+ * @Throws Error se name for vazio
+ * @Throws Error se password for inválido
+ * @Throws Error se organizationName for vazio
+ * @Throws Error se houver falha ao buscar verificação no banco de dados
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @Throws Error se email já estiver registrado
+ * @returns {Object} token e usuário
+ */
+export async function userVerifyUpdateAccount({ params: { email, name, password, organizationName }, auth }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: name },
+      check: 'notEmpty',
+      message: 'Please enter valid name.'
+    },
+    {
+      data: { value: password, length: params.user.rules.passwordMinLength },
+      check: 'lengthMin',
+      message: `Please enter valid password. Minimum ${params.user.rules.passwordMinLength} is required.`
+    },
+    {
+      data: { value: organizationName },
+      check: 'notEmpty',
+      message: 'Please enter valid organization name.'
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.signup })
+
+    const userCheck = await User.findOne({ email: verification.email })
+
+    if (!userCheck) {
+      if (verification &amp;&amp; verification.verified) {
+        let user
+        let message
+
+        const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
+        const organizationDomain = email.split('@')[1]
+
+        if (auth.user &amp;&amp; auth.user._id &amp;&amp; auth.user.demo) {
+          // Update user
+          await User.updateOne(
+            { _id: auth.user._id },
+            {
+              $set: {
+                email: verification.email,
+                password: passwordHashed,
+                name,
+                demo: false
+              }
+            }
+          )
+
+          // Update organization name
+          await Organization.updateOne(
+            { _id: auth.user.organizationId },
+            {
+              $set: {
+                name: organizationName,
+                domain: organizationDomain
+              }
+            }
+          )
+
+          // Log activity - User joined organization
+          await Activity.create({
+            organizationId: auth.user.organizationId,
+            userId: auth.user._id,
+            action: params.activity.types.create,
+            message: `${name} (${email}) joined the organization.`
+          })
+
+          user = await User.findOne({ _id: auth.user._id })
+
+          message = 'Your account has been verified and updated successfully.'
+        } else {
+          // Create new user
+          const organization = await Organization.create({
+            name: organizationName,
+            domain: organizationDomain
+          })
+
+          // Create user
+          user = await User.create({
+            organizationId: organization._id,
+            name,
+            email: verification.email,
+            password: passwordHashed,
+            admin: true,
+            demo: false
+          })
+
+          message = 'Your account has been created successfully.'
+        }
+
+        await sendEmail({
+          to: {
+            name,
+            email: email
+          },
+          from: {
+            name: params.site.emails.help.name,
+            email: params.site.emails.help.email
+          },
+          subject: message,
+          template:
+            &lt;AccountCreatedOrVerified
+              to={name}
+              message={message}
+            />
+        })
+
+        return {
+          data: userAuthResponse(user),
+          message: message
+        }
+      } else {
+        throw new Error('The code you entered is invalid. Please try again with valid code.')
+      }
+    } else {
+      throw new Error(`The email ${verification.email} is already registered. Please try to login.`)
+    }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
+  }
+}
+
+/**
+ * Verifica convite aceito por usuário
+ * 
+ * @param {String} params.id id do usuário
+ * @param {String} params.name nome do usuário
+ * @param {String} params.password senha do usuário
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se name for vazio
+ * @Throws Error se password for inválido
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @Throws Error se o convite já estiver expirado
+ * @returns {Object} token e usuário
+ */
+export async function userAcceptInvite({ params: { id, name, password } }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: id },
+      check: 'notEmpty',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: name },
+      check: 'notEmpty',
+      message: 'Please enter valid name.'
+    },
+    {
+      data: { value: password, length: params.user.rules.passwordMinLength },
+      check: 'lengthMin',
+      message: `Please enter valid password. Minimum ${params.user.rules.passwordMinLength} is required.`
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    // Users exists with same email check
+    const invite = await Invite.findOne({ _id: id, accepted: false })
+
+    if (invite) {
+      const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
+
+      // Create user
+      const user = await User.create({
+        organizationId: invite.organizationId,
+        name,
+        email: invite.email,
+        password: passwordHashed,
+        admin: false,
+        demo: false
+      })
+
+      // Set invitation accepted
+      await Invite.updateOne(
+        { _id: invite._id },
+        {
+          $set: {
+            accepted: true
+          }
+        }
+      )
+
+      // Send email
+      const subject = 'Your account has been created successfully.'
+
+      await sendEmail({
+        to: {
+          name,
+          email: invite.email
+        },
+        from: {
+          name: params.site.emails.help.name,
+          email: params.site.emails.help.email
+        },
+        subject,
+        template:
+          &lt;AccountCreatedOrVerified
+            to={name}
+            message={subject}
+          />
+      })
+
+      // Log activity
+      if (invite) {
+        await Activity.create({
+          organizationId: invite.organizationId,
+          userId: user._id,
+          inviteId: invite._id,
+          action: params.activity.types.create,
+          message: `${name} (${invite.email}) joined the organization.`
+        })
+      }
+
+      return {
+        data: userAuthResponse(user),
+        message: `Invitation accepted successfully. Welcome ${name}!`
+      }
+    } else {
+      // User exists
+      throw new Error(`Sorry, this invitation is not valid anymore.`)
+    }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
+  }
+}
+
+/**
+ * Atualiza usuário
+ * 
+ * @param {String} params.name nome do usuário
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se name for vazio
+ * @Throws Error se usuário não estiver autenticado
+ * @Throws Error se houver falha ao atualizar usuário no banco de dados
+ * @returns {Object} token e usuário
+ */
+export async function userUpdate({ params: { name }, auth }) {
+  if (authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: name },
+        check: 'notEmpty',
+        message: 'Please enter valid name.'
+      }
+    ]
+
+    // Validate
+    try {
+      validate(rules)
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      await User.updateOne({ _id: auth.user._id }, { name })
+
+      const user = await User.findOne({ _id: auth.user._id })
+
+      return {
+        data: userAuthResponse(user),
+        message: 'Your profile has been updated successfully.'
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
+    }
+  }
+
+  throw new Error('Please login to update profile.')
+}
+
+/**
+ * Reseta senha do usuário
+ * 
+ * @param {String} params.email email do usuário
+ * @Throws Error se email for inválido
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @returns {Object} boolean
+ */
+export async function userResetPasswordSendCode({ params: { email } }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const user = await User.findOne({ email })
+
+    if (user) {
+      let code
+
+      const verification = await Verification.findOne({ email, verified: false, type: params.user.verification.password })
+
+      if (verification) {
+        code = verification.code
+      }
+
+      if (!code) {
+        code = randomNumber(1000, 9999)
+
+        Verification.create({
+          userId: user._id,
+          email,
+          code,
+          verified: false,
+          type: params.user.verification.password
+        })
+      }
+
+      await sendEmail({
+        to: {
+          email: email
+        },
+        from: {
+          name: params.site.emails.help.name,
+          email: params.site.emails.help.email
+        },
+        subject: `Verification Code: ${code}`,
+        template:
+          &lt;Verify
+            code={code}
+          />
+      })
+
+      return {
+        data: true
+      }
+    } else {
+      throw new Error(`The email ${email} is not registered. Please signup.`)
+    }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
+  }
+}
+
+/**
+ * Verifica resete de senha do usuário
+ * 
+ * @param {String} params.email email do usuário
+ * @param {String} params.code código de ativação para troca de senha
+ * @Throws Error se email for inválido
+ * @Throws Error se code for vazio ou inválido
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @returns {Object} boolean
+ */
+export async function userResetPasswordVerifyCode({ params: { email, code } }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: code },
+      check: 'notEmpty',
+      message: 'Please enter valid code.'
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.password })
+
+    if (verification) {
+      // Mark as verified
+      await Verification.updateOne(
+        { _id: verification._id },
+        { verified: true }
+      )
+
+      return {
+        data: true
+      }
+    } else {
+      throw new Error('The code you entered is invalid. Please try again with valid code.')
+    }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
+  }
+}
+
+/**
+ * Atualiza resete de senha do usuário
+ * 
+ * @param {String} params.email email do usuário
+ * @param {String} params.password nova senha do usuário
+ * @Throws Error se email for inválido
+ * @Throws Error se senha for inválida
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @returns {Object} boolean
+ */
+export async function userResetPasswordUpdate({ params: { email, password } }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: email },
+      check: 'email',
+      message: 'Please enter valid email.'
+    },
+    {
+      data: { value: password, length: params.user.rules.passwordMinLength },
+      check: 'lengthMin',
+      message: `Please enter valid password. Minimum ${params.user.rules.passwordMinLength} is required.`
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const verification = await Verification.findOne({ email, verified: true, type: params.user.verification.password })
+
+    const user = await User.findOne({ email: verification.email })
+
+    if (user) {
+      if (verification &amp;&amp; verification.verified) {
+        const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
+
+        // Update user
+        const userUpdated = await User.findOneAndUpdate(
+          { _id: user.id },
+          { password: passwordHashed },
+          { new: true }
+        )
+
+        return {
+          data: userAuthResponse(userUpdated),
+          message: 'Your password has been reset successfully.'
+        }
+      } else {
+        throw new Error('The code you entered is invalid. Please try again with valid code.')
+      }
+    } else {
+      throw new Error(`The email ${email} is not registered. Please signup.`)
+    }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#activitiesByCandidate">activitiesByCandidate</a></li><li><a href="global.html#activitiesByOrganization">activitiesByOrganization</a></li><li><a href="global.html#activitiesByProject">activitiesByProject</a></li><li><a href="global.html#authCheck">authCheck</a></li><li><a href="global.html#authCheckAdmin">authCheckAdmin</a></li><li><a href="global.html#candidate">candidate</a></li><li><a href="global.html#candidateCreate">candidateCreate</a></li><li><a href="global.html#candidateRemove">candidateRemove</a></li><li><a href="global.html#candidatesByOrganization">candidatesByOrganization</a></li><li><a href="global.html#candidatesByProject">candidatesByProject</a></li><li><a href="global.html#candidateUpdate">candidateUpdate</a></li><li><a href="global.html#feedback">feedback</a></li><li><a href="global.html#feedbackCreateOrUpdate">feedbackCreateOrUpdate</a></li><li><a href="global.html#interview">interview</a></li><li><a href="global.html#interviewCreate">interviewCreate</a></li><li><a href="global.html#interviewer">interviewer</a></li><li><a href="global.html#interviewerCreate">interviewerCreate</a></li><li><a href="global.html#interviewerRemove">interviewerRemove</a></li><li><a href="global.html#interviewersByOrganization">interviewersByOrganization</a></li><li><a href="global.html#interviewersByProject">interviewersByProject</a></li><li><a href="global.html#interviewerUpdate">interviewerUpdate</a></li><li><a href="global.html#interviewRemove">interviewRemove</a></li><li><a href="global.html#interviewsByOrganization">interviewsByOrganization</a></li><li><a href="global.html#interviewsByProject">interviewsByProject</a></li><li><a href="global.html#interviewUpdate">interviewUpdate</a></li><li><a href="global.html#invite">invite</a></li><li><a href="global.html#invitesByOrganization">invitesByOrganization</a></li><li><a href="global.html#inviteToOrganization">inviteToOrganization</a></li><li><a href="global.html#job">job</a></li><li><a href="global.html#jobCreate">jobCreate</a></li><li><a href="global.html#jobRemove">jobRemove</a></li><li><a href="global.html#jobsByProject">jobsByProject</a></li><li><a href="global.html#jobUpdate">jobUpdate</a></li><li><a href="global.html#kanban">kanban</a></li><li><a href="global.html#kanbanCreate">kanbanCreate</a></li><li><a href="global.html#kanbanRemove">kanbanRemove</a></li><li><a href="global.html#kanbansByProject">kanbansByProject</a></li><li><a href="global.html#kanbanUpdate">kanbanUpdate</a></li><li><a href="global.html#kanbanUpdateStatus">kanbanUpdateStatus</a></li><li><a href="global.html#organization">organization</a></li><li><a href="global.html#organizationByUser">organizationByUser</a></li><li><a href="global.html#organizationCreate">organizationCreate</a></li><li><a href="global.html#organizationRemove">organizationRemove</a></li><li><a href="global.html#organizationsByUser">organizationsByUser</a></li><li><a href="global.html#organizationUpdate">organizationUpdate</a></li><li><a href="global.html#project">project</a></li><li><a href="global.html#projectCreate">projectCreate</a></li><li><a href="global.html#projectRemove">projectRemove</a></li><li><a href="global.html#projectsByOrganization">projectsByOrganization</a></li><li><a href="global.html#projectUpdate">projectUpdate</a></li><li><a href="global.html#randomNumber">randomNumber</a></li><li><a href="global.html#remind">remind</a></li><li><a href="global.html#send">send</a></li><li><a href="global.html#sentEmails">sentEmails</a></li><li><a href="global.html#transport">transport</a></li><li><a href="global.html#user">user</a></li><li><a href="global.html#userAcceptInvite">userAcceptInvite</a></li><li><a href="global.html#userAuthResponse">userAuthResponse</a></li><li><a href="global.html#userLogin">userLogin</a></li><li><a href="global.html#userResetPasswordSendCode">userResetPasswordSendCode</a></li><li><a href="global.html#userResetPasswordUpdate">userResetPasswordUpdate</a></li><li><a href="global.html#userResetPasswordVerifyCode">userResetPasswordVerifyCode</a></li><li><a href="global.html#usersByOrganization">usersByOrganization</a></li><li><a href="global.html#userStartNow">userStartNow</a></li><li><a href="global.html#userUpdate">userUpdate</a></li><li><a href="global.html#userVerifyCode">userVerifyCode</a></li><li><a href="global.html#userVerifySendCode">userVerifySendCode</a></li><li><a href="global.html#userVerifyUpdateAccount">userVerifyUpdateAccount</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -5,9 +5,21 @@ import validate from '../../setup/helpers/validation'
 import Activity from '../activity/model'
 import Job from './model'
 
-// Create
+/**
+ * Cria um novo trabalho
+ * 
+ * @param {String} params.projectId id do projeto
+ * @param {String} params.role função do trabalho
+ * @param {String} params.description descrição do trabalho
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectid for vazio
+ * @Throws Error se role for vazio
+ * @Throws Error se houver falha ao criar trabalho no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} trabalho
+ */
 export async function jobCreate({ params: { projectId, role, description = '' }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -25,7 +37,7 @@ export async function jobCreate({ params: { projectId, role, description = '' },
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -38,7 +50,7 @@ export async function jobCreate({ params: { projectId, role, description = '' },
         description
       })
 
-      if(job) {
+      if (job) {
         // Log activity
         await Activity.create({
           organizationId: auth.user.organizationId,
@@ -46,14 +58,14 @@ export async function jobCreate({ params: { projectId, role, description = '' },
           projectId,
           jobId: job._id,
           action: params.activity.types.create,
-          message: `${ auth.user.name } added a new job ${ role }.`
+          message: `${auth.user.name} added a new job ${role}.`
         })
       }
 
       return {
         data: job
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -61,9 +73,23 @@ export async function jobCreate({ params: { projectId, role, description = '' },
   throw new Error(params.user.message.error.auth)
 }
 
-// Update
+/**
+ * Atualiza um trabalho
+ * 
+ * @param {String} params.id id do trabalho
+ * @param {String} params.projectId id do projeto
+ * @param {String} params.role função do trabalho
+ * @param {String} params.description descrição do trabalho
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se projectid for vazio
+ * @Throws Error se role for vazio
+ * @Throws Error se houver falha ao atualizar trabalho no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} trabalho
+ */
 export async function jobUpdate({ params: { id, projectId, role, description = '' }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -81,7 +107,7 @@ export async function jobUpdate({ params: { id, projectId, role, description = '
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -100,7 +126,7 @@ export async function jobUpdate({ params: { id, projectId, role, description = '
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -108,9 +134,18 @@ export async function jobUpdate({ params: { id, projectId, role, description = '
   throw new Error(params.user.message.error.auth)
 }
 
-// Delete
+/**
+ * Remove um trabalho
+ * 
+ * @param {String} params.id id do trabalho
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao remover trabalho no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} id do trabalho
+ */
 export async function jobRemove(parentValue, { id }, { auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -123,7 +158,7 @@ export async function jobRemove(parentValue, { id }, { auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -136,7 +171,7 @@ export async function jobRemove(parentValue, { id }, { auth }) {
       return {
         data
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }

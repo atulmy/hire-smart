@@ -20,10 +20,17 @@ import Verify from './email/Verify'
 import AccountCreatedOrVerified from './email/AccountCreatedOrVerified'
 import Invite from '../invite/model'
 
-// Create a demo user and login
+/**
+ * Cria um usuário de demonstração
+ * 
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se usuário já estiver logado
+ * @Throws Error se houver falha ao criar usuário de demonstração no banco de dados
+ * @returns {Object} boolean
+ */
 export async function userStartNow({ auth }) {
   // Check if user is already logged in
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     throw new Error(`You are already logged in. Please go to your dashboard to continue.`)
   } else {
     try {
@@ -41,14 +48,14 @@ export async function userStartNow({ auth }) {
       const user = await User.create({
         organizationId: organization._id,
         name: 'Demo User',
-        email: `demo.user+${ demoUser._id }@${ params.site.domain }`,
+        email: `demo.user+${demoUser._id}@${params.site.domain}`,
         password: passwordHashed,
         admin: true,
         demo: true
       })
 
       // Log activity - Organization Created
-      if(user) {
+      if (user) {
         await Activity.create({
           organizationId: organization._id,
           userId: user._id,
@@ -61,13 +68,23 @@ export async function userStartNow({ auth }) {
         data: userAuthResponse(user),
         message: 'You have been logged in successfully.'
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(`There was some error. Please try again.`)
     }
   }
 }
 
-// Verify email send code
+/**
+ * Envia código por email de ativação
+ * 
+ * @param {String} params.email email de ativação
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se email estiver vazio
+ * @Throws Error se email já estiver registrado
+ * @Throws Error se email não estiver registrado e usuário não estiver logado
+ * @Throws Error se houver falha ao buscar usuário ou email registrado no banco de dados
+ * @returns {Object} usuário
+ */
 export async function userVerifySendCode({ params: { email }, auth }) {
   // Validation rules
   const rules = [
@@ -81,28 +98,28 @@ export async function userVerifySendCode({ params: { email }, auth }) {
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
   try {
     const user = await User.findOne({ email })
 
-    if(user) {
+    if (user) {
       // User already exists
-      throw new Error(`The email ${ email } is already registered. Please try to login.`)
+      throw new Error(`The email ${email} is already registered. Please try to login.`)
     } else {
       let code
 
-      if(authCheck(auth) && auth.user.demo) {
+      if (authCheck(auth) && auth.user.demo) {
         const verification = await Verification.findOne({ userId: auth.user._id, email, verified: false, type: params.user.verification.signup })
 
-        if(verification) {
+        if (verification) {
           code = verification.code
         }
       }
 
-      if(!code) {
+      if (!code) {
         code = randomNumber(1000, 9999)
 
         await Verification.create({
@@ -121,7 +138,7 @@ export async function userVerifySendCode({ params: { email }, auth }) {
           name: params.site.emails.help.name,
           email: params.site.emails.help.email
         },
-        subject: `Verification Code: ${ code }`,
+        subject: `Verification Code: ${code}`,
         template:
           <Verify
             code={code}
@@ -132,12 +149,22 @@ export async function userVerifySendCode({ params: { email }, auth }) {
         data: true
       }
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }
 
-// Verify email send code
+/**
+ * Verifica código por email de ativação
+ * 
+ * @param {String} params.email email de ativação
+ * @param {Object} code código de ativação
+ * @Throws Error se email não for válido
+ * @Throws Error se code for vazio
+ * @Throws Error se code for inválido
+ * @Throws Error se houver falha ao buscar verificação no banco de dados
+ * @returns {Object} boolean
+ */
 export async function userVerifyCode({ params: { email, code } }) {
   // Validation rules
   const rules = [
@@ -156,17 +183,17 @@ export async function userVerifyCode({ params: { email, code } }) {
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
   try {
     const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.signup })
 
-    if(verification) {
+    if (verification) {
       // Mark as verified
       await Verification.updateOne(
-        {_id: verification._id},
+        { _id: verification._id },
         { verified: true }
       )
 
@@ -176,12 +203,28 @@ export async function userVerifyCode({ params: { email, code } }) {
     } else {
       throw new Error('The code you entered is invalid. Please try again with valid code.')
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }
 
-// Verify create/update user account
+/**
+ * Verifica conta do usuário
+ * 
+ * @param {String} params.email email do usuário
+ * @param {String} params.name nome do usuário
+ * @param {String} params.password senha do usuário
+ * @param {String} params.organizationName nome da organização
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se email não for válido
+ * @Throws Error se name for vazio
+ * @Throws Error se password for inválido
+ * @Throws Error se organizationName for vazio
+ * @Throws Error se houver falha ao buscar verificação no banco de dados
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @Throws Error se email já estiver registrado
+ * @returns {Object} token e usuário
+ */
 export async function userVerifyUpdateAccount({ params: { email, name, password, organizationName }, auth }) {
   // Validation rules
   const rules = [
@@ -198,7 +241,7 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
     {
       data: { value: password, length: params.user.rules.passwordMinLength },
       check: 'lengthMin',
-      message: `Please enter valid password. Minimum ${ params.user.rules.passwordMinLength } is required.`
+      message: `Please enter valid password. Minimum ${params.user.rules.passwordMinLength} is required.`
     },
     {
       data: { value: organizationName },
@@ -210,7 +253,7 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
@@ -219,7 +262,7 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
 
     const userCheck = await User.findOne({ email: verification.email })
 
-    if(!userCheck) {
+    if (!userCheck) {
       if (verification && verification.verified) {
         let user
         let message
@@ -227,7 +270,7 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
         const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
         const organizationDomain = email.split('@')[1]
 
-        if(auth.user && auth.user._id && auth.user.demo) {
+        if (auth.user && auth.user._id && auth.user.demo) {
           // Update user
           await User.updateOne(
             { _id: auth.user._id },
@@ -257,7 +300,7 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
             organizationId: auth.user.organizationId,
             userId: auth.user._id,
             action: params.activity.types.create,
-            message: `${ name } (${ email }) joined the organization.`
+            message: `${name} (${email}) joined the organization.`
           })
 
           user = await User.findOne({ _id: auth.user._id })
@@ -308,14 +351,27 @@ export async function userVerifyUpdateAccount({ params: { email, name, password,
         throw new Error('The code you entered is invalid. Please try again with valid code.')
       }
     } else {
-      throw new Error(`The email ${ verification.email } is already registered. Please try to login.`)
+      throw new Error(`The email ${verification.email} is already registered. Please try to login.`)
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }
 
-// Accept invitation
+/**
+ * Verifica convite aceito por usuário
+ * 
+ * @param {String} params.id id do usuário
+ * @param {String} params.name nome do usuário
+ * @param {String} params.password senha do usuário
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se name for vazio
+ * @Throws Error se password for inválido
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @Throws Error se o convite já estiver expirado
+ * @returns {Object} token e usuário
+ */
 export async function userAcceptInvite({ params: { id, name, password } }) {
   // Validation rules
   const rules = [
@@ -332,14 +388,14 @@ export async function userAcceptInvite({ params: { id, name, password } }) {
     {
       data: { value: password, length: params.user.rules.passwordMinLength },
       check: 'lengthMin',
-      message: `Please enter valid password. Minimum ${ params.user.rules.passwordMinLength } is required.`
+      message: `Please enter valid password. Minimum ${params.user.rules.passwordMinLength} is required.`
     }
   ]
 
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
@@ -391,32 +447,41 @@ export async function userAcceptInvite({ params: { id, name, password } }) {
       })
 
       // Log activity
-      if(invite) {
+      if (invite) {
         await Activity.create({
           organizationId: invite.organizationId,
           userId: user._id,
           inviteId: invite._id,
           action: params.activity.types.create,
-          message: `${ name } (${ invite.email }) joined the organization.`
+          message: `${name} (${invite.email}) joined the organization.`
         })
       }
 
       return {
         data: userAuthResponse(user),
-        message: `Invitation accepted successfully. Welcome ${ name }!`
+        message: `Invitation accepted successfully. Welcome ${name}!`
       }
     } else {
       // User exists
       throw new Error(`Sorry, this invitation is not valid anymore.`)
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }
 
-// Update
+/**
+ * Atualiza usuário
+ * 
+ * @param {String} params.name nome do usuário
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se name for vazio
+ * @Throws Error se usuário não estiver autenticado
+ * @Throws Error se houver falha ao atualizar usuário no banco de dados
+ * @returns {Object} token e usuário
+ */
 export async function userUpdate({ params: { name }, auth }) {
-  if(authCheck(auth)) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -429,7 +494,7 @@ export async function userUpdate({ params: { name }, auth }) {
     // Validate
     try {
       validate(rules)
-    } catch(error) {
+    } catch (error) {
       throw new Error(error.message)
     }
 
@@ -442,7 +507,7 @@ export async function userUpdate({ params: { name }, auth }) {
         data: userAuthResponse(user),
         message: 'Your profile has been updated successfully.'
       }
-    } catch(error) {
+    } catch (error) {
       throw new Error(params.common.message.error.server)
     }
   }
@@ -450,7 +515,14 @@ export async function userUpdate({ params: { name }, auth }) {
   throw new Error('Please login to update profile.')
 }
 
-// Reset password send code
+/**
+ * Reseta senha do usuário
+ * 
+ * @param {String} params.email email do usuário
+ * @Throws Error se email for inválido
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @returns {Object} boolean
+ */
 export async function userResetPasswordSendCode({ params: { email } }) {
   // Validation rules
   const rules = [
@@ -464,23 +536,23 @@ export async function userResetPasswordSendCode({ params: { email } }) {
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
   try {
     const user = await User.findOne({ email })
 
-    if(user) {
+    if (user) {
       let code
 
       const verification = await Verification.findOne({ email, verified: false, type: params.user.verification.password })
 
-      if(verification) {
+      if (verification) {
         code = verification.code
       }
 
-      if(!code) {
+      if (!code) {
         code = randomNumber(1000, 9999)
 
         Verification.create({
@@ -500,7 +572,7 @@ export async function userResetPasswordSendCode({ params: { email } }) {
           name: params.site.emails.help.name,
           email: params.site.emails.help.email
         },
-        subject: `Verification Code: ${ code }`,
+        subject: `Verification Code: ${code}`,
         template:
           <Verify
             code={code}
@@ -511,14 +583,23 @@ export async function userResetPasswordSendCode({ params: { email } }) {
         data: true
       }
     } else {
-      throw new Error(`The email ${ email } is not registered. Please signup.`)
+      throw new Error(`The email ${email} is not registered. Please signup.`)
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }
 
-// Verify email send code
+/**
+ * Verifica resete de senha do usuário
+ * 
+ * @param {String} params.email email do usuário
+ * @param {String} params.code código de ativação para troca de senha
+ * @Throws Error se email for inválido
+ * @Throws Error se code for vazio ou inválido
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @returns {Object} boolean
+ */
 export async function userResetPasswordVerifyCode({ params: { email, code } }) {
   // Validation rules
   const rules = [
@@ -537,17 +618,17 @@ export async function userResetPasswordVerifyCode({ params: { email, code } }) {
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
   try {
     const verification = await Verification.findOne({ email, code, verified: false, type: params.user.verification.password })
 
-    if(verification) {
+    if (verification) {
       // Mark as verified
       await Verification.updateOne(
-        {_id: verification._id},
+        { _id: verification._id },
         { verified: true }
       )
 
@@ -557,12 +638,21 @@ export async function userResetPasswordVerifyCode({ params: { email, code } }) {
     } else {
       throw new Error('The code you entered is invalid. Please try again with valid code.')
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }
 
-// Reset password update
+/**
+ * Atualiza resete de senha do usuário
+ * 
+ * @param {String} params.email email do usuário
+ * @param {String} params.password nova senha do usuário
+ * @Throws Error se email for inválido
+ * @Throws Error se senha for inválida
+ * @Throws Error se houver falha ao buscar usuário no banco de dados
+ * @returns {Object} boolean
+ */
 export async function userResetPasswordUpdate({ params: { email, password } }) {
   // Validation rules
   const rules = [
@@ -574,14 +664,14 @@ export async function userResetPasswordUpdate({ params: { email, password } }) {
     {
       data: { value: password, length: params.user.rules.passwordMinLength },
       check: 'lengthMin',
-      message: `Please enter valid password. Minimum ${ params.user.rules.passwordMinLength } is required.`
+      message: `Please enter valid password. Minimum ${params.user.rules.passwordMinLength} is required.`
     }
   ]
 
   // Validate
   try {
     validate(rules)
-  } catch(error) {
+  } catch (error) {
     throw new Error(error.message)
   }
 
@@ -590,7 +680,7 @@ export async function userResetPasswordUpdate({ params: { email, password } }) {
 
     const user = await User.findOne({ email: verification.email })
 
-    if(user) {
+    if (user) {
       if (verification && verification.verified) {
         const passwordHashed = await bcrypt.hash(password, SECURITY_SALT_ROUNDS)
 
@@ -609,9 +699,9 @@ export async function userResetPasswordUpdate({ params: { email, password } }) {
         throw new Error('The code you entered is invalid. Please try again with valid code.')
       }
     } else {
-      throw new Error(`The email ${ email } is not registered. Please signup.`)
+      throw new Error(`The email ${email} is not registered. Please signup.`)
     }
-  } catch(error) {
+  } catch (error) {
     throw new Error(params.common.message.error.server)
   }
 }
