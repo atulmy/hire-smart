@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: modules/interview/query.js</title>
+    <title>JSDoc: Source: modules/organization/mutation.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: modules/interview/query.js</h1>
+    <h1 class="page-title">Source: modules/organization/mutation.js</h1>
 
     
 
@@ -30,65 +30,45 @@
 import params from '../../setup/config/params'
 import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
-import Interview from './model'
+import Organization from './model'
 
 /**
- * Busca entrevista por id
+ * Cria uma nova organização
  * 
- * @param {String} params.id id da entrevista
- * @param {String} fields que devem ser populados
- * @Throws Error se id for vazio
- * @Throws Error se houver falha ao buscar entrevista no banco de dados
- * @returns {Object} entrevista
- */
-export async function interview({ params: { id }, fields }) {
-  // Validation rules
-  const rules = [
-    {
-      data: { value: id },
-      check: 'notEmpty',
-      message: params.common.message.error.invalidData
-    }
-  ]
-
-  // Validate
-  try {
-    validate(rules)
-  } catch (error) {
-    throw new Error(error.message)
-  }
-
-  try {
-    const data = await Interview.findOne({ _id: id })
-      .select(fields.interview)
-      .populate({ path: 'candidateId', select: fields.candidate })
-
-    return {
-      data
-    }
-  } catch (error) {
-    throw new Error(params.common.message.error.server)
-  }
-}
-
-/**
- * Busca entrevista por organização
- * 
- * @param {String} fields que devem ser populados
+ * @param {String} params.name nome da organização
+ * @param {String} params.description descrição da organização
+ * @param {String} params.domain domínimo da organização
  * @param {Object} auth para autorizar requisição
- * @Throws Error se houver falha ao buscar entrevista no banco de dados 
+ * @Throws Error se name for vazio
+ * @Throws Error se houver falha ao criar organização no banco de dados
  * @Throws Error se usuário não estiver autenticado
- * @returns {Object} entrevista
+ * @returns {Object} organização
  */
-export async function interviewsByOrganization({ fields, auth }) {
+export async function organizationCreate({ params: { name, description = '', domain = '' }, auth }) {
   if (authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: name },
+        check: 'notEmpty',
+        message: 'Please enter valid name.'
+      }
+    ]
+
+    // Validate
     try {
-      const data = await Interview.find({
-        organizationId: auth.user.organizationId
+      validate(rules)
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      const data = await Organization.create({
+        userId: auth.user._id,
+        name,
+        description,
+        domain
       })
-        .select(fields.interview)
-        .populate({ path: 'candidateId', select: fields.candidate })
-        .populate({ path: 'interviewerId', select: fields.candidate })
 
       return {
         data
@@ -102,22 +82,70 @@ export async function interviewsByOrganization({ fields, auth }) {
 }
 
 /**
- * Busca entrevista por projeto
+ * Atualiza uma organização
  * 
- * @param {String} params.projectId id do projeto
- * @param {String} fields que devem ser populados
+ * @param {String} params.name nome da organização
+ * @param {String} params.description descrição da organização
+ * @param {String} params.domain domínimo da organização
  * @param {Object} auth para autorizar requisição
- * @Throws Error se projectId for vazio
- * @Throws Error se houver falha ao buscar entrevista no banco de dados 
+ * @Throws Error se name for vazio
+ * @Throws Error se houver falha ao atualizar organização no banco de dados
  * @Throws Error se usuário não estiver autenticado
- * @returns {Object} entrevista
+ * @returns {Object} organização
  */
-export async function interviewsByProject({ params: { projectId }, fields, auth }) {
+export async function organizationUpdate({ params: { id, name, description = '', domain = '' }, auth }) {
   if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
-        data: { value: projectId },
+        data: { value: name },
+        check: 'notEmpty',
+        message: 'Please enter valid name.'
+      }
+    ]
+
+    // Validate
+    try {
+      validate(rules)
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      const data = await Organization.updateOne(
+        { _id: auth.user.organizationId },
+        {
+          $set: { name, description, domain }
+        }
+      )
+
+      return {
+        data
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
+    }
+  }
+
+  throw new Error(params.user.message.error.auth)
+}
+
+/**
+ * Remove uma organização
+ * 
+ * @param {String} params.id id da organização
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao atualizar organização no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} organização
+ */
+export async function organizationRemove({ params: { id }, auth }) {
+  if (authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: id },
         check: 'notEmpty',
         message: params.common.message.error.invalidData
       }
@@ -131,14 +159,10 @@ export async function interviewsByProject({ params: { projectId }, fields, auth 
     }
 
     try {
-      const data = await Interview.find({
-        organizationId: auth.user.organizationId,
-        projectId
+      const data = await Organization.remove({
+        _id: _id,
+        userId: auth.user._id
       })
-        .select(fields.interview)
-        .populate({ path: 'projectId', select: fields.projectId })
-        .populate({ path: 'candidateId', select: fields.candidate })
-        .populate({ path: 'interviewerId', select: fields.candidate })
 
       return {
         data
@@ -166,7 +190,7 @@ export async function interviewsByProject({ params: { projectId }, fields, auth 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 14:55:21 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>

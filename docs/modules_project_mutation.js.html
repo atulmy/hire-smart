@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: modules/candidate/mutation.js</title>
+    <title>JSDoc: Source: modules/project/mutation.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: modules/candidate/mutation.js</h1>
+    <h1 class="page-title">Source: modules/project/mutation.js</h1>
 
     
 
@@ -26,73 +26,32 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// Imports
-import isEmpty from 'lodash/isEmpty'
-
-// App Imports
+            <pre class="prettyprint source linenums"><code>// App Imports
 import params from '../../setup/config/params'
 import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
-import Kanban from '../kanban/model'
 import Activity from '../activity/model'
-import Candidate from './model'
+import Project from './model'
 
 /**
- * Adiciona um novo candidato
+ * Cria um novo projeto
  * 
- * @param {String} params.projectId relacionado ao candidato
- * @param {String} params.jobId relacionado ao candidato
- * @param {String} params.name nome do candidato
- * @param {String} params.email email do candidato
- * @param {String} params.mobile telefone do candidato
- * @param {String} params.experience tempo em anos de experiência do candidato
- * @param {String} params.resume currículo do candidato
- * @param {String} params.salaryCurrent salário atual do candidato
- * @param {String} params.salaryExpected intenção salarial do candidato 
+ * @param {String} params.name nome do projeto
+ * @param {String} params.description descrição do projeto
  * @param {Object} auth para autorizar requisição
- * @Throws Error se projectId for vazio
  * @Throws Error se name for vazio
- * @Throws Error se email for vazio
- * @Throws Error se mobile for vazio
- * @Throws Error se experience for vazio
- * @Throws Error se resume for vazio
- * @Throws Error se houver falha ao criar candidato no banco de dados
+ * @Throws Error se houver falha ao criar projeto no banco de dados
  * @Throws Error se usuário não estiver autenticado
- * @returns {Object} candidato criado
+ * @returns {Object} projeto
  */
-export async function candidateCreate({ params: { projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, auth }) {
+export async function projectCreate({ params: { name, description = '' }, auth }) {
   if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
-        data: { value: projectId },
-        check: 'notEmpty',
-        message: params.common.message.error.invalidData
-      },
-      {
         data: { value: name },
         check: 'notEmpty',
-        message: 'Please enter a valid name.'
-      },
-      {
-        data: { value: email },
-        check: 'email',
-        message: 'Please enter a valid email.'
-      },
-      {
-        data: { value: mobile },
-        check: 'notEmpty',
-        message: 'Please enter a valid mobile number.'
-      },
-      {
-        data: { value: experience },
-        check: 'notEmpty',
-        message: 'Please enter a valid experience in years.'
-      },
-      {
-        data: { value: resume },
-        check: 'notEmpty',
-        message: 'Please upload resume.'
+        message: 'Please enter valid name.'
       }
     ]
 
@@ -104,48 +63,26 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
     }
 
     try {
-      let item = {
+      const project = await Project.create({
         organizationId: auth.user.organizationId,
-        projectId,
         userId: auth.user._id,
         name,
-        email,
-        mobile,
-        experience,
-        resume,
-        salaryCurrent,
-        salaryExpected
-      }
-      if (!isEmpty(jobId)) {
-        item.jobId = jobId
-      }
+        description
+      })
 
-      const candidate = await Candidate.create(item)
-
-      if (candidate) {
-        const kanban = await Kanban.create({
-          organizationId: auth.user.organizationId,
-          projectId,
-          candidateId: candidate._id,
-          userId: auth.user._id,
-          status: params.kanban.columns[0].key,
-          highlight: false
-        })
-
-        // Log activity
+      // Log activity
+      if (project) {
         await Activity.create({
           organizationId: auth.user.organizationId,
           userId: auth.user._id,
-          projectId,
-          candidateId: candidate._id,
-          kanbanId: kanban._id,
+          projectId: project._id,
           action: params.activity.types.create,
-          message: `${auth.user.name} added a new candidate ${name} (${email}).`
+          message: `${auth.user.name} created ${name} project.`
         })
       }
 
       return {
-        data: candidate
+        data: project
       }
     } catch (error) {
       throw new Error(params.common.message.error.server)
@@ -156,32 +93,20 @@ export async function candidateCreate({ params: { projectId, jobId = '', name, e
 }
 
 /**
- * Atualiza um candidato
+ * Atualiza um projeto
  * 
- * @param {String} params.id id do candidato
- * @param {String} params.projectId relacionado ao candidato
- * @param {String} params.jobId relacionado ao candidato
- * @param {String} params.name nome do candidato
- * @param {String} params.email email do candidato
- * @param {String} params.mobile telefone do candidato
- * @param {String} params.experience tempo em anos de experiência do candidato
- * @param {String} params.resume currículo do candidato
- * @param {String} params.salaryCurrent salário atual do candidato
- * @param {String} params.salaryExpected intenção salarial do candidato 
+ * @param {String} params.id id do projeto
+ * @param {String} params.name nome do projeto
+ * @param {String} params.description descrição do projeto
  * @param {Object} auth para autorizar requisição
- * @Throws Error se id do candidato for vazio
- * @Throws Error se projectId for vazio
+ * @Throws Error se id for vazio
  * @Throws Error se name for vazio
- * @Throws Error se email for vazio
- * @Throws Error se mobile for vazio
- * @Throws Error se experience for vazio
- * @Throws Error se resume for vazio
- * @Throws Error se houver falha ao atualizar candidato no banco de dados
+ * @Throws Error se houver falha ao atualizar projeto no banco de dados
  * @Throws Error se usuário não estiver autenticado
- * @returns {Object} candidato criado
+ * @returns {Object} projeto
  */
-export async function candidateUpdate({ params: { id, projectId, jobId = '', name, email, mobile, experience, resume, salaryCurrent = '', salaryExpected = '' }, auth }) {
-  if (authCheck(auth) &amp;&amp; !isEmpty(id)) {
+export async function projectUpdate({ params: { id, name, description = '' }, auth }) {
+  if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
@@ -190,34 +115,9 @@ export async function candidateUpdate({ params: { id, projectId, jobId = '', nam
         message: params.common.message.error.invalidData
       },
       {
-        data: { value: projectId },
-        check: 'notEmpty',
-        message: params.common.message.error.invalidData
-      },
-      {
         data: { value: name },
         check: 'notEmpty',
-        message: 'Please enter a valid name.'
-      },
-      {
-        data: { value: email },
-        check: 'email',
-        message: 'Please enter a valid email.'
-      },
-      {
-        data: { value: mobile },
-        check: 'notEmpty',
-        message: 'Please enter a valid mobile number.'
-      },
-      {
-        data: { value: experience },
-        check: 'notEmpty',
-        message: 'Please enter a valid experience in years.'
-      },
-      {
-        data: { value: resume },
-        check: 'notEmpty',
-        message: 'Please upload resume.'
+        message: 'Please enter valid name.'
       }
     ]
 
@@ -229,34 +129,18 @@ export async function candidateUpdate({ params: { id, projectId, jobId = '', nam
     }
 
     try {
-      let item = {
-        projectId,
-        name,
-        email,
-        mobile,
-        experience,
-        resume,
-        salaryCurrent,
-        salaryExpected
-      }
-      if (!isEmpty(jobId)) {
-        item.jobId = jobId
-      }
-
-      const candidate = await Candidate.updateOne({ _id: id }, { $set: item })
-
-      if (candidate) {
-        await Kanban.updateOne(
-          {
-            organizationId: auth.user.organizationId,
-            candidateId: id
-          },
-          { projectId }
-        )
-      }
+      const data = await Project.updateOne(
+        { _id: id },
+        {
+          $set: {
+            name,
+            description
+          }
+        }
+      )
 
       return {
-        data: candidate
+        data
       }
     } catch (error) {
       throw new Error(params.common.message.error.server)
@@ -267,16 +151,16 @@ export async function candidateUpdate({ params: { id, projectId, jobId = '', nam
 }
 
 /**
- * Remove um candidato
+ * Remove um projeto
  * 
- * @param {String} params.id id do candidato
+ * @param {String} params.id id do projeto
  * @param {Object} auth para autorizar requisição
- * @Throws Error se id do candidato for vazio
- * @Throws Error se houver falha ao remover candidato no banco de dados
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao atualizar projeto no banco de dados
  * @Throws Error se usuário não estiver autenticado
- * @returns {Object} id do candidato removido
+ * @returns {Object} projeto
  */
-export async function candidateRemove({ params: { id }, auth }) {
+export async function projectRemove({ params: { id }, auth }) {
   if (authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -295,7 +179,7 @@ export async function candidateRemove({ params: { id }, auth }) {
     }
 
     try {
-      const data = await Candidate.remove({
+      const data = await Project.remove({
         _id: _id,
         userId: auth.user._id
       })
@@ -326,7 +210,7 @@ export async function candidateRemove({ params: { id }, auth }) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 14:55:21 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>

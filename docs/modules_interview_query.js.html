@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: modules/email/send.js</title>
+    <title>JSDoc: Source: modules/interview/query.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: modules/email/send.js</h1>
+    <h1 class="page-title">Source: modules/interview/query.js</h1>
 
     
 
@@ -26,110 +26,129 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// Imports
-import nodemailer from 'nodemailer'
-import React from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
-
-// App Imports
-import { EMAIL_ON, EMAIL_HOST, EMAIL_USER, EMAIL_PASSWORD, EMAIL_TEST, NODE_ENV } from '../../setup/config/env'
+            <pre class="prettyprint source linenums"><code>// App Imports
 import params from '../../setup/config/params'
-import Email from './model'
-import view from './template/view'
-import Layout from './template/Layout'
+import { authCheck } from '../../setup/helpers/utils'
+import validate from '../../setup/helpers/validation'
+import Interview from './model'
 
 /**
- * Responsável por criar uma conexão com servidor de email
+ * Busca entrevista por id
  * 
- * @returns conexão com SMTP
+ * @param {String} params.id id da entrevista
+ * @param {String} fields que devem ser populados
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar entrevista no banco de dados
+ * @returns {Object} entrevista
  */
-function transport() {
-  if (EMAIL_HOST &amp;&amp; EMAIL_USER &amp;&amp; EMAIL_PASSWORD) {
-    return nodemailer.createTransport({
-      host: EMAIL_HOST,
-      secure: false,
-      auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASSWORD
-      }
-    })
+export async function interview({ params: { id }, fields }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: id },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
+    }
+  ]
+
+  // Validate
+  try {
+    validate(rules)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+  try {
+    const data = await Interview.findOne({ _id: id })
+      .select(fields.interview)
+      .populate({ path: 'candidateId', select: fields.candidate })
+
+    return {
+      data
+    }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
   }
 }
 
 /**
- * Responsável por enviar emails
+ * Busca entrevista por organização
  * 
- * @param {String} to destinatário
- * @param {String} from remetente
- * @param {String} subject assunto
- * @param {String} template layout do email
- * @param {String} cc emails em copia
- * @param {String} organizationId id da organização
- * @param {String} userId id do usuário
- * @param {String} icalEvent eventos
- * @returns {Object} email 
+ * @param {String} fields que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se houver falha ao buscar entrevista no banco de dados 
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevista
  */
-export async function send({ to, from, subject, template, cc = null, organizationId = '', userId = '', icalEvent = '' }) {
-  const transporter = transport()
-
-  if (transporter) {
-    // Create markup
-    const body = view(renderToStaticMarkup(
-      &lt;Layout>
-        {template}
-      &lt;/Layout>
-    ))
-
-    subject = `${params.site.name} - ${subject}`
-
-    const toEmail = NODE_ENV === 'development' ? EMAIL_TEST : to.email
-    const toAddress = to.name &amp;&amp; to.name.length > 0 ? `"${to.name}" &lt;${toEmail}>` : toEmail
-
-    let email = {
-      to: toAddress,
-      from: `"${from.name}" &lt;${params.site.emails.hello.email}>`,
-      replyTo: `"${from.name}" &lt;${from.email}>`,
-      subject,
-      html: body,
-    }
-    if (cc) {
-      email.cc = `"${cc.name}" &lt;${NODE_ENV === 'development' ? EMAIL_TEST : cc.email}>`
-    }
-    if (icalEvent) {
-      email.icalEvent = icalEvent
-    }
-
-    // Send email
-    if (EMAIL_ON === '1') {
-      transporter.sendMail(email, () => {
-        console.info('INFO - Email sent.')
+export async function interviewsByOrganization({ fields, auth }) {
+  if (authCheck(auth)) {
+    try {
+      const data = await Interview.find({
+        organizationId: auth.user.organizationId
       })
-    } else {
-      console.info('INFO - Email not sent. EMAIL_ON is not enabled.')
-    }
+        .select(fields.interview)
+        .populate({ path: 'candidateId', select: fields.candidate })
+        .populate({ path: 'interviewerId', select: fields.candidate })
 
-    // Save into database
-    let emailSave = {
-      toEmail: to.email,
-      fromName: from.name,
-      fromEmail: from.email,
-      subject,
-      body
+      return {
+        data
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
     }
-    if (to.name &amp;&amp; to.name.length > 0) {
-      emailSave.toName = to.name
-    }
-    if (organizationId) {
-      emailSave.organizationId = organizationId
-    }
-    if (userId) {
-      emailSave.userId = userId
-    }
-
-    return await Email.create(emailSave)
-  } else {
-    console.warn('WARN - Email not sent. Please check `.env` to set email configurations.')
   }
+
+  throw new Error(params.user.message.error.auth)
+}
+
+/**
+ * Busca entrevista por projeto
+ * 
+ * @param {String} params.projectId id do projeto
+ * @param {String} fields que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectId for vazio
+ * @Throws Error se houver falha ao buscar entrevista no banco de dados 
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevista
+ */
+export async function interviewsByProject({ params: { projectId }, fields, auth }) {
+  if (authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: projectId },
+        check: 'notEmpty',
+        message: params.common.message.error.invalidData
+      }
+    ]
+
+    // Validate
+    try {
+      validate(rules)
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      const data = await Interview.find({
+        organizationId: auth.user.organizationId,
+        projectId
+      })
+        .select(fields.interview)
+        .populate({ path: 'projectId', select: fields.projectId })
+        .populate({ path: 'candidateId', select: fields.candidate })
+        .populate({ path: 'interviewerId', select: fields.candidate })
+
+      return {
+        data
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
+    }
+  }
+
+  throw new Error(params.user.message.error.auth)
 }
 </code></pre>
         </article>
@@ -147,7 +166,7 @@ export async function send({ to, from, subject, template, cc = null, organizatio
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 14:55:21 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>

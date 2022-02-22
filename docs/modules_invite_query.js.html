@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: modules/user/query.js</title>
+    <title>JSDoc: Source: modules/invite/query.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: modules/user/query.js</h1>
+    <h1 class="page-title">Source: modules/invite/query.js</h1>
 
     
 
@@ -26,93 +26,21 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// Imports
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-
-// App Imports
-import { SECURITY_SECRET } from '../../setup/config/env'
+            <pre class="prettyprint source linenums"><code>// App Imports
 import params from '../../setup/config/params'
 import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
-import User from './model'
+import Invite from './model'
 
 /**
- * Login
+ * Busca convite por id
  * 
- * @param {String} params.email email do usuário 
- * @param {String} params.password senha do usuário 
- * @Throws Error se email for inválido
- * @Throws Error se senha for inválida
- * @Throws Error se houver falha ao buscar o usuário no banco de dados
- * @returns token e usuário
- */
-export async function userLogin({ params: { email, password } }) {
-  // Validation rules
-  const rules = [
-    {
-      data: { value: email },
-      check: 'email',
-      message: 'Please enter valid email.'
-    },
-    {
-      data: { value: password, length: params.user.rules.passwordMinLength },
-      check: 'lengthMin',
-      message: `Please enter valid password. Minimum ${params.user.rules.passwordMinLength} is required.`
-    }
-  ]
-
-  // Validate
-  try {
-    validate(rules)
-  } catch (error) {
-    throw new Error(error.message)
-  }
-
-  // Check if user exists with same email
-  try {
-    const response = {
-      success: true,
-      message: 'You have been logged in successfully.'
-    }
-
-    const user = await User.findOne({ email })
-
-    if (!user) {
-      // User does not exists
-      response.success = false
-      response.message = `We do not have any user registered with ${email} email address. Please signup.`
-    } else {
-      // User exists
-      const passwordMatch = await bcrypt.compare(password, user.password)
-
-      if (!passwordMatch) {
-        // Incorrect password
-        response.success = false
-        response.message = `Sorry, the password you entered is incorrect. Please try again.`
-      } else {
-        response.data = userAuthResponse(user)
-      }
-    }
-
-    return response
-  } catch (error) {
-    throw new Error(params.common.message.error.server)
-  }
-}
-
-/**
- * Buscar usuário por id
- * 
- * @param {String} params.id id do usuário 
- * @param {String} params.password senha do usuário 
- * @param {Object} auth para autorizar requisição
+ * @param {String} params.id id do convite
  * @Throws Error se id for vazio
- * @Throws Error se houver falha ao buscar o usuário no banco de dados
- * @Throws Error se usuário não estiver autenticado
- * @returns usuário
+ * @Throws Error se houver falha ao buscar convite no banco de dados
+ * @returns {Object} convite
  */
-export async function user({ params: { id }, auth }) {
+export async function invite({ params: { id } }) {
   // Validation rules
   const rules = [
     {
@@ -129,36 +57,33 @@ export async function user({ params: { id }, auth }) {
     throw new Error(error.message)
   }
 
-  if (authCheck(auth)) {
-    try {
-      const data = await User.findOne({ _id: id })
+  try {
+    const data = await Invite.findOne({ _id: id, accepted: false })
+      .populate('organizationId')
 
-      return {
-        data
-      }
-    } catch (error) {
-      throw new Error(params.common.message.error.server)
+    return {
+      data
     }
+  } catch (error) {
+    throw new Error(params.common.message.error.server)
   }
-
-  throw new Error(params.user.message.error.auth)
 }
 
 /**
- * Buscar usuário por organização
+ * Busca convite por organização
  * 
- * @param {Array} fields campos que devem ser populados
  * @param {Object} auth para autorizar requisição
- * @Throws Error se houver falha ao buscar o usuário no banco de dados
+ * @Throws Error se houver falha ao buscar convite no banco de dados
  * @Throws Error se usuário não estiver autenticado
- * @returns usuário
+ * @returns {Object} convite
  */
-export async function usersByOrganization({ fields, auth }) {
+export async function invitesByOrganization({ auth }) {
   if (authCheck(auth)) {
     try {
-      const data = await User
-        .find({ organizationId: auth.user.organizationId })
-        .select(fields)
+      const data = await Invite.find({
+        organizationId: auth.user.organizationId,
+        accepted: false
+      })
 
       return {
         data
@@ -169,24 +94,6 @@ export async function usersByOrganization({ fields, auth }) {
   }
 
   throw new Error(params.user.message.error.auth)
-}
-
-/**
- * Constrói objeto de autenticação de usuário
- * 
- * @param {String} _id id do usuário
- * @param {String} organizationId id da organização
- * @param {String} name nome do usuário
- * @param {String} email email do usuário
- * @param {String} role perfil do usuário
- * @param {Boolean} demo usuário de demonstração
- * @returns token e usuário
- */
-export function userAuthResponse({ _id, organizationId, name, email, role, demo }) {
-  return {
-    token: jwt.sign({ id: _id }, SECURITY_SECRET),
-    user: { _id, organizationId, name, email, role, demo }
-  }
 }
 </code></pre>
         </article>
@@ -204,7 +111,7 @@ export function userAuthResponse({ _id, organizationId, name, email, role, demo 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 14:55:21 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>

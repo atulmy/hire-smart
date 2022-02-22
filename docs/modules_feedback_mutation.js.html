@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: modules/organization/query.js</title>
+    <title>JSDoc: Source: modules/feedback/mutation.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: modules/organization/query.js</h1>
+    <h1 class="page-title">Source: modules/feedback/mutation.js</h1>
 
     
 
@@ -26,102 +26,149 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// App Imports
+            <pre class="prettyprint source linenums"><code>// Imports
+import React from 'react'
+
+// App Imports
 import params from '../../setup/config/params'
-import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
-import Organization from './model'
+import Activity from '../activity/model'
+import Interview from '../interview/model'
+import Kanban from '../kanban/model'
+import Feedback from './model'
+
+// Email
+import { send as sendEmail } from '../email/send'
+import FeedbackTemplate from './email/Feedback'
 
 /**
- * Busca organização por id
+ * Cria ou atualiza feedback
  * 
- * @param {String} params.id id da organização
- * @param {Object} auth para autorizar requisição
- * @Throws Error se id for vazio
- * @Throws Error se houver falha ao buscar organização no banco de dados
- * @Throws Error se usuário não estiver autenticado
- * @returns {Object} organização
+ * @param {String} params.interviewId
+ * @param {String} params.text
+ * @param {String} params.status
+ * @Throws Error se interviewId for vazio
+ * @Throws Error se text for vazio
+ * @Throws Error se status for vazio
+ * @Throws Error se houver falha ao criar ou atualizar feedback no banco de dados
+ * @returns {Object} feedback
  */
-export async function organization({ params: { id }, auth }) {
-  if (authCheck(auth)) {
-    // Validation rules
-    const rules = [
-      {
-        data: { value: id },
-        check: 'notEmpty',
-        message: params.common.message.error.invalidData
-      }
-    ]
-
-    // Validate
-    try {
-      validate(rules)
-    } catch (error) {
-      throw new Error(error.message)
+export async function feedbackCreateOrUpdate({ params: { interviewId, text, status } }) {
+  // Validation rules
+  const rules = [
+    {
+      data: { value: interviewId },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
+    },
+    {
+      data: { value: text },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
+    },
+    {
+      data: { value: status },
+      check: 'notEmpty',
+      message: params.common.message.error.invalidData
     }
+  ]
 
-    const organization = await Organization.findOne({ _id: id })
-
-    return {
-      data: organization
-    }
+  // Validate
+  try {
+    validate(rules)
+  } catch(error) {
+    throw new Error(error.message)
   }
 
-  throw new Error(params.user.message.error.auth)
-}
+  try {
+    const interview = await Interview.findOne({ _id: interviewId })
+      .populate('candidateId')
+      .populate('interviewerId')
+      .populate('userId')
 
-/**
- * Busca organização por usuário
- * 
- * @param {Array} fields campos que devem ser populados
- * @param {Object} auth para autorizar requisição
- * @Throws Error se houver falha ao buscar organização no banco de dados
- * @Throws Error se usuário não estiver autenticado
- * @returns {Object} organização
- */
-export async function organizationByUser({ fields, auth }) {
-  if (authCheck(auth)) {
-    try {
-      const organization = await Organization
-        .findOne({ _id: auth.user.organizationId })
-        .select(fields)
+    if (interview) {
+      let feedback = await Feedback.findOne({ interviewId })
+
+      // Update kanban status
+      await Kanban.updateOne(
+        {
+          organizationId: interview.organizationId,
+          projectId: interview.projectId,
+          candidateId: interview.candidateId
+        },
+        {
+          $set: {
+            status
+          }
+        }
+      )
+
+      // Update or create feedback
+      if (feedback) {
+        await Feedback.updateOne(
+          {interviewId},
+          {
+            $set: {
+              text,
+              status
+            }
+          }
+        )
+      } else {
+        feedback = await Feedback.create({
+          organizationId: interview.organizationId,
+          interviewId,
+          text,
+          status
+        })
+
+        // Log activity
+        await Activity.create({
+          organizationId: interview.organizationId,
+          userId: interview.userId._id,
+          projectId: interview.projectId,
+          interviewId,
+          action: params.activity.types.create,
+          message: `${ interview.interviewerId.name } submitted feedback for ${ interview.candidateId.name }.`
+        })
+      }
+
+      // Update feedback id in interview
+      await Interview.updateOne(
+        { _id: interview._id },
+        {
+          feedbackId: feedback._id
+        }
+      )
+
+      // Send email
+      await sendEmail({
+        to: {
+          name: interview.userId.name,
+          email: interview.userId.email
+        },
+        from: {
+          name: interview.interviewerId.name,
+          email: interview.interviewerId.email
+        },
+        subject: `Feedback Received for ${ interview.candidateId.name }`,
+        template:
+          &lt;FeedbackTemplate
+            interview={interview}
+            text={text}
+            status={status}
+          />
+      })
 
       return {
-        data: organization
+        data: feedback
       }
-    } catch (error) {
-      throw new Error(params.common.message.error.server)
     }
+  } catch(error) {
+    throw new Error(params.common.message.error.server)
   }
 
-  throw new Error(params.user.message.error.auth)
-}
-
-/**
- * Busca todas organizações
- * 
- * @param {Array} fields campos que devem ser populados
- * @param {Object} auth para autorizar requisição
- * @Throws Error se houver falha ao buscar organização no banco de dados
- * @Throws Error se usuário não estiver autenticado
- * @returns {Object} organização
- */
-export async function organizationsByUser({ fields, auth }) {
-  if (authCheck(auth)) {
-    try {
-      const organizations = await Organization
-        .find({ userId: auth.user._id })
-        .select(fields)
-
-      return {
-        data: organizations
-      }
-    } catch (error) {
-      throw new Error(params.common.message.error.server)
-    }
-  }
-
-  throw new Error(params.user.message.error.auth)
+  throw new Error(params.common.message.error.default)
 }
 </code></pre>
         </article>
@@ -139,7 +186,7 @@ export async function organizationsByUser({ fields, auth }) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 14:55:21 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>

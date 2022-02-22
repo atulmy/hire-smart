@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: modules/candidate/query.js</title>
+    <title>JSDoc: Source: modules/job/query.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: modules/candidate/query.js</h1>
+    <h1 class="page-title">Source: modules/job/query.js</h1>
 
     
 
@@ -30,60 +30,67 @@
 import params from '../../setup/config/params'
 import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
-import Candidate from './model'
+import Job from './model'
 
 /**
- * Busca candidato por id
+ * Busca trabalho por id
  * 
- * @param {String} params.id id do candidato
- * @param {Array} fields.candidate campos do objeto candidato que devem ser obtidos
- * @param {Array} fields.project campos do objeto projeto que devem ser obtidos
- * @param {Array} fields.job campos do objeto trabalho que devem ser obtidos
- * @Throws Error se houver falha ao buscar o candidato no banco de dados 
- * @returns {Object} candidato
+ * @param {String} params.id id do convite
+ * @param {Array} fields.job dados do trabalho que devem ser populados
+ * @param {Array} fields.project dados do projeto que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se id for vazio
+ * @Throws Error se houver falha ao buscar trabalho no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} trabalho
  */
-export async function candidate({ params: { id }, fields = { candidate: [], project: [], job: [] } }) {
-  // Validation rules
-  const rules = [
-    {
-      data: { value: id },
-      check: 'notEmpty',
-      message: params.common.message.error.invalidData
-    }
-  ]
+export async function job({ params: { id }, fields = { job: [], project: [] }, auth }) {
+  if (authCheck(auth)) {
+    // Validation rules
+    const rules = [
+      {
+        data: { value: id },
+        check: 'notEmpty',
+        message: params.common.message.error.invalidData
+      }
+    ]
 
-  // Validate
-  try {
-    validate(rules)
-  } catch (error) {
-    throw new Error(error.message)
+    // Validate
+    try {
+      validate(rules)
+    } catch (error) {
+      throw new Error(error.message)
+    }
+
+    try {
+      const data = await Job
+        .findOne({ _id: id })
+        .select(fields.job)
+        .populate({ path: 'projectId', select: fields.project })
+
+      return {
+        data
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
+    }
   }
 
-  try {
-    const data = await Candidate.findOne({ _id: id })
-      .select(fields.candidate)
-      .populate({ path: 'projectId', select: fields.project })
-      .populate({ path: 'jobId', select: fields.job })
-
-    return {
-      data
-    }
-  } catch (error) {
-    throw new Error(params.common.message.error.server)
-  }
+  throw new Error(params.user.message.error.auth)
 }
 
 /**
- * Busca candidato por projeto
+ * Busca trabalho por projeto
  * 
- * @param {String} params.projectId id do projeto
- * @param {Array} fields.candidate campos do objeto candidato que devem ser obtidos
- * @param {Array} fields.job campos do objeto trabalho que devem ser obtidos
- * @Throws Error se houver falha ao buscar candidato no banco de dados
+ * @param {String} params.projectId id do convite
+ * @param {Array} fields campos que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se projectId for vazio
+ * @Throws Error se houver falha ao buscar trabalho no banco de dados
  * @Throws Error se usuário não estiver autenticado
- * @returns {Object} candidato
+ * @returns {Object} trabalho
  */
-export async function candidatesByProject({ params: { projectId }, fields = { candidate: [], job: [] }, auth }) {
+export async function jobsByProject({ params: { projectId }, fields, auth }) {
   if (authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -102,45 +109,11 @@ export async function candidatesByProject({ params: { projectId }, fields = { ca
     }
 
     try {
-      const data = await Candidate.find({
+      const data = await Job.find({
         organizationId: auth.user.organizationId,
         projectId
       })
-        .select(fields.candidate)
-        .populate({ path: 'projectId', select: fields.project })
-        .populate({ path: 'jobId', select: fields.job })
-
-
-      return {
-        data
-      }
-    } catch (error) {
-      throw new Error(params.common.message.error.server)
-    }
-  }
-
-  throw new Error(params.user.message.error.auth)
-}
-
-/**
- * Busca candidato por organização
- * 
- * @param {Array} fields.candidate campos do objeto candidato que devem ser obtidos
- * @param {Array} fields.project campos do objeto projeto que devem ser obtidos
- * @param {Array} fields.job campos do objeto trabalho que devem ser obtidos
- * @Throws Error se houver falha ao buscar candidato no banco de dados
- * @Throws Error se usuário não estiver autenticado
- * @returns {Object} candidato
- */
-export async function candidatesByOrganization({ fields = { candidate: [], project: [], job: [] }, auth }) {
-  if (authCheck(auth)) {
-    try {
-      const data = await Candidate.find({
-        organizationId: auth.user.organizationId
-      })
-        .select(fields.candidate)
-        .populate({ path: 'projectId', select: fields.project })
-        .populate({ path: 'jobId', select: fields.job })
+        .select(fields)
 
       return {
         data
@@ -168,7 +141,7 @@ export async function candidatesByOrganization({ fields = { candidate: [], proje
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 14:55:21 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: modules/project/mutation.js</title>
+    <title>JSDoc: Source: modules/interviewer/query.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: modules/project/mutation.js</h1>
+    <h1 class="page-title">Source: modules/interviewer/query.js</h1>
 
     
 
@@ -30,82 +30,19 @@
 import params from '../../setup/config/params'
 import { authCheck } from '../../setup/helpers/utils'
 import validate from '../../setup/helpers/validation'
-import Activity from '../activity/model'
-import Project from './model'
+import Interviewer from './model'
 
 /**
- * Cria um novo projeto
+ * Busca entrevistador por id
  * 
- * @param {String} params.name nome do projeto
- * @param {String} params.description descrição do projeto
- * @param {Object} auth para autorizar requisição
- * @Throws Error se name for vazio
- * @Throws Error se houver falha ao criar projeto no banco de dados
- * @Throws Error se usuário não estiver autenticado
- * @returns {Object} projeto
- */
-export async function projectCreate({ params: { name, description = '' }, auth }) {
-  if (authCheck(auth)) {
-    // Validation rules
-    const rules = [
-      {
-        data: { value: name },
-        check: 'notEmpty',
-        message: 'Please enter valid name.'
-      }
-    ]
-
-    // Validate
-    try {
-      validate(rules)
-    } catch (error) {
-      throw new Error(error.message)
-    }
-
-    try {
-      const project = await Project.create({
-        organizationId: auth.user.organizationId,
-        userId: auth.user._id,
-        name,
-        description
-      })
-
-      // Log activity
-      if (project) {
-        await Activity.create({
-          organizationId: auth.user.organizationId,
-          userId: auth.user._id,
-          projectId: project._id,
-          action: params.activity.types.create,
-          message: `${auth.user.name} created ${name} project.`
-        })
-      }
-
-      return {
-        data: project
-      }
-    } catch (error) {
-      throw new Error(params.common.message.error.server)
-    }
-  }
-
-  throw new Error(params.user.message.error.auth)
-}
-
-/**
- * Atualiza um projeto
- * 
- * @param {String} params.id id do projeto
- * @param {String} params.name nome do projeto
- * @param {String} params.description descrição do projeto
+ * @param {String} params.id id do entrevistador
  * @param {Object} auth para autorizar requisição
  * @Throws Error se id for vazio
- * @Throws Error se name for vazio
- * @Throws Error se houver falha ao atualizar projeto no banco de dados
+ * @Throws Error se houver falha ao buscar entrevistador no banco de dados
  * @Throws Error se usuário não estiver autenticado
- * @returns {Object} projeto
+ * @returns {Object} entrevistador
  */
-export async function projectUpdate({ params: { id, name, description = '' }, auth }) {
+export async function interviewer({ params: { id } , auth}) {
   if (authCheck(auth)) {
     // Validation rules
     const rules = [
@@ -113,11 +50,6 @@ export async function projectUpdate({ params: { id, name, description = '' }, au
         data: { value: id },
         check: 'notEmpty',
         message: params.common.message.error.invalidData
-      },
-      {
-        data: { value: name },
-        check: 'notEmpty',
-        message: 'Please enter valid name.'
       }
     ]
 
@@ -129,15 +61,7 @@ export async function projectUpdate({ params: { id, name, description = '' }, au
     }
 
     try {
-      const data = await Project.updateOne(
-        { _id: id },
-        {
-          $set: {
-            name,
-            description
-          }
-        }
-      )
+      const data = await Interviewer.findOne({ _id: id })
 
       return {
         data
@@ -151,21 +75,23 @@ export async function projectUpdate({ params: { id, name, description = '' }, au
 }
 
 /**
- * Remove um projeto
+ * Busca entrevistador por projeto
  * 
- * @param {String} params.id id do projeto
+ * @param {String} params.projectId id do projeto
+ * @param {Array} fields.interviewer dados do entrevistador que devem ser populados
+ * @param {Array} fields.project dados do projeto que devem ser populados
  * @param {Object} auth para autorizar requisição
- * @Throws Error se id for vazio
- * @Throws Error se houver falha ao atualizar projeto no banco de dados
+ * @Throws Error se projectId for vazio
+ * @Throws Error se houver falha ao buscar entrevistador no banco de dados
  * @Throws Error se usuário não estiver autenticado
- * @returns {Object} projeto
+ * @returns {Object} entrevistador
  */
-export async function projectRemove({ params: { id }, auth }) {
+export async function interviewersByProject({ params: { projectId }, fields = { interviewer: [], project: [] }, auth }) {
   if (authCheck(auth)) {
     // Validation rules
     const rules = [
       {
-        data: { value: id },
+        data: { value: projectId },
         check: 'notEmpty',
         message: params.common.message.error.invalidData
       }
@@ -179,10 +105,42 @@ export async function projectRemove({ params: { id }, auth }) {
     }
 
     try {
-      const data = await Project.remove({
-        _id: _id,
-        userId: auth.user._id
+      const data = await Interviewer.find({
+        organizationId: auth.user.organizationId,
+        projectId
       })
+        .select(fields.interviewer)
+        .populate({ path: 'projectId', select: fields.project })
+
+      return {
+        data
+      }
+    } catch (error) {
+      throw new Error(params.common.message.error.server)
+    }
+  }
+
+  throw new Error(params.user.message.error.auth)
+}
+
+/**
+ * Busca entrevistador por organização
+ * 
+ * @param {Array} fields.interviewer dados do entrevistador que devem ser populados
+ * @param {Array} fields.project dados do projeto que devem ser populados
+ * @param {Object} auth para autorizar requisição
+ * @Throws Error se houver falha ao buscar entrevistador no banco de dados
+ * @Throws Error se usuário não estiver autenticado
+ * @returns {Object} entrevistador
+ */
+export async function interviewersByOrganization({ fields = { interviewer: [], project: [] }, auth }) {
+  if (authCheck(auth)) {
+    try {
+      const data = await Interviewer.find({
+        organizationId: auth.user.organizationId
+      })
+        .select(fields.interviewer)
+        .populate({ path: 'projectId', select: fields.project })
 
       return {
         data
@@ -210,7 +168,7 @@ export async function projectRemove({ params: { id }, auth }) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 14:55:21 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>

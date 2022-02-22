@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: modules/project/query.js</title>
+    <title>JSDoc: Source: modules/email/send.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: modules/project/query.js</h1>
+    <h1 class="page-title">Source: modules/email/send.js</h1>
 
     
 
@@ -26,80 +26,110 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>// App Imports
+            <pre class="prettyprint source linenums"><code>// Imports
+import nodemailer from 'nodemailer'
+import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+
+// App Imports
+import { EMAIL_ON, EMAIL_HOST, EMAIL_USER, EMAIL_PASSWORD, EMAIL_TEST, NODE_ENV } from '../../setup/config/env'
 import params from '../../setup/config/params'
-import validate from '../../setup/helpers/validation'
-import { authCheck } from '../../setup/helpers/utils'
-import Project from './model'
+import Email from './model'
+import view from './template/view'
+import Layout from './template/Layout'
 
 /**
- * Busca projeto por id
+ * Responsável por criar uma conexão com servidor de email
  * 
- * @param {String} params.id id da organização
- * @param {Object} auth para autorizar requisição
- * @Throws Error se id for vazio
- * @Throws Error se houver falha ao buscar projeto no banco de dados
- * @Throws Error se usuário não estiver autenticado
- * @returns {Object} projeto
+ * @returns conexão com SMTP
  */
-export async function project({ params: { id }, auth }) {
-  if (authCheck(auth)) {
-    // Validation rules
-    const rules = [
-      {
-        data: { value: id },
-        check: 'notEmpty',
-        message: params.common.message.error.invalidData
+function transport() {
+  if (EMAIL_HOST &amp;&amp; EMAIL_USER &amp;&amp; EMAIL_PASSWORD) {
+    return nodemailer.createTransport({
+      host: EMAIL_HOST,
+      secure: false,
+      auth: {
+        user: EMAIL_USER,
+        pass: EMAIL_PASSWORD
       }
-    ]
-
-    // Validate
-    try {
-      validate(rules)
-    } catch (error) {
-      throw new Error(error.message)
-    }
-
-    try {
-      const data = await Project.findOne({ _id: id })
-
-      return {
-        data
-      }
-    } catch (error) {
-      throw new Error(params.common.message.error.server)
-    }
+    })
   }
-
-  throw new Error(params.user.message.error.auth)
 }
 
 /**
- * Busca projeto por organização
+ * Responsável por enviar emails
  * 
- * @param {Array} fields campos que devem ser populados
- * @param {Object} auth para autorizar requisição
- * @Throws Error se id for vazio
- * @Throws Error se houver falha ao buscar projeto no banco de dados
- * @Throws Error se usuário não estiver autenticado
- * @returns {Object} projeto
+ * @param {String} to destinatário
+ * @param {String} from remetente
+ * @param {String} subject assunto
+ * @param {String} template layout do email
+ * @param {String} cc emails em copia
+ * @param {String} organizationId id da organização
+ * @param {String} userId id do usuário
+ * @param {String} icalEvent eventos
+ * @returns {Object} email 
  */
-export async function projectsByOrganization({ fields, auth }) {
-  if (authCheck(auth)) {
-    try {
-      const data = await Project
-        .find({ organizationId: auth.user.organizationId })
-        .select(fields)
+export async function send({ to, from, subject, template, cc = null, organizationId = '', userId = '', icalEvent = '' }) {
+  const transporter = transport()
 
-      return {
-        data
-      }
-    } catch (error) {
-      throw new Error(params.common.message.error.server)
+  if (transporter) {
+    // Create markup
+    const body = view(renderToStaticMarkup(
+      &lt;Layout>
+        {template}
+      &lt;/Layout>
+    ))
+
+    subject = `${params.site.name} - ${subject}`
+
+    const toEmail = NODE_ENV === 'development' ? EMAIL_TEST : to.email
+    const toAddress = to.name &amp;&amp; to.name.length > 0 ? `"${to.name}" &lt;${toEmail}>` : toEmail
+
+    let email = {
+      to: toAddress,
+      from: `"${from.name}" &lt;${params.site.emails.hello.email}>`,
+      replyTo: `"${from.name}" &lt;${from.email}>`,
+      subject,
+      html: body,
     }
-  }
+    if (cc) {
+      email.cc = `"${cc.name}" &lt;${NODE_ENV === 'development' ? EMAIL_TEST : cc.email}>`
+    }
+    if (icalEvent) {
+      email.icalEvent = icalEvent
+    }
 
-  throw new Error(params.user.message.error.auth)
+    // Send email
+    if (EMAIL_ON === '1') {
+      transporter.sendMail(email, () => {
+        console.info('INFO - Email sent.')
+      })
+    } else {
+      console.info('INFO - Email not sent. EMAIL_ON is not enabled.')
+    }
+
+    // Save into database
+    let emailSave = {
+      toEmail: to.email,
+      fromName: from.name,
+      fromEmail: from.email,
+      subject,
+      body
+    }
+    if (to.name &amp;&amp; to.name.length > 0) {
+      emailSave.toName = to.name
+    }
+    if (organizationId) {
+      emailSave.organizationId = organizationId
+    }
+    if (userId) {
+      emailSave.userId = userId
+    }
+
+    return await Email.create(emailSave)
+  } else {
+    console.warn('WARN - Email not sent. Please check `.env` to set email configurations.')
+  }
 }
 </code></pre>
         </article>
@@ -117,7 +147,7 @@ export async function projectsByOrganization({ fields, auth }) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Mon Feb 21 2022 21:59:10 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Feb 22 2022 14:55:21 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>
