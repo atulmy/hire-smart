@@ -18,12 +18,12 @@ import {
 export function get(jobId, isLoading = true) {
   return async dispatch => {
     // Caching
-    const CACHE_KEY = `${ JOB_SINGLE_CACHE }.${ jobId }`
+    const CACHE_KEY = `${JOB_SINGLE_CACHE}.${jobId}`
 
     try {
       const item = JSON.parse(window.localStorage.getItem(CACHE_KEY))
 
-      if(item) {
+      if (item) {
         dispatch({
           type: SINGLE_RESPONSE,
           item
@@ -34,7 +34,7 @@ export function get(jobId, isLoading = true) {
           isLoading
         })
       }
-    } catch(e) {
+    } catch (e) {
       dispatch({
         type: SINGLE_REQUEST,
         isLoading
@@ -51,7 +51,7 @@ export function get(jobId, isLoading = true) {
         }
       })
 
-      if(data.errors && data.errors.length > 0) {
+      if (data.errors && data.errors.length > 0) {
         dispatch({
           type: MESSAGE_SHOW,
           message: data.errors[0].message
@@ -66,7 +66,7 @@ export function get(jobId, isLoading = true) {
 
         window.localStorage.setItem(CACHE_KEY, JSON.stringify(item))
       }
-    } catch(error) {
+    } catch (error) {
       dispatch({
         type: MESSAGE_SHOW,
         message: 'Some error occurred. Please try again.'
@@ -84,12 +84,12 @@ export function get(jobId, isLoading = true) {
 export function getListByProject({ projectId }, isLoading = true, forceRefresh = false) {
   return async dispatch => {
     // Caching
-    const CACHE_KEY = `${ JOB_LIST_BY_PROJECT_CACHE }.${ projectId }`
+    const CACHE_KEY = `${JOB_LIST_BY_PROJECT_CACHE}.${projectId}`
 
     try {
       const list = JSON.parse(window.localStorage.getItem(CACHE_KEY))
 
-      if(list && !forceRefresh) {
+      if (list && !forceRefresh) {
         dispatch({
           type: LIST_BY_PROJECT_RESPONSE,
           list
@@ -100,7 +100,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
           isLoading
         })
       }
-    } catch(e) {
+    } catch (e) {
       dispatch({
         type: LIST_BY_PROJECT_REQUEST,
         isLoading
@@ -111,10 +111,13 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
       const { data } = await axios.post(API_URL, {
         operation: 'jobsByProject',
         params: { projectId },
-        fields: ['_id', 'role', 'description', 'createdAt']
+        fields: {
+          job: ['_id', 'role', 'description', 'createdAt'],
+          project: ['_id', 'name']
+        }
       })
 
-      if(data.errors && data.errors.length > 0) {
+      if (data.errors && data.errors.length > 0) {
         dispatch({
           type: MESSAGE_SHOW,
           message: data.errors[0].message
@@ -129,7 +132,7 @@ export function getListByProject({ projectId }, isLoading = true, forceRefresh =
 
         window.localStorage.setItem(CACHE_KEY, JSON.stringify(list))
       }
-    } catch(error) {
+    } catch (error) {
       dispatch({
         type: MESSAGE_SHOW,
         message: 'Some error occurred. Please try again.'

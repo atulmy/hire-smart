@@ -85,8 +85,8 @@ export async function jobsByProject({ params: { projectId }, fields, auth }) {
         organizationId: auth.user.organizationId,
         projectId
       })
-        .select(fields)
-
+        .select(fields.job)
+        .populate({ path: 'projectId', select: fields.project })
       return {
         data
       }

@@ -1,0 +1,26 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch API",
+      "runtimeExecutable": "/usr/local/opt/node@14/bin/npm",
+      "skipFiles": ["<node_internals>/**"],
+      "runtimeArgs": ["--trace-warnings", "start"],
+      "cwd": "${workspaceFolder}/code/api"
+    },
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "Launch WEB",
+      "runtimeExecutable": "/usr/local/opt/node@14/bin/npm",
+      "skipFiles": ["<node_internals>/**"],
+      "runtimeArgs": ["start"],
+      "cwd": "${workspaceFolder}/code/web"
+    }
+  ]
+}
